@@ -1,2 +1,2 @@
 arviz
-jupyterlab
+jupyter-lab
