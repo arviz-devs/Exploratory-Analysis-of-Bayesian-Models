@@ -1,2 +1,5 @@
 arviz
-jupyter-lab
+jupyterlab
+pystan
+pymc3
+watermark
