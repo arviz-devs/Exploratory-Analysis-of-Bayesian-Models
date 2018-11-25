@@ -1,0 +1,2 @@
+# ArviZ Models
+ArviZ comes preloaded with example models used commonly in Bayesian contexts. Each notebook provides some background on the models and references where further information on each can be found.
