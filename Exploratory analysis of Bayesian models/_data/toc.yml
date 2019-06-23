@@ -24,19 +24,23 @@
   search: true
 
 - title: Introduction to Visualization
-  url: /Section_01/Section_01
+  url: /Section_01/EABM
   not_numbered: true
   expand_sections: true
-#  sections:
-#  - title: Create your book
-#    url: /guide/02_create
-#  - title: Build and publish your book
-#    url: /guide/03_build
+  sections:
+  - title: exploratory analysis of Bayesian model
+    url: /Section_01/Visualization
 
-#- title: Diagnostics
-#  url: /Section_02
-#  not_numbered: true
-#  expand_sections: true
+- title: Diagnostics
+  url: /Section_02/General_diagnostics
+  not_numbered: true
+  expand_sections: true
+  sections:
+  - title: Visual Diagnostics
+    url: /Section_01/Visual_diagnostics
+  sections:
+  - title: Numerical Diagnostics
+    url: /Section_01/Numerical_diagnostics
 
 #- title: Model criticism
 #  url: /Section_03
