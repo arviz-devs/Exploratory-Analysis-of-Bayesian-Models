@@ -1,0 +1,5 @@
+arviz
+jupyterlab
+pystan
+pymc3
+watermark
