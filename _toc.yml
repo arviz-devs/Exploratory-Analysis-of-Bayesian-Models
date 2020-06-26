@@ -1,0 +1,30 @@
+- file: content/intro/intro
+
+- header: Introduction to Visualization
+- file: content/Section_01/EABM
+- file: content/Section_01/Visualization
+
+
+- header: Diagnostics
+- file:  content/Section_02/General_diagnostics
+  sections:
+  - title: Visual Diagnostics
+  - file: content/Section_02/Visual_diagnostics
+  - title: Numerical Diagnostics
+  - file: content/Section_02/Numerical_diagnostics
+
+
+
+- header: Model comparison
+  sections:
+  - title: Model Selection
+  - file: content/Section_04/Model_selection
+  - title: Bayes Factors
+  - file: content/Section_04/Bayes_factors
+  - title: Model Averaging
+  - file: content/Section_04/Model_averaging
+
+- header: Preparation of result for particular audience
+  sections:
+  - title: Business Presentation
+  - file: content/Section_05/Business_Presentation
