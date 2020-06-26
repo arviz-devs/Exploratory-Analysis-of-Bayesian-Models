@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Numerical Diagnostics &#8212; Exploratory analysis of Bayesian models</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/sphinx-book-theme.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/mystnb.js"></script>
+    <script src="../../_static/sphinx-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Exploratory analysis of Bayesian models</h1>
+  
+</a>
+</div>
+
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  
+  
+</nav>
+
+ <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        <div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/content/Section_02/Numerical_diagnostics.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+    
+</div>
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#" class="nav-link">Numerical Diagnostics</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#effective-sample-size-ess" class="nav-link">Effective Sample Size (ESS)</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#effective-sample-size-in-depth" class="nav-link">Effective Sample Size in depth</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#hat-r-aka-r-hat-or-gelman-rubin-statistics" class="nav-link">\hat R (aka R hat, or Gelman-Rubin statistics)</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#hat-r-in-depth" class="nav-link">\hat R in depth</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#monte-carlo-standard-error" class="nav-link">Monte Carlo Standard Error</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#mcse-in-depth" class="nav-link">mcse in depth</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#summary" class="nav-link">Summary</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+    </ul>
+</nav>
+
+
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span> <span class="nn">pymc3</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="numerical-diagnostics">
+<h1>Numerical Diagnostics<a class="headerlink" href="#numerical-diagnostics" title="Permalink to this headline">¶</a></h1>
+<p>We will discuss 3 numerical diagnostics available in ArviZ, those are:</p>
+<ul class="simple">
+<li><p>Effective Sampler Size</p></li>
+<li><p><span class="math notranslate nohighlight">\(\hat R\)</span> (R hat)</p></li>
+<li><p>mcse error</p></li>
+</ul>
+<p>To help us understand these diagnostics we are going to create two <em>synthetic posteriors</em>. The first one is a sample from a uniform distribution. We generate it using SciPy and we call it <code class="docutils literal notranslate"><span class="pre">good_chains</span></code>. This is an example of a “good” sample because we are generating independent and identically distributed (iid) samples and ideally this is what we want to approximate the posterior. The second one is called <code class="docutils literal notranslate"><span class="pre">bad_chains</span></code>, and it will represent a poor sample from the posterior. <code class="docutils literal notranslate"><span class="pre">bad_chains</span></code> is a poor <em>sample</em> for two reasons:</p>
+<ul class="simple">
+<li><p>Values are not independent. On the contrary they are highly correlated, meaning that given any number at any position in the sequence we can compute the exact sequence of number both before and after the given number. Highly correlation is the opposite of independence.</p></li>
+<li><p>Values are not identically distributed, as you will see we are creating and array of 2 columns, the first one with numbers from 0 to 0.5 and the second one from 0.5 to 1.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">good_chains</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">500</span><span class="p">))</span>
+<span class="n">bad_chains</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="effective-sample-size-ess">
+<h2>Effective Sample Size (ESS)<a class="headerlink" href="#effective-sample-size-ess" title="Permalink to this headline">¶</a></h2>
+<p>When using sampling methods like MCMC is common to wonder if a particular sample is large enough to confidently compute what we want, like for example a parameter mean. Answering in terms of the number of samples is generally not a good idea as samples from MCMC methods will be autocorrelated and autocorrelation decrease the actual amount of information contained in a sample. Instead, a better idea is to estimate the <strong>effective Sample Size</strong>, this is the number of samples we would have if our sample were actually iid.</p>
+<p>Using ArviZ we can compute it using <code class="docutils literal notranslate"><span class="pre">az.ess(⋅)</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">ess</span><span class="p">(</span><span class="n">good_chains</span><span class="p">),</span> <span class="n">az</span><span class="o">.</span><span class="n">ess</span><span class="p">(</span><span class="n">bad_chains</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(1092.4702549784058, 2.284600376742084)
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is telling us that even when in both cases we have 1000 samples, <code class="docutils literal notranslate"><span class="pre">bad_chains</span></code> is somewhat equivalent to a iid sample of size <span class="math notranslate nohighlight">\(\approx 2\)</span>. While <code class="docutils literal notranslate"><span class="pre">good_chains</span></code> is <span class="math notranslate nohighlight">\(\approx 1000\)</span>. If you resample <code class="docutils literal notranslate"><span class="pre">good_chains</span></code> you will see that the effective sample size you get will be different for each sample. This is expected as the samples will not be exactly the same, they are after all samples. Nevertheless, on average, the value of effective sample size will be lower than the <span class="math notranslate nohighlight">\(N\)</span> number of samples. Notice, however, that ESS could be in fact larger! When using the NUTS sampler value pf <span class="math notranslate nohighlight">\(ESS &gt; N\)</span> can happen for parameters which posterior distribution close to Gaussian and which are almost independent of other parameters.</p>
+<blockquote>
+<div><p>As a general rule of thumb we recommend an <code class="docutils literal notranslate"><span class="pre">ess</span></code> greater than 50 per chain, otherwise the estimation of the <code class="docutils literal notranslate"><span class="pre">ess</span></code> itself and the estimation of <span class="math notranslate nohighlight">\(\hat R\)</span> are most likely unreliable.</p>
+</div></blockquote>
+<p>Because MCMC methods can have difficulties with mixing, it is important to use between-chain information in computing the ESS. This is one reason to routinary run more than one chain when fitting a Bayesian model using MCMC methods.</p>
+<p>We can also compute the effective sample size using <code class="docutils literal notranslate"><span class="pre">az.summary(⋅)</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">good_chains</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_mean</th>
+      <th>ess_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>x</th>
+      <td>0.508</td>
+      <td>0.292</td>
+      <td>0.023</td>
+      <td>0.954</td>
+      <td>0.009</td>
+      <td>0.006</td>
+      <td>1066.0</td>
+      <td>1066.0</td>
+      <td>1092.0</td>
+      <td>1024.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>As you can see <code class="docutils literal notranslate"><span class="pre">az.summary(⋅)</span></code> provides 4 values for <code class="docutils literal notranslate"><span class="pre">ESS</span></code>, mean, sd, bulk and tail. Even more if you check the arguments <code class="docutils literal notranslate"><span class="pre">method</span></code> of the <code class="docutils literal notranslate"><span class="pre">az.ess(⋅)</span></code>  functions you will see the following options</p>
+<ul class="simple">
+<li><p>“bulk”</p></li>
+<li><p>“tail”</p></li>
+<li><p>“quantile”</p></li>
+<li><p>“mean”</p></li>
+<li><p>“sd”</p></li>
+<li><p>“median”</p></li>
+<li><p>“mad”</p></li>
+<li><p>“z_scale”</p></li>
+<li><p>“folded”</p></li>
+<li><p>“identity”</p></li>
+</ul>
+<p>Why in hell ArviZ offers so many options? Just to make you life miserable, not just kidding, these estimates correspond to the effective sample size for different “parts” of your distribution. The reason we need this is that the mixing of Markov chains is not uniform across the parameter space. Thus the ESS estimate for the center of the distribution (the ess-bulk) could be different from that from the tails (ess-tail)</p>
+</div>
+<div class="section" id="effective-sample-size-in-depth">
+<h2>Effective Sample Size in depth<a class="headerlink" href="#effective-sample-size-in-depth" title="Permalink to this headline">¶</a></h2>
+<p>The basic ess diagnostic is computed by:</p>
+<div class="math notranslate nohighlight">
+\[\hat{N}_{eff} = \frac{MN}{\hat{\tau}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(M\)</span> is the number of chains, <span class="math notranslate nohighlight">\(N\)</span> the number of draws per chain and <span class="math notranslate nohighlight">\(\hat t\)</span> is a measure of the autocorrelation in the samples. More precisely <span class="math notranslate nohighlight">\(\hat t\)</span> is defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\tau} = -1 + 2 \sum_{t'=0}^K \hat{P}_{t'}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\rho}_t\)</span> is the estimated autocorrelation at lag <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(K\)</span> is the largest integer for which <span class="math notranslate nohighlight">\(\hat{P}_{K} = \hat{\rho}_{2K} + \hat{\rho}_{2K+1}\)</span> is still positive. The reason to compute this truncated sum, we are summing over <span class="math notranslate nohighlight">\(K\)</span> terms instead of summing over all available terms is that for large values of <span class="math notranslate nohighlight">\(t\)</span> the sample correlation becames too noisy to be useful, so we simply discard those terms in order to get more robust estimate.</p>
+</div>
+<div class="section" id="hat-r-aka-r-hat-or-gelman-rubin-statistics">
+<h2><span class="math notranslate nohighlight">\(\hat R\)</span> (aka R hat, or Gelman-Rubin statistics)<a class="headerlink" href="#hat-r-aka-r-hat-or-gelman-rubin-statistics" title="Permalink to this headline">¶</a></h2>
+<p>Under very general conditions MCMC methods have theoretical guarantees that you will get the right answer irrespective of the starting point. Unfortunately, we only have guarantee for infinite samples. One way to get a useful estimate of convergence for finite samples is to run more than one chain, starting from very different points and then checking if the resulting chains <em>look similar</em> to each other. <span class="math notranslate nohighlight">\(\hat R\)</span> is a formalization of this idea and it works by comparing the the <em>in chain</em> variance to the <em>between chain</em> variance. Ideally we should get a valuer of 1.</p>
+<p>Conceptually <span class="math notranslate nohighlight">\(\hat R\)</span> can be interpreted as the overestimation of variance due to MCMC finite sampling. If you continue sampling infinitely you should get a reduction of the variance of your estimation by a <span class="math notranslate nohighlight">\(\hat R\)</span> factor.</p>
+<p>From a practical point of view <span class="math notranslate nohighlight">\(\hat R \lessapprox 1.01\)</span> are considered safe</p>
+<p>Using ArviZ we can compute it using <code class="docutils literal notranslate"><span class="pre">az.summary(⋅)</span></code>, as we already saw in the previous section or using  <code class="docutils literal notranslate"><span class="pre">az.rhat(⋅)</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">rhat</span><span class="p">(</span><span class="n">good_chains</span><span class="p">),</span> <span class="n">az</span><span class="o">.</span><span class="n">rhat</span><span class="p">(</span><span class="n">bad_chains</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(1.0003393794930042, 3.0393728260009483)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="hat-r-in-depth">
+<h2><span class="math notranslate nohighlight">\(\hat R\)</span> in depth<a class="headerlink" href="#hat-r-in-depth" title="Permalink to this headline">¶</a></h2>
+<p>The value of <span class="math notranslate nohighlight">\(\hat R\)</span> is computed using the between-chain variance <span class="math notranslate nohighlight">\(B\)</span> and within-chain variance <span class="math notranslate nohighlight">\(W\)</span>, and then assessing if they are different enough to worry about convergence. For <span class="math notranslate nohighlight">\(M\)</span> chains, each of length <span class="math notranslate nohighlight">\(N\)</span>, we compute for each scalar parameter <span class="math notranslate nohighlight">\(\theta\)</span>:</p>
+<p>\begin{split}B &amp;= \frac{N}{M-1} \sum_{m=1}^M (\bar{\theta}<em>{.m} - \bar{\theta}</em>{..})^2 \
+W &amp;= \frac{1}{M} \sum_{m=1}^M \left[ \frac{1}{N-1} \sum_{n=1}^n (\theta_{nm} - \bar{\theta}_{.m})^2 \right]\end{split}</p>
+<p>where:</p>
+<p><span class="math notranslate nohighlight">\(\bar{\theta}_{.m} = \frac{1}{N} \sum_{n=1}^N \theta_{nm}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\bar{\theta}_{..} = \frac{1}{M} \sum_{m=1}^M \bar{\theta}_{.m}\)</span></p>
+<p>Using these values, an estimate of the marginal posterior variance of <span class="math notranslate nohighlight">\(\theta\)</span> can be calculated:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\text{Var}}(\theta | y) = \frac{N-1}{N} W + \frac{1}{N} B\]</div>
+<p>Assuming <span class="math notranslate nohighlight">\(\theta\)</span> was initialized using overdispersed starting points in each chain, this quantity will overestimate the true marginal posterior variance. At the same time, <span class="math notranslate nohighlight">\(W\)</span> will tend to underestimate the within-chain variance early in the sampling run, because the individual
+chains have not had the time to explore the entire target distribution. However, in the limit as <span class="math notranslate nohighlight">\(n \to \infty\)</span>, both quantities will converge to the true variance of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>Finally, we compute the <span class="math notranslate nohighlight">\(\hat R\)</span> statistic as:</p>
+<div class="math notranslate nohighlight">
+\[\hat{R} = \sqrt{\frac{\hat{\text{Var}}(\theta | y)}{W}}\]</div>
+<p>For an ergodic chain <span class="math notranslate nohighlight">\(\hat{R}\)</span> will converge to 1 <span class="math notranslate nohighlight">\(n \to \infty\)</span>. In practice <span class="math notranslate nohighlight">\(\hat{R}\)</span> is computed by splitting the chain in half so <span class="math notranslate nohighlight">\(M\)</span> is two times the number of chains. This is a simply trick to ensure that the first and last parts of a chain are indeed similar as expected from a converged chain.</p>
+</div>
+</div>
+<div class="section" id="monte-carlo-standard-error">
+<h1>Monte Carlo Standard Error<a class="headerlink" href="#monte-carlo-standard-error" title="Permalink to this headline">¶</a></h1>
+<p>When using MCMC methods we introduce an additional layer of uncertainty, due to the finite sampling, we call this Monte Carlo Standard Error (mcse). The mcse takes into account that the samples are not truly independent of each other. If we want to report the value of an estimated parameter to the second decimal we need to be sure the mcse error is below the second decimal otherwise we will be, wrongly, reporting a higher precision than we really have. We should check the mcse error once we are sure <span class="math notranslate nohighlight">\(\hat R\)</span> is low enough and ESS is high enough, otherwise mcse error is of no use.</p>
+<p>Using ArviZ we can compute it using <code class="docutils literal notranslate"><span class="pre">az.mcse(⋅)</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">mcse</span><span class="p">(</span><span class="n">good_chains</span><span class="p">),</span> <span class="n">az</span><span class="o">.</span><span class="n">mcse</span><span class="p">(</span><span class="n">bad_chains</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(array([0.00895154]), array([0.19772141]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="mcse-in-depth">
+<h2>mcse in depth<a class="headerlink" href="#mcse-in-depth" title="Permalink to this headline">¶</a></h2>
+<p>To compute the mcse the chain is divided into <span class="math notranslate nohighlight">\(n\)</span> batches, for each batch we computes its mean and then we compute the standard deviation of those means divided by the square root of the <span class="math notranslate nohighlight">\(n\)</span> batches.</p>
+<div class="math notranslate nohighlight">
+\[\text{mcse} = \frac{\sigma(x)}{\sqrt{n}}\]</div>
+</div>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>The ESS statistics answer the question is the chain large enough? while the <span class="math notranslate nohighlight">\(\hat R\)</span> diagnostics answers the question <em>did the chains mix well?</em>. Finally the mcse error estimates the amount of error introduced by sampling and thus the level of precision of our estimates.</p>
+</div>
+</div>
+
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By ArviZ-devs<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    <script src="../../_static/js/index.js"></script>
+    
+  </body>
+</html>

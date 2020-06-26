@@ -1,69 +1,30 @@
-# This file contains the order and numbering for all sections in the book.
-#
-# Each entry has the following schema:
-#
-# - title: mytitle   # Title of chapter or section
-#   url: /myurl  # URL of section relative to the /content/ folder.
-#   sections:  # Contains a list of more entries that make up the chapter's sections
-#   not_numbered: true  # if the section shouldn't have a number in the sidebar
-#     (e.g. Introduction or appendices)
-#   expand_sections: true  # if you'd like the sections of this chapter to always
-#     be expanded in the sidebar.
-#   external: true  # Whether the URL is an external link or points to content in the book
-#
-# Below are some special values that trigger specific behavior:
-# - search: true  # Will provide a link to a search page
-# - divider: true  # Will insert a divider in the sidebar
-# - header: My Header  # Will insert a header with no link in the sidebar
+- file: content/intro/intro
+
+- header: Introduction to Visualization
+- file: content/Section_01/EABM
+- file: content/Section_01/Visualization
 
 
-- title: Home
-  url: /intro/intro
-  not_numbered: true
-- title: Search
-  search: true
-
-- title: Introduction to Visualization
-  url: /Section_01/EABM
-  not_numbered: true
-  expand_sections: true
-  sections:
-  - title: exploratory analysis of Bayesian model
-    url: /Section_01/Visualization
-
-- title: Diagnostics
-  url: /Section_02/General_diagnostics
-  not_numbered: true
-  expand_sections: true
+- header: Diagnostics
+- file:  content/Section_02/General_diagnostics
   sections:
   - title: Visual Diagnostics
-    url: /Section_01/Visual_diagnostics
+  - file: content/Section_02/Visual_diagnostics
   - title: Numerical Diagnostics
-    url: /Section_01/Numerical_diagnostics
+  - file: content/Section_02/Numerical_diagnostics
 
-#- title: Model criticism
-#  url: /Section_03
-#  not_numbered: true
-#  expand_sections: true
 
-- title: Model comparison
-  url: /Section_04
-  not_numbered: true
-  expand_sections: true
+
+- header: Model comparison
   sections:
   - title: Model Selection
-    url: /Section_04/Model_selection
+  - file: content/Section_04/Model_selection
   - title: Bayes Factors
-    url: /Section_04/Bayes_factors
+  - file: content/Section_04/Bayes_factors
   - title: Model Averaging
-    url: /Section_04/Model_averaging
+  - file: content/Section_04/Model_averaging
 
-#- title: Preparation of result for particular audience
-#  url: /Section_05
-#  not_numbered: true
-#  expand_sections: true
-
-- title: GitHub repository
-  url: https://github.com/arviz-devs/arviz  # this should be the repository for the book
-  external: true
-  not_numbered: true
+- header: Preparation of result for particular audience
+  sections:
+  - title: Business Presentation
+  - file: content/Section_05/Business_Presentation

@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Preparation of results for business: Newpaper Sales &#8212; Exploratory analysis of Bayesian models</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">
+    <link href="../../_static/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/sphinx-book-theme.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/mystnb.js"></script>
+    <script src="../../_static/sphinx-book-theme.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="docsearch:language" content="en">
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="../../index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">Exploratory analysis of Bayesian models</h1>
+  
+</a>
+</div>
+
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  
+  
+</nav>
+
+ <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        <div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="../../_sources/content/Section_05/Business_Presentation.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+    
+</div>
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+    </div>
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="nav section-nav flex-column">
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#outline" class="nav-link">Outline</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#simulation" class="nav-link">Simulation</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#the-observed-data" class="nav-link">The observed data</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#fitting-the-data" class="nav-link">Fitting the data</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#preparation-of-results" class="nav-link">Preparation of results</a><ul class="nav section-nav flex-column">
+                
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#numerical-summary-of-estimated-parameters-using-az-summary" class="nav-link">Numerical Summary of estimated parameters using az.summary</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#visual-summary-of-estimated-paramters-using-plot-posterior" class="nav-link">Visual Summary of estimated paramters using plot_posterior</a>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h3">
+            <a href="#visual-summary-of-estimated-sales-using-posterior-predictive-plot" class="nav-link">Visual Summary of estimated sales using Posterior Predictive Plot</a>
+        </li>
+    
+            </ul>
+        </li>
+    
+        <li class="nav-item toc-entry toc-h2">
+            <a href="#practical-advice-for-using-arviz-in-business-settings" class="nav-link">Practical Advice for using ArviZ in business settings</a>
+        </li>
+    
+    </ul>
+</nav>
+
+
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span> <span class="nn">pymc3</span> <span class="k">as</span> <span class="nn">pm</span>
+<span class="kn">import</span> <span class="nn">arviz</span> <span class="k">as</span> <span class="nn">az</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="preparation-of-results-for-business-newpaper-sales">
+<h1>Preparation of results for business: Newpaper Sales<a class="headerlink" href="#preparation-of-results-for-business-newpaper-sales" title="Permalink to this headline">¶</a></h1>
+<p>We will illustrate how to prepare results for a business audience using ArviZ. The motivating example we’ll use is a classic example in Industrial Engineering, the <a class="reference external" href="https://en.wikipedia.org/wiki/Newsvendor_model">newsvendor problem</a>. In brief the problem is as follows</p>
+<p>As a newpaper girl, or boy, you face a dilemma; buy too many newspapers and you’ll lose money from newspaper that expire. Buy too few newspapers and you’ll miss potential sales, and lose money. Using past sales information and ArviZ we can create a compelling data centric pitch about what business choice to make in this scenario</p>
+<div class="section" id="outline">
+<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Posterior Estimation</p></li>
+<li><p>Posterior Predictive</p></li>
+</ul>
+<div class="section" id="simulation">
+<h3>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h3>
+<p>As we have in past chapters we’re going to create some simulated sales data. Our latent (hidden) parameter is 30 sales per a day on average, and we are simulated 20 days of sales. We are using the poisson distribution because we can only sell positive whole numbers of newspapers (e.g. 12, 14,21)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">newspaper_sales</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">poisson</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="the-observed-data">
+<h3>The observed data<a class="headerlink" href="#the-observed-data" title="Permalink to this headline">¶</a></h3>
+<p>At the end of 20 days these are the sales numbers we see. Given 20 days of sales you must make a case of how many newspapers to buy in the future.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">newspaper_sales</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>array([27, 26, 19, 32, 21, 33, 34, 27, 29, 32, 31, 23, 31, 31, 24, 39, 33,
+       25, 27, 27])
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="fitting-the-data">
+<h2>Fitting the data<a class="headerlink" href="#fitting-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Before any results can be prepared we must first fit a model and generate some results</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pm</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span> <span class="k">as</span> <span class="n">newspaper_model</span><span class="p">:</span>
+    <span class="n">_lambda</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="s2">&quot;λ&quot;</span><span class="p">,</span> <span class="n">newspaper_sales</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="mi">10</span><span class="p">)</span>
+    
+    <span class="n">sales</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">Poisson</span><span class="p">(</span><span class="s2">&quot;sales&quot;</span><span class="p">,</span> <span class="n">_lambda</span><span class="p">,</span> <span class="n">observed</span><span class="o">=</span><span class="n">newspaper_sales</span><span class="p">)</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">draws</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+    <span class="n">ppc</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample_posterior_predictive</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
+    
+<span class="n">data</span> <span class="o">=</span> <span class="n">az</span><span class="o">.</span><span class="n">from_pymc3</span><span class="p">(</span><span class="n">trace</span><span class="o">=</span><span class="n">trace</span><span class="p">,</span> <span class="n">posterior_predictive</span><span class="o">=</span><span class="n">ppc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="stderr docutils container">
+<pre class="stderr literal-block">Auto-assigning NUTS sampler...
+</pre>
+</div>
+<div class="stderr docutils container">
+<pre class="stderr literal-block">Initializing NUTS using jitter+adapt_diag...
+</pre>
+</div>
+<div class="stderr docutils container">
+<pre class="stderr literal-block">Multiprocess sampling (2 chains in 2 jobs)
+</pre>
+</div>
+<div class="stderr docutils container">
+<pre class="stderr literal-block">NUTS: [λ]
+</pre>
+</div>
+<div class="output text_html">
+<div>
+    <style>
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    </style>
+  <progress value='6000' class='' max='6000', style='width:300px; height:20px; vertical-align: middle;'></progress>
+  100.00% [6000/6000 00:01<00:00 Sampling 2 chains, 0 divergences]
+</div>
+</div><div class="stderr docutils container">
+<pre class="stderr literal-block">Sampling 2 chains for 1_000 tune and 2_000 draw iterations (2_000 + 4_000 draws total) took 2 seconds.
+</pre>
+</div>
+<div class="output text_html">
+<div>
+    <style>
+        /* Turns off some styling */
+        progress {
+            /* gets rid of default border in Firefox and Opera. */
+            border: none;
+            /* Needs to be in here for Safari polyfill so background images work as expected. */
+            background-size: auto;
+        }
+        .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+            background: #F44336;
+        }
+    </style>
+  <progress value='4000' class='' max='4000', style='width:300px; height:20px; vertical-align: middle;'></progress>
+  100.00% [4000/4000 00:01<00:00]
+</div>
+</div><div class="stderr docutils container">
+<pre class="stderr literal-block">/home/osvaldo/proyectos/00_BM/arviz/arviz/data/io_pymc3.py:89: FutureWarning: Using `from_pymc3` without the model will be deprecated in a future release. Not using the model will return less accurate and less useful results. Make sure you use the model argument or call from_pymc3 within a model context.
+  FutureWarning,
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="preparation-of-results">
+<h2>Preparation of results<a class="headerlink" href="#preparation-of-results" title="Permalink to this headline">¶</a></h2>
+<p>Using ArviZ there are numerous ways we can share the results depending on audience. The three will we cover are a numerical Summary with <code class="docutils literal notranslate"><span class="pre">az.summary</span></code>, posterior parameter estimation using <code class="docutils literal notranslate"><span class="pre">az.plot_posterior</span></code>, and posterior predictive visualization using <code class="docutils literal notranslate"><span class="pre">az.ppc_plot</span></code></p>
+<div class="section" id="numerical-summary-of-estimated-parameters-using-az-summary">
+<h3>Numerical Summary of estimated parameters using az.summary<a class="headerlink" href="#numerical-summary-of-estimated-parameters-using-az-summary" title="Permalink to this headline">¶</a></h3>
+<p>The simplest way to share the result is using the numerical summuraization in az.summary</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+      <th>mcse_mean</th>
+      <th>mcse_sd</th>
+      <th>ess_mean</th>
+      <th>ess_sd</th>
+      <th>ess_bulk</th>
+      <th>ess_tail</th>
+      <th>r_hat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>λ</th>
+      <td>28.562</td>
+      <td>1.162</td>
+      <td>26.437</td>
+      <td>30.783</td>
+      <td>0.032</td>
+      <td>0.023</td>
+      <td>1310.0</td>
+      <td>1310.0</td>
+      <td>1311.0</td>
+      <td>2612.0</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Using the above summary we get a couple of useful data points. The mean of the expected number of sales each day is ~30.2 and the standard deviation of sales is ~1.2. The advantages of a numerical summary is the ease of communication and succintness. Often times in business settings you may need to describe results without the aid of computer, or chart. Additionally in most businesses your surrounding colleagues will likely not be statisticians. However most people can intuit around the idea of mean and standard deviation, and providing a mean and sd estimate is quick and is not overwhelming.</p>
+<p>There are some downsides to numerical summaries. One is that by summarizing to two numbers, a lot of information is “left on the table”. Additionally in certain contexts when a visualization can be used, it’s often much more memorable to show a picture of the parameter estimation than provide two summary statistics. Lastly the mean, standard deviation, and even the hpd estimates, don’t characterize all distributions well. For exmaple in our newspaper problem if the distribution was bimodal, perhaps because of weekday sales and weekend sales, none of the numerical estimates would correctly communicate this condition.</p>
+</div>
+<div class="section" id="visual-summary-of-estimated-paramters-using-plot-posterior">
+<h3>Visual Summary of estimated paramters using plot_posterior<a class="headerlink" href="#visual-summary-of-estimated-paramters-using-plot-posterior" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_posterior</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/Business_Presentation_15_0.png" src="../../_images/Business_Presentation_15_0.png" />
+</div>
+</div>
+<p>With plot posterior we get a nice visualization of the parameter estimates, as well as point estimate and the Highest Posterior Density. In contrast to the numerical estimates a posterior plot is much harder to gloss over. Posterior Plots also characterize all, or nearly all, the information inferred about the estimated parameters, including uncertainty and characteristics of the distribution.</p>
+<p>As with any visualization though this cannot be used outside of a visual presentation format. It can be awkward to describe to non statisticians verbally. Additionally posterior by nature are the estimated distribution of <em>parameter space</em>. Many times people that are unfamiliar with Bayesian Statistics will incorrectly assume that the x axis is in the units of data, in this case newspaper sales. This intrepratation can lead to incorrect results, as colleagues may assume that “there is a 94% chance that 28 to 31 newspapers will be sold in a day” and are in for a surprise when on many occassions more or less papers are sold.</p>
+</div>
+<div class="section" id="visual-summary-of-estimated-sales-using-posterior-predictive-plot">
+<h3>Visual Summary of estimated sales using Posterior Predictive Plot<a class="headerlink" href="#visual-summary-of-estimated-sales-using-posterior-predictive-plot" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">az</span><span class="o">.</span><span class="n">plot_ppc</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">num_pp_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/Business_Presentation_18_0.png" src="../../_images/Business_Presentation_18_0.png" />
+</div>
+</div>
+<p>With plot_ppc we get a plot of the observed data along with the simulated outcomes from the parameter estimations. Benefits if the Posterior Predictive plot are the same as the posterior plot, but with the notable change that the x axis is in the units of the data. Posterior Predictive Plots then lend themselves to the correct interpretation that “15 to 40 newspapers will be sold a day, and lesser likely that 10 or 45 will be sold”</p>
+<p>The downside to the posterior plot is that if asked to explained how they are generated it’s not typically a straightforward exercise. From personal experience if trying to explain that you fit parameters using Bayesian Statistics to estimate the posterior, then generated “1000”, or any arbitrary number, of future simulations, then took the KDE of them, most colleagues lose interest quickly.</p>
+</div>
+</div>
+<div class="section" id="practical-advice-for-using-arviz-in-business-settings">
+<h2>Practical Advice for using ArviZ in business settings<a class="headerlink" href="#practical-advice-for-using-arviz-in-business-settings" title="Permalink to this headline">¶</a></h2>
+<p>As a statistician in the workplace your job is to help others make good decisions using data. This naturally requires your analysis to be rigorous and thorough, but also requires you to present it in a way that others will take heed to the results. If your boss  becomes bored with the details of Posterior Plots and subsequently fails to understand the conclusion. then your analysis was as ineffective as not running an analysis at all.</p>
+<p>My advice would be to know your audience. their tolerance for mathematical explanations, and understand the context in which you can explain the data. If you’re providing a visual presentation, and have a couple minutes, consider using the Posterior Plot or Posterior Predictive Plot as it lends itself to a longer explanation. If you’re given less time consider using the numerical summaries from <code class="docutils literal notranslate"><span class="pre">az.summary</span></code> to quickly convey your results.</p>
+<p>In either scenario I would suggest memorizing a couple of the numerical summaries, such as mean, median, or HPD, so if an opportunity arises in a “hallway” conversation, or during a meeting without a presentation you are able to share results quickly and without a visual aid.</p>
+</div>
+</div>
+
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By ArviZ-devs<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    <script src="../../_static/js/index.js"></script>
+    
+  </body>
+</html>
