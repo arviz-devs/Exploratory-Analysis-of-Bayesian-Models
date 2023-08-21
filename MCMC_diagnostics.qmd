@@ -1,0 +1,18 @@
+# MCMC Diagnostics
+
+The Achilles heel of computing posterior distributions is, most often than not, the computation of the denominator of Bayes's theorem. Markov Chain Monte Carlo Methods (MCMC), such as Metropolis, Hamiltonian Monte Carlo (and its variants like NUTS) are clever mathematical and computational devices that let's us circumvent this problem. The main idea is based on sampling values of the parameters of interest from an easy to sample distribution and then applying a rule, known as metropolis acceptance criterion, to decide if you accept or not that proposal. This rule is necessary as it provides the proper way of correcting the proposed samples to get samples from the true distribution, _i.e_ the posterior distribution. The better performance of NUTS over Metropolis can be explained by the fact that the former uses a clever way to propose values. 
+
+While MCMC methods can be successfully used to solve a huge variety of Bayesian models, this have some trade-offs. Most notably, MCMC methods can be slow for some problems, such as _Big Data_ problems and what is most important for our current discussion finite MCMC chains are not guaranteed to converge to the true parameter value. Thus, a key step is to check whether we have a valid sample, otherwise any analysis from it will be totally flawed.
+
+There are several tests we can perform, some are visual and some are numerical. These tests are designed to spot problems with our samples, but they are unable to prove we have the correct distribution; they can only provide evidence that the sample seems reasonable.
+
+In this chapter we will cover the following topics:
+
+* Trace plots
+* Rank plots
+* $\hat R$
+* Autocorrelation
+* Effective Sample Size
+* Divergences
+
+

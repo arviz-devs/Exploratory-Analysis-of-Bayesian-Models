@@ -1,0 +1,52 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Exploratory Analysis of Bayesian Models"
+  author: "ArviZ-devs"
+  date: today
+
+
+  chapters:
+    - index.qmd
+    - elements_of_visualization.qmd
+    - distributions.qmd
+    - MCMC_diagnostics.qmd
+    - Model_criticism.qmd
+    - Model_comparison.qmd
+    - Presenting_results.qmd
+    - references.qmd
+
+  page-navigation: true
+  reader-mode: true
+  sidebar:
+    style: "docked"
+    search: true
+    tools:
+      - icon: github
+        text: github
+        menu:
+          - text: source
+            url:  https://github.com/arviz-devs/Exploratory-Analysis-of-Bayesian-Models
+          - text: issues
+            url:  https://github.com/arviz-devs/Exploratory-Analysis-of-Bayesian-Models/issues/new
+      - icon: coin
+        href: https://numfocus.org/donate-to-arviz 
+        text: donations
+
+format:
+  html:
+    toc: true
+    code-line-numbers: true
+    number-sections: true
+    number-offset: -1
+
+
+theme:
+  light: cosmo
+  dark: darkly
+
+bibliography: references.bib
+
+google-scholar: true

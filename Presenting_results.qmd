@@ -1,0 +1,4 @@
+# Presentation of results
+
+* Summarizing results
+* Monte Carlo Standard error and accuracy
