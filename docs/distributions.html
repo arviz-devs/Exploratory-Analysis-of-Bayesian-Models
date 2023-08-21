@@ -257,59 +257,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>A discrete distribution represents variables which can only take a countable number of values. Some examples of discrete random variables are the number of coins in your pocket, spots on a giraffe, red cars in a city and people with flu. As we generally use integers to represent discrete variables, when ArviZ is asked to plot integer data it will use <a href="https://en.wikipedia.org/wiki/Histogram">histograms</a> to represent them. ArviZ always tries to associate the discrete data to individuals bins. For example in the following plot each <em>bar</em> is associated with an integer in the interval [0, 9].</p>
 <div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">3</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>az.plot_dist(d_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<pre><code>&lt;Axes: &gt;</code></pre>
-</div>
+<span id="cb1-2"><a href="#cb1-2"></a>az.plot_dist(d_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="distributions_files/figure-html/cell-3-output-2.png" width="579" height="411"></p>
+<p><img src="distributions_files/figure-html/cell-3-output-1.png" width="579" height="411"></p>
 </div>
 </div>
 <p>When the discrete values takes higher values, like in the following example, bins are still associated with integers but not every integer will be associated with a single different bins. Instead many integers will be binned together.</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>az.plot_dist(d_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>az.plot_dist(d_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="distributions_files/figure-html/cell-4-output-1.png" width="588" height="411"></p>
 </div>
 </div>
 <p>If you don’t like the default binning criteria of ArviZ, you can change it by passing the <code>bins</code> argument using the <code>hist_kwargs</code>.</p>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>ax <span class="op">=</span> az.plot_dist(d_values, hist_kwargs<span class="op">=</span>{<span class="st">"bins"</span>:<span class="st">"auto"</span>})</span>
-<span id="cb4-3"><a href="#cb4-3"></a>plt.setp(ax.get_xticklabels(), rotation<span class="op">=</span><span class="dv">45</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>ax <span class="op">=</span> az.plot_dist(d_values, hist_kwargs<span class="op">=</span>{<span class="st">"bins"</span>:<span class="st">"auto"</span>})</span>
+<span id="cb3-3"><a href="#cb3-3"></a>plt.setp(ax.get_xticklabels(), rotation<span class="op">=</span><span class="dv">45</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="distributions_files/figure-html/cell-5-output-1.png" width="579" height="440"></p>
 </div>
 </div>
 <p>A continuous distribution represents variables taking an uncountable number of values. Some examples of continuous random variables are the temperature during summer, the blood pressure of a patience and the time needed to finish a task. By default ArviZ uses kernel density estimation (KDE) to represent continuous distributions.</p>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>c_values <span class="op">=</span> pz.Gamma(<span class="dv">2</span>, <span class="dv">3</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>az.plot_dist(c_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-<pre><code>&lt;Axes: &gt;</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>c_values <span class="op">=</span> pz.Gamma(<span class="dv">2</span>, <span class="dv">3</span>).rvs(<span class="dv">500</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>az.plot_dist(c_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="distributions_files/figure-html/cell-6-output-2.png" width="579" height="416"></p>
+<p><img src="distributions_files/figure-html/cell-6-output-1.png" width="579" height="416"></p>
 </div>
 </div>
 <p>Kernel density estimation (KDE) is a non-parametric way to estimate the probability density function of a random variable.</p>
 <p>Conceptually you place a <em>kernel function</em> like a gaussian <em>on top</em> of a data-point, then you sum all the gaussians, generally evaluated over a grid and not over the data points. Results are normalized so the total area under the curve is one.</p>
 <p>The following block of code shows a very simple example of a KDE.</p>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>_, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
-<span id="cb7-2"><a href="#cb7-2"></a>bw <span class="op">=</span> <span class="fl">0.4</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>np.random.seed(<span class="dv">19</span>)</span>
-<span id="cb7-4"><a href="#cb7-4"></a>datapoints <span class="op">=</span> <span class="dv">7</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a>y <span class="op">=</span> np.random.normal(<span class="dv">7</span>, size<span class="op">=</span>datapoints)</span>
-<span id="cb7-6"><a href="#cb7-6"></a>x <span class="op">=</span> np.linspace(y.<span class="bu">min</span>() <span class="op">-</span> bw <span class="op">*</span> <span class="dv">3</span>, y.<span class="bu">max</span>() <span class="op">+</span> bw <span class="op">*</span> <span class="dv">3</span>, <span class="dv">100</span>)</span>
-<span id="cb7-7"><a href="#cb7-7"></a>kernels <span class="op">=</span> np.transpose([pz.Normal(i, bw).pdf(x) <span class="cf">for</span> i <span class="kw">in</span> y])</span>
-<span id="cb7-8"><a href="#cb7-8"></a>kernels <span class="op">*=</span> <span class="dv">1</span><span class="op">/</span>datapoints  <span class="co"># normalize the results</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>ax.plot(x, kernels, <span class="st">'k--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb7-10"><a href="#cb7-10"></a>ax.plot(y, np.zeros(<span class="bu">len</span>(y)), <span class="st">'C1o'</span>)</span>
-<span id="cb7-11"><a href="#cb7-11"></a>ax.plot(x, kernels.<span class="bu">sum</span>(<span class="dv">1</span>))</span>
-<span id="cb7-12"><a href="#cb7-12"></a>ax.set_xticks([])</span>
-<span id="cb7-13"><a href="#cb7-13"></a>ax.set_yticks([])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>_, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb5-2"><a href="#cb5-2"></a>bw <span class="op">=</span> <span class="fl">0.4</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>np.random.seed(<span class="dv">19</span>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>datapoints <span class="op">=</span> <span class="dv">7</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>y <span class="op">=</span> np.random.normal(<span class="dv">7</span>, size<span class="op">=</span>datapoints)</span>
+<span id="cb5-6"><a href="#cb5-6"></a>x <span class="op">=</span> np.linspace(y.<span class="bu">min</span>() <span class="op">-</span> bw <span class="op">*</span> <span class="dv">3</span>, y.<span class="bu">max</span>() <span class="op">+</span> bw <span class="op">*</span> <span class="dv">3</span>, <span class="dv">100</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>kernels <span class="op">=</span> np.transpose([pz.Normal(i, bw).pdf(x) <span class="cf">for</span> i <span class="kw">in</span> y])</span>
+<span id="cb5-8"><a href="#cb5-8"></a>kernels <span class="op">*=</span> <span class="dv">1</span><span class="op">/</span>datapoints  <span class="co"># normalize the results</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>ax.plot(x, kernels, <span class="st">'k--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>ax.plot(y, np.zeros(<span class="bu">len</span>(y)), <span class="st">'C1o'</span>)</span>
+<span id="cb5-11"><a href="#cb5-11"></a>ax.plot(x, kernels.<span class="bu">sum</span>(<span class="dv">1</span>))</span>
+<span id="cb5-12"><a href="#cb5-12"></a>ax.set_xticks([])</span>
+<span id="cb5-13"><a href="#cb5-13"></a>ax.set_yticks([])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="distributions_files/figure-html/cell-7-output-1.png" width="912" height="315"></p>
 </div>

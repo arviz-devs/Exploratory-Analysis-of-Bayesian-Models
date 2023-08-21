@@ -13,7 +13,7 @@ A discrete distribution represents variables which can only take a countable num
 
 ```{python}
 d_values = pz.Poisson(3).rvs(500)
-az.plot_dist(d_values)
+az.plot_dist(d_values);
 ```
 
 When the discrete values takes higher values, like in the following example, bins are still associated with integers but not every integer will be associated with a single different bins. Instead many integers will be binned together.
@@ -35,7 +35,7 @@ A continuous distribution represents variables taking an uncountable number of v
 
 ```{python}
 c_values = pz.Gamma(2, 3).rvs(500)
-az.plot_dist(c_values)
+az.plot_dist(c_values);
 ```
 
 Kernel density estimation (KDE) is a non-parametric way to estimate the probability density function of a random variable.
