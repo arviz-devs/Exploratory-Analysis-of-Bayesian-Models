@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Exploratory Analysis of Bayesian Models - 2&nbsp; Distributions</title>
+<title>Exploratory Analysis of Bayesian Models - 2&nbsp; Random variables, distributions, and uncertainty</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -98,8 +98,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta name="citation_title" content="[2]{.chapter-number}&nbsp; [Distributions]{.chapter-title}">
+<meta name="citation_title" content="[2]{.chapter-number}&nbsp; [Random variables, distributions, and uncertainty]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Graphical perception: Theory, experimentation, and application to the development of graphical methods;,citation_author=William S. Cleveland;,citation_author=Robert McGill;,citation_publication_date=1984;,citation_cover_date=1984;,citation_year=1984;,citation_fulltext_html_url= https://www.tandfonline.com/doi/abs/10.1080/01621459.1984.10478080;,citation_issue=387;,citation_doi=10.1080/01621459.1984.10478080;,citation_volume=79;,citation_journal_title=Journal of the American Statistical Association;,citation_publisher=Taylor &amp;amp;amp; Francis;">
 <meta name="citation_reference" content="citation_title=Crowdsourcing graphical perception: Using mechanical turk to assess visualization design;,citation_author=Jeffrey Heer;,citation_author=Michael Bostock;,citation_publication_date=2010-04;,citation_cover_date=2010-04;,citation_year=2010;,citation_fulltext_html_url=https://doi.org/10.1145/1753326.1753357;,citation_doi=10.1145/1753326.1753357;,citation_isbn=978-1-60558-929-9;,citation_conference_title=Proceedings of the SIGCHI Conference on Human Factors in Computing Systems;,citation_conference=Association for Computing Machinery;,citation_series_title=CHI ’10;">
@@ -118,7 +120,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./distributions.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Distributions</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./distributions.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Random variables, distributions, and uncertainty</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -182,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./distributions.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Distributions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Random variables, distributions, and uncertainty</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -221,14 +223,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#random-variables" id="toc-random-variables" class="nav-link active" data-scroll-target="#random-variables"><span class="header-section-number">2.1</span> Random variables</a></li>
+  <li><a href="#probability-mass-and-density-functions" id="toc-probability-mass-and-density-functions" class="nav-link" data-scroll-target="#probability-mass-and-density-functions"><span class="header-section-number">2.2</span> Probability mass and density functions</a></li>
+  <li><a href="#cumulative-distribution-functions" id="toc-cumulative-distribution-functions" class="nav-link" data-scroll-target="#cumulative-distribution-functions"><span class="header-section-number">2.3</span> Cumulative distribution functions</a></li>
+  <li><a href="#inverse-cumulative-distribution-functions" id="toc-inverse-cumulative-distribution-functions" class="nav-link" data-scroll-target="#inverse-cumulative-distribution-functions"><span class="header-section-number">2.4</span> Inverse cumulative distribution functions</a></li>
+  <li><a href="#distributions-in-arviz" id="toc-distributions-in-arviz" class="nav-link" data-scroll-target="#distributions-in-arviz"><span class="header-section-number">2.5</span> Distributions in ArviZ</a>
+  <ul class="collapse">
+  <li><a href="#histograms" id="toc-histograms" class="nav-link" data-scroll-target="#histograms"><span class="header-section-number">2.5.1</span> Histograms</a></li>
+  <li><a href="#kde" id="toc-kde" class="nav-link" data-scroll-target="#kde"><span class="header-section-number">2.5.2</span> KDE</a></li>
+  <li><a href="#ecdf" id="toc-ecdf" class="nav-link" data-scroll-target="#ecdf"><span class="header-section-number">2.5.3</span> ECDF</a></li>
+  <li><a href="#quantile-dot-plots" id="toc-quantile-dot-plots" class="nav-link" data-scroll-target="#quantile-dot-plots"><span class="header-section-number">2.5.4</span> Quantile dot plots</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Distributions</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Random variables, distributions, and uncertainty</span></h1>
 </div>
 
 
@@ -243,63 +261,304 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>A discrete distribution represents variables which can only take a countable number of values. Some examples of discrete random variables are the number of coins in your pocket, spots on a giraffe, red cars in a city and people with flu. As we generally use integers to represent discrete variables, when ArviZ is asked to plot integer data it will use <a href="https://en.wikipedia.org/wiki/Histogram">histograms</a> to represent them. ArviZ always tries to associate the discrete data to individuals bins. For example in the following plot each <em>bar</em> is associated with an integer in the interval [0, 9].</p>
+<section id="random-variables" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="random-variables"><span class="header-section-number">2.1</span> Random variables</h2>
+<p>From a Bayesian perspective probabilities represent a degree of (un)certainty about the occurrence of an event. It is a measure of the likelihood that a particular hypothesis or event is true, given the available data and prior knowledge. We assign the value 0 to something impossible and 1 to something certain. When we are unsure we assign a value in between. For example, we could say that the probability of rain tomorrow is 0.32. This means that we are 32% certain that it will rain tomorrow.</p>
+<p>In practice we usually do not care about individual probabilities, instead we work with probability distributions. A probability distribution describes the probabilities associated with each possible outcome of an experiment. In statistics, the term “experiment” is used in a very wide sense. It could mean a well-planned experiment in a laboratory, but it could also mean the result of a poll, the observation of the weather tomorrow, or the number of people that will visit a website next week.</p>
+<p>Let’s consider the experiment of observing the weather tomorrow. The possible outcomes of this experiment include the following outcomes:</p>
+<ul>
+<li><code>Rainy</code></li>
+<li><code>Sunny</code></li>
+<li><code>Cloudy</code></li>
+</ul>
+<p>Notice that we are omitting the possibility of snow, or hail. In other words, we are assigning 0 probability to those outcomes. It is usually the case that we do not ponder all the possible outcomes of an experiment, either because we deliberately assume them to be irrelevant, because we don’t know about them, or because is too complex/expensive/time-consuming/etc to take them all into account.</p>
+<p>Another important thing to notice, from this example, is that these outcomes are words (or strings if you want). To work with them we need to assign a number to each outcome. For example, we could assign the numbers 0 to <code>Rainy</code>, 1 to <code>Sunny</code>, and 2 to <code>Cloudy</code>. This mapping from the outcomes to the numbers is called a random variable. This is a funny and potentially misleading name as its mathematical definition is not random (the mapping is deterministic) nor a variable (it is a function). The mapping is arbitrary, -1 to <code>Rainy</code>, 0 to <code>Sunny</code>, and 4 to <code>Cloudy</code> is also valid. But once we pick one mapping, we keep using it for the rest of the experiment or analysis. One common source of confusion is understanding where the randomness comes from if the mapping is deterministic. The randomness comes from the uncertainty about the outcome of the experiment, i.e.&nbsp;the weather tomorrow. We are not sure if it will be rainy tomorrow until tomorrow comes.</p>
+<p>Random variables can be classified into two main types: discrete and continuous.</p>
+<ul>
+<li><p>Discrete Random Variables: They can take on a countable number of distinct values. We already saw an example of a discrete random variable, the <code>weather tomorrow</code>. It can take on three values: <code>Rainy</code>, <code>Sunny</code>, and <code>Cloudy</code>. No intermediate values are allowed in our experiment, even when it is true that it can be partially sunny and still rain. And it has to be at least partially cloudy to rain. But we are not considering those possibilities.</p></li>
+<li><p>Continuous Random Variables: They can take on any value within a certain range. For example, the temperature tomorrow is a continuous random variable. If we use a Celcius scale, then it can take on any value between -273.15 Celsius to <span class="math inline">\(+ \infty\)</span>. Of course, in practice, the expected temperature is restricted to a much narrower range. The lowest recorded temperature on Earth is −89.2 °C and the highest is 56.7 °C, and that range will be even narrower if we consider a particular region of our planet.</p></li>
+</ul>
+</section>
+<section id="probability-mass-and-density-functions" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="probability-mass-and-density-functions"><span class="header-section-number">2.2</span> Probability mass and density functions</h2>
+<p>The probability distribution of a discrete random variable is often described using a <code>probability mass function</code> (PMF), which gives the probability of each possible outcome. For instance, the following plot shows the probability mass function of a <code>categorical</code> distribution with three possible outcomes, like <code>Rainy</code>, <code>Sunny</code>, and <code>Cloudy</code>.</p>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">3</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>az.plot_dist(d_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>pz.Categorical([<span class="fl">0.15</span>, <span class="fl">0.6</span>, <span class="fl">0.25</span>]).plot_pdf()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="distributions_files/figure-html/cell-3-output-1.png" width="579" height="411"></p>
+<div id="fig-categorical_pmf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-categorical_pmf-output-1.png" width="843" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.1: PMF of a Categorical disribution</figcaption>
+</figure>
 </div>
 </div>
-<p>When the discrete values takes higher values, like in the following example, bins are still associated with integers but not every integer will be associated with a single different bins. Instead many integers will be binned together.</p>
+</div>
+<p>Usually, there is more than one probability distribution that we can use to represent the same set of probabilities, for instance, we could use a <code>binomial</code> distribution.</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>az.plot_dist(d_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>pz.Binomial(<span class="dv">2</span>, <span class="fl">0.6</span>).plot_pdf()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="distributions_files/figure-html/cell-4-output-1.png" width="587" height="411"></p>
+<div id="fig-binomial_pmf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-binomial_pmf-output-1.png" width="774" height="413" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.2: PMF of a Binomial distribution</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The probability distribution of a continuous random variable is described using a <code>probability density function</code> (PDF), which specifies the likelihood of the random variable falling within a particular interval. For instance, we could use a <code>normal</code> distribution to describe the temperature tomorrow.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>pz.Normal(<span class="dv">30</span>, <span class="dv">4</span>).plot_pdf()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-normal_pdf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-normal_pdf-output-1.png" width="798" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.3: PDF of a normal distribution</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>or maybe a <code>skew normal</code> like this if we expect higher temperatures like during summer.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>pz.SkewNormal(<span class="dv">38</span>, <span class="dv">5</span>, <span class="op">-</span><span class="dv">2</span>).plot_pdf()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-skewnormal_pdf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-skewnormal_pdf-output-1.png" width="916" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.4: PDF of a skew-normal distribution</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice that we use <code>plot_pdf()</code> instead of <code>plot_pmf()</code>, this is because PreliZ uses the same method to plot both discrete and continuous distributions. In the case of discrete distributions, it will plot the probability mass function (PMF), and in the case of continuous distributions, it will plot the probability density function (PDF).</p>
+</div>
+</div>
+<p>One issue when interpreting a PDF is that the y-axis is a density, not a probability. To get probability from a PDF we need to integrate the density over a given interval. This is something straightforward to do with a computer. But not that easy to do “visually”, human eyes/brains are not very good at that task. One way to alleviate this issue is to accompany a PDF with a point interval, like in the following plot.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>pz.SkewNormal(<span class="dv">38</span>, <span class="dv">5</span>, <span class="op">-</span><span class="dv">2</span>).plot_pdf(pointinterval<span class="op">=</span><span class="va">True</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-skewnormal_pdf_pointinterval" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-skewnormal_pdf_pointinterval-output-1.png" width="916" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.5: PDF of a SkewNormal distribution with a pointinterval</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The point interval shows the quantiles of the distribution. Quantiles divide a dataset into equal probability intervals. For example, deciles divide a dataset into 10 equal-probability intervals, and quartiles divide a dataset into 4 equal-probability intervals. The most common quantile is the median (or 50th percentile), which divides a dataset into two equal-probability intervals where half of the data falls below the median and half of the data falls above the median.</p>
+<p>The point interval in <a href="#fig-skewnormal_pdf_pointinterval">Figure&nbsp;<span>2.5</span></a> shows the 5th, 25th, 50th, 75th, and 95th percentiles. The point is the median. The tick line is the interquartile range (the central 50% of the distribution) and the thin line is the central 90% of the distribution.</p>
+</section>
+<section id="cumulative-distribution-functions" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="cumulative-distribution-functions"><span class="header-section-number">2.3</span> Cumulative distribution functions</h2>
+<p>In the previous section, we saw that we can use PMFs and PDFs to represent the probability distribution of a random variable. But there are other ways to represent a distribution. For example, we could use the <code>cumulative distribution function</code> (CDF).</p>
+<p>The CDF is defined as the probability that the random variable takes a value less than or equal to <span class="math inline">\(x\)</span>. The CDF is defined for both discrete and continuous random variables. <a href="#fig-categorical_cdf">Figure&nbsp;<span>2.6</span></a> shows the CDF of a <code>categorical</code> distribution with three possible outcomes. Compare it with <a href="#fig-categorical_pmf">Figure&nbsp;<span>2.1</span></a></p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>pz.Categorical([<span class="fl">0.15</span>, <span class="fl">0.6</span>, <span class="fl">0.25</span>]).plot_cdf()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-categorical_cdf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-categorical_cdf-output-1.png" width="843" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.6: CDF of a Categorical distribution</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-normal_cdf">Figure&nbsp;<span>2.7</span></a> shows the CDF of a <code>normal</code> distribution (compare it with <a href="#fig-normal_pdf">Figure&nbsp;<span>2.3</span></a>).</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>pz.Normal(<span class="dv">30</span>, <span class="dv">4</span>).plot_cdf()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-normal_cdf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-normal_cdf-output-1.png" width="829" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.7: CDF of a normal distribution</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The CDF is usually easier to read than the PDF, as we already saw y-axis for a PDF is a density that has no intrinsic meaning, and to get probability from a PDF we need to evaluate areas. Instead for a CDF the y-axis is a probability. For the PMF/PDF it is easier to get the mode (the highest value for the point/curve), and for the CDF it is easier to get the median (the value of <span class="math inline">\(x\)</span> for which <span class="math inline">\(y=0.5\)</span>), or other quantiles. From the CDF it is also easier to quickly get quantities like <em>the probability of getting a temperature equal or lower than 35 degrees</em>. It is the value of the CDF at 35. From <a href="#fig-normal_cdf">Figure&nbsp;<span>2.7</span></a> we can see that it is roughly 0.9 or 90%, if you want more accuracy you could use a matplotlib/ArviZ style with a grid (like <code>arviz-darkgrid</code>) or use the <code>cdf()</code> function.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>pz.Normal(<span class="dv">30</span>, <span class="dv">4</span>).cdf(<span class="dv">35</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>0.8943502263331446</code></pre>
+</div>
+</div>
+<p>From the CDF we can also easily get the probability of a range of values. For example, the probability of the temperature being between 25 and 35 degrees is the difference between the CDF at 35 and the CDF at 25. From <a href="#fig-normal_cdf">Figure&nbsp;<span>2.7</span></a> we can get that it is roughly 0.9 or 90%. Again even when you can get a good estimate just by looking at the graph you can use the <code>cdf()</code> function to get a more accurate estimate. But the fact that you can get a good estimate by looking at the graph is a good feature.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>np.diff(pz.Normal(<span class="dv">30</span>, <span class="dv">4</span>).cdf([<span class="dv">25</span>, <span class="dv">35</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>array([0.78870045])</code></pre>
+</div>
+</div>
+</section>
+<section id="inverse-cumulative-distribution-functions" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="inverse-cumulative-distribution-functions"><span class="header-section-number">2.4</span> Inverse cumulative distribution functions</h2>
+<p>Sometimes we may want to use the inverse of the CDF. This is known as the <code>quantile function</code> or the <code>percent point function</code> (PPF). The PPF is also defined for both discrete and continuous random variables. For example, <a href="#fig-categorical_ppf">Figure&nbsp;<span>2.8</span></a> shows the PPF of a categorical distribution with three possible outcomes and <a href="#fig-normal_ppf">Figure&nbsp;<span>2.9</span></a> shows the PPF of a <code>normal</code> distribution.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>pz.Categorical([<span class="fl">0.15</span>, <span class="fl">0.6</span>, <span class="fl">0.25</span>]).plot_ppf()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-categorical_ppf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-categorical_ppf-output-1.png" width="831" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.8: PPF of a Categorical distribution</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>pz.Normal(<span class="dv">30</span>, <span class="dv">4</span>).plot_ppf()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-normal_ppf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-normal_ppf-output-1.png" width="825" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.9: PPF of a normal distribution</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="distributions-in-arviz" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="distributions-in-arviz"><span class="header-section-number">2.5</span> Distributions in ArviZ</h2>
+<p>The PMF/PDF, CDF, and PPF are convenient ways to represent distributions for which we know the analytical form. But in practice, we often work with distributions that we don’t know their analytical form. Instead, we have a set of samples from the distribution. A clear example is a posterior distribution, computed using an MCMC method. For those cases, we still want useful visualization that we can use for ourselves or to show others. Some common methods are:</p>
+<ul>
+<li>Histograms</li>
+<li>Kernel density estimation (KDE)</li>
+<li>Empirical cumulative distribution function (ECDF)</li>
+<li>Quantile dot plots</li>
+</ul>
+<p>We will discuss these methods in the next subsections with special emphasis on how they are implemented in ArviZ.</p>
+<section id="histograms" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="histograms"><span class="header-section-number">2.5.1</span> Histograms</h3>
+<p><a href="https://en.wikipedia.org/wiki/Histogram">Histograms</a> are a very simple and effective way to represent a distribution. The basic idea is to divide the range of the data into a set of bins and count how many data points fall into each bin. Then we use as many bars as bins, with the height of the bars being proportional to the counts. The following video shows a step-by-step animation of a histogram being built.</p>
+<p><video src="videos/histogram.mp4" class="img-fluid" controls=""><a href="videos/histogram.mp4">Video</a></video></p>
+<p>Histograms can be used to represent both discrete and continuous random variables. Discrete variables are usually represented using integers. When ArviZ is asked to plot integer data it will use histograms as the default method. Arguably the most important parameter of a histogram is the number of bins. Too few bins and we will miss details, too many and we will plot noise. You can pick the number of bins with a bit of trial and error, especially when you are sure of what you want to show. However, there are many methods to compute the number of bins automatically from the data, like the <a href="https://en.wikipedia.org/wiki/Freedman-Diaconis_rule">Freedman–Diaconis rule</a> or the <a href="https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width">Sturges’ rule</a>. By default, ArviZ computes the number of bins using both rules and then picks the one that gives the largest number of bins. This is the same approach used by <code>np.histogram(., bins="auto)</code> and <code>plt.hist(., bins="auto)</code>. Additionally, when the data is of type integers, ArviZ will preserve that structure and will associate bins to integers, instead of floats. If the number of unique integers is relatively small then, it will associate one bin to each integer. For example, in the following plot each <em>bar</em> is associated with an integer in the interval [0, 9].</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">3</span>).rvs(<span class="dv">500</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>az.plot_dist(d_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-dist_histogram_0" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-dist_histogram_0-output-1.png" width="579" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.10: Histogram from a sample of integers. Each bin corresponds to a single integer.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>When the discrete values take higher values, like in <a href="#fig-dist_histogram_1">Figure&nbsp;<span>2.11</span></a>, bins are still associated with integers but many integers are binned together.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>az.plot_dist(d_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-dist_histogram_1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-dist_histogram_1-output-1.png" width="587" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.11: Histogram from a sample of integers. Bins group together many integers.</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>If you don’t like the default binning criteria of ArviZ, you can change it by passing the <code>bins</code> argument using the <code>hist_kwargs</code>.</p>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>ax <span class="op">=</span> az.plot_dist(d_values, hist_kwargs<span class="op">=</span>{<span class="st">"bins"</span>:<span class="st">"auto"</span>})</span>
-<span id="cb3-3"><a href="#cb3-3"></a>plt.setp(ax.get_xticklabels(), rotation<span class="op">=</span><span class="dv">45</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
+<span id="cb16-2"><a href="#cb16-2"></a>ax <span class="op">=</span> az.plot_dist(d_values, hist_kwargs<span class="op">=</span>{<span class="st">"bins"</span>:<span class="st">"auto"</span>})</span>
+<span id="cb16-3"><a href="#cb16-3"></a>plt.setp(ax.get_xticklabels(), rotation<span class="op">=</span><span class="dv">45</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="distributions_files/figure-html/cell-5-output-1.png" width="579" height="440"></p>
+<div id="fig-dist_histogram_2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-dist_histogram_2-output-1.png" width="579" height="440" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.12: Histogram from a sample of integers, with bins automatically computed by Matplotlib, not ArviZ.</figcaption>
+</figure>
 </div>
 </div>
-<p>A continuous distribution represents variables taking an uncountable number of values. Some examples of continuous random variables are the temperature during summer, the blood pressure of a patience and the time needed to finish a task. By default ArviZ uses kernel density estimation (KDE) to represent continuous distributions.</p>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>c_values <span class="op">=</span> pz.Gamma(<span class="dv">2</span>, <span class="dv">3</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>az.plot_dist(c_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<p><img src="distributions_files/figure-html/cell-6-output-1.png" width="579" height="417"></p>
 </div>
-</div>
-<p>Kernel density estimation (KDE) is a non-parametric way to estimate the probability density function of a random variable.</p>
-<p>Conceptually you place a <em>kernel function</em> like a gaussian <em>on top</em> of a data-point, then you sum all the gaussians, generally evaluated over a grid and not over the data points. Results are normalized so the total area under the curve is one.</p>
+</section>
+<section id="kde" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="kde"><span class="header-section-number">2.5.2</span> KDE</h3>
+<p><a href="https://en.wikipedia.org/wiki/Kernel_density_estimation">Kernel density estimation</a> (KDE) is a non-parametric way to estimate the probability density function from a sample. Intuitivelly you can think of it as the smooth version of a histogram. Conceptually you place a <em>kernel function</em> like a Gaussian <em>on top</em> of a data point, then you sum all the Gaussians, generally evaluated over a grid and not over the data points. Results are normalized so the total area under the curve is one. The following video shows a step-by-step animation of a KDE being built. You can see a version with border corrections and without them. Border corrections avoid adding a positive density outside the range of the data.</p>
+<p><video src="videos/kde.mp4" class="img-fluid" controls=""><a href="videos/kde.mp4">Video</a></video></p>
 <p>The following block of code shows a very simple example of a KDE.</p>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>_, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
-<span id="cb5-2"><a href="#cb5-2"></a>bw <span class="op">=</span> <span class="fl">0.4</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>np.random.seed(<span class="dv">19</span>)</span>
-<span id="cb5-4"><a href="#cb5-4"></a>datapoints <span class="op">=</span> <span class="dv">7</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>y <span class="op">=</span> np.random.normal(<span class="dv">7</span>, size<span class="op">=</span>datapoints)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>x <span class="op">=</span> np.linspace(y.<span class="bu">min</span>() <span class="op">-</span> bw <span class="op">*</span> <span class="dv">3</span>, y.<span class="bu">max</span>() <span class="op">+</span> bw <span class="op">*</span> <span class="dv">3</span>, <span class="dv">100</span>)</span>
-<span id="cb5-7"><a href="#cb5-7"></a>kernels <span class="op">=</span> np.transpose([pz.Normal(i, bw).pdf(x) <span class="cf">for</span> i <span class="kw">in</span> y])</span>
-<span id="cb5-8"><a href="#cb5-8"></a>kernels <span class="op">*=</span> <span class="dv">1</span><span class="op">/</span>datapoints  <span class="co"># normalize the results</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a>ax.plot(x, kernels, <span class="st">'k--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb5-10"><a href="#cb5-10"></a>ax.plot(y, np.zeros(<span class="bu">len</span>(y)), <span class="st">'C1o'</span>)</span>
-<span id="cb5-11"><a href="#cb5-11"></a>ax.plot(x, kernels.<span class="bu">sum</span>(<span class="dv">1</span>))</span>
-<span id="cb5-12"><a href="#cb5-12"></a>ax.set_xticks([])</span>
-<span id="cb5-13"><a href="#cb5-13"></a>ax.set_yticks([])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>_, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb17-2"><a href="#cb17-2"></a>bandwidth <span class="op">=</span> <span class="fl">0.4</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>np.random.seed(<span class="dv">19</span>)</span>
+<span id="cb17-4"><a href="#cb17-4"></a>datapoints <span class="op">=</span> <span class="dv">7</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>y <span class="op">=</span> np.random.normal(<span class="dv">7</span>, size<span class="op">=</span>datapoints)</span>
+<span id="cb17-6"><a href="#cb17-6"></a>x <span class="op">=</span> np.linspace(y.<span class="bu">min</span>() <span class="op">-</span> bandwidth <span class="op">*</span> <span class="dv">3</span>, y.<span class="bu">max</span>() <span class="op">+</span> bandwidth <span class="op">*</span> <span class="dv">3</span>, <span class="dv">100</span>)</span>
+<span id="cb17-7"><a href="#cb17-7"></a>kernels <span class="op">=</span> np.transpose([pz.Normal(i, bandwidth).pdf(x) <span class="cf">for</span> i <span class="kw">in</span> y])</span>
+<span id="cb17-8"><a href="#cb17-8"></a>kernels <span class="op">*=</span> <span class="dv">1</span><span class="op">/</span>datapoints  <span class="co"># normalize the results</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a>ax.plot(x, kernels, <span class="st">'k--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb17-10"><a href="#cb17-10"></a>ax.plot(y, np.zeros(<span class="bu">len</span>(y)), <span class="st">'C1o'</span>)</span>
+<span id="cb17-11"><a href="#cb17-11"></a>ax.plot(x, kernels.<span class="bu">sum</span>(<span class="dv">1</span>))</span>
+<span id="cb17-12"><a href="#cb17-12"></a>ax.set_xticks([])</span>
+<span id="cb17-13"><a href="#cb17-13"></a>ax.set_yticks([])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="distributions_files/figure-html/cell-7-output-1.png" width="912" height="315"></p>
+<p><img src="distributions_files/figure-html/cell-17-output-1.png" width="912" height="315"></p>
 </div>
 </div>
-<p>Compared to other KDEs in the Python ecosystem, the KDE implemented in ArviZ automatically handles the boundaries of a distribution. Basically, ArviZ will assign a density of zero to any point outside the range of the data. Another nice feature of ArviZ’s KDE is the method it uses to estimate the <em>bandwith</em>. The bandwidth of a kernel density estimator is a parameter that controls its degree of smoothness. ArviZ’s method works well for a wide range of distributions including multimodal ones.</p>
+<p>The most important parameter of a KDE is the <em>bandwidth</em> which controls the degree of smoothness of the resulting curve. It is analogous to the number of bins for the histograms. ArviZ’s default method to compute the bandwidth works well for a wide range of distributions including multimodal ones. Compared to other KDEs in the Python ecosystem, the KDE implemented in ArviZ automatically handles the boundaries of a distribution. ArviZ will assign a density of zero to any point outside the range of the data.</p>
+<p>The following example shows a KDE computed from a sample from a <code>Gamma</code> distribution. Notice that ArviZ computes a KDE instead of a histogram, and notice that there is no density for negative values.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>c_values <span class="op">=</span> pz.Gamma(<span class="dv">2</span>, <span class="dv">3</span>).rvs(<span class="dv">1000</span>)</span>
+<span id="cb18-2"><a href="#cb18-2"></a>az.plot_dist(c_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-dist_kde_0" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-dist_kde_0-output-1.png" width="579" height="417" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.13: KDE from a sample of floats. By default, ArviZ computes a KDE instead of a histogram.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ecdf" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="ecdf"><span class="header-section-number">2.5.3</span> ECDF</h3>
+<p>Both histograms and KDEs are ways to approximate the PMF/PDF of a distribution from a sample. But sometimes we may want to approximate the CDF instead. The <code>empirical cumulative distribution function</code> (ECDF) is a non-parametric way to estimate the CDF. It is a step function that jumps up by 1/N at each observed data point, where N is the total number of data points. The following video shows a step-by-step animation of an ECDF being built.</p>
+<p><video src="videos/ecdf.mp4" class="img-fluid" controls=""><a href="videos/ecdf.mp4">Video</a></video></p>
+<p>The following block of code shows a very simple example of an ECDF.</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>c_values <span class="op">=</span> pz.Poisson(<span class="dv">3</span>).rvs(<span class="dv">500</span>)</span>
+<span id="cb19-2"><a href="#cb19-2"></a>az.plot_ecdf(c_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-dist_ecdf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-dist_ecdf-output-1.png" width="571" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.14: empirical cumulative distribution function</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="quantile-dot-plots" class="level3" data-number="2.5.4">
+<h3 data-number="2.5.4" class="anchored" data-anchor-id="quantile-dot-plots"><span class="header-section-number">2.5.4</span> Quantile dot plots</h3>
+<p>A quantile dot plot displays the distribution of a sample in terms of its quantiles. Reading the median or other quantiles from quantile dot plots is generally easy, we just need to count the number of dots.</p>
+<p>The folowing video shows a step-by-step animation of a quantile dot plot being built.</p>
+<p><video src="videos/dotplot.mp4" class="img-fluid" controls=""><a href="videos/dotplot.mp4">Video</a></video></p>
+<p>From <a href="#fig-dist_qdot">Figure&nbsp;<span>2.15</span></a> we can easily see that 30% of the data is below 2. We do this by noticing that we have a total of 10 dots and 3 of them are below 2.</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>c_values <span class="op">=</span> pz.Poisson(<span class="fl">2.4</span>).rvs(<span class="dv">500</span>)</span>
+<span id="cb20-2"><a href="#cb20-2"></a>az.plot_dot(c_values, nquantiles<span class="op">=</span><span class="dv">10</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-dist_qdot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="distributions_files/figure-html/fig-dist_qdot-output-1.png" width="540" height="411" class="figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.15: Quantile dot plot</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The number of quantiles (<code>nquantiles</code>) is something you will need to choose by yourself, usually, it is a good idea to keep this number relatively small and “round”, as the main feature of a quantile dot plot is that finding probability intervals reduces to counting dots. It is easier to count and compute proportion if you have 10, or 20 dots than if you have 11 or 57. But sometimes a larger number could be a good idea too, for instance, if you or your audience wants to focus on the tails of the distribution a larger number of dots will give you more resolution and you still will be counting only a rather small number dots so it will be easy to compute proportions.</p>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
