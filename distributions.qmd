@@ -1,4 +1,4 @@
-# Distributions
+# Random variables, distributions, and uncertainty
 
 ```{python}
 #| echo : false
@@ -9,16 +9,161 @@ import matplotlib.pyplot as plt
 np.random.seed(19)
 ```
 
-A discrete distribution represents variables which can only take a countable number of values. Some examples of discrete random variables are the number of coins in your pocket, spots on a giraffe, red cars in a city and people with flu. As we generally use integers to represent discrete variables, when ArviZ is asked to plot integer data it will use [histograms](https://en.wikipedia.org/wiki/Histogram) to represent them. ArviZ always tries to associate the discrete data to individuals bins. For example in the following plot each _bar_ is associated with an integer in the interval [0, 9].
+## Random variables
+
+From a Bayesian perspective probabilities represent a degree of (un)certainty about the occurrence of an event. It is a measure of the likelihood that a particular hypothesis or event is true, given the available data and prior knowledge. We assign the value 0 to something impossible and 1 to something certain. When we are unsure we assign a value in between. For example, we could say that the probability of rain tomorrow is 0.32. This means that we are 32% certain that it will rain tomorrow.
+
+In practice we usually do not care about individual probabilities, instead we work with probability distributions. A probability distribution describes the probabilities associated with each possible outcome of an experiment. In statistics, the term "experiment" is used in a very wide sense. It could mean a well-planned experiment in a laboratory, but it could also mean the result of a poll, the observation of the weather tomorrow, or the number of people that will visit a website next week. 
+
+Let's consider the experiment of observing the weather tomorrow. The possible outcomes of this experiment include the following outcomes: 
+
+* `Rainy`
+* `Sunny`
+* `Cloudy`
+
+Notice that we are omitting the possibility of snow, or hail. In other words, we are assigning 0 probability to those outcomes. It is usually the case that we do not ponder all the possible outcomes of an experiment, either because we deliberately assume them to be irrelevant, because we don't know about them, or because is too complex/expensive/time-consuming/etc to take them all into account.
+
+Another important thing to notice, from this example, is that these outcomes are words (or strings if you want). To work with them we need to assign a number to each outcome. For example, we could assign the numbers 0 to `Rainy`, 1 to `Sunny`, and 2 to `Cloudy`. This mapping from the outcomes to the numbers is called a random variable. This is a funny and potentially misleading name as its mathematical definition is not random (the mapping is deterministic) nor a variable (it is a function). The mapping is arbitrary, -1 to `Rainy`, 0 to `Sunny`, and 4 to `Cloudy` is also valid. But once we pick one mapping, we keep using it for the rest of the experiment or analysis. One common source of confusion is understanding where the randomness comes from if the mapping is deterministic. The randomness comes from the uncertainty about the outcome of the experiment, i.e. the weather tomorrow. We are not sure if it will be rainy tomorrow until tomorrow comes.
+
+Random variables can be classified into two main types: discrete and continuous.
+
+* Discrete Random Variables: They can take on a countable number of distinct values. We already saw an example of a discrete random variable, the `weather tomorrow`. It can take on three values: `Rainy`, `Sunny`, and `Cloudy`. No intermediate values are allowed in our experiment, even when it is true that it can be partially sunny and still rain. And it has to be at least partially cloudy to rain. But we are not considering those possibilities.
+
+* Continuous Random Variables: They can take on any value within a certain range. For example, the temperature tomorrow is a continuous random variable. If we use a Celcius scale, then it can take on any value between -273.15 Celsius to $+ \infty$. Of course, in practice, the expected temperature is restricted to a much narrower range. The lowest recorded temperature on Earth is −89.2 °C and the highest is 56.7 °C, and that range will be even narrower if we consider a particular region of our planet.
+
+## Probability mass and density functions
+
+The probability distribution of a discrete random variable is often described using a `probability mass function` (PMF), which gives the probability of each possible outcome. For instance, the following plot shows the probability mass function of a `categorical` distribution with three possible outcomes, like  `Rainy`, `Sunny`, and `Cloudy`.
+
 
 ```{python}
+#| label: fig-categorical_pmf
+#| fig-cap: "PMF of a Categorical disribution"
+pz.Categorical([0.15, 0.6, 0.25]).plot_pdf();
+```
+
+Usually, there is more than one probability distribution that we can use to represent the same set of probabilities, for instance, we could use a `binomial` distribution.
+
+```{python}
+#| label: fig-binomial_pmf
+#| fig-cap: "PMF of a Binomial distribution"
+pz.Binomial(2, 0.6).plot_pdf();
+```
+
+
+The probability distribution of a continuous random variable is described using a `probability density function` (PDF), which specifies the likelihood of the random variable falling within a particular interval. For instance, we could use a `normal` distribution to describe the temperature tomorrow.
+
+```{python}
+#| label: fig-normal_pdf
+#| fig-cap: "PDF of a normal distribution"
+pz.Normal(30, 4).plot_pdf();
+```
+
+or maybe a `skew normal` like this if we expect higher temperatures like during summer.
+
+```{python}
+#| label: fig-skewnormal_pdf
+#| fig-cap: "PDF of a skew-normal distribution"
+pz.SkewNormal(38, 5, -2).plot_pdf();
+```
+
+
+::: {.callout-note}
+Notice that we use `plot_pdf()` instead of `plot_pmf()`, this is because PreliZ uses the same method to plot both discrete and continuous distributions. In the case of discrete distributions, it will plot the probability mass function (PMF), and in the case of continuous distributions, it will plot the probability density function (PDF). 
+:::
+
+One issue when interpreting a PDF is that the y-axis is a density, not a probability. To get probability from a PDF we need to integrate the density over a given interval. This is something straightforward to do with a computer. But not that easy to do "visually", human eyes/brains are not very good at that task. One way to alleviate this issue is to accompany a PDF with a point interval, like in the following plot.
+
+```{python}
+#| label: fig-skewnormal_pdf_pointinterval
+#| fig-cap: "PDF of a SkewNormal distribution with a pointinterval"
+pz.SkewNormal(38, 5, -2).plot_pdf(pointinterval=True);
+```
+
+The point interval shows the quantiles of the distribution. Quantiles divide a dataset into equal probability intervals. For example, deciles divide a dataset into 10 equal-probability intervals, and quartiles divide a dataset into 4 equal-probability intervals. The most common quantile is the median (or 50th percentile), which divides a dataset into two equal-probability intervals where half of the data falls below the median and half of the data falls above the median. 
+
+The point interval in @fig-skewnormal_pdf_pointinterval shows the 5th, 25th, 50th, 75th, and 95th percentiles. The point is the median. The tick line is the interquartile range (the central 50% of the distribution) and the thin line is the central 90% of the distribution. 
+
+## Cumulative distribution functions
+
+In the previous section, we saw that we can use PMFs and PDFs to represent the probability distribution of a random variable. But there are other ways to represent a distribution. For example, we could use the `cumulative distribution function` (CDF).
+
+The CDF is defined as the probability that the random variable takes a value less than or equal to $x$. The CDF is defined for both discrete and continuous random variables. @fig-categorical_cdf shows the CDF of a `categorical` distribution with three possible outcomes. Compare it with @fig-categorical_pmf
+
+```{python}
+#| label: fig-categorical_cdf
+#| fig-cap: "CDF of a Categorical distribution"
+pz.Categorical([0.15, 0.6, 0.25]).plot_cdf();
+```
+
+@fig-normal_cdf shows the CDF of a `normal` distribution (compare it with @fig-normal_pdf).
+
+```{python}
+#| label: fig-normal_cdf
+#| fig-cap: "CDF of a normal distribution"
+pz.Normal(30, 4).plot_cdf();
+```
+
+The CDF is usually easier to read than the PDF, as we already saw y-axis for a PDF is a density that has no intrinsic meaning, and to get probability from a PDF we need to evaluate areas. Instead for a CDF the y-axis is a probability. For the PMF/PDF it is easier to get the mode (the highest value for the point/curve), and for the CDF it is easier to get the median (the value of $x$ for which $y=0.5$), or other quantiles. From the CDF it is also easier to quickly get quantities like *the probability of getting a temperature equal or lower than 35 degrees*. It is the value of the CDF at 35. From @fig-normal_cdf we can see that it is roughly 0.9 or 90%, if you want more accuracy you could use a matplotlib/ArviZ style with a grid (like `arviz-darkgrid`) or use the `cdf()` function.
+
+```{python}
+pz.Normal(30, 4).cdf(35)
+```
+
+From the CDF we can also easily get the probability of a range of values. For example, the probability of the temperature being between 25 and 35 degrees is the difference between the CDF at 35 and the CDF at 25. From @fig-normal_cdf we can get that it is roughly 0.9 or 90%.  Again even when you can get a good estimate just by looking at the graph you can use the `cdf()` function to get a more accurate estimate. But the fact that you can get a good estimate by looking at the graph is a good feature.
+
+```{python}
+np.diff(pz.Normal(30, 4).cdf([25, 35]))
+```
+
+## Inverse cumulative distribution functions
+
+Sometimes we may want to use the inverse of the CDF. This is known as the `quantile function` or the `percent point function` (PPF). The PPF is also defined for both discrete and continuous random variables. For example, @fig-categorical_ppf shows the PPF of a categorical distribution with three possible outcomes and @fig-normal_ppf shows the PPF of a `normal` distribution.
+
+```{python}
+#| label: fig-categorical_ppf
+#| fig-cap: "PPF of a Categorical distribution"
+pz.Categorical([0.15, 0.6, 0.25]).plot_ppf();
+```
+
+```{python}
+#| label: fig-normal_ppf
+#| fig-cap: "PPF of a normal distribution"
+pz.Normal(30, 4).plot_ppf();
+```
+
+
+## Distributions in ArviZ
+
+The PMF/PDF, CDF, and PPF are convenient ways to represent distributions for which we know the analytical form. But in practice, we often work with distributions that we don't know their analytical form. Instead, we have a set of samples from the distribution. A clear example is a posterior distribution, computed using an MCMC method. For those cases, we still want useful visualization that we can use for ourselves or to show others. Some common methods are: 
+
+* Histograms
+* Kernel density estimation (KDE)
+* Empirical cumulative distribution function (ECDF)
+* Quantile dot plots
+
+We will discuss these methods in the next subsections with special emphasis on how they are implemented in ArviZ.
+
+### Histograms
+
+[Histograms](https://en.wikipedia.org/wiki/Histogram) are a very simple and effective way to represent a distribution. The basic idea is to divide the range of the data into a set of bins and count how many data points fall into each bin. Then we use as many bars as bins, with the height of the bars being proportional to the counts. The following video shows a step-by-step animation of a histogram being built.
+
+![](videos/histogram.mp4)
+
+Histograms can be used to represent both discrete and continuous random variables. Discrete variables are usually represented using integers. When ArviZ is asked to plot integer data it will use histograms as the default method. Arguably the most important parameter of a histogram is the number of bins. Too few bins and we will miss details, too many and we will plot noise. You can pick the number of bins with a bit of trial and error, especially when you are sure of what you want to show. However, there are many methods to compute the number of bins automatically from the data, like the  [Freedman–Diaconis rule](https://en.wikipedia.org/wiki/Freedman-Diaconis_rule) or the [Sturges' rule](https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width). By default, ArviZ computes the number of bins using both rules and then picks the one that gives the largest number of bins. This is the same approach used by `np.histogram(., bins="auto)` and `plt.hist(., bins="auto)`. Additionally, when the data is of type integers, ArviZ will preserve that structure and will associate bins to integers, instead of floats. If the number of unique integers is relatively small then, it will associate one bin to each integer. For example, in the following plot each _bar_ is associated with an integer in the interval [0, 9].
+
+```{python}
+#| label: fig-dist_histogram_0
+#| fig-cap: "Histogram from a sample of integers. Each bin corresponds to a single integer."
 d_values = pz.Poisson(3).rvs(500)
 az.plot_dist(d_values);
 ```
 
-When the discrete values takes higher values, like in the following example, bins are still associated with integers but not every integer will be associated with a single different bins. Instead many integers will be binned together.
+When the discrete values take higher values, like in @fig-dist_histogram_1, bins are still associated with integers but many integers are binned together.
 
 ```{python}
+#| label: fig-dist_histogram_1
+#| fig-cap: "Histogram from a sample of integers. Bins group together many integers."
 d_values = pz.Poisson(100).rvs(500)
 az.plot_dist(d_values);
 ```
@@ -26,32 +171,29 @@ az.plot_dist(d_values);
 If you don't like the default binning criteria of ArviZ, you can change it by passing the `bins` argument using the `hist_kwargs`.
 
 ```{python}
+#| label: fig-dist_histogram_2
+#| fig-cap: "Histogram from a sample of integers, with bins automatically computed by Matplotlib, not ArviZ."
 d_values = pz.Poisson(100).rvs(500)
 ax = az.plot_dist(d_values, hist_kwargs={"bins":"auto"})
 plt.setp(ax.get_xticklabels(), rotation=45);
 ```
 
-A continuous distribution represents variables taking an uncountable number of values. Some examples of continuous random variables are the temperature during summer, the blood pressure of a patience and the time needed to finish a task. By default ArviZ uses kernel density estimation (KDE) to represent continuous distributions.
+### KDE
 
-```{python}
-c_values = pz.Gamma(2, 3).rvs(500)
-az.plot_dist(c_values);
-```
+[Kernel density estimation](https://en.wikipedia.org/wiki/Kernel_density_estimation) (KDE) is a non-parametric way to estimate the probability density function from a sample. Intuitivelly you can think of it as the smooth version of a histogram. Conceptually you place a _kernel function_ like a Gaussian _on top_ of a data point, then you sum all the Gaussians, generally evaluated over a grid and not over the data points. Results are normalized so the total area under the curve is one. The following video shows a step-by-step animation of a KDE being built. You can see a version with border corrections and without them. Border corrections avoid adding a positive density outside the range of the data.
 
-Kernel density estimation (KDE) is a non-parametric way to estimate the probability density function of a random variable.
-
-Conceptually you place a _kernel function_ like a gaussian _on top_ of a data-point, then you sum all the gaussians, generally evaluated over a grid and not over the data points. Results are normalized so the total area under the curve is one. 
+![](videos/kde.mp4)
 
 The following block of code shows a very simple example of a KDE.
 
 ```{python}
 _, ax = plt.subplots(figsize=(12, 4))
-bw = 0.4
+bandwidth = 0.4
 np.random.seed(19)
 datapoints = 7
 y = np.random.normal(7, size=datapoints)
-x = np.linspace(y.min() - bw * 3, y.max() + bw * 3, 100)
-kernels = np.transpose([pz.Normal(i, bw).pdf(x) for i in y])
+x = np.linspace(y.min() - bandwidth * 3, y.max() + bandwidth * 3, 100)
+kernels = np.transpose([pz.Normal(i, bandwidth).pdf(x) for i in y])
 kernels *= 1/datapoints  # normalize the results
 ax.plot(x, kernels, 'k--', alpha=0.5)
 ax.plot(y, np.zeros(len(y)), 'C1o')
@@ -60,4 +202,50 @@ ax.set_xticks([])
 ax.set_yticks([]);
 ```
 
-Compared to other KDEs in the Python ecosystem, the KDE implemented in ArviZ automatically handles the boundaries of a distribution. Basically, ArviZ will assign a density of zero to any point outside the range of the data. Another nice feature of ArviZ's KDE is the method it uses to estimate the _bandwith_.  The bandwidth of a kernel density estimator is a parameter that controls its degree of smoothness.  ArviZ's method works  well for a wide range of distributions including multimodal ones.
+The most important parameter of a KDE is the _bandwidth_ which controls the degree of smoothness of the resulting curve. It is analogous to the number of bins for the histograms. ArviZ's default method to compute the bandwidth works well for a wide range of distributions including multimodal ones. Compared to other KDEs in the Python ecosystem, the KDE implemented in ArviZ automatically handles the boundaries of a distribution. ArviZ will assign a density of zero to any point outside the range of the data. 
+
+The following example shows a KDE computed from a sample from a `Gamma` distribution. Notice that ArviZ computes a KDE instead of a histogram, and notice that there is no density for negative values.
+
+```{python}
+#| label: fig-dist_KDE_0
+#| fig-cap: "KDE from a sample of floats. By default, ArviZ computes a KDE instead of a histogram."
+c_values = pz.Gamma(2, 3).rvs(1000)
+az.plot_dist(c_values);
+```
+
+### ECDF
+
+Both histograms and KDEs are ways to approximate the PMF/PDF of a distribution from a sample. But sometimes we may want to approximate the CDF instead. The `empirical cumulative distribution function` (ECDF) is a non-parametric way to estimate the CDF. It is a step function that jumps up by 1/N at each observed data point, where N is the total number of data points. The following video shows a step-by-step animation of an ECDF being built.
+
+![](videos/ecdf.mp4)
+
+
+The following block of code shows a very simple example of an ECDF.
+
+```{python}
+#| label: fig-dist_ecdf
+#| fig-cap: "empirical cumulative distribution function"
+c_values = pz.Poisson(3).rvs(500)
+az.plot_ecdf(c_values);
+```
+
+### Quantile dot plots
+
+A quantile dot plot displays the distribution of a sample in terms of its quantiles. Reading the median or other quantiles from quantile dot plots is generally easy, we just need to count the number of dots. 
+
+The folowing video shows a step-by-step animation of a quantile dot plot being built.
+
+![](videos/dotplot.mp4)
+
+
+From @fig-dist_qdot we can easily see that 30% of the data is below 2. We do this by noticing that we have a total of 10 dots and 3 of them are below 2.
+
+```{python}
+#| label: fig-dist_qdot
+#| fig-cap: "Quantile dot plot"
+c_values = pz.Poisson(2.4).rvs(500)
+az.plot_dot(c_values, nquantiles=10);
+```
+
+
+The number of quantiles (`nquantiles`) is something you will need to choose by yourself, usually, it is a good idea to keep this number relatively small and "round", as the main feature of a quantile dot plot is that finding probability intervals reduces to counting dots. It is easier to count and compute proportion if you have 10, or 20 dots than if you have 11 or 57. But sometimes a larger number could be a good idea too, for instance, if you or your audience wants to focus on the tails of the distribution a larger number of dots will give you more resolution and you still will be counting only a rather small number dots so it will be easy to compute proportions.
