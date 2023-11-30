@@ -6,6 +6,7 @@ import arviz as az
 import numpy as np
 import preliz as pz
 import matplotlib.pyplot as plt
+az.style.use("arviz-doc")
 ```
 Plots occupy a central place in modern statistics, both in exploratory data analysis and inferential statistics.
 
