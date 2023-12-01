@@ -7,6 +7,7 @@ import numpy as np
 import preliz as pz
 import matplotlib.pyplot as plt
 np.random.seed(19)
+az.style.use("arviz-doc")
 ```
 
 ## Random variables
