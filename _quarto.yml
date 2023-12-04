@@ -11,6 +11,7 @@ book:
   chapters:
     - index.qmd
     - elements_of_visualization.qmd
+    - InferenceData.qmd
     - distributions.qmd
     - MCMC_diagnostics.qmd
     - Model_criticism.qmd
