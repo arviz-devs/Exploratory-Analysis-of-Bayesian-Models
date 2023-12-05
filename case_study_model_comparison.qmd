@@ -1,0 +1,238 @@
+# Model Comparison (case study)
+```{python}
+#| echo : false
+import warnings
+
+import arviz as az
+import numpy as np
+import pandas as pd
+import pymc as pm
+import pytensor.tensor as pt
+import xarray as xr
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+az.rcParams["stats.ic_pointwise"] = True
+az.style.use("arviz-doc")
+```
+
+## Information criteria for hierarchical and multi-likelihood models
+
+There are many situations where one model can be used for several prediction tasks at the same time. Hierarchical models or models with multiple observations are examples of such cases. With two observations for example, the same model can be used to predict only the first observation, only the second or both observations at the same time.
+
+Before estimating the predictive accuracy, there are two important questions to answer: what is the predictive task we are interested in and, whether or not the exchangeability criteria is met. This section will show several alternative ways to define the predictive task using the same model.
+
+
+## The data
+
+We are going to analyze data from the [2018-2019 season](https://en.wikipedia.org/wiki/2018%E2%80%9319_Primera_Divisi%C3%B3n_(women)) of Spain's highest women's football league. We will start by loading the already cleaned up data. It is a dataframe summarizing all the matches of the season. Each row represents a match. You can see the head of the dataframe below.
+
+```{python}
+df = pd.read_csv("data/18-19_df.csv")
+df.head()
+```
+
+## Base model
+
+The model used is taken from [this blog post](http://danielweitzenfeld.github.io/passtheroc/blog/2014/10/28/bayes-premier-league/) which was added as an [example notebook](https://docs.pymc.io/notebooks/rugby_analytics.html) to PyMC docs. This notebook will only describe the model quite concisely and will not discuss the model implementation in order to focus on information criteria calculation. To read more about the models please refer to the two posts and references therein.
+
+We are trying to model a league in which all teams play against each other twice. We indicate the number of goals scored by the home and the away team in the $g$-th game of the season ($n$ matches) as $y_{g,h}$ and $y_{g,a}$ respectively.
+The model assumes the goals scored by a team follow a Poisson distribution:
+
+$$y_{g,j} | \theta_{g,j} \sim \text{Poiss}(\theta_{g,j})$$
+
+where $j = {h, a}$ representing either home or away team. We will therefore start with a model containing two observation vectors: $\mathbf{y_h} = (y_{1,h}, y_{2,h}, \dots, y_{n,h})$ and $\mathbf{y_a} = (y_{1,a}, \dots, y_{n,a})$. In order to take into account each team's scoring and defensive power and also the advantage of playing home, we will use different formulas for $\theta_{g,h}$ and for $\theta_{g,a}$:
+
+$$
+\begin{align}
+\theta_{g,h} &= \alpha + home + atts_{home\_team} + defs_{away\_team}\\
+\theta_{g,a} &= \alpha + atts_{away\_team} + defs_{home\_team}
+\end{align}
+$$
+
+The expected number of goals score by the home team $\theta_{g,h}$ depends on an intercept, $\alpha$, $home$ to quantify the home advantage, on the attacking power of the home team and on the defensive power of the away team. Similarly, the expected number of goals score by the away team $\theta_{g,a}$ also depends on the intercept but not on the home advantage, and now, consequently, we use the attacking power of the away team and the defensive power of the home team.
+Summing up and including the priors, our base model is the following one:
+
+$$
+\begin{align}
+\alpha &\sim \text{Normal}(0,5) \\
+home &\sim \text{Normal}(0,5) \\
+sd_{att} &\sim \text{HalfStudentT}(3,2.5) \\
+sd_{def} &\sim \text{HalfStudentT}(3,2.5) \\
+atts_* &\sim \text{Normal}(0,sd_{att}) \\
+defs_* &\sim \text{Normal}(0,sd_{def}) \\
+\mathbf{y}_h &\sim \text{Poiss}(\theta_h) \\
+\mathbf{y}_a &\sim \text{Poiss}(\theta_a) 
+\end{align}
+$$
+
+where $\theta_j$ has been defined above, $atts = atts_* - \text{mean}(atts_*)$ and $defs$ is defined like $atts$.
+
+### Data preparation
+
+```{python}
+df = pd.read_csv("data/18-19_df.csv")
+home_team_idxs, team_names = pd.factorize(df.home_team, sort=True)
+away_team_idxs, _ = pd.factorize(df.away_team, sort=True)
+num_teams = len(team_names)
+df
+```
+
+### Model implementation
+
+```{python}
+coords = {"team": team_names, "match": np.arange(len(df))}
+with pm.Model(coords=coords) as m_base:
+    # constant data
+    home_team = pm.Data("home_team", home_team_idxs, dims="match")
+    away_team = pm.Data("away_team", away_team_idxs, dims="match")
+    
+    # global model parameters
+    home = pm.Normal('home', mu=0, sigma=5)
+    sd_att = pm.HalfStudentT('sd_att', nu=3, sigma=2.5)
+    sd_def = pm.HalfStudentT('sd_def', nu=3, sigma=2.5)
+    intercept = pm.Normal('intercept', mu=0, sigma=5)
+
+    # team-specific model parameters
+    atts_star = pm.Normal("atts_star", mu=0, sigma=sd_att, dims="team")
+    defs_star = pm.Normal("defs_star", mu=0, sigma=sd_def, dims="team")
+
+    atts = atts_star - pt.mean(atts_star)
+    defs = defs_star - pt.mean(defs_star)
+    home_theta = pt.exp(intercept + home + atts[home_team] + defs[away_team])
+    away_theta = pt.exp(intercept + atts[away_team] + defs[home_team])
+
+    # likelihood of observed data
+    home_goals = pm.Poisson('home_goals', mu=home_theta, observed=df.home_goals, dims="match")
+    away_goals = pm.Poisson('away_goals', mu=away_theta, observed=df.away_goals, dims="match")
+```
+
+### Inference
+
+```{python}
+with m_base:
+    idata = pm.sample(draws=2000,
+                      random_seed=1375,
+                      idata_kwargs={"log_likelihood":True})
+
+# define helpers to make code less verbose
+log_lik = idata.log_likelihood
+const = idata.constant_data
+idata
+```
+
+
+### Information criterion calculation
+
+Due to the presence of the two likelihoods in our model, we cannot call `az.loo` or `az.waic` straight away because the predictive task to evaluate is ambiguous. The calculation of information criteria requires pointwise likelihood values, $p(y_i|\theta)$ with $y_i$ indicating observation $i$-th and $\theta$ representing all the parameters in the model. We need to define $y_i$, what does _one observation_ represent in our model.
+
+As we were introducing above, this model alone can tackle several predictive tasks. These predictive tasks can be identified by the definition of _one observation_ which at the same time defines how are pointwise likelihood values to be calculated. Here are some examples:
+
+* We could be a group of students supporting different teams with budget to travel only to one away match of our respective teams. We may want to travel to the match where our team will score the most goals (while being the away team and also independently of the winner of the match). We will therefore assess the predictive accuracy of our model using only $\mathbf{y}_a$.
+* We could also be football fans without any clear allegiance who love an intense match between two teams of similar strength. Based on previous experience, we may consider matches that end up 3-3 or 4-4 the ones that better fit our football taste. Now we need to assess the predictive accuracy using the result of the whole match.
+* Even another alternative would be wanting to be present at the match where a single team scores the most goals. In this situation, we would have to put both home and away goals in the same _bag_ and assess the predictive accuracy on the ability to predict values from this _bag_, we may call the observations in this hypothetical bag "number of goals scored per match and per team".
+
+There are even more examples of predictive tasks where this particular model can be of use. However, it is important to keep in mind that this model predicts the number of goals scored. Its results can be used to estimate probabilities of victory and other derived quantities, but calculating the likelihood of these derived quantities may not be straighforward. And as you can see above, there isn't _one_ unique predictive task: it all depends on the specific question you're interested in. As often in statistics, the answer to these questions lies _outside_ the model, _you_ must tell the model what to do, not the other way around.
+
+Even though we know that the predictive task is ambiguous, we will start trying to calculate `az.loo` with `idata_base` and then work on the examples above and a couple more to show how would this kind of tasks be performed with ArviZ. But before that, let's see what ArviZ says when you naively ask it for the LOO of a multi-likelihood model:
+
+```{python}
+# This will raise an error
+#az.loo(idata)
+```
+
+As expected, ArviZ has no way of knowing what predictive task we have in mind so it raises an error. 
+
+#### Predicting the goals scored by the away team
+In this particular case, we are interested in predicting the goals scored by the away team. We will still use the goals scored by the home team, but won't take them into account when assessing the predictive accuracy. Below there is an illustration of how would cross validation be performed to assess the predictive accuracy in this particular case:
+
+![](img/cv_away.png)
+This can also be seen from a mathematical point of view. We can write the pointwise log likelihood in the following way so it defines the predictive task at hand:
+
+$$ p(y_i|\theta) = p(y_{i,h}|\theta_{i,h}) = \text{Poiss}(y_{i,h}; \theta_{i,h}) $$
+
+with $i$ being the match indicator ($g$) in this case. These are precisely the values stored in the `home_goals` of the `log_likelihood` group of `idata_base`. 
+
+We can tell ArviZ to use these values using the argument `var_name`.
+
+```{python}
+az.loo(idata, var_name="home_goals")
+```
+
+#### Predicting the outcome of a match
+Another option is being interested in the outcome of the matches. In our current model, the outcome of a match is not who wins or the aggregate of scored goals by both teams, the outcome is the goals scored by the home team _and_ by the away team, both quantities at the same time. Below there is an illustration on how would cross validation be used to assess the predictive accuracy in this situation:
+
+![](img/cv_match.png)
+
+The _one observation_ in this situation is therefore a vector with two components: $y_i = (y_{i,h}, y_{i,a})$. Like above, we also have $n$ observations. The pointwise likelihood is therefore a product:
+
+$$ 
+p(y_i|\theta) = p(y_{i,h}|\theta_{i,h})p(y_{i,a}|\theta_{i,a}) = 
+\text{Poiss}(y_{i,h}; \theta_{i,h})\text{Poiss}(y_{i,a}; \theta_{i,a})
+$$
+
+with $i$ still being equal to the match indicator $g$. Therefore, we have $n$ observations like in the previous example, but each observation has two components. 
+
+We can calculate the product as a sum of logarithms and store the result in a new variable inside the `log_likelihood` group.
+
+```{python}
+log_lik["matches"] = log_lik.home_goals + log_lik.away_goals
+az.loo(idata, var_name="matches")
+```
+
+#### Predicting the goals scored per match and per team
+Another example described above is being interested in the scored goals per match and per team. In this situation, our observations are a scalar once again. 
+
+![](img/cv_any_goals.png)
+
+The expression of the likelihood is basically the same as the one in the first example (both cases are scalars), but the difference is in the index, but that does not make it less significant:
+
+$$ 
+p(y_i|\theta) = p(y_{i}|\theta_{i}) = 
+\text{Poiss}(y_{i}; \theta_{i})
+$$
+
+with $i$ not being equal to the match indicator $g$ anymore. Now, we will consider $i$ as an index iterating over the values in 
+
+$$\big\{(1,h), (2,h), \dots, (n-1,h), (n,h), (1,a), (2,a) \dots (n-1,a), (n,a)\big\}$$
+
+Therefore, unlike in previous cases, we have $2n$ observations. 
+
+We can obtain the pointwise log likelihood corresponding to this case by concatenating the pointwise log likelihoods of `home_goals` and `away_goals`. Then, like in the previous case, store the result in a new variable inside the `log_likelihood` group.
+
+```{python}
+log_lik["goals"] = xr.concat((log_lik.home_goals, log_lik.away_goals), "match").rename({"match": "goal"})
+az.loo(idata, var_name="goals")
+```
+
+#### Predicting team level performance
+
+The last example covered here is estimating the predictive accuracy at group level. This can be useful to assess the accuracy of predicting the whole season of a new team. In addition, this can also be used to evaluate the hierarchical part of the model. 
+
+Although theoretically possible, importance sampling tends to fail at the group level due to all the observations being too informative. See [this post](https://avehtari.github.io/modelselection/rats_kcv.html#53_grouped_k-fold_for_leave-one-group-out) for more details. 
+
+In this situation, we could describe the cross validation as excluding a team. When we exclude a team, we will exclude all the matches played by the team, not only the goals scored by the team but the whole match. Here is the illustration:
+
+![](img/cv_team.png)
+
+In the first column, we are excluding "Levante U.D." which in the rows shown only appears once. In the second one, we are excluding "Athletic Club" which appears two times. This goes on following the order of appearance in the away team column.
+
+```{python}
+groupby_sum_home = log_lik.groupby(const.home_team).sum().rename({"home_team": "team"})
+groupby_sum_away = log_lik.groupby(const.away_team).sum().rename({"away_team": "team"})
+
+log_lik["teams_match"] = (
+    groupby_sum_home.home_goals + groupby_sum_home.away_goals + 
+    groupby_sum_away.home_goals + groupby_sum_away.away_goals
+)
+az.loo(idata, var_name="teams_match")
+```
+
+```{python}
+# this does something different, not sure this approach would make any sense though
+home_goals_team = log_lik.home_goals.groupby(const.home_team).sum().rename({"home_team": "team"})
+away_goals_team = log_lik.away_goals.groupby(const.away_team).sum().rename({"away_team": "team"})
+log_lik["teams"] = home_goals_team + away_goals_team
+az.loo(idata, var_name="teams")
+```
+
+

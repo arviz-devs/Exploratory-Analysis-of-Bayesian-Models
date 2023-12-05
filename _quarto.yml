@@ -16,6 +16,7 @@ book:
     - MCMC_diagnostics.qmd
     - Model_criticism.qmd
     - Model_comparison.qmd
+    - case_study_model_comparison.qmd
     - Presenting_results.qmd
     - references.qmd
 
