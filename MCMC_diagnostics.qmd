@@ -130,9 +130,121 @@ az.rhat(sample)
 
 ### Effective Sample Size (ESS)
 
-Since the samples of an MCMC are (auto)correlated, the amount of "useful" information is less than a sample of the same size but iid.
+Since the samples of an MCMC are (auto)correlated, the amount of "useful" information is less than a sample of the same size but iid. @fig-ess_experiment can help us develop intuition. In this figure, we analyze the error incurred while computing an estimate (such as the mean) from samples of different size, considering varying degrees of autocorrelation. The results represent averages from 1000 repetitions.
 
-We can estimate the **effective sample size** (ESS), that is, the size of a sample with the equivalent amount of information but without autocorrelation. This is useful to determine if the sample we have is large enough. It is recommended that the ESS be greater than 100 per chain. That is, for 4 chains we want a minimum of 400 effective samples.
+We can see that the error goes down as the sample size increases and we can also see that the lower the autocorrelation the smaller the sample size to achieve an estimate with a given error. In other words the higher the autocorrelation the larger the number of sample we will need to achieve the a given precision. 
+
+```{python}
+#| label: fig-ess_experiment
+#| code-fold: true
+#| code-summary: "Show the code for more details"
+#| fig-cap: "Average error as a function of the sample size for different autocorrelation values."
+
+
+def generate_autocorrelated_sample(original, rho):
+    """
+    Generates an autocorrelated sample from original.
+
+    Parameters:
+    ----------
+    sample: numpy array, 
+        The original sample
+    rho: float,
+        Desired autocorrelation value
+
+    Returns:
+    --------
+    new_sample: numpy array, autocorrelated sample
+    """
+    n = len(original)
+    y = np.copy(original)
+    mean = np.mean(original)
+    for i in range(1, n):
+        y[i] += rho * (y[i-1]-mean) + np.random.randn()
+
+    return y
+
+mean = 0
+lag = 30
+size = 300
+
+iid_samples = np.random.normal(mean, 1, size=(1000, size))
+
+rhos = np.linspace(0, 0.90, 7)
+N = len(rhos)
+
+fig, ax = plt.subplots()
+
+for k, rho in enumerate(rhos):
+    auto_samples = np.stack([generate_autocorrelated_sample(iid_sample, rho) for iid_sample in iid_samples])
+    auto_error = []
+    for i in range(1, size):
+        auto_error.append(np.mean(((np.mean(auto_samples[:,:i] - mean, 1)**2)**0.5)))
+
+    ax.plot(auto_error[lag:], color=plt.cm.viridis_r(k/N))
+
+sm = plt.cm.ScalarMappable(cmap=plt.cm.viridis_r)
+cbar = plt.colorbar(sm, ax=ax, label='Autocorrelation', ticks=[0, 1])
+cbar.ax.set_yticklabels(['Low', 'High'])
+cbar.ax.tick_params(length=0)
+
+ax.set_yticks([])
+ax.set_ylabel("Error")
+ax.set_xticks([])
+ax.set_xlabel("Sample size")
+
+ax.set_ylim(bottom=0)
+ax.set_xlim(-2)
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+ax.plot(1, 0, ">k", transform=ax.get_yaxis_transform(), clip_on=False)
+ax.plot(-2, 1, "^k", transform=ax.get_xaxis_transform(), clip_on=False)
+```
+
+As for MCMC samples, the sample size can be misleading, we instead estimate the **effective sample size** (ESS), that is, the size of a sample with the equivalent amount of information but without autocorrelation. @fig-ess_vs_ss shows how when the sample size increases the ESS tends to increase too, and more importantly, it shows that the slope is higher for lower autocorrelation values. 
+
+```{python}
+#| label: fig-ess_vs_ss
+#| code-fold: true
+#| code-summary: "Show the code for more details"
+#| fig-cap: "Effective sample size as a function of the sample size for different autocorrelation values."
+ 
+mean = 0
+size = 300
+
+iid_samples = np.random.normal(mean, 1, size=(500, size))
+
+rhos = np.linspace(0, 0.90, 7)
+N = len(rhos)
+
+fig, ax = plt.subplots()
+
+for k, rho in enumerate(rhos):
+    auto_samples = np.stack([generate_autocorrelated_sample(iid_sample, rho) for iid_sample in iid_samples])
+    auto_error = []
+
+    for i in range(50, size, 10):
+        auto_error.append(az.stats.ess(auto_samples[:,:i])/500)
+
+    ax.plot(range(50, size, 10), auto_error, color=plt.cm.viridis_r(k/N))
+
+sm = plt.cm.ScalarMappable(cmap=plt.cm.viridis_r)
+cbar = plt.colorbar(sm, ax=ax, label='Autocorrelation', ticks=[0, 1])
+cbar.ax.set_yticklabels(['Low', 'High'])
+cbar.ax.tick_params(length=0)
+
+ax.set_yticks([])
+ax.set_ylabel("Effective sample size")
+ax.set_xticks([])
+ax.set_xlabel("Sample size")
+
+ax.set_ylim(0)
+ax.set_xlim(48)
+ax.spines["top"].set_visible(False)
+ax.spines["right"].set_visible(False)
+ax.plot(1, 0, ">k", transform=ax.get_yaxis_transform(), clip_on=False)
+ax.plot(48, 1, "^k", transform=ax.get_xaxis_transform(), clip_on=False)
+```
 
 With ArviZ we can get `az.ess(⋅)`, `az.summary(⋅)` and `az.plot_forest(⋅, ess=True)`
 
@@ -140,6 +252,11 @@ With ArviZ we can get `az.ess(⋅)`, `az.summary(⋅)` and `az.plot_forest(⋅, 
 az.ess(sample)
 ```
 
+One way to use the ESS is as a minimum requirement for trustworthy MCMC samples.  It is recommended the ESS to be greater than 100 per chain. That is, for 4 chains we want a minimum of 400 effective samples. 
+
+::: {.callout-note}
+The ESS can also be used as a metric of the efficiency of MCMC sampling methods. For instance, we may want to measure the ESS per sample (ESS/n), a sampler that generates a ESS/n closer to 1 is more efficient than a sampler that generates values closer to 0. Other common metrics are the ESS per second, and the ESS per likelihood evaluation. 
+:::
 
 We see that `az.summary(⋅)` returns two ESS values, `ess_bulk` and `ess_tail`. This is because different regions of the parameter space may have different ESS values since not all regions are sampled with the same efficiency. Intuitively, one may think that when sampling a distribution like a Gaussian it is easier to obtain better sample quality around the mean than around the tails, simply because we have more samples from that region. For some models, it could be the other way around, but the take-home message remains, not all regions are necessarily sampled with the same efficiency
 
