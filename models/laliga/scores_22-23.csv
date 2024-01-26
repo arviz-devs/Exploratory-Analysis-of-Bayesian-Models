@@ -1,0 +1,381 @@
+home_team,away_team,home_goals,away_goals
+Athletic Club,Almería,4,0
+Atlético de Madrid,Almería,2,1
+Osasuna,Almería,3,1
+Cádiz,Almería,1,1
+Elche,Almería,1,1
+FC Barcelona,Almería,2,0
+Getafe,Almería,1,2
+Girona,Almería,6,2
+Rayo Vallecano,Almería,2,0
+Real Betis,Almería,3,1
+Celta de Vigo,Almería,2,2
+Espanyol,Almería,3,3
+Real Madrid,Almería,4,2
+Mallorca,Almería,1,0
+Real Sociedad,Almería,1,0
+Sevilla,Almería,2,1
+Valencia,Almería,2,2
+Valladolid,Almería,1,0
+Villarreal,Almería,2,1
+Almería,Athletic Club,1,2
+Atlético de Madrid,Athletic Club,1,0
+Osasuna,Athletic Club,2,0
+Cádiz,Athletic Club,0,4
+Elche,Athletic Club,1,4
+FC Barcelona,Athletic Club,4,0
+Getafe,Athletic Club,2,2
+Girona,Athletic Club,2,1
+Rayo Vallecano,Athletic Club,0,0
+Real Betis,Athletic Club,0,0
+Celta de Vigo,Athletic Club,1,0
+Espanyol,Athletic Club,1,2
+Real Madrid,Athletic Club,1,1
+Mallorca,Athletic Club,1,1
+Real Sociedad,Athletic Club,3,1
+Sevilla,Athletic Club,1,1
+Valencia,Athletic Club,1,2
+Valladolid,Athletic Club,1,3
+Villarreal,Athletic Club,5,1
+Almería,Atlético de Madrid,1,1
+Athletic Club,Atlético de Madrid,0,1
+Osasuna,Atlético de Madrid,0,1
+Cádiz,Atlético de Madrid,3,2
+Elche,Atlético de Madrid,1,0
+FC Barcelona,Atlético de Madrid,1,0
+Getafe,Atlético de Madrid,0,3
+Girona,Atlético de Madrid,0,1
+Rayo Vallecano,Atlético de Madrid,1,2
+Real Betis,Atlético de Madrid,1,2
+Celta de Vigo,Atlético de Madrid,0,1
+Espanyol,Atlético de Madrid,3,3
+Real Madrid,Atlético de Madrid,1,1
+Mallorca,Atlético de Madrid,1,0
+Real Sociedad,Atlético de Madrid,1,1
+Sevilla,Atlético de Madrid,0,2
+Valencia,Atlético de Madrid,0,1
+Valladolid,Atlético de Madrid,2,5
+Villarreal,Atlético de Madrid,2,2
+Almería,Osasuna,0,1
+Athletic Club,Osasuna,0,0
+Atlético de Madrid,Osasuna,3,0
+Cádiz,Osasuna,0,1
+Elche,Osasuna,1,1
+FC Barcelona,Osasuna,1,0
+Getafe,Osasuna,2,1
+Girona,Osasuna,1,1
+Rayo Vallecano,Osasuna,2,1
+Real Betis,Osasuna,1,0
+Celta de Vigo,Osasuna,1,2
+Espanyol,Osasuna,1,1
+Real Madrid,Osasuna,1,1
+Mallorca,Osasuna,0,0
+Real Sociedad,Osasuna,2,0
+Sevilla,Osasuna,2,3
+Valencia,Osasuna,1,0
+Valladolid,Osasuna,0,0
+Villarreal,Osasuna,2,0
+Almería,Cádiz,1,1
+Athletic Club,Cádiz,4,1
+Atlético de Madrid,Cádiz,5,1
+Osasuna,Cádiz,2,0
+Elche,Cádiz,1,1
+FC Barcelona,Cádiz,2,0
+Getafe,Cádiz,0,0
+Girona,Cádiz,1,1
+Rayo Vallecano,Cádiz,5,1
+Real Betis,Cádiz,0,2
+Celta de Vigo,Cádiz,3,0
+Espanyol,Cádiz,0,0
+Real Madrid,Cádiz,2,1
+Mallorca,Cádiz,1,0
+Real Sociedad,Cádiz,0,0
+Sevilla,Cádiz,1,0
+Valencia,Cádiz,0,1
+Valladolid,Cádiz,0,1
+Villarreal,Cádiz,2,0
+Almería,Elche,2,1
+Athletic Club,Elche,0,1
+Atlético de Madrid,Elche,2,0
+Osasuna,Elche,2,1
+Cádiz,Elche,1,1
+FC Barcelona,Elche,3,0
+Getafe,Elche,1,1
+Girona,Elche,2,0
+Rayo Vallecano,Elche,2,1
+Real Betis,Elche,3,0
+Celta de Vigo,Elche,1,0
+Espanyol,Elche,2,2
+Real Madrid,Elche,4,0
+Mallorca,Elche,0,1
+Real Sociedad,Elche,2,0
+Sevilla,Elche,3,0
+Valencia,Elche,2,2
+Valladolid,Elche,2,1
+Villarreal,Elche,4,0
+Almería,FC Barcelona,1,0
+Athletic Club,FC Barcelona,0,1
+Atlético de Madrid,FC Barcelona,0,1
+Osasuna,FC Barcelona,1,2
+Cádiz,FC Barcelona,0,4
+Elche,FC Barcelona,0,4
+Getafe,FC Barcelona,0,0
+Girona,FC Barcelona,0,1
+Rayo Vallecano,FC Barcelona,2,1
+Real Betis,FC Barcelona,1,2
+Celta de Vigo,FC Barcelona,2,1
+Espanyol,FC Barcelona,2,4
+Real Madrid,FC Barcelona,3,1
+Mallorca,FC Barcelona,0,1
+Real Sociedad,FC Barcelona,1,4
+Sevilla,FC Barcelona,0,3
+Valencia,FC Barcelona,0,1
+Valladolid,FC Barcelona,3,1
+Villarreal,FC Barcelona,0,1
+Almería,Getafe,1,0
+Athletic Club,Getafe,0,0
+Atlético de Madrid,Getafe,1,1
+Osasuna,Getafe,0,2
+Cádiz,Getafe,2,2
+Elche,Getafe,0,1
+FC Barcelona,Getafe,1,0
+Girona,Getafe,3,1
+Rayo Vallecano,Getafe,0,0
+Real Betis,Getafe,0,1
+Celta de Vigo,Getafe,1,1
+Espanyol,Getafe,1,0
+Real Madrid,Getafe,1,0
+Mallorca,Getafe,3,1
+Real Sociedad,Getafe,2,0
+Sevilla,Getafe,2,1
+Valencia,Getafe,5,1
+Valladolid,Getafe,0,0
+Villarreal,Getafe,2,1
+Almería,Girona,3,2
+Athletic Club,Girona,2,3
+Atlético de Madrid,Girona,2,1
+Osasuna,Girona,2,1
+Cádiz,Girona,2,0
+Elche,Girona,1,2
+FC Barcelona,Girona,0,0
+Getafe,Girona,3,2
+Rayo Vallecano,Girona,2,2
+Real Betis,Girona,2,1
+Celta de Vigo,Girona,1,1
+Espanyol,Girona,2,2
+Real Madrid,Girona,1,1
+Mallorca,Girona,1,1
+Real Sociedad,Girona,2,2
+Sevilla,Girona,0,2
+Valencia,Girona,1,0
+Valladolid,Girona,1,0
+Villarreal,Girona,1,0
+Almería,Rayo Vallecano,3,1
+Athletic Club,Rayo Vallecano,3,2
+Atlético de Madrid,Rayo Vallecano,1,1
+Osasuna,Rayo Vallecano,2,1
+Cádiz,Rayo Vallecano,1,0
+Elche,Rayo Vallecano,4,0
+FC Barcelona,Rayo Vallecano,0,0
+Getafe,Rayo Vallecano,1,1
+Girona,Rayo Vallecano,2,2
+Real Betis,Rayo Vallecano,3,1
+Celta de Vigo,Rayo Vallecano,3,0
+Espanyol,Rayo Vallecano,0,2
+Real Madrid,Rayo Vallecano,2,1
+Mallorca,Rayo Vallecano,3,0
+Real Sociedad,Rayo Vallecano,2,1
+Sevilla,Rayo Vallecano,0,1
+Valencia,Rayo Vallecano,1,1
+Valladolid,Rayo Vallecano,0,1
+Villarreal,Rayo Vallecano,0,1
+Almería,Real Betis,2,3
+Athletic Club,Real Betis,0,1
+Atlético de Madrid,Real Betis,1,0
+Osasuna,Real Betis,3,2
+Cádiz,Real Betis,0,0
+Elche,Real Betis,2,3
+FC Barcelona,Real Betis,4,0
+Getafe,Real Betis,0,1
+Girona,Real Betis,1,2
+Rayo Vallecano,Real Betis,1,2
+Celta de Vigo,Real Betis,1,0
+Espanyol,Real Betis,1,0
+Real Madrid,Real Betis,2,1
+Mallorca,Real Betis,1,2
+Real Sociedad,Real Betis,0,2
+Sevilla,Real Betis,0,0
+Valencia,Real Betis,3,0
+Valladolid,Real Betis,0,0
+Villarreal,Real Betis,1,1
+Almería,Celta de Vigo,3,1
+Athletic Club,Celta de Vigo,2,1
+Atlético de Madrid,Celta de Vigo,4,1
+Osasuna,Celta de Vigo,0,0
+Cádiz,Celta de Vigo,1,0
+Elche,Celta de Vigo,0,1
+FC Barcelona,Celta de Vigo,1,0
+Getafe,Celta de Vigo,1,0
+Girona,Celta de Vigo,0,1
+Rayo Vallecano,Celta de Vigo,0,0
+Real Betis,Celta de Vigo,3,4
+Espanyol,Celta de Vigo,1,3
+Real Madrid,Celta de Vigo,2,0
+Mallorca,Celta de Vigo,1,0
+Real Sociedad,Celta de Vigo,1,1
+Sevilla,Celta de Vigo,2,2
+Valencia,Celta de Vigo,3,0
+Valladolid,Celta de Vigo,4,1
+Villarreal,Celta de Vigo,3,1
+Almería,Espanyol,3,1
+Athletic Club,Espanyol,0,1
+Atlético de Madrid,Espanyol,1,1
+Osasuna,Espanyol,1,0
+Cádiz,Espanyol,2,2
+Elche,Espanyol,0,1
+FC Barcelona,Espanyol,1,1
+Getafe,Espanyol,1,2
+Girona,Espanyol,2,1
+Rayo Vallecano,Espanyol,1,2
+Real Betis,Espanyol,3,1
+Celta de Vigo,Espanyol,2,2
+Real Madrid,Espanyol,3,1
+Mallorca,Espanyol,1,1
+Real Sociedad,Espanyol,2,1
+Sevilla,Espanyol,3,2
+Valencia,Espanyol,2,2
+Valladolid,Espanyol,2,1
+Villarreal,Espanyol,4,2
+Almería,Real Madrid,1,2
+Athletic Club,Real Madrid,0,2
+Atlético de Madrid,Real Madrid,1,2
+Osasuna,Real Madrid,0,2
+Cádiz,Real Madrid,0,2
+Elche,Real Madrid,0,3
+FC Barcelona,Real Madrid,2,1
+Getafe,Real Madrid,0,1
+Girona,Real Madrid,4,2
+Rayo Vallecano,Real Madrid,3,2
+Real Betis,Real Madrid,0,0
+Celta de Vigo,Real Madrid,1,4
+Espanyol,Real Madrid,1,3
+Mallorca,Real Madrid,1,0
+Real Sociedad,Real Madrid,2,0
+Sevilla,Real Madrid,1,2
+Valencia,Real Madrid,1,0
+Valladolid,Real Madrid,0,2
+Villarreal,Real Madrid,2,1
+Almería,Mallorca,3,0
+Athletic Club,Mallorca,0,0
+Atlético de Madrid,Mallorca,3,1
+Osasuna,Mallorca,1,0
+Cádiz,Mallorca,2,0
+Elche,Mallorca,1,1
+FC Barcelona,Mallorca,3,0
+Getafe,Mallorca,2,0
+Girona,Mallorca,2,1
+Rayo Vallecano,Mallorca,0,2
+Real Betis,Mallorca,1,0
+Celta de Vigo,Mallorca,0,1
+Espanyol,Mallorca,2,1
+Real Madrid,Mallorca,4,1
+Real Sociedad,Mallorca,1,0
+Sevilla,Mallorca,2,0
+Valencia,Mallorca,1,2
+Valladolid,Mallorca,3,3
+Villarreal,Mallorca,0,2
+Almería,Real Sociedad,0,2
+Athletic Club,Real Sociedad,2,0
+Atlético de Madrid,Real Sociedad,2,1
+Osasuna,Real Sociedad,0,2
+Cádiz,Real Sociedad,0,1
+Elche,Real Sociedad,0,1
+FC Barcelona,Real Sociedad,1,2
+Getafe,Real Sociedad,2,1
+Girona,Real Sociedad,3,5
+Rayo Vallecano,Real Sociedad,0,2
+Real Betis,Real Sociedad,0,0
+Celta de Vigo,Real Sociedad,1,2
+Espanyol,Real Sociedad,2,3
+Real Madrid,Real Sociedad,0,0
+Mallorca,Real Sociedad,1,1
+Sevilla,Real Sociedad,1,2
+Valencia,Real Sociedad,1,0
+Valladolid,Real Sociedad,1,0
+Villarreal,Real Sociedad,2,0
+Almería,Sevilla,2,1
+Athletic Club,Sevilla,0,1
+Atlético de Madrid,Sevilla,6,1
+Osasuna,Sevilla,2,1
+Cádiz,Sevilla,0,2
+Elche,Sevilla,1,1
+FC Barcelona,Sevilla,3,0
+Getafe,Sevilla,2,0
+Girona,Sevilla,2,1
+Rayo Vallecano,Sevilla,1,1
+Real Betis,Sevilla,1,1
+Celta de Vigo,Sevilla,1,1
+Espanyol,Sevilla,2,3
+Real Madrid,Sevilla,3,1
+Mallorca,Sevilla,0,1
+Real Sociedad,Sevilla,2,1
+Valencia,Sevilla,0,2
+Valladolid,Sevilla,0,3
+Villarreal,Sevilla,1,1
+Almería,Valencia,2,1
+Athletic Club,Valencia,1,0
+Atlético de Madrid,Valencia,3,0
+Osasuna,Valencia,1,2
+Cádiz,Valencia,2,1
+Elche,Valencia,0,2
+FC Barcelona,Valencia,1,0
+Getafe,Valencia,1,0
+Girona,Valencia,1,0
+Rayo Vallecano,Valencia,2,1
+Real Betis,Valencia,1,1
+Celta de Vigo,Valencia,1,2
+Espanyol,Valencia,2,2
+Real Madrid,Valencia,2,0
+Mallorca,Valencia,1,0
+Real Sociedad,Valencia,1,1
+Sevilla,Valencia,1,1
+Valladolid,Valencia,1,0
+Villarreal,Valencia,2,1
+Almería,Valladolid,0,0
+Athletic Club,Valladolid,3,0
+Atlético de Madrid,Valladolid,3,0
+Osasuna,Valladolid,2,0
+Cádiz,Valladolid,2,0
+Elche,Valladolid,1,1
+FC Barcelona,Valladolid,4,0
+Getafe,Valladolid,2,3
+Girona,Valladolid,2,1
+Rayo Vallecano,Valladolid,2,1
+Real Betis,Valladolid,2,1
+Celta de Vigo,Valladolid,3,0
+Espanyol,Valladolid,1,0
+Real Madrid,Valladolid,6,0
+Mallorca,Valladolid,1,0
+Real Sociedad,Valladolid,0,1
+Sevilla,Valladolid,1,1
+Valencia,Valladolid,2,1
+Villarreal,Valladolid,1,2
+Almería,Villarreal,0,2
+Athletic Club,Villarreal,1,0
+Atlético de Madrid,Villarreal,0,2
+Osasuna,Villarreal,0,3
+Cádiz,Villarreal,0,0
+Elche,Villarreal,3,1
+FC Barcelona,Villarreal,3,0
+Getafe,Villarreal,0,0
+Girona,Villarreal,1,2
+Rayo Vallecano,Villarreal,2,1
+Real Betis,Villarreal,1,0
+Celta de Vigo,Villarreal,1,1
+Espanyol,Villarreal,0,1
+Real Madrid,Villarreal,2,3
+Mallorca,Villarreal,4,2
+Real Sociedad,Villarreal,1,0
+Sevilla,Villarreal,2,1
+Valencia,Villarreal,1,1
+Valladolid,Villarreal,0,3
