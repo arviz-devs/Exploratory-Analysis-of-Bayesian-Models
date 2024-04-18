@@ -1,1 +1,134 @@
-# Model_criticism
+# Model criticism
+
+```{python}
+#| echo : false
+import arviz as az
+import numpy as np
+import preliz as pz
+import pymc as pm
+import matplotlib.pyplot as plt
+az.style.use("arviz-doc")
+SEED = 3592
+np.random.seed(SEED)
+y = np.random.normal(0, 1, 100)
+
+```
+
+Models are simplifications of reality, sometimes even very crude simplifications. So we can never fully trust models. Can we just hope they are good enough, maybe, but we can do better. One approach is evaluating their predictive accuracy. If a model is robust, its predictions should align well with observations, domain knowledge or some other benchmark. There are at least four avenues to explore:
+
+* Compare to prior knowledge. For example, if we are modeling the size of planets we can evaluate if the model is making predictions in a sensible range. Even if we are equipped with a very rudimentary knowledge of astronomy we know that planets are larger than persons and smaller than galaxies. So if the model is predicting that the size of a planet is 1 meter, then we know that the model is not that good. This is a very simple example, but in general, we can use prior knowledge to evaluate the predictions of a model.
+
+* Compare to observed data. We fit a model and compare the predictions to the same data that we used to fit the model. This is an internal consistency check of the model, and we should expect good agreement. But the reality is complex and the model can be too simple or they can be misspecified so there is a lot of potential in these types of checks. Additionally, a model might be good at recovering some aspects of the data but not others, for instance, a model could be good at predicting the mean of the data but not the variance.
+
+* Compared to unobserved data. We fit a model to one dataset and then evaluate it on a different dataset. This is similar to the previous point, but it is a more strong evaluation because we are evaluating the model on data that it has not seen before. How similar the observed and unseen data are can vary a lot. 
+
+* Compare to other models. We fit different models to the same data and then compare the predictions of the models.  
+
+
+We have one additional ingredient to add to the mix, we have omitted the fact that we have different types of predictions. An attractive feature of the Bayesian model is that they are generative. This means that we can simulate synthetic data from models as long as the parameters are assigned a proper probability distribution, computationally we need a distribution from which we can generate random samples. We can take advantage of this feature to check models before or after fitting the data: 
+
+* Prior predictive: We generate synthetic observations without conditioning the observed data. These are predictions that we would make before we have seen the data. 
+* Posterior predictive: We generate synthetic observations after conditioning on the observed data. These are predictions that we would make after we have seen the data.
+
+Additionally, for models like linear regression where we have a set of covariates, we can generate synthetic data evaluated at the observed covariates (our "Xs") or at different values ("X_new"). If we do the first we call it in-sample predictions, and if we do the second we call it out-of-sample predictions.
+
+So, as you can see we have many options to evaluate models. Which one we should use will depend on what we want to evaluate. We can use a combination of the previous options to evaluate models for different purposes. In the next sections, we will see how to implement some of these checks.
+
+
+## Prior predictive checks
+
+The general algorithm for prior predictive checks is:
+
+1. Draw $N$ realizations from a prior distribution.
+2. For each draw, simulate new data from the likelihood.
+3. Plot the results.
+4. Use domain knowledge to assess whether simulated values reflect prior knowledge.
+5. If simulated values do not reflect prior knowledge, change the prior distribution, likelihood, or both and repeat the simulation from step 1.
+6. If simulated values reflect prior knowledge, compute the posterior.
+
+Notice that in step 4 we use domain knowledge, NOT observed data!
+
+To exemplify this, let's try with a super simple example. We want to model the height of a person. We know that the height of a person is a positive number, so we can use a half-normal distribution as a prior. We also know that the height of a person is not 100 meters, so we can use a half-normal distribution with a mean of 0 and a standard deviation of 10.
+
+In the following block of code, we define such a model and draw 500 samples from the prior predictive distribution.
+
+::: {.panel-tabset}
+## PyMC
+
+``` {python}
+with pm.Model() as model: 
+    # Priors for unknown model parameters
+    mu = pm.Normal('mu', mu=0, sigma=10)
+    sigma = pm.HalfNormal('sigma', sigma=10)
+    # Likelihood (sampling distribution) of observations
+    y_obs = pm.Normal('Y_obs', mu=mu, sigma=sigma, observed=y)
+    # draw 500 samples from the prior
+    idata = pm.sample_prior_predictive(samples=500, random_seed=SEED)
+```
+
+## PyStan
+
+``` {.python}
+## comming soon
+```
+:::
+
+In the following plot, we can see samples from the prior predictive distribution (blue solid lines). If we aggregate all the individual samples into a single large sample we get the dashed cyan line. To help us interpret this plot we have added two **reference lines**, the average length/height of a newborn and the average (male) adult height. These references are approximate values, but they are useful to provide a sense of the scale of the expected data. We can see that our model is bananas, not only heights can be negative, but the bulk of the prior predictive distribution is outside of our reference values.
+
+```{python}
+ax = az.plot_ppc(idata, group="prior")
+ax.axvline(50, color="0.5", linestyle=":", label="newborn")
+ax.axvline(175, color="0.5", linestyle="--", label="adult")
+plt.legend()
+```
+
+We can tighten up the priors. There is no general rule to do this. For most problems, we do not want, we can not, or is too expensive to set very informative priors. So for most problems, it is usually a better idea to set priors using some broad domain knowledge in such a way that we we get a relatively reasonable prior predictive distribution. These priors are called weakly informative priors, they usually avoid unreasonable value or put too little mass in some regions of the parameter space. For instance, we can use a normal distribution with a mean of 175 and a standard deviation of 10. This distribution doesn't exclude negative values, but it assigns very little mass to them. Also is broad enough to allow for a wide range of values.
+
+::: {.panel-tabset}
+## PyMC
+
+``` {python}
+with pm.Model() as model: 
+    # Priors for unknown model parameters
+    mu = pm.Normal('mu', mu=175, sigma=10)
+    sigma = pm.HalfNormal('sigma', sigma=10)
+    # Likelihood (sampling distribution) of observations
+    y_obs = pm.Normal('Y_obs', mu=mu, sigma=sigma, observed=y)
+    # draw 500 samples from the prior
+    idata = pm.sample_prior_predictive(samples=500, random_seed=SEED)
+```
+
+## PyStan
+
+``` {.python}
+## comming soon
+```
+:::
+
+We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is now within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are to pick other priors and other reference values. Maybe you can use the values for the taller and shorter person in the world as reference values.
+
+```{python}
+ax = az.plot_ppc(idata, group="prior")
+ax.axvline(50, color="0.5", linestyle=":", label="newborn")
+ax.axvline(175, color="0.5", linestyle="--", label="adult")
+plt.legend()
+```
+
+We recommend weakly informative priors instead of informative priors because usually we do not have enough information to set very informative priors or that process can be very time-consuming. And we recommend weakly informative priors instead of very vague priors because adding some prior information is usually better than adding none and for some problems, it can be not that difficult. The more data we have the less impact the priors will have on the posterior, but still usually there is some gain in avoiding non-sensical values and starting from more taught priors. Even sometimes sampling is more efficient when we avoid very vague priors. Also very importantly, even if the priors have little effect doing prior predictive checks and *playing* with piors can help us to understand the model and the problem better.
+
+If you want to learn more about prior elicitation you can check the [PreliZ](https://preliz.readthedocs.io/) library.
+
+One final note. When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the collection of distributions, it is usually a good idea to plot the cumulative distribution. This is because the individual distributions can be hard to see, but the cumulative distribution is easier to interpret. 
+
+```{python}
+ax = az.plot_ppc(idata, group="prior", kind="cumulative")
+ax.axvline(50, color="0.5", linestyle=":", lw=3, label="newborn")
+ax.axvline(175, color="0.5", linestyle="--", lw=3, label="adult")
+plt.legend()
+```
+
+## Posterior predictive checks
+
+## Prior sensitivity checks
+
+##
