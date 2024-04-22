@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -57,7 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -83,7 +83,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -92,17 +98,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta name="citation_title" content="[4]{.chapter-number}&nbsp; [MCMC Diagnostics]{.chapter-title}">
 <meta name="citation_language" content="en">
@@ -121,12 +155,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./MCMC_diagnostics.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./MCMC_diagnostics.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -136,7 +170,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Exploratory Analysis of Bayesian Models</a> 
@@ -156,7 +190,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </li>
       </ul>
     </div>
-    <a href="https://numfocus.org/donate-to-arviz" rel="" title="donations" class="quarto-navigation-tool px-1" aria-label="donations"><i class="bi bi-coin"></i></a>
+    <a href="https://numfocus.org/donate-to-arviz" title="donations" class="quarto-navigation-tool px-1" aria-label="donations"><i class="bi bi-coin"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
@@ -206,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Model_criticism.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model_criticism</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model criticism</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -236,7 +270,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -278,8 +312,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
 
+
+<div id="ac97b68a" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-stderr">
+<pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
+</div>
+</div>
 <p>The Achilles heel of computing posterior distributions is, more often than not, the computation of the denominator of Bayes’s theorem. Markov Chain Monte Carlo Methods (MCMC), such as Metropolis, Hamiltonian Monte Carlo (and its variants like NUTS) are clever mathematical and computational devices that let us circumvent this problem. The main idea is based on sampling values of the parameters of interest from an easy-to-sample distribution and then applying a rule, known as the Metropolis acceptance criterion, to decide if you accept or not that proposal. By applying this rule we ensure that even when we propose samples from an arbitrary distribution we end up getting samples from the correct posterior distribution. The better performance of NUTS over Metropolis can be explained by the fact that the former uses a clever way to propose values.</p>
 <p>While MCMC methods can be successfully used to solve a huge variety of Bayesian models, they have some trade-offs. Most notably, finite MCMC chains are not guaranteed to converge to the true posterior distribution. Thus, a key step is to check whether we have a valid sample, otherwise, any analysis from it will be totally flawed.</p>
 <p>There are several tests we can perform, some are visual and some are numerical. These tests are designed to spot problems with our samples, but they are unable to prove we have the correct distribution; they can only provide evidence that the sample seems reasonable.</p>
@@ -310,20 +351,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>bad_sample_0</code>: We sorted good_sample, split it into two chains, and then added a small Gaussian error. This is a representation of a bad sample because values are not independent (we sorted the values!) and they do not come from the same distribution, because of the split the first half has values that are lower than the second. This represents a scenario where the sampler has very poor mixing.</li>
 <li><code>bad_sample_1</code>: we start from <code>good_chains</code>, and turn into a poor sample by randomly introducing portions where consecutive samples are highly correlated to each other. This represents a common scenario, a sampler can resolve a region of the parameter space very well, but get stuck into one or more regions.</li>
 </ul>
-<div class="cell" data-execution_count="2">
-<details>
+<div id="262dc9e6" class="cell" data-execution_count="2">
+<details class="code-fold">
 <summary>Show the code for more details</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>good_sample <span class="op">=</span> pz.Gamma(<span class="dv">2</span>, <span class="dv">5</span>).rvs((<span class="dv">2</span>, <span class="dv">2000</span>))</span>
-<span id="cb1-2"><a href="#cb1-2"></a>bad_sample0 <span class="op">=</span> np.random.normal(np.sort(good_sample, axis<span class="op">=</span><span class="va">None</span>), <span class="fl">0.05</span>,</span>
-<span id="cb1-3"><a href="#cb1-3"></a>                               size<span class="op">=</span><span class="dv">4000</span>).reshape(<span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a>bad_sample1 <span class="op">=</span> good_sample.copy()</span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="cf">for</span> i <span class="kw">in</span> np.random.randint(<span class="dv">1900</span>, size<span class="op">=</span><span class="dv">4</span>):</span>
-<span id="cb1-7"><a href="#cb1-7"></a>    bad_sample1[i<span class="op">%</span><span class="dv">2</span>:,i:i<span class="op">+</span><span class="dv">100</span>] <span class="op">=</span> pz.Beta(i, <span class="dv">150</span>).rvs(size<span class="op">=</span><span class="dv">100</span>)</span>
-<span id="cb1-8"><a href="#cb1-8"></a></span>
-<span id="cb1-9"><a href="#cb1-9"></a>sample <span class="op">=</span> {<span class="st">"good_sample"</span>:good_sample,</span>
-<span id="cb1-10"><a href="#cb1-10"></a>          <span class="st">"bad_sample_0"</span>:bad_sample0,</span>
-<span id="cb1-11"><a href="#cb1-11"></a>          <span class="st">"bad_sample_1"</span>:bad_sample1}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>good_sample <span class="op">=</span> pz.Gamma(<span class="dv">2</span>, <span class="dv">5</span>).rvs((<span class="dv">2</span>, <span class="dv">2000</span>))</span>
+<span id="cb2-2"><a href="#cb2-2"></a>bad_sample0 <span class="op">=</span> np.random.normal(np.sort(good_sample, axis<span class="op">=</span><span class="va">None</span>), <span class="fl">0.05</span>,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>                               size<span class="op">=</span><span class="dv">4000</span>).reshape(<span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>bad_sample1 <span class="op">=</span> good_sample.copy()</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="cf">for</span> i <span class="kw">in</span> np.random.randint(<span class="dv">1900</span>, size<span class="op">=</span><span class="dv">4</span>):</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    bad_sample1[i<span class="op">%</span><span class="dv">2</span>:,i:i<span class="op">+</span><span class="dv">100</span>] <span class="op">=</span> pz.Beta(i, <span class="dv">150</span>).rvs(size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a>sample <span class="op">=</span> {<span class="st">"good_sample"</span>:good_sample,</span>
+<span id="cb2-10"><a href="#cb2-10"></a>          <span class="st">"bad_sample_0"</span>:bad_sample0,</span>
+<span id="cb2-11"><a href="#cb2-11"></a>          <span class="st">"bad_sample_1"</span>:bad_sample1}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -342,47 +383,59 @@ Note
 </section>
 <section id="trace-plots" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="trace-plots"><span class="header-section-number">4.2</span> Trace plots</h2>
-<p>A trace plot is created by drawing the sampled values at each iteration step. Ideally, we should expect to see a very noisy plot, some people call it a caterpillar. The reason is that draws should be uncorrelated from each other, the value of a draw should not provide any hint about the previous or next draw. Also, the draws from the first iterations should be indistinguishable from the ones coming from the last iterations the middle iterations, or any other region. The ideal scenario is the lack of any clear pattern as we can see at the right panel of <a href="#fig-traceplot_good_sample">Figure&nbsp;<span>4.1</span></a>.</p>
-<p>In ArviZ by calling the function <code>az.plot_trace(.)</code> we get a trace plot on the right and on the left a KDE (for continuous variables) or a histogram (for discrete variables). <a href="#fig-traceplot_good_sample">Figure&nbsp;<span>4.1</span></a> is an example of this. The KDE/histogram can help to spot differences between chains, ideally, distributions should overlap.</p>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>az.plot_trace(sample, var_names<span class="op">=</span><span class="st">"good_sample"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A trace plot is created by drawing the sampled values at each iteration step. Ideally, we should expect to see a very noisy plot, some people call it a caterpillar. The reason is that draws should be uncorrelated from each other, the value of a draw should not provide any hint about the previous or next draw. Also, the draws from the first iterations should be indistinguishable from the ones coming from the last iterations the middle iterations, or any other region. The ideal scenario is the lack of any clear pattern as we can see at the right panel of <a href="#fig-traceplot_good_sample" class="quarto-xref">Figure&nbsp;<span>4.1</span></a>.</p>
+<p>In ArviZ by calling the function <code>az.plot_trace(.)</code> we get a trace plot on the right and on the left a KDE (for continuous variables) or a histogram (for discrete variables). <a href="#fig-traceplot_good_sample" class="quarto-xref">Figure&nbsp;<span>4.1</span></a> is an example of this. The KDE/histogram can help to spot differences between chains, ideally, distributions should overlap.</p>
+<div id="cell-fig-traceplot_good_sample" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>az.plot_trace(sample, var_names<span class="op">=</span><span class="st">"good_sample"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-traceplot_good_sample" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="MCMC_diagnostics_files/figure-html/fig-traceplot_good_sample-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;4.1: Trace plot of a sample without issues</figcaption>
+<div id="fig-traceplot_good_sample" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-traceplot_good_sample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="MCMC_diagnostics_files/figure-html/fig-traceplot_good_sample-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-traceplot_good_sample-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: Trace plot of a sample without issues
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>This represents a scenario where the sampler is visiting two different regions of the parameter space and is not able to <em>jump</em> from one to the other. Additionally, it is also moving very slowly within each region. <a href="#fig-traceplot_bad_sample_0">Figure&nbsp;<span>4.2</span></a> shows two problems. On the one hand, each chain is visiting a different region of the parameter space. We can see this from the trace plot itself and the KDE. On the other hand, even within each region, the sampler is having trouble properly exploring the space, notice how it keeps <em>moving up</em>, instead of being <strong>stationary</strong>.</p>
-<div class="cell" data-execution_count="4">
-<details>
+<p>This represents a scenario where the sampler is visiting two different regions of the parameter space and is not able to <em>jump</em> from one to the other. Additionally, it is also moving very slowly within each region. <a href="#fig-traceplot_bad_sample_0" class="quarto-xref">Figure&nbsp;<span>4.2</span></a> shows two problems. On the one hand, each chain is visiting a different region of the parameter space. We can see this from the trace plot itself and the KDE. On the other hand, even within each region, the sampler is having trouble properly exploring the space, notice how it keeps <em>moving up</em>, instead of being <strong>stationary</strong>.</p>
+<div id="cell-fig-traceplot_bad_sample_0" class="cell" data-execution_count="4">
+<details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>az.plot_trace(sample, var_names<span class="op">=</span><span class="st">"bad_sample_0"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>az.plot_trace(sample, var_names<span class="op">=</span><span class="st">"bad_sample_0"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-traceplot_bad_sample_0" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="MCMC_diagnostics_files/figure-html/fig-traceplot_bad_sample_0-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;4.2: Trace plot of two chains that has not converged</figcaption>
+<div id="fig-traceplot_bad_sample_0" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-traceplot_bad_sample_0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="MCMC_diagnostics_files/figure-html/fig-traceplot_bad_sample_0-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-traceplot_bad_sample_0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.2: Trace plot of two chains that has not converged
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Finally from <a href="#fig-traceplot_bad_sample_1">Figure&nbsp;<span>4.3</span></a>, we can see another common scenario. This time we see that globally everything looks fine. But there are 3 regions where the sampler gets stuck, see the orange lines at the bottom of the traceplot. For the first two regions, starting at iterations 736 and 916, both chains got stuck. For the third region, starting in 1463, only one chain got stuck.</p>
-<div class="cell" data-execution_count="5">
-<details>
+<p>Finally from <a href="#fig-traceplot_bad_sample_1" class="quarto-xref">Figure&nbsp;<span>4.3</span></a>, we can see another common scenario. This time we see that globally everything looks fine. But there are 3 regions where the sampler gets stuck, see the orange lines at the bottom of the traceplot. For the first two regions, starting at iterations 736 and 916, both chains got stuck. For the third region, starting in 1463, only one chain got stuck.</p>
+<div id="cell-fig-traceplot_bad_sample_1" class="cell" data-execution_count="5">
+<details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>axes <span class="op">=</span> az.plot_trace(sample, var_names<span class="op">=</span><span class="st">"bad_sample_1"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="cf">for</span> pos <span class="kw">in</span> [<span class="dv">736</span>, <span class="dv">916</span>, <span class="dv">1463</span>]:</span>
-<span id="cb4-3"><a href="#cb4-3"></a>    axes[<span class="dv">0</span>, <span class="dv">1</span>].plot((pos, pos<span class="op">+</span><span class="dv">100</span>), (<span class="dv">0</span>, <span class="dv">0</span>), <span class="st">"C2"</span>, lw<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>axes <span class="op">=</span> az.plot_trace(sample, var_names<span class="op">=</span><span class="st">"bad_sample_1"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="cf">for</span> pos <span class="kw">in</span> [<span class="dv">736</span>, <span class="dv">916</span>, <span class="dv">1463</span>]:</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    axes[<span class="dv">0</span>, <span class="dv">1</span>].plot((pos, pos<span class="op">+</span><span class="dv">100</span>), (<span class="dv">0</span>, <span class="dv">0</span>), <span class="st">"C2"</span>, lw<span class="op">=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-traceplot_bad_sample_1" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="MCMC_diagnostics_files/figure-html/fig-traceplot_bad_sample_1-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;4.3: Trace plot showing a sampler being stuck in some regions (see orange lines)</figcaption>
+<div id="fig-traceplot_bad_sample_1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-traceplot_bad_sample_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="MCMC_diagnostics_files/figure-html/fig-traceplot_bad_sample_1-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-traceplot_bad_sample_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.3: Trace plot showing a sampler being stuck in some regions (see orange lines)
+</figcaption>
 </figure>
 </div>
 </div>
@@ -392,18 +445,22 @@ Note
 <section id="rank-plots" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="rank-plots"><span class="header-section-number">4.3</span> Rank plots</h2>
 <p>The basic idea is the following. For a parameter we take all the chains and order the values from lowest to highest and assign them a rank, that is, to the lowest value assign 0, to the following 1, and so on until we reach the total number of samples, (number of chains multiplied by the number of draws per chain). Then we regroup the rankings according to the chains that gave rise to them and for each chain we make a histogram. If the chains were indistinguishable we would expect the histograms to be uniform. Since there is no reason for one chain to have more low (or medium or high) rankings than the rest.</p>
-<p><a href="#fig-rank_plot">Figure&nbsp;<span>4.4</span></a> shows rank plots for <code>good_sample</code>, <code>bad_sample_0</code> and <code>bad_sample_1</code>. Notice how <code>good_sample</code> looks pretty close to uniform, <code>bad_sample_1</code> is harder to tell, because overall it looks very close to uniform, except for the penultimate bar. On the contrary <code>bad_sample_0</code> really looks bad.</p>
-<div class="cell" data-execution_count="6">
-<details>
+<p><a href="#fig-rank_plot" class="quarto-xref">Figure&nbsp;<span>4.4</span></a> shows rank plots for <code>good_sample</code>, <code>bad_sample_0</code> and <code>bad_sample_1</code>. Notice how <code>good_sample</code> looks pretty close to uniform, <code>bad_sample_1</code> is harder to tell, because overall it looks very close to uniform, except for the penultimate bar. On the contrary <code>bad_sample_0</code> really looks bad.</p>
+<div id="cell-fig-rank_plot" class="cell" data-execution_count="6">
+<details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>_, ax <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
-<span id="cb5-2"><a href="#cb5-2"></a>az.plot_rank(sample, ax<span class="op">=</span>ax)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>_, ax <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb6-2"><a href="#cb6-2"></a>az.plot_rank(sample, ax<span class="op">=</span>ax)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-rank_plot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="MCMC_diagnostics_files/figure-html/fig-rank_plot-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;4.4: Rank plot for <code>good_sample</code>, <code>bad_sample_0</code> and <code>bad_sample_1</code></figcaption>
+<div id="fig-rank_plot" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rank_plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="MCMC_diagnostics_files/figure-html/fig-rank_plot-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rank_plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.4: Rank plot for <code>good_sample</code>, <code>bad_sample_0</code> and <code>bad_sample_1</code>
+</figcaption>
 </figure>
 </div>
 </div>
@@ -415,10 +472,9 @@ Note
 <p><span class="math inline">\(\hat R\)</span> is a numerical diagnostic that answers the question. Did the chains mix properly? But I also like to think of it as the score assigned by a jury in a trace (or rank) plot contest.</p>
 <p>The version implemented in ArviZ does several things under the hood, but the central idea is that it compares the variance between chains with the variance within each chain. Ideally, we should get <span class="math inline">\(\hat R = 1\)</span>, in practice <span class="math inline">\(\hat R \lessapprox 1.01\)</span> are considered safe and in the first modeling phases, even higher values like <span class="math inline">\(\hat R \approx 1.1\)</span> may be fine.</p>
 <p>Using ArviZ we can get the <span class="math inline">\(\hat R\)</span> usando <code>az.rhat(⋅)</code>, <code>az.summary(⋅)</code> and <code>az.plot_forest(⋅, r_hat=True)</code></p>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>az.rhat(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="7f45655a" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>az.rhat(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
-
 <div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
 <defs>
 <symbol id="icon-database" viewbox="0 0 32 32">
@@ -782,143 +838,150 @@ dl.xr-attrs {
   stroke: currentColor;
   fill: currentColor;
 }
-</style><pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt;
+</style><pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt; Size: 24B
 Dimensions:       ()
 Data variables:
-    good_sample   float64 0.9999
-    bad_sample_0  float64 2.655
-    bad_sample_1  float64 1.007</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-22d8b935-938e-43b8-875f-206f41d52a5f" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-22d8b935-938e-43b8-875f-206f41d52a5f" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-db0a14f0-04b7-4140-afa3-60a03ef0a3cf" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-db0a14f0-04b7-4140-afa3-60a03ef0a3cf" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-f0be02d5-fc0d-4dfa-944c-98e644176085" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-f0be02d5-fc0d-4dfa-944c-98e644176085" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.9999</div><input id="attrs-67fc2f97-e021-4140-a574-c6c004bf2bdd" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-67fc2f97-e021-4140-a574-c6c004bf2bdd" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-cba82aef-b63e-4ae1-8330-1c69914c874e" class="xr-var-data-in" type="checkbox"><label for="data-cba82aef-b63e-4ae1-8330-1c69914c874e" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.99990983)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">2.655</div><input id="attrs-cecf4d76-033f-4081-897b-b2bba0eef02c" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-cecf4d76-033f-4081-897b-b2bba0eef02c" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-e6f71218-c9d8-49d2-b553-688b9cd3b2c3" class="xr-var-data-in" type="checkbox"><label for="data-e6f71218-c9d8-49d2-b553-688b9cd3b2c3" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(2.65486329)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">1.007</div><input id="attrs-7fa5fe02-5a0c-4ca6-b3c7-1e0ef0dc1756" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-7fa5fe02-5a0c-4ca6-b3c7-1e0ef0dc1756" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-e6733ff1-c7b7-4d4b-9831-a92bee303f8f" class="xr-var-data-in" type="checkbox"><label for="data-e6733ff1-c7b7-4d4b-9831-a92bee303f8f" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(1.0074539)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-f8c5555e-3348-4684-a4a5-bc650a0137f2" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-f8c5555e-3348-4684-a4a5-bc650a0137f2" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-796993eb-6755-45e2-914d-2e0601883f9b" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-796993eb-6755-45e2-914d-2e0601883f9b" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
+    bad_sample_0  float64 8B 2.662
+    bad_sample_1  float64 8B 1.005
+    good_sample   float64 8B 1.001</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-0d814bf6-19db-467e-8689-121272aa40c4" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-0d814bf6-19db-467e-8689-121272aa40c4" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-8d9ae95a-2da2-4b82-ae04-ce5d039badc9" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-8d9ae95a-2da2-4b82-ae04-ce5d039badc9" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-c6180eda-b325-4f14-ad7c-0439a454fbf9" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-c6180eda-b325-4f14-ad7c-0439a454fbf9" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">2.662</div><input id="attrs-550141ed-7607-407f-8464-cdfe7c1620b7" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-550141ed-7607-407f-8464-cdfe7c1620b7" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-11173a5a-67d6-4d54-afc8-89d7047126cc" class="xr-var-data-in" type="checkbox"><label for="data-11173a5a-67d6-4d54-afc8-89d7047126cc" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(2.66207871)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">1.005</div><input id="attrs-7d9e406a-a868-4842-9da6-9b2140fc9567" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-7d9e406a-a868-4842-9da6-9b2140fc9567" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-d37390c9-6c94-466d-b530-14e0a821f0c3" class="xr-var-data-in" type="checkbox"><label for="data-d37390c9-6c94-466d-b530-14e0a821f0c3" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(1.00466379)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">1.001</div><input id="attrs-c6927fff-5139-4cbf-906f-dcb2f74aa9ab" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-c6927fff-5139-4cbf-906f-dcb2f74aa9ab" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-67fb6ebb-26df-4ec5-9d98-44dc9660f33f" class="xr-var-data-in" type="checkbox"><label for="data-67fb6ebb-26df-4ec5-9d98-44dc9660f33f" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(1.00055121)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-2fcbd49e-07a2-4393-9eda-c252826f1bb6" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-2fcbd49e-07a2-4393-9eda-c252826f1bb6" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-07273a5e-eb57-4e73-9abd-950c283727ef" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-07273a5e-eb57-4e73-9abd-950c283727ef" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
 </div>
 </div>
 <section id="effective-sample-size-ess" class="level3" data-number="4.4.1">
 <h3 data-number="4.4.1" class="anchored" data-anchor-id="effective-sample-size-ess"><span class="header-section-number">4.4.1</span> Effective Sample Size (ESS)</h3>
-<p>Since the samples of an MCMC are (auto)correlated, the amount of “useful” information is less than a sample of the same size but iid. <a href="#fig-ess_experiment">Figure&nbsp;<span>4.5</span></a> can help us develop intuition. In this figure, we analyze the error incurred while computing an estimate (such as the mean) from samples of different size, considering varying degrees of autocorrelation. The results represent averages from 1000 repetitions.</p>
+<p>Since the samples of an MCMC are (auto)correlated, the amount of “useful” information is less than a sample of the same size but iid. <a href="#fig-ess_experiment" class="quarto-xref">Figure&nbsp;<span>4.5</span></a> can help us develop intuition. In this figure, we analyze the error incurred while computing an estimate (such as the mean) from samples of different size, considering varying degrees of autocorrelation. The results represent averages from 1000 repetitions.</p>
 <p>We can see that the error goes down as the sample size increases and we can also see that the lower the autocorrelation the smaller the sample size to achieve an estimate with a given error. In other words the higher the autocorrelation the larger the number of sample we will need to achieve the a given precision.</p>
-<div class="cell" data-execution_count="8">
-<details>
+<div id="cell-fig-ess_experiment" class="cell" data-execution_count="8">
+<details class="code-fold">
 <summary>Show the code for more details</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">def</span> generate_autocorrelated_sample(original, rho):</span>
-<span id="cb7-2"><a href="#cb7-2"></a>    <span class="co">"""</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="co">    Generates an autocorrelated sample from original.</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">    Parameters:</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="co">    ----------</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="co">    sample: numpy array, </span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co">        The original sample</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="co">    rho: float,</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a><span class="co">        Desired autocorrelation value</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a></span>
-<span id="cb7-12"><a href="#cb7-12"></a><span class="co">    Returns:</span></span>
-<span id="cb7-13"><a href="#cb7-13"></a><span class="co">    --------</span></span>
-<span id="cb7-14"><a href="#cb7-14"></a><span class="co">    new_sample: numpy array, autocorrelated sample</span></span>
-<span id="cb7-15"><a href="#cb7-15"></a><span class="co">    """</span></span>
-<span id="cb7-16"><a href="#cb7-16"></a>    n <span class="op">=</span> <span class="bu">len</span>(original)</span>
-<span id="cb7-17"><a href="#cb7-17"></a>    y <span class="op">=</span> np.copy(original)</span>
-<span id="cb7-18"><a href="#cb7-18"></a>    mean <span class="op">=</span> np.mean(original)</span>
-<span id="cb7-19"><a href="#cb7-19"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n):</span>
-<span id="cb7-20"><a href="#cb7-20"></a>        y[i] <span class="op">+=</span> rho <span class="op">*</span> (y[i<span class="op">-</span><span class="dv">1</span>]<span class="op">-</span>mean) <span class="op">+</span> np.random.randn()</span>
-<span id="cb7-21"><a href="#cb7-21"></a></span>
-<span id="cb7-22"><a href="#cb7-22"></a>    <span class="cf">return</span> y</span>
-<span id="cb7-23"><a href="#cb7-23"></a></span>
-<span id="cb7-24"><a href="#cb7-24"></a>mean <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb7-25"><a href="#cb7-25"></a>lag <span class="op">=</span> <span class="dv">30</span></span>
-<span id="cb7-26"><a href="#cb7-26"></a>size <span class="op">=</span> <span class="dv">300</span></span>
-<span id="cb7-27"><a href="#cb7-27"></a></span>
-<span id="cb7-28"><a href="#cb7-28"></a>iid_samples <span class="op">=</span> np.random.normal(mean, <span class="dv">1</span>, size<span class="op">=</span>(<span class="dv">1000</span>, size))</span>
-<span id="cb7-29"><a href="#cb7-29"></a></span>
-<span id="cb7-30"><a href="#cb7-30"></a>rhos <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.90</span>, <span class="dv">7</span>)</span>
-<span id="cb7-31"><a href="#cb7-31"></a>N <span class="op">=</span> <span class="bu">len</span>(rhos)</span>
-<span id="cb7-32"><a href="#cb7-32"></a></span>
-<span id="cb7-33"><a href="#cb7-33"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb7-34"><a href="#cb7-34"></a></span>
-<span id="cb7-35"><a href="#cb7-35"></a><span class="cf">for</span> k, rho <span class="kw">in</span> <span class="bu">enumerate</span>(rhos):</span>
-<span id="cb7-36"><a href="#cb7-36"></a>    auto_samples <span class="op">=</span> np.stack([generate_autocorrelated_sample(iid_sample, rho) <span class="cf">for</span> iid_sample <span class="kw">in</span> iid_samples])</span>
-<span id="cb7-37"><a href="#cb7-37"></a>    auto_error <span class="op">=</span> []</span>
-<span id="cb7-38"><a href="#cb7-38"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, size):</span>
-<span id="cb7-39"><a href="#cb7-39"></a>        auto_error.append(np.mean(((np.mean(auto_samples[:,:i] <span class="op">-</span> mean, <span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span>)<span class="op">**</span><span class="fl">0.5</span>)))</span>
-<span id="cb7-40"><a href="#cb7-40"></a></span>
-<span id="cb7-41"><a href="#cb7-41"></a>    ax.plot(auto_error[lag:], color<span class="op">=</span>plt.cm.viridis_r(k<span class="op">/</span>N))</span>
-<span id="cb7-42"><a href="#cb7-42"></a></span>
-<span id="cb7-43"><a href="#cb7-43"></a>sm <span class="op">=</span> plt.cm.ScalarMappable(cmap<span class="op">=</span>plt.cm.viridis_r)</span>
-<span id="cb7-44"><a href="#cb7-44"></a>cbar <span class="op">=</span> plt.colorbar(sm, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'Autocorrelation'</span>, ticks<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>])</span>
-<span id="cb7-45"><a href="#cb7-45"></a>cbar.ax.set_yticklabels([<span class="st">'Low'</span>, <span class="st">'High'</span>])</span>
-<span id="cb7-46"><a href="#cb7-46"></a>cbar.ax.tick_params(length<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb7-47"><a href="#cb7-47"></a></span>
-<span id="cb7-48"><a href="#cb7-48"></a>ax.set_yticks([])</span>
-<span id="cb7-49"><a href="#cb7-49"></a>ax.set_ylabel(<span class="st">"Error"</span>)</span>
-<span id="cb7-50"><a href="#cb7-50"></a>ax.set_xticks([])</span>
-<span id="cb7-51"><a href="#cb7-51"></a>ax.set_xlabel(<span class="st">"Sample size"</span>)</span>
-<span id="cb7-52"><a href="#cb7-52"></a></span>
-<span id="cb7-53"><a href="#cb7-53"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb7-54"><a href="#cb7-54"></a>ax.set_xlim(<span class="op">-</span><span class="dv">2</span>)</span>
-<span id="cb7-55"><a href="#cb7-55"></a>ax.spines[<span class="st">"top"</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb7-56"><a href="#cb7-56"></a>ax.spines[<span class="st">"right"</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb7-57"><a href="#cb7-57"></a>ax.plot(<span class="dv">1</span>, <span class="dv">0</span>, <span class="st">"&gt;k"</span>, transform<span class="op">=</span>ax.get_yaxis_transform(), clip_on<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb7-58"><a href="#cb7-58"></a>ax.plot(<span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="st">"^k"</span>, transform<span class="op">=</span>ax.get_xaxis_transform(), clip_on<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">def</span> generate_autocorrelated_sample(original, rho):</span>
+<span id="cb8-2"><a href="#cb8-2"></a>    <span class="co">"""</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">    Generates an autocorrelated sample from original.</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">    Parameters:</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">    ----------</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">    sample: numpy array, </span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">        The original sample</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">    rho: float,</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">        Desired autocorrelation value</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">    Returns:</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">    --------</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">    new_sample: numpy array, autocorrelated sample</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">    """</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a>    n <span class="op">=</span> <span class="bu">len</span>(original)</span>
+<span id="cb8-17"><a href="#cb8-17"></a>    y <span class="op">=</span> np.copy(original)</span>
+<span id="cb8-18"><a href="#cb8-18"></a>    mean <span class="op">=</span> np.mean(original)</span>
+<span id="cb8-19"><a href="#cb8-19"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n):</span>
+<span id="cb8-20"><a href="#cb8-20"></a>        y[i] <span class="op">+=</span> rho <span class="op">*</span> (y[i<span class="op">-</span><span class="dv">1</span>]<span class="op">-</span>mean) <span class="op">+</span> np.random.randn()</span>
+<span id="cb8-21"><a href="#cb8-21"></a></span>
+<span id="cb8-22"><a href="#cb8-22"></a>    <span class="cf">return</span> y</span>
+<span id="cb8-23"><a href="#cb8-23"></a></span>
+<span id="cb8-24"><a href="#cb8-24"></a>mean <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a>lag <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a>size <span class="op">=</span> <span class="dv">300</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a></span>
+<span id="cb8-28"><a href="#cb8-28"></a>iid_samples <span class="op">=</span> np.random.normal(mean, <span class="dv">1</span>, size<span class="op">=</span>(<span class="dv">1000</span>, size))</span>
+<span id="cb8-29"><a href="#cb8-29"></a></span>
+<span id="cb8-30"><a href="#cb8-30"></a>rhos <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.90</span>, <span class="dv">7</span>)</span>
+<span id="cb8-31"><a href="#cb8-31"></a>N <span class="op">=</span> <span class="bu">len</span>(rhos)</span>
+<span id="cb8-32"><a href="#cb8-32"></a></span>
+<span id="cb8-33"><a href="#cb8-33"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb8-34"><a href="#cb8-34"></a></span>
+<span id="cb8-35"><a href="#cb8-35"></a><span class="cf">for</span> k, rho <span class="kw">in</span> <span class="bu">enumerate</span>(rhos):</span>
+<span id="cb8-36"><a href="#cb8-36"></a>    auto_samples <span class="op">=</span> np.stack([generate_autocorrelated_sample(iid_sample, rho) <span class="cf">for</span> iid_sample <span class="kw">in</span> iid_samples])</span>
+<span id="cb8-37"><a href="#cb8-37"></a>    auto_error <span class="op">=</span> []</span>
+<span id="cb8-38"><a href="#cb8-38"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, size):</span>
+<span id="cb8-39"><a href="#cb8-39"></a>        auto_error.append(np.mean(((np.mean(auto_samples[:,:i] <span class="op">-</span> mean, <span class="dv">1</span>)<span class="op">**</span><span class="dv">2</span>)<span class="op">**</span><span class="fl">0.5</span>)))</span>
+<span id="cb8-40"><a href="#cb8-40"></a></span>
+<span id="cb8-41"><a href="#cb8-41"></a>    ax.plot(auto_error[lag:], color<span class="op">=</span>plt.cm.viridis_r(k<span class="op">/</span>N))</span>
+<span id="cb8-42"><a href="#cb8-42"></a></span>
+<span id="cb8-43"><a href="#cb8-43"></a>sm <span class="op">=</span> plt.cm.ScalarMappable(cmap<span class="op">=</span>plt.cm.viridis_r)</span>
+<span id="cb8-44"><a href="#cb8-44"></a>cbar <span class="op">=</span> plt.colorbar(sm, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'Autocorrelation'</span>, ticks<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb8-45"><a href="#cb8-45"></a>cbar.ax.set_yticklabels([<span class="st">'Low'</span>, <span class="st">'High'</span>])</span>
+<span id="cb8-46"><a href="#cb8-46"></a>cbar.ax.tick_params(length<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-47"><a href="#cb8-47"></a></span>
+<span id="cb8-48"><a href="#cb8-48"></a>ax.set_yticks([])</span>
+<span id="cb8-49"><a href="#cb8-49"></a>ax.set_ylabel(<span class="st">"Error"</span>)</span>
+<span id="cb8-50"><a href="#cb8-50"></a>ax.set_xticks([])</span>
+<span id="cb8-51"><a href="#cb8-51"></a>ax.set_xlabel(<span class="st">"Sample size"</span>)</span>
+<span id="cb8-52"><a href="#cb8-52"></a></span>
+<span id="cb8-53"><a href="#cb8-53"></a>ax.set_ylim(bottom<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-54"><a href="#cb8-54"></a>ax.set_xlim(<span class="op">-</span><span class="dv">2</span>)</span>
+<span id="cb8-55"><a href="#cb8-55"></a>ax.spines[<span class="st">"top"</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb8-56"><a href="#cb8-56"></a>ax.spines[<span class="st">"right"</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb8-57"><a href="#cb8-57"></a>ax.plot(<span class="dv">1</span>, <span class="dv">0</span>, <span class="st">"&gt;k"</span>, transform<span class="op">=</span>ax.get_yaxis_transform(), clip_on<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-58"><a href="#cb8-58"></a>ax.plot(<span class="op">-</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="st">"^k"</span>, transform<span class="op">=</span>ax.get_xaxis_transform(), clip_on<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-ess_experiment" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="MCMC_diagnostics_files/figure-html/fig-ess_experiment-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;4.5: Average error as a function of the sample size for different autocorrelation values.</figcaption>
+<div id="fig-ess_experiment" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ess_experiment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="MCMC_diagnostics_files/figure-html/fig-ess_experiment-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ess_experiment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.5: Average error as a function of the sample size for different autocorrelation values.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>As for MCMC samples, the sample size can be misleading, we instead estimate the <strong>effective sample size</strong> (ESS), that is, the size of a sample with the equivalent amount of information but without autocorrelation. <a href="#fig-ess_vs_ss">Figure&nbsp;<span>4.6</span></a> shows how when the sample size increases the ESS tends to increase too, and more importantly, it shows that the slope is higher for lower autocorrelation values.</p>
-<div class="cell" data-execution_count="9">
-<details>
+<p>As for MCMC samples, the sample size can be misleading, we instead estimate the <strong>effective sample size</strong> (ESS), that is, the size of a sample with the equivalent amount of information but without autocorrelation. <a href="#fig-ess_vs_ss" class="quarto-xref">Figure&nbsp;<span>4.6</span></a> shows how when the sample size increases the ESS tends to increase too, and more importantly, it shows that the slope is higher for lower autocorrelation values.</p>
+<div id="cell-fig-ess_vs_ss" class="cell" data-execution_count="9">
+<details class="code-fold">
 <summary>Show the code for more details</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>mean <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>size <span class="op">=</span> <span class="dv">300</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a></span>
-<span id="cb8-4"><a href="#cb8-4"></a>iid_samples <span class="op">=</span> np.random.normal(mean, <span class="dv">1</span>, size<span class="op">=</span>(<span class="dv">500</span>, size))</span>
-<span id="cb8-5"><a href="#cb8-5"></a></span>
-<span id="cb8-6"><a href="#cb8-6"></a>rhos <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.90</span>, <span class="dv">7</span>)</span>
-<span id="cb8-7"><a href="#cb8-7"></a>N <span class="op">=</span> <span class="bu">len</span>(rhos)</span>
-<span id="cb8-8"><a href="#cb8-8"></a></span>
-<span id="cb8-9"><a href="#cb8-9"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb8-10"><a href="#cb8-10"></a></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="cf">for</span> k, rho <span class="kw">in</span> <span class="bu">enumerate</span>(rhos):</span>
-<span id="cb8-12"><a href="#cb8-12"></a>    auto_samples <span class="op">=</span> np.stack([generate_autocorrelated_sample(iid_sample, rho) <span class="cf">for</span> iid_sample <span class="kw">in</span> iid_samples])</span>
-<span id="cb8-13"><a href="#cb8-13"></a>    auto_error <span class="op">=</span> []</span>
-<span id="cb8-14"><a href="#cb8-14"></a></span>
-<span id="cb8-15"><a href="#cb8-15"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>, size, <span class="dv">10</span>):</span>
-<span id="cb8-16"><a href="#cb8-16"></a>        auto_error.append(az.stats.ess(auto_samples[:,:i])<span class="op">/</span><span class="dv">500</span>)</span>
-<span id="cb8-17"><a href="#cb8-17"></a></span>
-<span id="cb8-18"><a href="#cb8-18"></a>    ax.plot(<span class="bu">range</span>(<span class="dv">50</span>, size, <span class="dv">10</span>), auto_error, color<span class="op">=</span>plt.cm.viridis_r(k<span class="op">/</span>N))</span>
-<span id="cb8-19"><a href="#cb8-19"></a></span>
-<span id="cb8-20"><a href="#cb8-20"></a>sm <span class="op">=</span> plt.cm.ScalarMappable(cmap<span class="op">=</span>plt.cm.viridis_r)</span>
-<span id="cb8-21"><a href="#cb8-21"></a>cbar <span class="op">=</span> plt.colorbar(sm, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'Autocorrelation'</span>, ticks<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>])</span>
-<span id="cb8-22"><a href="#cb8-22"></a>cbar.ax.set_yticklabels([<span class="st">'Low'</span>, <span class="st">'High'</span>])</span>
-<span id="cb8-23"><a href="#cb8-23"></a>cbar.ax.tick_params(length<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb8-24"><a href="#cb8-24"></a></span>
-<span id="cb8-25"><a href="#cb8-25"></a>ax.set_yticks([])</span>
-<span id="cb8-26"><a href="#cb8-26"></a>ax.set_ylabel(<span class="st">"Effective sample size"</span>)</span>
-<span id="cb8-27"><a href="#cb8-27"></a>ax.set_xticks([])</span>
-<span id="cb8-28"><a href="#cb8-28"></a>ax.set_xlabel(<span class="st">"Sample size"</span>)</span>
-<span id="cb8-29"><a href="#cb8-29"></a></span>
-<span id="cb8-30"><a href="#cb8-30"></a>ax.set_ylim(<span class="dv">0</span>)</span>
-<span id="cb8-31"><a href="#cb8-31"></a>ax.set_xlim(<span class="dv">48</span>)</span>
-<span id="cb8-32"><a href="#cb8-32"></a>ax.spines[<span class="st">"top"</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb8-33"><a href="#cb8-33"></a>ax.spines[<span class="st">"right"</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb8-34"><a href="#cb8-34"></a>ax.plot(<span class="dv">1</span>, <span class="dv">0</span>, <span class="st">"&gt;k"</span>, transform<span class="op">=</span>ax.get_yaxis_transform(), clip_on<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb8-35"><a href="#cb8-35"></a>ax.plot(<span class="dv">48</span>, <span class="dv">1</span>, <span class="st">"^k"</span>, transform<span class="op">=</span>ax.get_xaxis_transform(), clip_on<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>mean <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>size <span class="op">=</span> <span class="dv">300</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a>iid_samples <span class="op">=</span> np.random.normal(mean, <span class="dv">1</span>, size<span class="op">=</span>(<span class="dv">500</span>, size))</span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a>rhos <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.90</span>, <span class="dv">7</span>)</span>
+<span id="cb9-7"><a href="#cb9-7"></a>N <span class="op">=</span> <span class="bu">len</span>(rhos)</span>
+<span id="cb9-8"><a href="#cb9-8"></a></span>
+<span id="cb9-9"><a href="#cb9-9"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb9-10"><a href="#cb9-10"></a></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="cf">for</span> k, rho <span class="kw">in</span> <span class="bu">enumerate</span>(rhos):</span>
+<span id="cb9-12"><a href="#cb9-12"></a>    auto_samples <span class="op">=</span> np.stack([generate_autocorrelated_sample(iid_sample, rho) <span class="cf">for</span> iid_sample <span class="kw">in</span> iid_samples])</span>
+<span id="cb9-13"><a href="#cb9-13"></a>    auto_error <span class="op">=</span> []</span>
+<span id="cb9-14"><a href="#cb9-14"></a></span>
+<span id="cb9-15"><a href="#cb9-15"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>, size, <span class="dv">10</span>):</span>
+<span id="cb9-16"><a href="#cb9-16"></a>        auto_error.append(az.stats.ess(auto_samples[:,:i])<span class="op">/</span><span class="dv">500</span>)</span>
+<span id="cb9-17"><a href="#cb9-17"></a></span>
+<span id="cb9-18"><a href="#cb9-18"></a>    ax.plot(<span class="bu">range</span>(<span class="dv">50</span>, size, <span class="dv">10</span>), auto_error, color<span class="op">=</span>plt.cm.viridis_r(k<span class="op">/</span>N))</span>
+<span id="cb9-19"><a href="#cb9-19"></a></span>
+<span id="cb9-20"><a href="#cb9-20"></a>sm <span class="op">=</span> plt.cm.ScalarMappable(cmap<span class="op">=</span>plt.cm.viridis_r)</span>
+<span id="cb9-21"><a href="#cb9-21"></a>cbar <span class="op">=</span> plt.colorbar(sm, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'Autocorrelation'</span>, ticks<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb9-22"><a href="#cb9-22"></a>cbar.ax.set_yticklabels([<span class="st">'Low'</span>, <span class="st">'High'</span>])</span>
+<span id="cb9-23"><a href="#cb9-23"></a>cbar.ax.tick_params(length<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb9-24"><a href="#cb9-24"></a></span>
+<span id="cb9-25"><a href="#cb9-25"></a>ax.set_yticks([])</span>
+<span id="cb9-26"><a href="#cb9-26"></a>ax.set_ylabel(<span class="st">"Effective sample size"</span>)</span>
+<span id="cb9-27"><a href="#cb9-27"></a>ax.set_xticks([])</span>
+<span id="cb9-28"><a href="#cb9-28"></a>ax.set_xlabel(<span class="st">"Sample size"</span>)</span>
+<span id="cb9-29"><a href="#cb9-29"></a></span>
+<span id="cb9-30"><a href="#cb9-30"></a>ax.set_ylim(<span class="dv">0</span>)</span>
+<span id="cb9-31"><a href="#cb9-31"></a>ax.set_xlim(<span class="dv">48</span>)</span>
+<span id="cb9-32"><a href="#cb9-32"></a>ax.spines[<span class="st">"top"</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb9-33"><a href="#cb9-33"></a>ax.spines[<span class="st">"right"</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb9-34"><a href="#cb9-34"></a>ax.plot(<span class="dv">1</span>, <span class="dv">0</span>, <span class="st">"&gt;k"</span>, transform<span class="op">=</span>ax.get_yaxis_transform(), clip_on<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-35"><a href="#cb9-35"></a>ax.plot(<span class="dv">48</span>, <span class="dv">1</span>, <span class="st">"^k"</span>, transform<span class="op">=</span>ax.get_xaxis_transform(), clip_on<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-ess_vs_ss" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="MCMC_diagnostics_files/figure-html/fig-ess_vs_ss-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;4.6: Effective sample size as a function of the sample size for different autocorrelation values.</figcaption>
+<div id="fig-ess_vs_ss" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ess_vs_ss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="MCMC_diagnostics_files/figure-html/fig-ess_vs_ss-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ess_vs_ss-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.6: Effective sample size as a function of the sample size for different autocorrelation values.
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>With ArviZ we can get <code>az.ess(⋅)</code>, <code>az.summary(⋅)</code> and <code>az.plot_forest(⋅, ess=True)</code></p>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>az.ess(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b8417853" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>az.ess(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
-
 <div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
 <defs>
 <symbol id="icon-database" viewbox="0 0 32 32">
@@ -1282,12 +1345,12 @@ dl.xr-attrs {
   stroke: currentColor;
   fill: currentColor;
 }
-</style><pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt;
+</style><pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt; Size: 24B
 Dimensions:       ()
 Data variables:
-    good_sample   float64 3.92e+03
-    bad_sample_0  float64 2.348
-    bad_sample_1  float64 218.9</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-465224ce-e10e-427b-9f8f-18b083bb7ffc" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-465224ce-e10e-427b-9f8f-18b083bb7ffc" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-ddff1ad0-faaa-4de9-9cf2-0d7a3dd5e115" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-ddff1ad0-faaa-4de9-9cf2-0d7a3dd5e115" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-62cf9f81-492a-4fe2-9fc3-c533e9ed0236" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-62cf9f81-492a-4fe2-9fc3-c533e9ed0236" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">3.92e+03</div><input id="attrs-b9440daf-a03c-4b9a-9332-5c60bfdc43f8" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-b9440daf-a03c-4b9a-9332-5c60bfdc43f8" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-4c090248-e1d8-41b6-aaf6-8799399ac22a" class="xr-var-data-in" type="checkbox"><label for="data-4c090248-e1d8-41b6-aaf6-8799399ac22a" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(3920.35351664)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">2.348</div><input id="attrs-91f3698e-24d7-4303-b7b0-2459d6954a52" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-91f3698e-24d7-4303-b7b0-2459d6954a52" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-ab0cdc19-b13f-4e37-8d0b-2d9cd66c7a59" class="xr-var-data-in" type="checkbox"><label for="data-ab0cdc19-b13f-4e37-8d0b-2d9cd66c7a59" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(2.34808285)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">218.9</div><input id="attrs-d275aacb-b55d-4514-85f9-15f974908447" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-d275aacb-b55d-4514-85f9-15f974908447" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-ed8b5d59-2172-4f6f-b59b-b1a594f6165e" class="xr-var-data-in" type="checkbox"><label for="data-ed8b5d59-2172-4f6f-b59b-b1a594f6165e" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(218.88660103)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-5a5aa566-0e26-4176-bf54-2affba1f12ed" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-5a5aa566-0e26-4176-bf54-2affba1f12ed" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-e424824a-5ef4-49c3-af9f-a7769c5315ff" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-e424824a-5ef4-49c3-af9f-a7769c5315ff" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
+    bad_sample_0  float64 8B 2.346
+    bad_sample_1  float64 8B 265.0
+    good_sample   float64 8B 4.039e+03</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-d03c2408-2093-4b83-9740-7af582719b62" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-d03c2408-2093-4b83-9740-7af582719b62" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-0b98d7ed-cd74-41bc-a3a7-c3406f807a1b" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-0b98d7ed-cd74-41bc-a3a7-c3406f807a1b" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-68836e5f-9c88-4299-8766-52aafa383f4f" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-68836e5f-9c88-4299-8766-52aafa383f4f" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">2.346</div><input id="attrs-b3439db0-2460-4077-a516-0967e6ae11b8" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-b3439db0-2460-4077-a516-0967e6ae11b8" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-a50994f8-65d6-4055-b1eb-1bfb679399b3" class="xr-var-data-in" type="checkbox"><label for="data-a50994f8-65d6-4055-b1eb-1bfb679399b3" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(2.34598403)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">265.0</div><input id="attrs-833d9823-422d-4eeb-a1b5-33b9704ccb9b" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-833d9823-422d-4eeb-a1b5-33b9704ccb9b" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-0fd1352b-f04f-4de0-a6ca-ac7408bf7e5e" class="xr-var-data-in" type="checkbox"><label for="data-0fd1352b-f04f-4de0-a6ca-ac7408bf7e5e" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(265.04440069)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">4.039e+03</div><input id="attrs-462a4d57-5453-4053-9010-d0a073770b3b" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-462a4d57-5453-4053-9010-d0a073770b3b" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-3cb5f82c-6400-46df-92ed-50acccc8f3cc" class="xr-var-data-in" type="checkbox"><label for="data-3cb5f82c-6400-46df-92ed-50acccc8f3cc" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(4039.0297706)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-1ea17c29-d603-47e2-a8a4-6e163c3735d4" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-1ea17c29-d603-47e2-a8a4-6e163c3735d4" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-4d8b62f8-be70-45b5-ab59-daf5f68a3ad5" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-4d8b62f8-be70-45b5-ab59-daf5f68a3ad5" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
 </div>
 </div>
 <p>One way to use the ESS is as a minimum requirement for trustworthy MCMC samples. It is recommended the ESS to be greater than 100 per chain. That is, for 4 chains we want a minimum of 400 effective samples.</p>
@@ -1305,9 +1368,10 @@ Note
 </div>
 </div>
 <p>We see that <code>az.summary(⋅)</code> returns two ESS values, <code>ess_bulk</code> and <code>ess_tail</code>. This is because different regions of the parameter space may have different ESS values since not all regions are sampled with the same efficiency. Intuitively, one may think that when sampling a distribution like a Gaussian it is easier to obtain better sample quality around the mean than around the tails, simply because we have more samples from that region. For some models, it could be the other way around, but the take-home message remains, not all regions are necessarily sampled with the same efficiency</p>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>az.summary(sample, kind<span class="op">=</span><span class="st">"diagnostics"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="24e21e25" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>az.summary(sample, kind<span class="op">=</span><span class="st">"diagnostics"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
+<div>
 <div>
 
 
@@ -1324,28 +1388,28 @@ Note
 </thead>
 <tbody>
 <tr class="odd">
+<td data-quarto-table-cell-role="th">bad_sample_0</td>
+<td>0.178</td>
+<td>0.145</td>
+<td>2.0</td>
+<td>11.0</td>
+<td>2.66</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">bad_sample_1</td>
+<td>0.019</td>
+<td>0.014</td>
+<td>265.0</td>
+<td>3581.0</td>
+<td>1.00</td>
+</tr>
+<tr class="odd">
 <td data-quarto-table-cell-role="th">good_sample</td>
 <td>0.004</td>
 <td>0.003</td>
-<td>3920.0</td>
-<td>4012.0</td>
+<td>4039.0</td>
+<td>3850.0</td>
 <td>1.00</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">bad_sample_0</td>
-<td>0.182</td>
-<td>0.148</td>
-<td>2.0</td>
-<td>11.0</td>
-<td>2.65</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">bad_sample_1</td>
-<td>0.022</td>
-<td>0.016</td>
-<td>219.0</td>
-<td>3817.0</td>
-<td>1.01</td>
 </tr>
 </tbody>
 </table>
@@ -1353,33 +1417,34 @@ Note
 </div>
 </div>
 </div>
+</div>
 <p>If we are going to use the MCMC samples to calculate central values such as means or medians then we have to make sure that the <code>ess_bulk</code> is sufficiently large, however, if we want to calculate intervals such as an HDI 94% we have to make sure that <code>ess_tail</code> be appropriate.</p>
 <p>ArviZ offers several functions linked to the ESS. For example, if we want to evaluate the performance of the sampler for several regions at the same time we can use <code>az.plot_ess</code>.</p>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>_, ax <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
-<span id="cb11-2"><a href="#cb11-2"></a>az.plot_ess(sample, ax<span class="op">=</span>ax)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/xarray/core/utils.py:494: FutureWarning: The return type of `Dataset.dims` will be changed to return a set of dimension names in future, in order to be more consistent with `DataArray.dims`. To access a mapping from dimension names to lengths, please use `Dataset.sizes`.
-  warnings.warn(</code></pre>
-</div>
+<div id="0b9d24a4" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>_, ax <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb12-2"><a href="#cb12-2"></a>az.plot_ess(sample, ax<span class="op">=</span>ax)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="MCMC_diagnostics_files/figure-html/cell-13-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="MCMC_diagnostics_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>A simple way to increase the ESS is to increase the number of samples, but it could be the case that the ESS grows very slowly with the number of samples, so even if we increased the number of samples 10 times we could still be very far from our target value. One way to estimate “how many more samples do we need” is to use <code>az.plot_ess(⋅, kind="evolution")</code>. This graph shows us how the ESS changed with each iteration, which allows us to make predictions.</p>
-<p>From <a href="#fig-ess_evolution">Figure&nbsp;<span>4.7</span></a> we can see that the ESS grows linearly with the number of samples for <code>good_sample</code>, and it does not grow at all for <code>bad_sample_0</code>. In the latter case, this is an indication that there is virtually no hope of improving the ESS simply by increasing the number of draws.</p>
-<div class="cell" data-execution_count="13">
+<p>From <a href="#fig-ess_evolution" class="quarto-xref">Figure&nbsp;<span>4.7</span></a> we can see that the ESS grows linearly with the number of samples for <code>good_sample</code>, and it does not grow at all for <code>bad_sample_0</code>. In the latter case, this is an indication that there is virtually no hope of improving the ESS simply by increasing the number of draws.</p>
+<div id="cell-fig-ess_evolution" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>_, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>) </span>
 <span id="cb13-2"><a href="#cb13-2"></a>az.plot_ess(sample, var_names<span class="op">=</span>[<span class="st">"good_sample"</span>, <span class="st">"bad_sample_0"</span>], kind<span class="op">=</span><span class="st">"evolution"</span>, ax<span class="op">=</span>axes)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/xarray/core/utils.py:494: FutureWarning: The return type of `Dataset.dims` will be changed to return a set of dimension names in future, in order to be more consistent with `DataArray.dims`. To access a mapping from dimension names to lengths, please use `Dataset.sizes`.
-  warnings.warn(</code></pre>
-</div>
 <div class="cell-output cell-output-display">
-<div id="fig-ess_evolution" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="MCMC_diagnostics_files/figure-html/fig-ess_evolution-output-2.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;4.7: ESS evolution plot for <code>good_sample</code> and <code>bad_sample_0</code>.</figcaption>
+<div id="fig-ess_evolution" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ess_evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="MCMC_diagnostics_files/figure-html/fig-ess_evolution-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ess_evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.7: ESS evolution plot for <code>good_sample</code> and <code>bad_sample_0</code>.
+</figcaption>
 </figure>
 </div>
 </div>
@@ -1389,10 +1454,9 @@ Note
 <h3 data-number="4.4.2" class="anchored" data-anchor-id="monte-carlo-standard-error-mcse"><span class="header-section-number">4.4.2</span> Monte Carlo standard error (MCSE)</h3>
 <p>An advantage of the ESS is that it is scale-free, it does not matter if one parameter varies between 0.1 and 0.2 and another between -2000 and 0, an ESS of 400 has the same meaning for both parameters. In models with many parameters, we can quickly identify which parameters are most problematic. However, when reporting results it is not very informative to know whether the ESS was 1372 or 1501. Instead, we would like to know the order of the errors we are making when approximating the posterior. This information is given by the <strong>Monte Carlo standard error</strong> (MCSE). Like the ESS, the MCSE takes into account the autocorrelation of the samples. This error should be below the desired precision in our results. That is, if for a parameter the MCSE is 0.1, it does not make sense to report that the mean of that parameter is 3.15. Since the correct value could easily be between 3.4 and 2.8.</p>
 <p>With ArviZ we can get the MCSE with <code>az.mcse(⋅)</code> or <code>az.summary(⋅)</code>.</p>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>az.mcse(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="87c45591" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>az.mcse(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
-
 <div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
 <defs>
 <symbol id="icon-database" viewbox="0 0 32 32">
@@ -1756,12 +1820,12 @@ dl.xr-attrs {
   stroke: currentColor;
   fill: currentColor;
 }
-</style><pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt;
+</style><pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt; Size: 24B
 Dimensions:       ()
 Data variables:
-    good_sample   float64 0.00447
-    bad_sample_0  float64 0.1823
-    bad_sample_1  float64 0.02204</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-7373ee51-ee19-4b89-909a-eff7542f50e7" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-7373ee51-ee19-4b89-909a-eff7542f50e7" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-43c4af2e-a6a9-437c-8d59-2f092454fa70" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-43c4af2e-a6a9-437c-8d59-2f092454fa70" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-57899a53-6a04-4199-bdd0-4d37e519d14a" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-57899a53-6a04-4199-bdd0-4d37e519d14a" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.00447</div><input id="attrs-49429155-3872-4456-afd2-fe7d7de732f5" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-49429155-3872-4456-afd2-fe7d7de732f5" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-f39c60ff-8252-49de-b797-528816b3e3d4" class="xr-var-data-in" type="checkbox"><label for="data-f39c60ff-8252-49de-b797-528816b3e3d4" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.0044704)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.1823</div><input id="attrs-0e9d299c-d647-41e3-9872-0ea4b47a9be4" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-0e9d299c-d647-41e3-9872-0ea4b47a9be4" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-45468ea4-8066-49ac-b19d-ab29027c98a9" class="xr-var-data-in" type="checkbox"><label for="data-45468ea4-8066-49ac-b19d-ab29027c98a9" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.18231423)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.02204</div><input id="attrs-657af634-6cc0-4df8-94b3-5a247691683e" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-657af634-6cc0-4df8-94b3-5a247691683e" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-0ad06aa9-f1d7-4011-b36a-c83d3352a574" class="xr-var-data-in" type="checkbox"><label for="data-0ad06aa9-f1d7-4011-b36a-c83d3352a574" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.02203518)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-fa524560-13f6-488b-b843-af59136edc57" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-fa524560-13f6-488b-b843-af59136edc57" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-a32a1473-5cf8-437a-9ae1-f23563526025" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-a32a1473-5cf8-437a-9ae1-f23563526025" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
+    bad_sample_0  float64 8B 0.1782
+    bad_sample_1  float64 8B 0.01945
+    good_sample   float64 8B 0.004354</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-9fef381d-8e7a-42e6-9a6c-ea0cb44bbc4c" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-9fef381d-8e7a-42e6-9a6c-ea0cb44bbc4c" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-b634d056-ef02-47f0-8efe-30b033c62ed4" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-b634d056-ef02-47f0-8efe-30b033c62ed4" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-385eb279-b429-441d-bf72-957f9f34589c" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-385eb279-b429-441d-bf72-957f9f34589c" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.1782</div><input id="attrs-4724bfe9-99ed-4fdb-ae08-65368be1b96f" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-4724bfe9-99ed-4fdb-ae08-65368be1b96f" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-4d2847fa-da73-4703-88f0-5bd5424a8ea4" class="xr-var-data-in" type="checkbox"><label for="data-4d2847fa-da73-4703-88f0-5bd5424a8ea4" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.17821579)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.01945</div><input id="attrs-b975a42f-cc57-48cd-a37a-367f4d183f41" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-b975a42f-cc57-48cd-a37a-367f4d183f41" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-a048de29-c3cb-446e-b8b2-901377fb1186" class="xr-var-data-in" type="checkbox"><label for="data-a048de29-c3cb-446e-b8b2-901377fb1186" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.0194457)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.004354</div><input id="attrs-7d81a46b-b64c-4383-a11d-2c20164a0829" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-7d81a46b-b64c-4383-a11d-2c20164a0829" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-e37736d7-b33a-423e-b64d-45a430273aa7" class="xr-var-data-in" type="checkbox"><label for="data-e37736d7-b33a-423e-b64d-45a430273aa7" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.00435447)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-b2ae4c14-4f7a-41e0-b81b-bd1de97f4b79" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-b2ae4c14-4f7a-41e0-b81b-bd1de97f4b79" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-6f880245-f029-479f-9f7a-d584e32fe98e" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-6f880245-f029-479f-9f7a-d584e32fe98e" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
 </div>
 </div>
 </section>
@@ -1770,9 +1834,9 @@ Data variables:
 <h2 data-number="4.5" class="anchored" data-anchor-id="diagnosis-of-gradient-based-algorithms"><span class="header-section-number">4.5</span> Diagnosis of gradient-based algorithms</h2>
 <p>Due to its internal workings, algorithms like NUTS offer some specific tests that are not available to other methods. These tests are generally very sensitive.</p>
 <p>To exemplify this we are going to load two InferenceData from pre-calculated models. The details of how these data were generated are not relevant at the moment. We will only say that they are two models that are mathematically equivalent but parameterized in different ways. In this case, the parameterization affects the efficiency of the sampler. The <code>centered</code> model is sampled more efficiently than the <code>uncentered</code> model.</p>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>idata_cm <span class="op">=</span> az.load_arviz_data(<span class="st">"centered_eight"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2"></a>idata_ncm <span class="op">=</span> az.load_arviz_data(<span class="st">"non_centered_eight"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cd241dbe" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>idata_cm <span class="op">=</span> az.load_arviz_data(<span class="st">"centered_eight"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>idata_ncm <span class="op">=</span> az.load_arviz_data(<span class="st">"non_centered_eight"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="transition-energy-vs-marginal-energy" class="level3" data-number="4.5.1">
 <h3 data-number="4.5.1" class="anchored" data-anchor-id="transition-energy-vs-marginal-energy"><span class="header-section-number">4.5.1</span> Transition energy vs marginal energy</h3>
@@ -1782,14 +1846,18 @@ Data variables:
 <li>A random walk in momentum space</li>
 </ul>
 <p>If the transition energy distribution is similar to the marginal energy distribution, then NUTS can generate samples of the marginal energy distribution that are <em>almost</em> independent between transitions. We can evaluate this visually or numerically, calculating the Bayesian Fraction of Missing Information (BFMI), as shown in the following figure.</p>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>_, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>), constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb17-2"><a href="#cb17-2"></a></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="cf">for</span> ax, idata, nombre <span class="kw">in</span> <span class="bu">zip</span>(axes.ravel(), (idata_cm, idata_ncm), (<span class="st">"centered"</span>, <span class="st">"non-centered"</span>)):</span>
-<span id="cb17-4"><a href="#cb17-4"></a>    az.plot_energy(idata, ax<span class="op">=</span>ax)</span>
-<span id="cb17-5"><a href="#cb17-5"></a>    ax.set_title(nombre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="7d33307e" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>_, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>), constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-2"><a href="#cb16-2"></a></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="cf">for</span> ax, idata, nombre <span class="kw">in</span> <span class="bu">zip</span>(axes.ravel(), (idata_cm, idata_ncm), (<span class="st">"centered"</span>, <span class="st">"non-centered"</span>)):</span>
+<span id="cb16-4"><a href="#cb16-4"></a>    az.plot_energy(idata, ax<span class="op">=</span>ax)</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    ax.set_title(nombre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="MCMC_diagnostics_files/figure-html/cell-17-output-1.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="MCMC_diagnostics_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1797,21 +1865,21 @@ Data variables:
 <h3 data-number="4.5.2" class="anchored" data-anchor-id="divergences"><span class="header-section-number">4.5.2</span> Divergences</h3>
 <p>One advantage of NUTS is that it <em>fails with style</em>. This happens, for example, when trying to go from regions of low curvature to regions of high curvature. In these cases, the numerical trajectories may diverge. Essentially this happens because in these cases there is no single set of hyper-parameters that allows efficient sampling of both regions. So one region is sampled properly and when the sampler moves to the other region it fails. Divergent numerical trajectories are extremely sensitive identifiers of <em>pathological neighborhoods</em>.</p>
 <p>The following example shows two things the <code>non-centered</code> model shows several divergences (turquoise circles) grouped in one region. In the <code>centered</code> model, which has no divergence, you can see that around that same region, there are samples for smaller values of <code>tau</code>. That is to say, the ‘uncentered’ model fails to sample a region, but at least it warns that it is having problems sampling that region!</p>
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>_, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>), constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb18-2"><a href="#cb18-2"></a></span>
-<span id="cb18-3"><a href="#cb18-3"></a></span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="cf">for</span> ax, idata, nombre <span class="kw">in</span> <span class="bu">zip</span>(axes.ravel(), (idata_cm, idata_ncm), (<span class="st">"centered"</span>, <span class="st">"non-centered"</span>)):</span>
-<span id="cb18-5"><a href="#cb18-5"></a>    az.plot_pair(idata, var_names<span class="op">=</span>[<span class="st">'theta'</span>, <span class="st">'tau'</span>], coords<span class="op">=</span>{<span class="st">'school'</span>:<span class="st">"Choate"</span>}, kind<span class="op">=</span><span class="st">'scatter'</span>,</span>
-<span id="cb18-6"><a href="#cb18-6"></a>                 divergences<span class="op">=</span><span class="va">True</span>, divergences_kwargs<span class="op">=</span>{<span class="st">'color'</span>:<span class="st">'C1'</span>},</span>
-<span id="cb18-7"><a href="#cb18-7"></a>                 ax<span class="op">=</span>ax)</span>
-<span id="cb18-8"><a href="#cb18-8"></a>    ax.set_title(nombre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/opt/hostedtoolcache/Python/3.10.13/x64/lib/python3.10/site-packages/xarray/core/utils.py:494: FutureWarning: The return type of `Dataset.dims` will be changed to return a set of dimension names in future, in order to be more consistent with `DataArray.dims`. To access a mapping from dimension names to lengths, please use `Dataset.sizes`.
-  warnings.warn(</code></pre>
-</div>
+<div id="8c428588" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>_, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>), constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-2"><a href="#cb17-2"></a></span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="cf">for</span> ax, idata, nombre <span class="kw">in</span> <span class="bu">zip</span>(axes.ravel(), (idata_cm, idata_ncm), (<span class="st">"centered"</span>, <span class="st">"non-centered"</span>)):</span>
+<span id="cb17-5"><a href="#cb17-5"></a>    az.plot_pair(idata, var_names<span class="op">=</span>[<span class="st">'theta'</span>, <span class="st">'tau'</span>], coords<span class="op">=</span>{<span class="st">'school'</span>:<span class="st">"Choate"</span>}, kind<span class="op">=</span><span class="st">'scatter'</span>,</span>
+<span id="cb17-6"><a href="#cb17-6"></a>                 divergences<span class="op">=</span><span class="va">True</span>, divergences_kwargs<span class="op">=</span>{<span class="st">'color'</span>:<span class="st">'C1'</span>},</span>
+<span id="cb17-7"><a href="#cb17-7"></a>                 ax<span class="op">=</span>ax)</span>
+<span id="cb17-8"><a href="#cb17-8"></a>    ax.set_title(nombre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="MCMC_diagnostics_files/figure-html/cell-18-output-2.png" class="img-fluid"></p>
+<div>
+<figure class="figure">
+<p><img src="MCMC_diagnostics_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1877,6 +1945,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -1945,13 +2040,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -2030,10 +2127,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -2043,8 +2157,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -2056,7 +2179,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -2100,6 +2346,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -2125,6 +2372,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -2186,17 +2459,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./distributions.html" class="pagination-link">
+      <a href="./distributions.html" class="pagination-link" aria-label="Random variables, distributions, and uncertainty">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Random variables, distributions, and uncertainty</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Model_criticism.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model_criticism</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./Model_criticism.html" class="pagination-link" aria-label="Model criticism">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model criticism</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
