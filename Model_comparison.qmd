@@ -5,6 +5,7 @@
 #| echo : false
 import arviz as az
 import numpy as np
+import preliz as pz
 import pymc as pm
 import matplotlib.pyplot as plt
 az.style.use("arviz-doc")
@@ -42,8 +43,7 @@ Bayesian models trough the use of prior, and the fact that the posterior is comp
 ### Information criteria
 
 
-Information criteria are a collection of closely related tools used to compare models in terms of goodness of fit and model complexity. In other words, information criteria formalize the intuition we developed at the beginning of the chapter.
-The exact way these quantities are derived has to do with a field known as [Information Theory](http://www.inference.org.uk/mackay/itila/book.html).
+Information criteria are a collection of closely related tools used to compare models in terms of goodness of fit and model complexity. In other words, information criteria formalize the intuition we developed at the beginning of the chapter. The exact way these quantities are derived has to do with a field known as [Information Theory](http://www.inference.org.uk/mackay/itila/book.html).
 
 
 An intuitive way to measure how well a model fits the data is to calculate the root mean square error between the data and the predictions made by the model:
@@ -159,11 +159,6 @@ where $_{-i}$ means that we leave observation $i$ out. A Naive implementation of
 Before continuing with our agenda, we need to take a short detour.
 
 
-
-
-
-
-
 #### Importance Sampling
 
 This is a technique for estimating properties of a distribution of interest $f$, given that we only have samples from a distribution $g$. Using importance sampling makes sense, for example, when it is simpler to sample $g$ than $f$.
@@ -187,17 +182,17 @@ Once the weights $w_i$ are obtained, we can use them to estimate properties of $
 In the code-block below $g$ is a Normal distribution and $f$ is a Gamma and we use importance sampling to estimate the PDF of $f$. This is just a pedagogic example, since we actually have a very direct way to calculate the PDF of a Gamma. But in practice $f$ can be a much more complex object.
 
 
-```python
+```{python}
 g = pz.Normal(0, 10)
 samples = g.rvs(1000)
 f = pz.Gamma(mu=4, sigma=1.5)
 
 w = f.pdf(samples) / g.pdf(samples)
 
-plt.hist(samples, bins=100, density=True, weights=w, alpha=0.6, color='g', label='Weighted samples')
+plt.hist(samples, bins=100, density=True, weights=w, alpha=0.6, color='C2', label='Weighted samples')
 plt.xlim(0, 15)
 
-f.plot_pdf();
+f.plot_pdf()
 ```
 
 When doing importance sampling, the more similar $g$ and $f$ are, the better the results will be. In practice, inferences are more reliable when $g$ has a larger support than $f$, that is, when it is "wider", intuitively we need the samples of $g$ to cover the entire support of $f$, or actualy to ensure we are not missing any high-density regions.
@@ -229,45 +224,38 @@ LOO and WAIC converge asymptotically, and they based on the same set of assumpti
 
 ### Calculating LOO
 
-After all this introduction, calculating LOO may seem somewhat disappointing. We just need to call ArviZ's `loo` function and pass it an InfereceData object containing the log-likelihood group. By default PyMC does NOT add this group when calling `pm.sample`. We can calculate it together with the posterior if we do `pm.sample(., )`
+After all this introduction, calculating LOO may seem somewhat disappointing. We just need to call ArviZ's `loo` function and pass it an InfereceData object containing a log-likelihood group.
 
+For the following example we are using an InferenceData distributed with ArviZ. More details about the model in the next chapter. For the moment we only need to know that is a model with two sets of observations, `home_points` and `away_points`. We can compute LOO for each one of those.
 
-```python
-with modelo_cat:
-    pm.compute_log_likelihood(idata_cat,
-                              extend_inferencedata=True,  # actualizamos "in-place"
-                              progressbar=False,
-                             )  
-```
-
-
-```python
-loo_p = az.loo(idata_cat)
+```{python}
+idata_rug = az.load_arviz_data('rugby')
+loo_p = az.loo(idata_rug, var_name="home_points")
 loo_p
 ```
 
-We can see that we get the estimated ELPD value using LOO and its standard error. `p_loo` can be roughly interpreted as the effective number of parameters. In fact, if you count the number of parameters of `cat_model` you will see that it is indeed 3.
+We can see that we get the estimated ELPD value using LOO and its standard error. `p_loo` can be roughly interpreted as the effective number of parameters. For some models this number should be close to the actual number of parameters, for models with regularization, like hierarchical models, it should be less than the actual number of parameters.
 
-Then we can see a table with the "Value of the Pareto diagnosis k. We already advanced something about this. We said that we used a Pareto to regularize the estimation of the importance weights. One of the parameters of that adjustment is called k. Since we have a Pareto adjustment per observation we have a k value per observation. This parameter is useful because it tells us two sides of the same coin, it tells us when an observation is "very influential" and it tells us that the approximation used by LOO could be failing for it. that observation (read the warning message with a pink background).
+Then we can see a table with the title "Pareto k diagnostic values". We previously said that we used a Pareto to regularize the estimation of the importance weights. One of the parameters of that fit is called $k$. Sometimes we call it $\hat k$ (becuase is an estimate of $k$). Since we have a Pareto adjustment per observation we have a $k$ value per observation. This parameter is useful because it tells us two sides of the same story, it tells us when an observation is "very influential" and it tells us that the approximation used by LOO could be failing for that observation.
 
-As a general rule, if k is less than 0.7 there are no problems, if we are between 0.7 and 1 it is very likely that we are in trouble and if it is greater than 1, we are lost. The cutoff value 0.7 is not fixed, it can strictly be lower and depends on the total number of samples of the posterior distribution, 4000, in this example. But when the number is a little greater than 2000 we are almost at 0.7. In practice it is common to use sample values ​​of 2000 or greater. Increasing the number of samples (`draws` in the `pm.sample` function) may reduce the value of k and so we could remove some of these warnings, but in general the number needed might be too large to make practical sense.
+As a general rule, if $k$ is less than 0.7 there are no problems, if it's between 0.7 and 1 is very likely that we are in trouble and if it's greater than 1, we are doom. The cutoff value 0.7 is not fixed, it can strictly be lower and depends on the total number of samples of the posterior distribution, 2000, in this example. But when the number of draws is about 2000 we are almost at 0.7. In practice it is common to use sample values ​​of 2000 or larger. Increasing the number of samples from the posterior may reduce the value of $k$ and so we could remove some of these warnings, but in general the number needed will be too large to make any practical sense.
 
-It is possible to visualize the values ​​of k, using `plot_khat`
+It is possible to visualize the values ​​of $k$, using `plot_khat`
 
 
-```python
+```{python}
 az.plot_khat(loo_p, threshold=0.7);
 ```
 
-While the main function of LOO is to compare models, the values ​​of k can be useful even if we only have one. For example, we could have extra knowledge that tells us why these observations are influential, perhaps there was a problem in data collection and the values ​​are incorrect. Or perhaps the values ​​are correct but from the perspective of our model they are influential, "strange", "surprising".
+While the main function of LOO is to compare models, the values ​​of $k$ can be useful even if we only have one. For example, we could have extra knowledge that tells us why these observations are influential, perhaps there was a problem in data collection and the values ​​are incorrect. Or perhaps the values ​​are correct but from the perspective of our model they are influential, "strange", "surprising".
 
- If k > 0.7, the value of p_loo can give us some more information. Where $p$ is the total number of parameters in a model.
+ If $k > 0.7$, the value of p_loo can give us some more information. Where $p$ is the total number of parameters in a model.
 
-* If p_loo << p then the model must be misspecified. This should also be seen in post-hoc predictive testing. One solution is to use an overdispersed model (such as changing a Poisson for a NegativeBinomial or for a ZeroInflatedPoisson or HurdlePoisson, or changing a Normal for a Student's T, etc.). Or it is likely that the model needs more structure or complexity, perhaps we need a non-linear term, etc.
+* If $p_{\text{loo}} << p$ then the model must be misspecified. This should also be seen in post-hoc predictive testing. One solution is to use an overdispersed model (such as changing a Poisson for a NegativeBinomial or for a ZeroInflatedPoisson or HurdlePoisson, or changing a Normal for a Student's T, etc.). Or it is likely that the model needs more structure or complexity, perhaps we need a non-linear term, etc.
 
-* If p_loo < p and the observations are relatively few compared to $p$, (say p>N/5). It is likely that we have a model that is too flexible and/or priors that are too vague. This can happen for hierarchical models with very few observations per group or for example for splines with many knots or Gaussian processes with very short scale values.
+* If $p_{\text{loo}} < p$ and the observations are relatively few compared to $p$, (say $p>N/5$). It is likely that we have a model that is too flexible and/or priors that are too vague. This can happen for hierarchical models with very few observations per group or for example for splines with many knots or Gaussian processes with very short scale values.
 
-* If p_loo > p, then the model has very serious problems. If p<<N, then posterior predictive tests should also report problems. If, however, p is relatively large (say p>N/5). So post-hoc predictive testing may not reflect problems.
+* If $p_{\text{loo}} > p$, then the model has very serious problems. If $p<<N$, then posterior predictive tests should also report problems. If, however, p is relatively large (say $p>N/5$). So post-hoc predictive testing may not reflect problems.
 
 
 Finally, another way to use LOO even in the absence of another model is through `plot_loo_pit`. If the graph looks similar to the one we saw for the marginal Bayesian p-values, it is because we are doing the same thing. But this time using LOO, we are considering:
@@ -278,8 +266,8 @@ $$
 
 That is, we are evaluating, approximately, the model's ability to predict an observation when we remove that observation from the observed data.
 
-```python
-az.plot_loo_pit(idata_cat, y="acc", use_hdi=True)
+```{python}
+az.plot_loo_pit(idata_rug, y="home_points", use_hdi=True)
 ```
 
 #### Other information criteria
@@ -291,7 +279,10 @@ Another widely used criterion is BIC (Bayesian Information Criteria), like logis
 But more importantly, BIC differs from AIC and WAIC in its objective. AIC and WAIC try to reflect which model generalizes better to other data (predictive accuracy) while BIC tries to identify which is the _correct_ model and therefore is more related to Bayes factors than with WAIC. Later we will discuss Bayes Factors and see how it differs from criteria such as WAIC and LOO.
 
 
-```python
+::: {.panel-tabset}
+## PyMC
+
+```{python}
 target = pz.StudentT(nu=4, mu=0, sigma=1).rvs(200)
 
 with pm.Model() as modelo_n:
@@ -308,8 +299,14 @@ with pm.Model() as modelo_t:
     idata_t = pm.sample(idata_kwargs={"log_likelihood":True})
 ```
 
+## PyStan
 
-```python
+``` {.python}
+## comming soon
+```
+:::
+
+```{python}
 cmp_df = az.compare({'modelo_n':idata_n, 'modelo_t':idata_t})
 cmp_df
 ```
@@ -317,19 +314,18 @@ cmp_df
 In the rows we have the compared models and in the columns we have
 
 * rank: the order of the models (from best to worst)
-* elpd – the point estimate of the elpd using
-*p: the effective parameters
-* elpd_diff - the difference between the ELPD of the best model and the other models
+* elpd_loo: the point estimate of the elpd using LOO
+* p_loo: the effective number of parameters
+* elpd_diff: the difference between the ELPD of the best model and the other models
 * weight: the relative weight of each model. If we wanted to make predictions by combining the different models, instead of choosing just one, this would be the weight we should assign to each model. In this case we see that `model_t` takes all the weight.
-* se : the standard error of the ELPD
-* dse : the standard error of the differences
+* se: the standard error of the ELPD
+* dse: the standard error of the differences
 * warning: a warning about whether there is at least one high k value
-* scale - the scale on which the ELPD is calculated
+* scale: the scale on which the ELPD is calculated
 
-We can also obtain more or less the same information graphically using the `az.compareplot function
+We can obtain similar information, but graphically, using the `az.compareplot function
 
-
-```python
+```{python}
 az.plot_compare(cmp_df, plot_ic_diff=False);
 ```
 
@@ -338,3 +334,139 @@ az.plot_compare(cmp_df, plot_ic_diff=False);
 * For all models except *the best*, we also obtain a triangle indicating the value of the ELPD difference between each model and the *best* model. The gray error bar indicating the standard error of the differences between the point estimates.
 
 The simplest way to use information criteria is to choose a single model. Simply choose the model with the highest ELPD value. If we follow this rule we will have to accept that the quadratic model is the best. Even if we take into account the standard errors we can see that they do not overlap. Which gives us some security that the models are indeed *different* from each other. If, instead, the standard errors overlapped, we should provide a more nuanced answer.
+
+
+## Bayes factors
+
+An alternative to cross-validation, approximate cross-validation with LOO and information criteria is Bayes factors. It is common for Bayes factors to show up in the literature as a Bayesian alternative to frequentist hypothesis testing.
+
+We can compare $K$ models by computing their **marginal likelihood**, $p(y \mid M_k)$, i.e., the probability of the observed data $Y$ given the model $M_K$. The marginal likelihood is the normalization constant of Bayes' theorem. We can see this if we write Bayes' theorem and make explicit the fact that all inferences depend on the model.
+
+$$
+p (\theta \mid Y, M_k ) = \frac{p(Y \mid \theta, M_k) p(\theta \mid M_k)}{p(Y \mid M_k)}
+$$
+
+where, $Y$ is the data, $\theta$ is the parameters, and $M_K$ is a model out of $K$ competing models.
+
+If our main objective is to choose only one model, the *best* from a set of models, we can choose the one with the largest value of $p(y \mid M_k)$. This is fine if we assume that all models have the same prior probability. Otherwise, we must calculate:
+
+
+$$
+p(M_k \mid y) \propto p(y \mid M_k) p(M_k)
+$$
+
+If, instead, our main objective is to compare models to determine which are more likely and to what extent, this can be achieved using the Bayes factors:
+
+$$
+BF_{01} = \frac{p(y \mid M_0)}{p(y \mid M_1)}
+$$
+
+That is the ratio between the marginal likelihood of two models. The higher the value of $BF_{01}$, the *better* the model in the numerator ($M_0$ in this example). To facilitate the interpretation of the Bayes factors, and to put numbers into words, Harold Jeffreys proposed a scale for their interpretation, with levels of *support* or *strength*, see the following table. 
+
+
+| **Bayes Factor** | **Support**    |
+|------------------|----------------|
+| 1--3             | Anecdotal      |
+| 3--10            | Moderate       |
+| 10--30           | Strong         |
+| 30--100          | Very Strong    |
+| >100             | Extreme        |
+
+
+Keep in mind that if you get numbers below 1, then the support is for $M_1$, i.e., the model in the denominator. Tables are also available for those cases, but notice that you can simply take the inverse of the obtained value.
+
+It is very important to remember that these rules are just conventions – simple guides at best. Results should always be put in the context of our problems and should be accompanied by enough detail so that others can assess for themselves whether they agree with our conclusions. The proof necessary to ensure something in particle physics, or in court, or to decide to carry out an evacuation in the face of a looming natural catastrophe is not the same.
+
+
+### Some observations
+ 
+We will now briefly discuss some key facts about the marginal likelihood:
+
+* The good: Occam's razor included. Models with lots of parameters have a higher penalty than models with few parameters. The intuitive reason is that the greater the number of parameters, the more the prior *extends* with respect to the likelihood. An example where it is easy to see this is with nested models: for example, a polynomial of order 2 "contains" the models polynomial of order 1 and polynomial of order 0.
+* The bad: For many problems, the marginal likelihood cannot be calculated analytically. Also, approximating it numerically is usually a difficult task that in the best of cases requires specialized methods and, in the worst case, the estimates are either impractical or unreliable. In fact, the popularity of the MCMC methods is that they allow obtaining the posterior distribution without the need to calculate the marginal likelihood.
+* The ugly: The marginal likelihood depends *very sensitively* on the prior distribution of the parameters in each model $p(\theta_k \mid M_k)$.
+
+
+It is important to note that the *good* and the *ugly* points are related. Using marginal likelihood to compare models is a good idea because it already includes a penalty for complex models (which helps us prevent overfitting), and at the same time, a change in the prior will affect the marginal likelihood calculations. At first, this sounds a bit silly; we already know that priors affect calculations (otherwise we could just avoid them). But we are talking about changes in the prior that would have a small effect in the posterior but a great impact on the value of the marginal likelihood.
+ 
+The use of Bayes factors is often a watershed among Bayesians. The difficulty of its calculation and the sensitivity to the priors are some of the arguments against it. Another reason is that, like p-values and hypothesis testing in general, Bayes factors favor dichotomous thinking over the estimation of the "effect size." In other words, instead of asking ourselves questions like: How many more years of life can a cancer treatment provide? We end up asking if the difference between treating and not treating a patient is "statistically significant." Note that this last question can be useful in some contexts. The point is that in many other contexts, this type of question is not the question that interests us; we're only interested in the one that we were taught to answer.
+
+### Calculation of Bayes factors
+
+The marginal likelihood (and the Bayes factors derived from it) is generally not available in closed form, except for a few models. For this reason, many numerical methods have been devised for its calculation. Some of these methods are so simple and [naive](https://radfordneal.wordpress.com/2008/08/17/the-harmonic-mean-of-the-likelihood-worst-monte-carlo-method-ever) that they work very poorly in practice. We are going to discuss only one way to compute them, once that can be applied under some particular cases.
+
+
+
+### Savage–Dickey ratio
+
+There are times when we want to compare a null hypothesis $H_0$ (or null model) against an alternative $H_1$ hypothesis. For example, to answer the question "Is this coin biased?", we could compare the value $\theta = 0.5$ (representing no bias) with the output of a model in which we allow $\theta$ to vary. For this type of comparison, the null model is nested within the alternative, which means that the null is a particular value of the model we are building. In those cases, calculating the Bayes factor is very easy and does not require any special methods. We only need to compare the prior and posterior evaluated at the null value (for example, $\theta = 0.5$) under the alternative model. We can see that this is true from the following expression:
+
+
+$$
+BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p(\theta=0.5 \mid H_1)}
+$$
+
+This is true only when $H_0$ is a particular case of $H_1$, [see](https://statproofbook.github.io/P/bf-sddr). 
+
+Let's do it. We only need to sample the prior and posterior for a model. Let's try the BetaBinomial model with a Uniform prior:
+
+::: {.panel-tabset}
+## PyMC
+
+``` {python}
+y = np.repeat([1, 0], [50, 50])  # 50 heads, 50 tails
+with pm.Model() as model_uni:
+    a = pm.Beta("a", 1, 1)
+    yl = pm.Bernoulli("yl", a, observed=y)
+    idata_uni = pm.sample(2000, random_seed=42)
+    idata_uni.extend(pm.sample_prior_predictive(8000))
+```
+
+## PyStan
+
+``` {.python}
+## comming soon
+```
+:::
+
+And now we call `az.plot_bf`
+
+``` {python}
+az.plot_bf(idata_uni, var_name="a", ref_val=0.5);
+```
+
+In the previous Figure we can see one KDE for the prior (black) and one for the posterior (gray). The two black dots show that we evaluated both distributions at the value 0.5. We can see that the Bayes factor in favor of the null hypothesis, `BF_01`, is $\approx 8$, which we can interpret as *moderate evidence* in favor of the null hypothesis.
+
+
+As we have already discussed, the Bayes factors measure which model, as a whole, is better at explaining the data. This includes the prior, even for models that the prior has a relatively low impact on the computation of the posterior. We can also see this prior effect by comparing a second model to the null model.
+
+If, instead, our model were a BetaBinomial with a  prior Beta(30, 30), the `BF_01` would be lower (\textit{anecdotal} on the Jeffrey scale). This is because, according to this model, the value of $\theta=0.5$ is much more likely a priori than for a Uniform prior, and therefore the prior and posterior will be much more similar. That is, it is not very \textit{surprising} to see that the posterior is concentrated around 0.5 after collecting data. Don't just believe me, let's calculate it:
+
+::: {.panel-tabset}
+## PyMC
+
+``` {python}
+with pm.Model() as model_conc:
+    a = pm.Beta("a", 30, 30)
+    yl = pm.Bernoulli("yl", a, observed=y)
+    idata_conc = pm.sample(2000, random_seed=42)
+    idata_conc.extend(pm.sample_prior_predictive(8000))
+```
+
+## PyStan
+
+``` {.python}
+## comming soon
+```
+:::
+
+```{python}
+az.plot_bf(idata_conc, var_name="a", ref_val=0.5);
+```
+
+We can see that the `BF_01` is $\approx 1.6$, which we can interpret as *anecdotal evidence* in favor of the null hypothesis (see the Jeffreys' scale, discussed earlier). 
+
+
+### Bayes factors vs the alternatives
+
+We could say that the Bayes factors measure which model, as a whole, is better for explaining the data. This includes the details of the prior, no matter how similar the model predictions are. In many scenarios, this is not what interests us when comparing models. For many real problems prior are not intended to be an accurate description of the *True* prior distribution of parameters, instead in many problems priors are choosen using some information and with the goal of providing some regulatization. In this and other cases we prefer to evaluate models in terms of how similar their predictions are. For those cases, we can use LOO. 
