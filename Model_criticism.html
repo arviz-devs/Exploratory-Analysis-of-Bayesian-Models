@@ -303,7 +303,7 @@ window.Quarto = {
 </header>
 
 
-<div id="2ec9ee1a" class="cell" data-execution_count="1">
+<div id="ca1209e7" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
 </div>
@@ -340,7 +340,7 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="c692bd64" class="cell" data-execution_count="2">
+<div id="6de80194" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb2-2"><a href="#cb2-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -360,7 +360,7 @@ window.Quarto = {
 </div>
 </div>
 <p>In the following plot, we can see samples from the prior predictive distribution (blue solid lines). If we aggregate all the individual samples into a single large sample we get the dashed cyan line. To help us interpret this plot we have added two <strong>reference lines</strong>, the average length/height of a newborn and the average (male) adult height. These references are approximate values, but they are useful to provide a sense of the scale of the expected data. We can see that our model is bananas, not only heights can be negative, but the bulk of the prior predictive distribution is outside of our reference values.</p>
-<div id="162486b0" class="cell" data-execution_count="3">
+<div id="5cd80b21" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -378,7 +378,7 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="1796cd2a" class="cell" data-execution_count="4">
+<div id="4245e7cd" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb6-2"><a href="#cb6-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">175</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -398,7 +398,7 @@ window.Quarto = {
 </div>
 </div>
 <p>We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is now within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are to pick other priors and other reference values. Maybe you can use the values for the taller and shorter person in the world as reference values.</p>
-<div id="3db9e65b" class="cell" data-execution_count="5">
+<div id="d1b35109" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -414,7 +414,7 @@ window.Quarto = {
 <p>We recommend weakly informative priors instead of informative priors because usually we do not have enough information to set very informative priors or that process can be very time-consuming. And we recommend weakly informative priors instead of very vague priors because adding some prior information is usually better than adding none and for some problems, it can be not that difficult. The more data we have the less impact the priors will have on the posterior, but still usually there is some gain in avoiding non-sensical values and starting from more taught priors. Even sometimes sampling is more efficient when we avoid very vague priors. Also very importantly, even if the priors have little effect doing prior predictive checks and <em>playing</em> with piors can help us to understand the model and the problem better.</p>
 <p>If you want to learn more about prior elicitation you can check the <a href="https://preliz.readthedocs.io/">PreliZ</a> library.</p>
 <p>One final note. When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the collection of distributions, it is usually a good idea to plot the cumulative distribution. This is because the individual distributions can be hard to see, but the cumulative distribution is easier to interpret.</p>
-<div id="e93349e1" class="cell" data-execution_count="6">
+<div id="fbcb32d9" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>, kind<span class="op">=</span><span class="st">"cumulative"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
