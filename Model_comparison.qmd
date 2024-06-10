@@ -49,7 +49,9 @@ Information criteria are a collection of closely related tools used to compare m
 An intuitive way to measure how well a model fits the data is to calculate the root mean square error between the data and the predictions made by the model:
 
 
-$$\frac{1}{n} \sum _{i=1}^{n} (y_i - \operatorname{E} (y_i \mid \theta))^2$$
+$$
+\frac{1}{N} \sum _{i}^{N} (y_i - \operatorname{E} (y_i \mid \theta))^2
+$$
 
 
 $\operatorname{E} (y_i \mid \theta)$ is the predicted value given the estimated parameters. It is important to note that this is essentially the average of the difference between the observed and predicted data. Taking the square of the errors ensures that differences do not cancel out and emphasizes larger errors compared to other alternatives such as calculating the absolute value.
@@ -58,7 +60,9 @@ The mean square error may be familiar to us since it is very popular. But if we 
 
 When we adopt a probabilistic approach we see that a more general (and *natural*) expression is the following:
 
-$$ \sum _{i=1}^{n} \log p(y_i \mid \theta)$$
+$$
+\sum _i^N \log p(y_i \mid \theta)
+$$
 
 That is, the sum (over $n$ data) of the _likelihoods_ (on a logarithmic scale). This is _natural_ because by choosing a likelihood in a model we are implicitly choosing a metric to evaluate the fit of the model. When $p(y_i \mid \theta)$ is a Gaussian then the log-likelihood sum will be proportional to the mean square error.
 
@@ -68,12 +72,16 @@ That is, the sum (over $n$ data) of the _likelihoods_ (on a logarithmic scale). 
 
 This is a very well-known and widely used information criterion outside the Bayesian universe and is defined as:
 
-$$AIC = -2 \sum _{i=1}^{n} \log p(y_i \mid \hat{\theta}_{mle}) + 2 k $$
+$$
+AIC = -2 \sum_i^N \log p(y_i \mid \hat{\theta}_{mle}) + 2 k
+$$
 
 Where, $k$ is the number of model parameters and $\hat{\theta}_{mle}$ is the maximum likelihood estimate for $\theta$. For the rest of our discussion we will omit the constant -2 and write
 
 
-$$AIC = \sum _{i=1}^{n} \log p(y_i \mid \hat{\theta}_{mle}) - k $$
+$$
+AIC = \sum_i^N \log p(y_i \mid \hat{\theta}_{mle}) - k
+$$
 
 In this way it is easier to see that the Akaike criterion is a penalized maximum likelihood, because it becomes smaller the more parameters a model has. Furthermore, this version without the -2 has a clearer correspondence with other expressions which we will see below.
 
@@ -93,27 +101,28 @@ We can see the Widely applicable information criterion (WAIC) as the fully Bayes
 Anyway, as we already saw in the Akaike criterion, the goodness of fit is given by:
 
 $$
-\sum _{i=1}^{n} \log p(y_i \mid \hat{\theta}_{mle})
+\sum_i^N \log p(y_i \mid \hat{\theta}_{mle})
 $$
 
 But in Bayesian statistics, we do NOT have a point estimate of $\theta$. We have a distribution, so we should do:
 
 $$
-\sum_{i=1}^{n} \log
- \int \ p(y_i \mid \theta) \; p(\theta \mid y) d\theta
+\sum_i^N \log \int \ p(y_i \mid \theta) \; p(\theta \mid y) d\theta
 $$
 
 In general we do not have an analytical expression for the posterior, $p(\theta \mid y)$ instead we usually work with samples (such as those obtained by MCMC), then we can approximate the integral by:
 
 $$
-\sum_i^n \log \left(\frac{1}{S} \sum _{s=1}^S p(y_i \mid \theta^s) \right)
+\sum_i^N \log \left(\frac{1}{S} \sum _{j}^S p(y_i \mid \theta^j) \right)
 $$
 
 We will call this quantity ELPD, which is short for expected log-predictive density. When the likelihood is discrete, we should use "probability" instead of "density", but it is a common practive to avoid pedantery.
 
 OK, now we have Bayesian way to measure goodness of fit. Now we need a term that penalizes the complexity of the model. Finding the correct expression for this requires work, so we are going to present it without justifying.
 
-$$WAIC = \sum_i^n \log \left(\frac{1}{S} \sum _{s=1}^S p(y_i \mid \theta^s) \right) - \sum_i^n \left( V_{s=1}^S \log p(y_i \mid \theta^s) \right)$$
+$$
+WAIC = \sum_i^N \log \left(\frac{1}{S} \sum _{s}^S p(y_i \mid \theta^j) \right) - \sum_i^N \left( V_{j}^S \log p(y_i \mid \theta^j) \right)
+$$
 
 
 Where the penalty term is given by the variance of the log-likelihoods over the $S$ samples of the posterior. Intuitively, the term penalizes models that have a lot of variability in their predictions. Let's look at a linear model as an example:
@@ -143,14 +152,13 @@ Cross-validation is a very simple and useful idea, but for some models or for la
 There is another alternative to penalize the term
 
 $$
-\sum_i^n \log \left(\frac{1}{S} \sum _{s=1}^S p(y_i \mid \theta^s) \right)
+\sum_i^N \log \left(\frac{1}{S} \sum _{j}^S p(y_i \mid \theta^j) \right)
 $$
 
 It can be done by computing
 
 $$
-\sum_{i}^{n} \log
- \left( \frac{1}{s}\sum_j^s \mathbin{\color{#E9692C}{p(y_i \mid \theta _{-i}^j)}} \right)
+\sum_i^N  \log \left( \frac{1}{S}\sum_j^S \mathbin{\color{#E9692C}{p(y_i \mid \theta _{-i}^j)}} \right)
 $$
 
 
@@ -189,10 +197,10 @@ f = pz.Gamma(mu=4, sigma=1.5)
 
 w = f.pdf(samples) / g.pdf(samples)
 
-plt.hist(samples, bins=100, density=True, weights=w, alpha=0.6, color='C2', label='Weighted samples')
-plt.xlim(0, 15)
-
-f.plot_pdf()
+ax = f.plot_pdf()
+ax.hist(samples, bins=100, density=True, weights=w, 
+        alpha=0.6, color='C2', label='Weighted samples')
+ax.set_xlim(0, 15)
 ```
 
 When doing importance sampling, the more similar $g$ and $f$ are, the better the results will be. In practice, inferences are more reliable when $g$ has a larger support than $f$, that is, when it is "wider", intuitively we need the samples of $g$ to cover the entire support of $f$, or actualy to ensure we are not missing any high-density regions.
@@ -202,9 +210,9 @@ When doing importance sampling, the more similar $g$ and $f$ are, the better the
 
 Now that we have a better idea of ​​importance sampling let's see how we can use it. The distribution we know is the posterior distribution, and the one we want to approximate by importance sampling is the posterior distribution leaving one out $p(y_i \mid \theta_{-i}^j)$. Therefore, the importance weights that we are interested in calculating are:
 
-\begin{equation}
+$$
  w_i^j = \frac{p(\theta^j \mid y_{-i} )}{p(\theta^j \mid y)} \propto \frac{p(\theta) \prod_{i\not =-i}^n p(y_i \mid \theta)}{p(\theta) \prod_i^n p(y_i \mid \theta)} \propto \frac{1}{p(y_i \mid \theta^j) }
-\end{equation}
+$$
 
 That is to say, the common terms (and therefore cancel each other) between the numerator and the denominator are all except the likelihood for the observation we want to remove. Note that the weights are proportional and are not normalized, but this is not a problem since they can be normalized simply by dividing each weight by the total sum of the weights.
 
