@@ -56,16 +56,67 @@ $$
 
 $\operatorname{E} (y_i \mid \theta)$ is the predicted value given the estimated parameters. It is important to note that this is essentially the average of the difference between the observed and predicted data. Taking the square of the errors ensures that differences do not cancel out and emphasizes larger errors compared to other alternatives such as calculating the absolute value.
 
-The mean square error may be familiar to us since it is very popular. But if we stop and reflect on this quantity we will see that in principle there is nothing special about it and we could well come up with other similar expressions. 
+The mean square error may be familiar to us since it is very popular. But if we stop and reflect on this quantity we will see that in principle there is nothing special about it and we could well come up with more general expressions. 
 
-When we adopt a probabilistic approach we see that a more general (and *natural*) expression is the following:
+
+### Entropy
+
+For a probability distribution with $N$ possible different events which each possible event having probability $p_i$, the entropy is defined as:
 
 $$
-\sum _i^N \log p(y_i \mid \theta)
+H(p) = - \mathbb{E}[\log{p}] = -\sum_i^N p_i \log{p_i}
 $$
 
-That is, the sum (over $n$ data) of the _likelihoods_ (on a logarithmic scale). This is _natural_ because by choosing a likelihood in a model we are implicitly choosing a metric to evaluate the fit of the model. When $p(y_i \mid \theta)$ is a Gaussian then the log-likelihood sum will be proportional to the mean square error.
+Entropy is a measure of the uncertainty of a distribution. In this sense we can say that the uncertainty contained in a distribution is the logarithm of the average probability of an event. If only one event is possible the entropy will be 0, if all events have the same probability the entropy will be maximum. The concept of entropy can be extended to continuous distributions, but we will not go into those details. Figure @fig-entropy_bernoulli shows the entropy of a Bernoulli distribution for four different values of the probability of success. We can see that the entropy is maximum when the probability of success is 0.5 and minimum when the probability of success is 0.
 
+
+```{python}
+#| code-fold: true
+#| label: fig-entropy_bernoulli
+#| fig-cap: "Entropy of a Bernoulli distribution as a function of the probability of success"
+_, axes = plt.subplots(2, 2, sharex=True, sharey=True)
+
+for p, ax in zip([0.5, 0.1, 0.9, 0.0001], axes.ravel()):
+    dist = pz.Bernoulli(p=p)
+    dist.plot_pdf(ax=ax, legend=False)
+    ax.set_title(f"Entropy={dist.entropy():.2f}")
+    ax.set_ylim(-0.05, 1.05)
+```
+
+The concept of entropy appears many times in statistics. It can be useful, for example when defining priors. In general we want to use a prior that has maximum entropy given our knowledge (see for example PreliZ's `maxent` function). And also when comparing models. Let's see.
+
+
+Suppose we have a target distribution $p$, with which we cannot work directly and we only have access to $q$. We want to evaluate how well $q$ approximates $p$, or whether $q$ is a parametric family find what parameters make $q$ as close to $p$ as possible. One way to do this is to measure the Kulback-Leibler divergence:
+
+$$
+\mathbb{KL}(p \parallel q) =  \overbrace{-\sum_i^N p_i \log{q_i}}^{H(p, q)} -  \overbrace{\left(-\sum_{i}^n p_i \log{p_i}\right)}^{H(p)}
+$$
+
+Notice that it has two components, the entropy of $p$, $H(p)$ and the cross entropy $H(p, q)$, that is, the entropy of $q$ but evaluated according to $p$. This may seem somewhat abstract, but if we think that we have $N$ samples that we assume come from an unknown distribution $p$ and we have a model described by $q(y \mid \theta)$, then we will see that we are describing a typical situation in data analysis.
+
+According to this expression, the KL divergence represents the "extra" entropy that we introduce when approximating $p$ by $q$. It is common to find it written in other ways, such as:
+
+
+$$
+\mathbb{KL}(p \parallel q) \quad=\quad- \sum_i^N p_i (\log{q_i} - \log{p_i}) \quad=\quad \mathbb{E}_p[\log{p}] - \mathbb{E}_p[\log{q}] \quad=\quad \sum_i^N p_i \log{\frac{p_i}{q_i}}
+$$
+
+
+All equivalent and useful forms depending on context. Something common in all these expressions is that we cannot apply directly if $p$ is unknown. For example, if $p$ represents the **data generating process** or the **population** or the **true** distribution, we are lost... But, if what we are interested in is comparing models we will see that NO Direct calculation is necessary, the reason is that even when we do not know $p$, its entropy is a constant term.
+
+
+$$
+\begin{split}
+        \mathbb{KL}(p \parallel q_0) =&\; \mathbb{E}[\log{p}] - \mathbb{E}[\log{q(y \mid \theta_0)}] \\
+        \mathbb{KL}(p \parallel q_1) =&\; \mathbb{E}[\log{p}] - \mathbb{E}[\log{q(y \mid \theta_1)}] \\
+        &\cdots \\
+        \mathbb{KL}(p \parallel q_2) =&\; \mathbb{E}[\log{p}] - \mathbb{E}[\log{q(y \mid \theta_2)}]
+\end{split}
+$$
+
+If we compare models then the best model, given the set of compared models, will be the one that has a larger likelihood value. In other words, mimicking KL divergence is proportional to maximizing likelihood.
+
+In practice we also do not have access to $\mathbb{E}[\log{q}]$, what we can do is estimate this quantity from a sample. Since we already know how to use a sample to estimate the parameters of a model and using the same sample to evaluate it introduces a bias, which we must somehow correct. One way to correct this bias is given by the information criteria.
 
 
 #### Akaike information criterion
@@ -200,7 +251,7 @@ w = f.pdf(samples) / g.pdf(samples)
 ax = f.plot_pdf()
 ax.hist(samples, bins=100, density=True, weights=w, 
         alpha=0.6, color='C2', label='Weighted samples')
-ax.set_xlim(0, 15)
+ax.set_xlim(0, 15);
 ```
 
 When doing importance sampling, the more similar $g$ and $f$ are, the better the results will be. In practice, inferences are more reliable when $g$ has a larger support than $f$, that is, when it is "wider", intuitively we need the samples of $g$ to cover the entire support of $f$, or actualy to ensure we are not missing any high-density regions.
