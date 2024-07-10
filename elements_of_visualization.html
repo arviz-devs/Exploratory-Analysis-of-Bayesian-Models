@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.54">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Exploratory Analysis of Bayesian Models - 1&nbsp; Elements of visualization</title>
+<title>1&nbsp; Elements of visualization – Exploratory Analysis of Bayesian Models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -143,13 +143,13 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./elements_of_visualization.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Elements of visualization</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -164,7 +164,7 @@ div.csl-indent {
       <a href="./">Exploratory Analysis of Bayesian Models</a> 
         <div class="sidebar-tools-main tools-wide">
     <div class="dropdown">
-      <a href="" title="github" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="github"><i class="bi bi-github"></i></a>
+      <a href="" title="github" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="github"><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
           <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/arviz-devs/Exploratory-Analysis-of-Bayesian-Models">
@@ -297,7 +297,7 @@ div.csl-indent {
 </header>
 
 
-<div id="bfd8fbb5" class="cell" data-execution_count="1">
+<div id="3d964be4" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
 </div>
@@ -309,7 +309,7 @@ div.csl-indent {
 <section id="coordinate-systems-and-axes" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="coordinate-systems-and-axes"><span class="header-section-number">1.1</span> Coordinate systems and axes</h2>
 <p>Data visualization requires defining position scales to determine where different data values are located in a graphic. In 2D visualizations, two numbers are required to uniquely specify a point. Thus, we need two position scales. The arrangement of these scales is known as a coordinate system. The most common coordinate system is the 2D Cartesian system, using x and y values with orthogonal axes. Conventionally with the x-axis running horizontally and the y-axis vertically. <a href="#fig-cartesian" class="quarto-xref">Figure&nbsp;<span>1.1</span></a> shows a Cartesian coordinate system.</p>
-<div id="fig-cartesian" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-cartesian" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cartesian-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/cartesian_coordinates.png" class="img-fluid figure-img" style="width:60.0%">
@@ -320,7 +320,7 @@ Figure&nbsp;1.1: Cartesian coordinate system
 </figure>
 </div>
 <p>In practice, we typically shift the axes so that they do not necessarily pass through the origin (0,0), and instead their location is determined by the data. We do this because it is usually more convenient and easier to read to have the axes to the left and bottom of the figure than in the middle. For instance <a href="#fig-cartesian_shifted" class="quarto-xref">Figure&nbsp;<span>1.2</span></a> plots the exact same points shown in <a href="#fig-cartesian" class="quarto-xref">Figure&nbsp;<span>1.1</span></a> but with the axes placed automatically by matplotlib.</p>
-<div id="fig-cartesian_shifted" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-cartesian_shifted" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cartesian_shifted-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/cartesian_coordinates_shifted.png" class="img-fluid figure-img" style="width:80.0%">
@@ -332,7 +332,7 @@ Figure&nbsp;1.2: Cartesian coordinate system with axes automatically placed by m
 </div>
 <p>Usually, data has units, such as degrees Celsius for temperature, centimeters for length, or kilograms for weight. In case we are plotting variables of different types (and hence different units) we can adjust the aspect ratio of the axes as we wish. We can make a figure short and wide if it fits better on a page or screen. But we can also change the aspect ratio to highlight important differences, for example, if we want to emphasize changes along the y-axis we can make the figure tall and narrow. When both the x and y axes use the same units, it’s important to maintain an equal ratio to ensure that the relationship between data points on the graph accurately reflects their quantitative values.</p>
 <p>After the cartesian coordinate system, the most common coordinate system is the polar coordinate system. In this system, the position of a point is determined by the distance from the origin and the angle with respect to a reference axis. Polar coordinates are useful for representing periodic data, such as days of the week, or data that is naturally represented in a circular shape, such as wind direction. Figure <a href="#fig-polar" class="quarto-xref">Figure&nbsp;<span>1.3</span></a> shows a polar coordinate system.</p>
-<div id="fig-polar" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-polar" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-polar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/polar_coordinates.png" class="img-fluid figure-img" style="width:60.0%">
@@ -351,7 +351,7 @@ Figure&nbsp;1.3: Polar coordinate system
 <section id="good-practices-and-sources-of-error" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="good-practices-and-sources-of-error"><span class="header-section-number">1.3</span> Good practices and sources of error</h2>
 <p>Using visualization to deceive third parties should not be the goal of an intellectually honest person, and you must also be careful not to deceive yourself. For example, it has been known for decades that a bar chart is more effective for comparing values than a pie chart. The reason is that our perceptual apparatus is quite good at evaluating lengths, but not very good at evaluating areas. <a href="#fig-elementary_perceptual_tasks" class="quarto-xref">Figure&nbsp;<span>1.4</span></a> shows different visual elements ordered according to the precision with which the human brain can detect differences and make comparisons between them <span class="citation" data-cites="William1984 Heer2010">(<a href="references.html#ref-William1984" role="doc-biblioref">Cleveland and McGill 1984</a>; <a href="references.html#ref-Heer2010" role="doc-biblioref">Heer and Bostock 2010</a>)</span>.</p>
-<div id="fig-elementary_perceptual_tasks" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-elementary_perceptual_tasks" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-elementary_perceptual_tasks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/elementary_perceptual_tasks.png" class="img-fluid figure-img" style="width:70.0%">
@@ -367,7 +367,7 @@ Figure&nbsp;1.4: Scale of elementary perceptual tasks, taken from <a href="https
 <p>To analyze the perceptual attributes of color, it is better to think in terms of Hue, Saturation, and Lightness, <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSL</a> is an alternative representation of the RGB color model.</p>
 <p>The hue is what we colloquially call “different colors”. Green, red, etc. Saturation is how colorful or washed out we perceive a given color. Two colors with different hues will look more different when they have more saturation. The lightness corresponds to the amount of light emitted (active screens) or reflected (impressions), ranging from black to white:</p>
 <p>Varying the tone is useful to easily distinguish categories as shown in <a href="#fig-hue" class="quarto-xref">Figure&nbsp;<span>1.5</span></a>.</p>
-<div id="fig-hue" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-hue" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-hue-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/hue.png" class="img-fluid figure-img">
@@ -380,7 +380,7 @@ Figure&nbsp;1.5: Tone varitaions can be help to distinguish categories.
 <p>In principle, most humans are capable of distinguishing millions of tones, but if we want to associate categories with colors, the effectiveness of distinguishing them decreases drastically as the number of categories increases. This happens not only because the tones will be increasingly closer to each other, but also because we have a limited working memory. Associating a few colors (say 4) with categories (countries, temperature ranges, etc.) is usually easy. But unless there are pre-existing associations, remembering many categories becomes challenging and this exacerbates when colors are close to each other. This requires us to continually alternate between the graphic and the legend or text where the color-category association is indicated. Adding other elements besides color such as shapes can help, but in general, it will be more useful to try to keep the number of categories relatively low. In addition, it is important to take into account the presentation context, if we want to show a figure during a presentation where we only have a few seconds to dedicate to that figure, it is advisable to keep the figure as simple as possible. This may involve removing items and displaying only a subset of the data. If the figure is part of a text, where the reader will have the time to analyze for a longer period, perhaps the complexity can be somewhat greater.</p>
 <p>Although we mentioned before that human eyes are capable of distinguishing three main colors (red, green, and blue), the ability to distinguish these 3 colors varies between people, to the point that many individuals have difficulty distinguishing some colors. The most common case occurs with red and green. This is why it is important to avoid using those colors. An easy way to avoid this problem is to use <em>colorblind-friendly</em> palettes. We’ll see later that this is an easy thing to do when using ArviZ.</p>
 <p>Varying the lightness as in <a href="#fig-lightness" class="quarto-xref">Figure&nbsp;<span>1.6</span></a> is useful when we want to represent a continuous scale. With the hue-based palette (left), it’s quite difficult to determine that our data shows two “spikes”, whereas this is easier to see with the lightness-modifying palette (right). Varying the lightness helps to see the structure of the data since changes in lightness are more intuitively processed as quantitative changes.</p>
-<div id="fig-lightness" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-lightness" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-lightness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/lightness.png" class="img-fluid figure-img">
@@ -392,7 +392,7 @@ Figure&nbsp;1.6: Hue-based palette (left) vs lightness-modifying palette (right)
 </div>
 <p>One detail that we should note is that the graph on the right of <a href="#fig-lightness" class="quarto-xref">Figure&nbsp;<span>1.6</span></a> does not change only the lightness, it is not a map in gray or blue scales. That palette also changes the hue but in a very subtle way. This makes it aesthetically more pleasing and the subtle variation in hue contributes to increasing the perceptual distance between two values and therefore the ability to distinguish small differences.</p>
 <p>When using colors to represent numerical variables it is important to use uniformly perceptual maps like those offered by <a href="https://matplotlib.org/stable/tutorials/colors/colormaps.html#choosing-colormaps-in-matplotlib">matplotlib</a> or <a href="https:%20http://colorcet.holoviz.org/">colorcet</a>. These are maps where the colors vary in such a way that they adequately reflect changes in the data. Not all colormaps are perceptually uniform. Obtaining them is not trivial. <a href="#fig-colormaps" class="quarto-xref">Figure&nbsp;<span>1.7</span></a> shows the same image using different colormaps. We can see that widely used maps such as jet (also called rainbow) generate distortions in the image. In contrast <strong>viridis</strong>, a perceptually uniform color map does not generate such distortions.</p>
-<div id="fig-colormaps" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-colormaps" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-colormaps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="img/colormaps.png" class="img-fluid figure-img">
@@ -419,10 +419,10 @@ Figure&nbsp;1.7: non-uniformly perceptual maps like jet can be very missleading
 <span id="cb2-8"><a href="#cb2-8"></a>plt.xlabel(<span class="st">'x'</span>)</span>
 <span id="cb2-9"><a href="#cb2-9"></a>plt.ylabel(<span class="st">'f(x)'</span>, rotation<span class="op">=</span><span class="dv">0</span>, labelpad<span class="op">=</span><span class="dv">15</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-style_sheets" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-style_sheets" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-style_sheets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="elements_of_visualization_files/figure-html/fig-style_sheets-output-1.png" class="img-fluid figure-img">
+<img src="elements_of_visualization_files/figure-html/fig-style_sheets-output-1.png" width="731" height="491" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-style_sheets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1.8: arviz-white style use a color-blind friendly palette
@@ -626,18 +626,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -669,7 +658,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -677,7 +688,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
