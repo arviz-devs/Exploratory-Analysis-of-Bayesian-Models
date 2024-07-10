@@ -7,20 +7,23 @@ import numpy as np
 import preliz as pz
 import pymc as pm
 import matplotlib.pyplot as plt
+```
+
+```{python}
+#| echo : false
 az.style.use("arviz-doc")
 SEED = 3592
 np.random.seed(SEED)
 y = np.random.normal(0, 1, 100)
-
 ```
 
-Models are simplifications of reality, sometimes even very crude simplifications. So we can never fully trust models. Can we just hope they are good enough, maybe, but we can do better. One approach is evaluating their predictive accuracy. If a model is robust, its predictions should align well with observations, domain knowledge or some other benchmark. There are at least four avenues to explore:
+Models are simplifications of reality, sometimes even very crude simplifications. Thus, we can never fully trust them. While hoping they are good enough is an option, we should try to do better. One general approach to criticizing model is to judge them by their predictions. If a model is robust, its predictions should align well with observations, domain knowledge, or some other benchmark. There are at least four avenues to explore:
 
-* Compare to prior knowledge. For example, if we are modeling the size of planets we can evaluate if the model is making predictions in a sensible range. Even if we are equipped with a very rudimentary knowledge of astronomy we know that planets are larger than persons and smaller than galaxies. So if the model is predicting that the size of a planet is 1 meter, then we know that the model is not that good. This is a very simple example, but in general, we can use prior knowledge to evaluate the predictions of a model.
+* Compare to prior knowledge. For example, if we are modeling the size of planets we can evaluate if the model is making predictions in a sensible range. Even if we are equipped with a very rudimentary knowledge of astronomy we know that planets are larger than persons and smaller than galaxies. So if the model is predicting that the size of a planet is 1 meter, then we know that the model is not that good. The better your prior knowledge the better you will be able to critique your models, thus if you are not an expert in the field (and maybe even if you are), you should try to get some help from someone who is.
 
-* Compare to observed data. We fit a model and compare the predictions to the same data that we used to fit the model. This is an internal consistency check of the model, and we should expect good agreement. But the reality is complex and the model can be too simple or they can be misspecified so there is a lot of potential in these types of checks. Additionally, a model might be good at recovering some aspects of the data but not others, for instance, a model could be good at predicting the mean of the data but not the variance.
+* Compare to observed data. We fit a model and compare the predictions to the same data that we used to fit the model. This is an internal consistency check of the model, and we should expect good agreement. But reality is complex and models can be too simple or they can be misspecified so there is a lot of potential in these types of checks. Additionally, even very good models might be good at recovering some aspects of the data but not others, for instance, a model could be good at predicting the bulk of the data, but it could overestimate extreme values.
 
-* Compared to unobserved data. We fit a model to one dataset and then evaluate it on a different dataset. This is similar to the previous point, but it is a more strong evaluation because we are evaluating the model on data that it has not seen before. How similar the observed and unseen data are can vary a lot. 
+* Compared to unobserved data. We fit a model to one dataset and then evaluate it on a different dataset. This is similar to the previous point, but it offers a more robust evaluation because we are assessing the model on data it has not encountered before. How similar the observed and unobserved data are can vary a lot. 
 
 * Compare to other models. We fit different models to the same data and then compare the predictions of the models.  
 
