@@ -25,20 +25,20 @@ Models are simplifications of reality, sometimes even very crude simplifications
 
 * Compared to unobserved data. We fit a model to one dataset and then evaluate it on a different dataset. This is similar to the previous point, but it offers a more robust evaluation because we are assessing the model on data it has not encountered before. How similar the observed and unobserved data are can vary a lot. 
 
-* Compare to other models. We fit different models to the same data and then compare the predictions of the models.  
+* Compare to other models. We fit different models to the same data and then compare the predictions of the models. This particular case is discussed in detail on @sec-model-comparison.
 
+As we can see there are plenty of options to evaluate models. But we still have one additional ingredient to add to the mix, we have omitted the fact that we have different types of predictions. An attractive feature of the Bayesian model is that they are generative. This means that we can simulate synthetic data from models as long as the parameters are assigned a proper probability distribution, computationally we need a distribution from which we can generate random samples. We can take advantage of this feature to check models before or after fitting the data: 
 
-We have one additional ingredient to add to the mix, we have omitted the fact that we have different types of predictions. An attractive feature of the Bayesian model is that they are generative. This means that we can simulate synthetic data from models as long as the parameters are assigned a proper probability distribution, computationally we need a distribution from which we can generate random samples. We can take advantage of this feature to check models before or after fitting the data: 
-
-* Prior predictive: We generate synthetic observations without conditioning the observed data. These are predictions that we would make before we have seen the data. 
-* Posterior predictive: We generate synthetic observations after conditioning on the observed data. These are predictions that we would make after we have seen the data.
+* Prior predictive: We generate synthetic observations without conditioning on the observed data. These are predictions that we can make before we have seen the actual data. 
+* Posterior predictive: We generate synthetic observations after conditioning on the observed data. These are predictions that we can make after we have seen the data.
 
 Additionally, for models like linear regression where we have a set of covariates, we can generate synthetic data evaluated at the observed covariates (our "Xs") or at different values ("X_new"). If we do the first we call it in-sample predictions, and if we do the second we call it out-of-sample predictions.
 
-So, as you can see we have many options to evaluate models. Which one we should use will depend on what we want to evaluate. We can use a combination of the previous options to evaluate models for different purposes. In the next sections, we will see how to implement some of these checks.
+With so many options we can feel overwhelmed. Which ones we should use will depend on what we want to evaluate. We can use a combination of the previous options to evaluate models for different purposes. In the next sections, we will see how to implement some of these checks.
 
 
 ## Prior predictive checks
+
 
 The general algorithm for prior predictive checks is:
 
@@ -51,9 +51,16 @@ The general algorithm for prior predictive checks is:
 
 Notice that in step 4 we use domain knowledge, NOT observed data!
 
-To exemplify this, let's try with a super simple example. We want to model the height of a person. We know that the height of a person is a positive number, so we can use a half-normal distribution as a prior. We also know that the height of a person is not 100 meters, so we can use a half-normal distribution with a mean of 0 and a standard deviation of 10.
+In steps 1 and 2 what we are doing is approximating this integral:
+$$
+p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
+$$
 
-In the following block of code, we define such a model and draw 500 samples from the prior predictive distribution.
+where $y^\ast$ represents unobserved but potentially observable data, according to our model. The data generated is predictive since it is the data that the model will expect to see, that is, it is unobserved but potentially observable data.
+
+Notice that what we are doing is marginalizing the likelihood by integrating over all possible values ​​of the prior. Therefore, from the perspective of our model, we are describing the marginal distribution of the data, that is, regardless of the values of the parameters. 
+
+To exemplify a prior predictive check, let's try with a super simple example. Let's say we want to model the height of humans. We know that the heights are positive numbers, so we should use a distribution that assigns zero mass to negative values. But we also know that at least for adults using a normal distribution could be a good approximation. So we create the following model, without too much thought, and then draw 500 samples from the prior predictive distribution.
 
 ::: {.panel-tabset}
 ## PyMC
@@ -72,7 +79,7 @@ with pm.Model() as model:
 ## PyStan
 
 ``` {.python}
-## comming soon
+## coming soon
 ```
 :::
 
@@ -85,7 +92,7 @@ ax.axvline(175, color="0.5", linestyle="--", label="adult")
 plt.legend()
 ```
 
-We can tighten up the priors. There is no general rule to do this. For most problems, we do not want, we can not, or is too expensive to set very informative priors. So for most problems, it is usually a better idea to set priors using some broad domain knowledge in such a way that we we get a relatively reasonable prior predictive distribution. These priors are called weakly informative priors, they usually avoid unreasonable value or put too little mass in some regions of the parameter space. For instance, we can use a normal distribution with a mean of 175 and a standard deviation of 10. This distribution doesn't exclude negative values, but it assigns very little mass to them. Also is broad enough to allow for a wide range of values.
+We can tighten up the priors. There is no general rule to do this. For most problems, it is usually a good idea to set priors using some broad domain knowledge in such a way that we get a prior predictive distribution that allocates most of its mass in a reasonable region. These priors are called weakly informative priors. While there isn't a formal definition of what a weakly informative prior is, we can think of them as priors that will generate a prior predictive with none to very little mass in disallowed or unlikely regions. For instance, we can use a normal distribution with a mean of 175 and a standard deviation of 10. This distribution doesn't exclude negative values, but it assigns very little mass to them. Also is broad enough to allow for a wide range of values.
 
 ::: {.panel-tabset}
 ## PyMC
@@ -104,11 +111,11 @@ with pm.Model() as model:
 ## PyStan
 
 ``` {.python}
-## comming soon
+## coming soon
 ```
 :::
 
-We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is now within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are to pick other priors and other reference values. Maybe you can use the values for the taller and shorter person in the world as reference values.
+We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is now within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are free to pick other priors and other reference values. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.
 
 ```{python}
 ax = az.plot_ppc(idata, group="prior")
@@ -117,9 +124,9 @@ ax.axvline(175, color="0.5", linestyle="--", label="adult")
 plt.legend()
 ```
 
-We recommend weakly informative priors instead of informative priors because usually we do not have enough information to set very informative priors or that process can be very time-consuming. And we recommend weakly informative priors instead of very vague priors because adding some prior information is usually better than adding none and for some problems, it can be not that difficult. The more data we have the less impact the priors will have on the posterior, but still usually there is some gain in avoiding non-sensical values and starting from more taught priors. Even sometimes sampling is more efficient when we avoid very vague priors. Also very importantly, even if the priors have little effect doing prior predictive checks and *playing* with piors can help us to understand the model and the problem better.
+Weakly informative priors can have a practical advantage over informative priors because usually we do not have enough information to set very informative priors or getting good informative priors can be very time-consuming. What's more weakly informative priors can also have practical advantages over very vague priors because adding some prior information is usually better than adding none. By adding some information we reduce the chances of spurious results or non-sensical results. Additionally, weakly informative priors can even help with faster sampling. 
 
-If you want to learn more about prior elicitation you can check the [PreliZ](https://preliz.readthedocs.io/) library.
+One aspect that is often overlooked is that even if the priors have little effect on the actual posterior, by doing prior predictive checks and *playing* with the priors we can get a better understanding of our models and problems. If you want to learn more about prior elicitation you can check the [PreliZ](https://preliz.readthedocs.io/) library.
 
 One final note. When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the collection of distributions, it is usually a good idea to plot the cumulative distribution. This is because the individual distributions can be hard to see, but the cumulative distribution is easier to interpret. 
 
