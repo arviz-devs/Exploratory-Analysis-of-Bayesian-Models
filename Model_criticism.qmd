@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 az.style.use("arviz-doc")
 SEED = 3592
 np.random.seed(SEED)
-y = np.random.normal(0, 1, 100)
+y = np.random.normal(174, 6, 127)
 ```
 
 Models are simplifications of reality, sometimes even very crude simplifications. Thus, we can never fully trust them. While hoping they are good enough is an option, we should try to do better. One general approach to criticizing model is to judge them by their predictions. If a model is robust, its predictions should align well with observations, domain knowledge, or some other benchmark. There are at least four avenues to explore:
@@ -138,6 +138,52 @@ plt.legend()
 ```
 
 ## Posterior predictive checks
+
+The general algorithm for posterior predictive checks is:
+
+1. Draw $N$ realizations from the posterior distribution.
+2. For each draw, simulate new data from the likelihood.
+3. Plot the results.
+4. Use observed data to assess whether simulated values agree with observed values.
+5. If simulated values do not agree with observations, change the prior distribution, likelihood, or both and repeat the simulation from step 1.
+6. If simulated values reflect prior knowledge, compute the posterior.
+
+Notice that in contrast with prior predictive checks, we use observations here. Of course, we can also include domain knowledge to assess whether the simulated values are reasonable.
+
+In steps 1 and 2 what we are doing is approximating this integral:
+$$
+p(\tilde y) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta \mid y) \; d\theta
+$$
+
+where $\tilde y$ represents new observations, according to our model. The data generated is predictive since it is the data that the model expects to see.
+
+Notice that what we are doing is marginalizing the likelihood by integrating all possible values ​​of the posterior. Therefore, from the perspective of our model, we are describing the marginal distribution of data, that is, regardless of the values of the parameters. 
+
+Continuing with our height example, we can generate synthetic data from the posterior predictive distribution.
+
+
+::: {.panel-tabset}
+## PyMC
+
+``` {python}
+with model: 
+    idata = pm.sample()
+    pm.sample_posterior_predictive(idata, random_seed=SEED, extend_inferencedata=True)
+```
+
+## PyStan
+
+``` {.python}
+## coming soon
+```
+:::
+
+And then we use ArviZ to plot the comparison. We can see that the model is doing a good job at predicting the data. The observed data is within the bulk of the posterior predictive distribution (blue lines). The dashed line is the aggregated posterior predictive distribution. 
+
+```{python}
+az.plot_ppc(idata, num_pp_samples=200)
+```
+
 
 ## Prior sensitivity checks
 
