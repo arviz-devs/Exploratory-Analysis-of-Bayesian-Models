@@ -303,25 +303,25 @@ window.Quarto = {
 </header>
 
 
-<div id="36672159" class="cell" data-execution_count="1">
+<div id="9a0f4df5" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
 </div>
 </div>
-<p>Models are simplifications of reality, sometimes even very crude simplifications. So we can never fully trust models. Can we just hope they are good enough, maybe, but we can do better. One approach is evaluating their predictive accuracy. If a model is robust, its predictions should align well with observations, domain knowledge or some other benchmark. There are at least four avenues to explore:</p>
+<p>Models are simplifications of reality, sometimes even very crude simplifications. Thus, we can never fully trust them. While hoping they are good enough is an option, we should try to do better. One general approach to criticizing model is to judge them by their predictions. If a model is robust, its predictions should align well with observations, domain knowledge, or some other benchmark. There are at least four avenues to explore:</p>
 <ul>
-<li><p>Compare to prior knowledge. For example, if we are modeling the size of planets we can evaluate if the model is making predictions in a sensible range. Even if we are equipped with a very rudimentary knowledge of astronomy we know that planets are larger than persons and smaller than galaxies. So if the model is predicting that the size of a planet is 1 meter, then we know that the model is not that good. This is a very simple example, but in general, we can use prior knowledge to evaluate the predictions of a model.</p></li>
-<li><p>Compare to observed data. We fit a model and compare the predictions to the same data that we used to fit the model. This is an internal consistency check of the model, and we should expect good agreement. But the reality is complex and the model can be too simple or they can be misspecified so there is a lot of potential in these types of checks. Additionally, a model might be good at recovering some aspects of the data but not others, for instance, a model could be good at predicting the mean of the data but not the variance.</p></li>
-<li><p>Compared to unobserved data. We fit a model to one dataset and then evaluate it on a different dataset. This is similar to the previous point, but it is a more strong evaluation because we are evaluating the model on data that it has not seen before. How similar the observed and unseen data are can vary a lot.</p></li>
-<li><p>Compare to other models. We fit different models to the same data and then compare the predictions of the models.</p></li>
+<li><p>Compare to prior knowledge. For example, if we are modeling the size of planets we can evaluate if the model is making predictions in a sensible range. Even if we are equipped with a very rudimentary knowledge of astronomy we know that planets are larger than persons and smaller than galaxies. So if the model is predicting that the size of a planet is 1 meter, then we know that the model is not that good. The better your prior knowledge the better you will be able to critique your models, thus if you are not an expert in the field (and maybe even if you are), you should try to get some help from someone who is.</p></li>
+<li><p>Compare to observed data. We fit a model and compare the predictions to the same data that we used to fit the model. This is an internal consistency check of the model, and we should expect good agreement. But reality is complex and models can be too simple or they can be misspecified so there is a lot of potential in these types of checks. Additionally, even very good models might be good at recovering some aspects of the data but not others, for instance, a model could be good at predicting the bulk of the data, but it could overestimate extreme values.</p></li>
+<li><p>Compared to unobserved data. We fit a model to one dataset and then evaluate it on a different dataset. This is similar to the previous point, but it offers a more robust evaluation because we are assessing the model on data it has not encountered before. How similar the observed and unobserved data are can vary a lot.</p></li>
+<li><p>Compare to other models. We fit different models to the same data and then compare the predictions of the models. This particular case is discussed in detail on <a href="Model_comparison.html" class="quarto-xref"><span>Chapter 6</span></a>.</p></li>
 </ul>
-<p>We have one additional ingredient to add to the mix, we have omitted the fact that we have different types of predictions. An attractive feature of the Bayesian model is that they are generative. This means that we can simulate synthetic data from models as long as the parameters are assigned a proper probability distribution, computationally we need a distribution from which we can generate random samples. We can take advantage of this feature to check models before or after fitting the data:</p>
+<p>As we can see there are plenty of options to evaluate models. But we still have one additional ingredient to add to the mix, we have omitted the fact that we have different types of predictions. An attractive feature of the Bayesian model is that they are generative. This means that we can simulate synthetic data from models as long as the parameters are assigned a proper probability distribution, computationally we need a distribution from which we can generate random samples. We can take advantage of this feature to check models before or after fitting the data:</p>
 <ul>
-<li>Prior predictive: We generate synthetic observations without conditioning the observed data. These are predictions that we would make before we have seen the data.</li>
-<li>Posterior predictive: We generate synthetic observations after conditioning on the observed data. These are predictions that we would make after we have seen the data.</li>
+<li>Prior predictive: We generate synthetic observations without conditioning on the observed data. These are predictions that we can make before we have seen the actual data.</li>
+<li>Posterior predictive: We generate synthetic observations after conditioning on the observed data. These are predictions that we can make after we have seen the data.</li>
 </ul>
 <p>Additionally, for models like linear regression where we have a set of covariates, we can generate synthetic data evaluated at the observed covariates (our “Xs”) or at different values (“X_new”). If we do the first we call it in-sample predictions, and if we do the second we call it out-of-sample predictions.</p>
-<p>So, as you can see we have many options to evaluate models. Which one we should use will depend on what we want to evaluate. We can use a combination of the previous options to evaluate models for different purposes. In the next sections, we will see how to implement some of these checks.</p>
+<p>With so many options we can feel overwhelmed. Which ones we should use will depend on what we want to evaluate. We can use a combination of the previous options to evaluate models for different purposes. In the next sections, we will see how to implement some of these checks.</p>
 <section id="prior-predictive-checks" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="prior-predictive-checks"><span class="header-section-number">5.1</span> Prior predictive checks</h2>
 <p>The general algorithm for prior predictive checks is:</p>
@@ -334,13 +334,17 @@ window.Quarto = {
 <li>If simulated values reflect prior knowledge, compute the posterior.</li>
 </ol>
 <p>Notice that in step 4 we use domain knowledge, NOT observed data!</p>
-<p>To exemplify this, let’s try with a super simple example. We want to model the height of a person. We know that the height of a person is a positive number, so we can use a half-normal distribution as a prior. We also know that the height of a person is not 100 meters, so we can use a half-normal distribution with a mean of 0 and a standard deviation of 10.</p>
-<p>In the following block of code, we define such a model and draw 500 samples from the prior predictive distribution.</p>
+<p>In steps 1 and 2 what we are doing is approximating this integral: <span class="math display">\[
+p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
+\]</span></p>
+<p>where <span class="math inline">\(y^\ast\)</span> represents unobserved but potentially observable data, according to our model. The data generated is predictive since it is the data that the model will expect to see, that is, it is unobserved but potentially observable data.</p>
+<p>Notice that what we are doing is marginalizing the likelihood by integrating over all possible values ​​of the prior. Therefore, from the perspective of our model, we are describing the marginal distribution of the data, that is, regardless of the values of the parameters.</p>
+<p>To exemplify a prior predictive check, let’s try with a super simple example. Let’s say we want to model the height of humans. We know that the heights are positive numbers, so we should use a distribution that assigns zero mass to negative values. But we also know that at least for adults using a normal distribution could be a good approximation. So we create the following model, without too much thought, and then draw 500 samples from the prior predictive distribution.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="12989e27" class="cell" data-execution_count="2">
+<div id="2e64aedb" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb2-2"><a href="#cb2-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -355,12 +359,12 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## comming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
 <p>In the following plot, we can see samples from the prior predictive distribution (blue solid lines). If we aggregate all the individual samples into a single large sample we get the dashed cyan line. To help us interpret this plot we have added two <strong>reference lines</strong>, the average length/height of a newborn and the average (male) adult height. These references are approximate values, but they are useful to provide a sense of the scale of the expected data. We can see that our model is bananas, not only heights can be negative, but the bulk of the prior predictive distribution is outside of our reference values.</p>
-<div id="0a3cc7af" class="cell" data-execution_count="3">
+<div id="10755818" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -368,17 +372,17 @@ window.Quarto = {
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Model_criticism_files/figure-html/cell-4-output-1.png" width="3484" height="1534" class="figure-img"></p>
+<p><img src="Model_criticism_files/figure-html/cell-5-output-1.png" width="3484" height="1534" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We can tighten up the priors. There is no general rule to do this. For most problems, we do not want, we can not, or is too expensive to set very informative priors. So for most problems, it is usually a better idea to set priors using some broad domain knowledge in such a way that we we get a relatively reasonable prior predictive distribution. These priors are called weakly informative priors, they usually avoid unreasonable value or put too little mass in some regions of the parameter space. For instance, we can use a normal distribution with a mean of 175 and a standard deviation of 10. This distribution doesn’t exclude negative values, but it assigns very little mass to them. Also is broad enough to allow for a wide range of values.</p>
+<p>We can tighten up the priors. There is no general rule to do this. For most problems, it is usually a good idea to set priors using some broad domain knowledge in such a way that we get a prior predictive distribution that allocates most of its mass in a reasonable region. These priors are called weakly informative priors. While there isn’t a formal definition of what a weakly informative prior is, we can think of them as priors that will generate a prior predictive with none to very little mass in disallowed or unlikely regions. For instance, we can use a normal distribution with a mean of 175 and a standard deviation of 10. This distribution doesn’t exclude negative values, but it assigns very little mass to them. Also is broad enough to allow for a wide range of values.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="b85cc268" class="cell" data-execution_count="4">
+<div id="e397d28e" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb6-2"><a href="#cb6-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">175</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -393,12 +397,12 @@ window.Quarto = {
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## comming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
-<p>We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is now within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are to pick other priors and other reference values. Maybe you can use the values for the taller and shorter person in the world as reference values.</p>
-<div id="799bce7a" class="cell" data-execution_count="5">
+<p>We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is now within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are free to pick other priors and other reference values. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.</p>
+<div id="63d92858" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -406,15 +410,15 @@ window.Quarto = {
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Model_criticism_files/figure-html/cell-6-output-1.png" width="3484" height="1534" class="figure-img"></p>
+<p><img src="Model_criticism_files/figure-html/cell-7-output-1.png" width="3484" height="1534" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We recommend weakly informative priors instead of informative priors because usually we do not have enough information to set very informative priors or that process can be very time-consuming. And we recommend weakly informative priors instead of very vague priors because adding some prior information is usually better than adding none and for some problems, it can be not that difficult. The more data we have the less impact the priors will have on the posterior, but still usually there is some gain in avoiding non-sensical values and starting from more taught priors. Even sometimes sampling is more efficient when we avoid very vague priors. Also very importantly, even if the priors have little effect doing prior predictive checks and <em>playing</em> with piors can help us to understand the model and the problem better.</p>
-<p>If you want to learn more about prior elicitation you can check the <a href="https://preliz.readthedocs.io/">PreliZ</a> library.</p>
+<p>Weakly informative priors can have a practical advantage over informative priors because usually we do not have enough information to set very informative priors or getting good informative priors can be very time-consuming. What’s more weakly informative priors can also have practical advantages over very vague priors because adding some prior information is usually better than adding none. By adding some information we reduce the chances of spurious results or non-sensical results. Additionally, weakly informative priors can even help with faster sampling.</p>
+<p>One aspect that is often overlooked is that even if the priors have little effect on the actual posterior, by doing prior predictive checks and <em>playing</em> with the priors we can get a better understanding of our models and problems. If you want to learn more about prior elicitation you can check the <a href="https://preliz.readthedocs.io/">PreliZ</a> library.</p>
 <p>One final note. When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the collection of distributions, it is usually a good idea to plot the cumulative distribution. This is because the individual distributions can be hard to see, but the cumulative distribution is easier to interpret.</p>
-<div id="4926a2df" class="cell" data-execution_count="6">
+<div id="c3954aa6" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>, kind<span class="op">=</span><span class="st">"cumulative"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -422,7 +426,7 @@ window.Quarto = {
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Model_criticism_files/figure-html/cell-7-output-1.png" width="3484" height="1534" class="figure-img"></p>
+<p><img src="Model_criticism_files/figure-html/cell-8-output-1.png" width="3484" height="1534" class="figure-img"></p>
 </figure>
 </div>
 </div>
