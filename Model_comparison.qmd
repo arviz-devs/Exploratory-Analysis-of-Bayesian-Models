@@ -1,4 +1,4 @@
-# Model comparison
+# Model comparison {#sec-model-comparison}
 
 
 ```{python}
