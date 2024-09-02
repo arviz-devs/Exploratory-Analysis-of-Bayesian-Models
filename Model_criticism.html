@@ -57,7 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -66,6 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <link href="./Model_comparison.html" rel="next">
 <link href="./MCMC_diagnostics.html" rel="prev">
+<link href="./favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -104,6 +105,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -303,7 +308,7 @@ window.Quarto = {
 </header>
 
 
-<div id="71f6cc25" class="cell" data-execution_count="1">
+<div id="36299c14" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
 </div>
@@ -344,7 +349,7 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="911e3f84" class="cell" data-execution_count="3">
+<div id="509646de" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb2-2"><a href="#cb2-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -364,7 +369,7 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 </div>
 </div>
 <p>In the following plot, we can see samples from the prior predictive distribution (blue solid lines). If we aggregate all the individual samples into a single large sample we get the dashed cyan line. To help us interpret this plot we have added two <strong>reference lines</strong>, the average length/height of a newborn and the average (male) adult height. These references are approximate values, but they are useful to provide a sense of the scale of the expected data. We can see that our model is bananas, not only heights can be negative, but the bulk of the prior predictive distribution is outside of our reference values.</p>
-<div id="12d43ee2" class="cell" data-execution_count="4">
+<div id="e31f73e9" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -382,7 +387,7 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="d0bedc45" class="cell" data-execution_count="5">
+<div id="635ace54" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb6-2"><a href="#cb6-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">175</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -402,7 +407,7 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 </div>
 </div>
 <p>We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is now within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are free to pick other priors and other reference values. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.</p>
-<div id="45ae75bc" class="cell" data-execution_count="6">
+<div id="5f77fb77" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -418,7 +423,7 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 <p>Weakly informative priors can have a practical advantage over informative priors because usually we do not have enough information to set very informative priors or getting good informative priors can be very time-consuming. What’s more weakly informative priors can also have practical advantages over very vague priors because adding some prior information is usually better than adding none. By adding some information we reduce the chances of spurious results or non-sensical results. Additionally, weakly informative priors can even help with faster sampling.</p>
 <p>One aspect that is often overlooked is that even if the priors have little effect on the actual posterior, by doing prior predictive checks and <em>playing</em> with the priors we can get a better understanding of our models and problems. If you want to learn more about prior elicitation you can check the <a href="https://preliz.readthedocs.io/">PreliZ</a> library.</p>
 <p>One final note. When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the collection of distributions, it is usually a good idea to plot the cumulative distribution. This is because the individual distributions can be hard to see, but the cumulative distribution is easier to interpret.</p>
-<div id="c99f2b51" class="cell" data-execution_count="7">
+<div id="0e03fd67" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>, kind<span class="op">=</span><span class="st">"cumulative"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -434,6 +439,73 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 </section>
 <section id="posterior-predictive-checks" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">5.2</span> Posterior predictive checks</h2>
+<p>The general algorithm for posterior predictive checks is:</p>
+<ol type="1">
+<li>Draw <span class="math inline">\(N\)</span> realizations from the posterior distribution.</li>
+<li>For each draw, simulate new data from the likelihood.</li>
+<li>Plot the results.</li>
+<li>Use observed data to assess whether simulated values agree with observed values.</li>
+<li>If simulated values do not agree with observations, change the prior distribution, likelihood, or both and repeat the simulation from step 1.</li>
+<li>If simulated values reflect prior knowledge, compute the posterior.</li>
+</ol>
+<p>Notice that in contrast with prior predictive checks, we use observations here. Of course, we can also include domain knowledge to assess whether the simulated values are reasonable.</p>
+<p>In steps 1 and 2 what we are doing is approximating this integral: <span class="math display">\[
+p(\tilde y) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta \mid y) \; d\theta
+\]</span></p>
+<p>where <span class="math inline">\(\tilde y\)</span> represents new observations, according to our model. The data generated is predictive since it is the data that the model expects to see.</p>
+<p>Notice that what we are doing is marginalizing the likelihood by integrating all possible values ​​of the posterior. Therefore, from the perspective of our model, we are describing the marginal distribution of data, that is, regardless of the values of the parameters.</p>
+<p>Continuing with our height example, we can generate synthetic data from the posterior predictive distribution.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">PyStan</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div id="373c8f70" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="cf">with</span> model: </span>
+<span id="cb11-2"><a href="#cb11-2"></a>    idata <span class="op">=</span> pm.sample()</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    pm.sample_posterior_predictive(idata, random_seed<span class="op">=</span>SEED, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Auto-assigning NUTS sampler...
+Initializing NUTS using jitter+adapt_diag...
+Multiprocess sampling (2 chains in 2 jobs)
+NUTS: [mu, sigma]
+Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 2 seconds.
+We recommend running at least 4 chains for robust computation of convergence diagnostics
+Sampling: [Y_obs]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"3a57618768404e078676d2e8c465eb27","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"b9a0d97b8fde49c1876f673ab3816765","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"></pre>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>And then we use ArviZ to plot the comparison. We can see that the model is doing a good job at predicting the data. The observed data is within the bulk of the posterior predictive distribution (blue lines). The dashed line is the aggregated posterior predictive distribution.</p>
+<div id="7f6b3b26" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>az.plot_ppc(idata, num_pp_samples<span class="op">=</span><span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Model_criticism_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="prior-sensitivity-checks" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="prior-sensitivity-checks"><span class="header-section-number">5.3</span> Prior sensitivity checks</h2>
@@ -445,6 +517,9 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 </section>
 
 </main> <!-- /main -->
+<script type="application/vnd.jupyter.widget-state+json">
+{"state":{"3128101326c04c48b92ae08aaf03a3d8":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"3a57618768404e078676d2e8c465eb27":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_69cd8797063f498aa5c96cd243dc7bda","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"69cd8797063f498aa5c96cd243dc7bda":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"b9a0d97b8fde49c1876f673ab3816765":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_3128101326c04c48b92ae08aaf03a3d8","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling ... <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:00</span>\n</pre>\n","text/plain":"Sampling ... \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:00\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
