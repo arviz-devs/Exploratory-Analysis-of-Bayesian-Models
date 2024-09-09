@@ -1,7 +1,9 @@
-#  ‎ {.unnumbered .unlisted}
+# Exploratory Analysis of Bayesian Models
 
+This is the code repository for the online book *Exploratory Analysis of Bayesian Models*.
 
-While conceptually simple, Bayesian methods can be mathematically and numerically challenging. Probabilistic programming languages (PPLs) implement functions to easily build Bayesian models together with efficient automatic inference methods. This helps separate the model building from the inference, allowing practitioners to focus on their specific problems and leaving the PPLs to handle the computational details for them [@bessiere2013; @daniel2015; @ghahramani2015]. The inference process generates a posterior distribution - which has a central role in Bayesian statistics - together with other distributions like the posterior predictive distribution and the prior predictive distribution. The correct visualization, analysis, and interpretation of these distributions is key to properly answer the questions that motivated the inference process.
+## Preface
+
 
 When working with Bayesian models there are a series of related tasks that need to be addressed besides inference itself:
 

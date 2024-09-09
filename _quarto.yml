@@ -6,7 +6,7 @@ book:
   title: "Exploratory Analysis of Bayesian Models"
   author: "ArviZ-devs"
   date: today
-
+  favicon: favicon.ico
 
   chapters:
     - index.qmd
