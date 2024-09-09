@@ -1,7 +1,22 @@
-# Model criticism
+---
+title: Model criticism
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+
 
 ```{python}
-#| echo : false
+#| echo: false
 import arviz as az
 import numpy as np
 import preliz as pz
@@ -10,7 +25,7 @@ import matplotlib.pyplot as plt
 ```
 
 ```{python}
-#| echo : false
+#| echo: false
 az.style.use("arviz-doc")
 SEED = 3592
 np.random.seed(SEED)
@@ -65,7 +80,7 @@ To exemplify a prior predictive check, let's try with a super simple example. Le
 ::: {.panel-tabset}
 ## PyMC
 
-``` {python}
+```{python}
 with pm.Model() as model: 
     # Priors for unknown model parameters
     mu = pm.Normal('mu', mu=0, sigma=10)
@@ -99,7 +114,7 @@ We can tighten up the priors. There is no general rule to do this. For most prob
 ::: {.panel-tabset}
 ## PyMC
 
-``` {python}
+```{python}
 with pm.Model() as model: 
     # Priors for unknown model parameters
     mu = pm.Normal('mu', mu=175, sigma=10)
@@ -157,11 +172,11 @@ The general algorithm for posterior predictive checks is:
 5. If simulated values do not agree with observations, change the prior distribution, likelihood, or both and repeat the simulation from step 1.
 6. If simulated values reflect prior knowledge, compute the posterior.
 
-Notice that in contrast with prior predictive checks, we use observations here. Of course, we can also include domain knowledge to assess whether the simulated values are reasonable.
+Notice that in contrast with prior predictive checks, we use observations here. Of course, we can also include domain knowledge to assess whether the simulated values are reasonable, but because we are using observations we do more stringents evaluations. 
 
 In steps 1 and 2 what we are doing is approximating this integral:
 $$
-p(\tilde y) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta \mid y) \; d\theta
+p(\tilde y) = \int_{\Theta} p(\tilde y \mid \theta) \; p(\theta \mid y) \; d\theta
 $$
 
 where $\tilde y$ represents new observations, according to our model. The data generated is predictive since it is the data that the model expects to see.
@@ -174,7 +189,7 @@ Continuing with our height example, we can generate synthetic data from the post
 ::: {.panel-tabset}
 ## PyMC
 
-``` {python}
+```{python}
 with model: 
     idata = pm.sample()
     pm.sample_posterior_predictive(idata, random_seed=SEED, extend_inferencedata=True)
@@ -187,12 +202,113 @@ with model:
 ```
 :::
 
-And then we use ArviZ to plot the comparison. We can see that the model is doing a good job at predicting the data. The observed data is within the bulk of the posterior predictive distribution (blue lines). The dashed line is the aggregated posterior predictive distribution. 
+And then we use ArviZ to plot the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).
+
+The dashed orange line, labeled as "posterior predictive mean", is the aggregated posterior predictive distribution. If you combine all the individual densities into a single density, that's what you would get. 
 
 ```{python}
-az.plot_ppc(idata, num_pp_samples=200)
+az.plot_ppc(idata, num_pp_samples=200, colors=["C0", "k", "C2"]);
 ```
+
+Other common visualizations to compare observed and precitive values are empirical CDFs, histograms and less often quantile dotplots. Like with other types of visulizations, you may want to try different options, to be sure visualizations are not missleading and you may also want to adapt the visualization to your audience.
+
+### Using summary statistics
+
+Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics. Which ones, we decide to use may vary  from one data-analysis problem to another, and ideally it should be informed by the data-analysis goals. 
+
+The following plot shows a comparison in terms of the mean, median and interquantile range (IQR). The dots at the bottom of each subplots corresponds to the summmary statistics computed for the observed data and the KDE is for the model's predictions.
+
+```{python}
+_, ax = plt.subplots(1, 3, figsize=(12, 3))
+
+def iqr(x, a=-1):
+    """interquartile range"""
+    return np.subtract(*np.percentile(x, [75, 25], axis=a))
+
+az.plot_bpv(idata, kind="t_stat", t_stat="mean", ax=ax[0])
+az.plot_bpv(idata, kind="t_stat", t_stat="median", ax=ax[1])
+az.plot_bpv(idata, kind="t_stat", t_stat=iqr, ax=ax[2])
+ax[0].set_title("mean")
+ax[1].set_title("median")
+ax[2].set_title("IQR");
+```
+
+The numerical values labeled as `bpv` correspond to the following probability:
+
+$$
+p(T_{\text{sim}} \le T_{\text{obs}} \mid \tilde y)
+$$
+
+
+Where $T$ is the summary statistic of our choice, computed for both the observed data $T_{\text{obs}}$ and the simulated data $T_{\text{sim}}$. 
+
+This probabilities are often called Bayesian p-values, and their ideal value is 0.5, meaning that half of the predictions are below the observed values and half above.
+
+
+The following paragraph is for those of you that are familiar with the p-values as used in frequentist statistics for null hypotesis testing and computation of "statistical significance". If that's the case you should be aware that the Bayesian p-values are something different. While frequentist p-values measure the probability of obtaining results at least as extreme as the observed data under the assumption that the null hypothesis is true, Bayesian p-values assess the discrepancy between the observed data and simulated data based on the posterior predictive distribution. They are used as a diagnostic tool to evaluate the adequacy of a model rather than as a measure of "statistical significance" or evidence against a null hypothesis.
+
+Bayesian p-values are not tied to a null hypothesis and are not subject to the same kind of binary decision-making framework (reject/accept). Instead, they provide insight into how well the model, given the data, predicts the summary statistics. Values close to 0.5 indicates a well-calibrated model. However, the interpretation is more nuanced, as the goal is model assessment and improvement rather than hypothesis testing.
+
+If you want to use `plot_bpv` to do the plots, but you prefer to ommit the Bayesian p-values pass `bpv=False`. `plot_bpv` supports to other types of plots `kind="p_value"`, that corresponds to computing 
+
+$$
+p(\tilde y \le y_{\text{obs}} \mid y)
+$$
+
+that is, instead of using a summary statistics, as before, we directly compare observations and predictions. In the following plots the dashed black line represent the expected distribution.
+
+```{python}
+az.plot_bpv(idata, kind="p_value");
+```
+
+Another possibility is to perform the comparison per observation.
+
+$$
+p(\tilde y_i \le y_i \mid y)
+$$
+
+This is often called the marginal p-value and the ideal distribution is the standard uniform distribution.
+
+The white line in the following figure represents the ideal scenario and the grey band the expected deviation given the size of the data. The x values corresponds to the quantiles of the original distribution, i.e. the central values represent the "bulk" of the distribution and the extreme values the "tails".
+
+```{python}
+az.plot_bpv(idata);
+```
+
+To build intuition, let's look at some synthetic data. The following plot shows four different scenarios, where the observed data follows a standard normal distribution ($\mu=0, \sigma^2=1$). In each case, we compare the observed data to predictions where:
+
+* The mean of the predictions is shifted to the right.
+* The mean of the predictions is shifted to the left.
+* The predictions have a wider spread (larger variance).
+* The predictions have a narrower spread (smaller variance).
+
+```{python}
+observed = pz.Normal(0, 1).rvs(500)
+
+_, axes = plt.subplots(2, 2, sharex=True, sharey=True)
+
+for ax, (mu, sigma) in zip(axes.ravel(), 
+                           [(0.5, 1),   # shifted right
+                            (-0.5, 1),  # shifted left
+                            (0, 2),     # wider
+                            (0, 0.5)]): # narrower
+    
+    idata_i = az.from_dict(posterior_predictive={"y":pz.Normal(mu, sigma).rvs((50, 500))},
+                           observed_data={"y":observed})
+    
+    az.plot_bpv(idata_i, ax=ax);
+    ax.set_ylim(0, 2.5)
+```
+
+### Hypothetical Outcome Plots
+
+Another strategy that can be useful for posterior predictive plots is to use animations. Rather than showing a continuous probability distribution, Hypothetical Outcome Plots (HOPs) visualize a set of draws from a distribution, where each draw is shown as a new plot in either a small multiples or animated form. HOPs enable a user to experience uncertainty in terms of countable events, just like we experience probability in our day to day lives.
+
+`az.plot_ppc` support animations using the option `animation=True`. 
+
+You can read more about HPOs [here](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).
 
 ## Prior sensitivity checks
 
-##
+Coming soon
+
