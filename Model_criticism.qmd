@@ -308,6 +308,34 @@ Another strategy that can be useful for posterior predictive plots is to use ani
 
 You can read more about HPOs [here](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).
 
+
+## Posterior predictive checks for count data
+
+Rootograms are a graphical tool to assess the fit of count data models @Kleiber_2016. This tool is handy for diagnosing overdispersion and/or excess zeros in count data models. The name originates from the fact that rootograms plot the square *root* of the observed counts against the square *root* of the expected counts. 
+
+There are a few variations of rootograms. Here we are going to discuss hanging rootograms and suspended rootograms. For the first one the observed counts are plotted as dots and the expected counts are plotted as bars hanging from the dots, see @fig-rotogram_hang. 
+
+How do we read hanging rootograms? As we said the observations are the black dots. Hanging from them we have the predictions (thin line). At each count a predictions that perfectly match an observed count will look like a line that goes from the observed count to 0. If a line does not reach 0, then the model is underestimating that particular count and if the line is below 0 the model is overestimating that count. To ease the comparison there is a horizontal dashed line at 0. To represent the uncertainty in the predictions we use a box at the tip of each vertical line. The semitransparent box represents the HDI 94%. As usual, we could have chosen a different value for the HDI.
+
+![Bayesian rootograms](img/rootogram_hanging.png){#fig-rotogram_hang width=70%}
+
+A variant of the hanging rootogram is the suspended rootogram (see @fig-rotograms). The difference is that the predictions are plotted starting from 0 (the dashed line), and they go up to the predicted-observed counts. Thus if the line is above 0 the model is overestimating that count and if the line is below 0 the model is underestimating that count.
+
+
+![Bayesian rootograms](img/rootogram_suspended.png){#fig-rotogram_sus width=70%}
+
+
+In a sense, hanging rootograms emphasize the fitted values and suspended rootograms the corresponding residuals.
+
+ArviZ currently does not support rootograms, but it will in the [future](https://arviz-plots.readthedocs.io/en/latest/gallery/plot_rootogram.html). If you are familiar with rootograms you may have noticed that they use the dots to represent the observed counts and lines to represent the predictions, while in the original rootograms, the observed counts are represented by the bars. We inverted the representation because this makes it easier to represent the uncertainty in the predictions more intuitively.
+
+
+For those curious about the data, we are using the horseshoe crab dataset @Brockmann_1996. The motivation was to predict the number of "satellite" male crabs based on the features of the female crabs. Satellite crabs are solitary males that gather around a couple of nesting crabs vying for the opportunity to fertilize the eggs. For this example we have two models for one we have used a Poisson likelihood and for the other a Hurdle NegativeBinomial distribution.
+
+
+## Posterior predictive checks for binary data
+
+
 ## Prior sensitivity checks
 
 Coming soon
