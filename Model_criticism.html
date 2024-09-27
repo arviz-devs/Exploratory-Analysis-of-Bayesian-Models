@@ -173,6 +173,7 @@ window.Quarto = {
 <meta name="citation_reference" content="citation_title=Satellite male groups in horseshoe crabs, limulus polyphemus;,citation_author=H. Jane Brockmann;,citation_publication_date=1996;,citation_cover_date=1996;,citation_year=1996;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1439-0310.1996.tb01099.x;,citation_issue=1;,citation_doi=https://doi.org/10.1111/j.1439-0310.1996.tb01099.x;,citation_volume=102;,citation_journal_title=Ethology;">
 <meta name="citation_reference" content="citation_title=Exploratory Data Analysis;,citation_author=John W. Tukey;,citation_publication_date=1977;,citation_cover_date=1977;,citation_year=1977;,citation_isbn=978-0-201-07616-5;">
 <meta name="citation_reference" content="citation_title=The separation plot: A new visual method for evaluating the fit of binary models;,citation_author=Brian Greenhill;,citation_author=Michael D. Ward;,citation_author=Audrey Sacks;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-5907.2011.00525.x;,citation_issue=4;,citation_doi=https://doi.org/10.1111/j.1540-5907.2011.00525.x;,citation_volume=55;,citation_journal_title=American Journal of Political Science;">
+<meta name="citation_reference" content="citation_title=Detecting and diagnosing prior and likelihood sensitivity with power-scaling;,citation_author=Noa Kallioinen;,citation_author=Topi Paananen;,citation_author=Paul-Christian Bürkner;,citation_author=Aki Vehtari;,citation_publication_date=2023-12;,citation_cover_date=2023-12;,citation_year=2023;,citation_fulltext_html_url=https://doi.org/10.1007/s11222-023-10366-5;,citation_issue=1;,citation_doi=10.1007/s11222-023-10366-5;,citation_issn=1573-1375;,citation_volume=34;,citation_journal_title=Statistics and Computing;">
 </head>
 
 <body class="nav-sidebar docked">
@@ -314,7 +315,12 @@ window.Quarto = {
   <li><a href="#posterior-predictive-checks-for-count-data" id="toc-posterior-predictive-checks-for-count-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-count-data"><span class="header-section-number">5.3.1</span> Posterior predictive checks for count data</a></li>
   <li><a href="#posterior-predictive-checks-for-binary-data" id="toc-posterior-predictive-checks-for-binary-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-binary-data"><span class="header-section-number">5.3.2</span> Posterior predictive checks for binary data</a></li>
   </ul></li>
-  <li><a href="#prior-sensitivity-checks" id="toc-prior-sensitivity-checks" class="nav-link" data-scroll-target="#prior-sensitivity-checks"><span class="header-section-number">5.4</span> Prior sensitivity checks</a></li>
+  <li><a href="#prior-sensitivity-checks" id="toc-prior-sensitivity-checks" class="nav-link" data-scroll-target="#prior-sensitivity-checks"><span class="header-section-number">5.4</span> Prior sensitivity checks</a>
+  <ul class="collapse">
+  <li><a href="#prior-and-likelihood-sensitivity-with-power-scaling" id="toc-prior-and-likelihood-sensitivity-with-power-scaling" class="nav-link" data-scroll-target="#prior-and-likelihood-sensitivity-with-power-scaling"><span class="header-section-number">5.4.1</span> Prior and likelihood sensitivity with power-scaling</a></li>
+  <li><a href="#example-of-prior-and-likelihood-sensitivity-analysis" id="toc-example-of-prior-and-likelihood-sensitivity-analysis" class="nav-link" data-scroll-target="#example-of-prior-and-likelihood-sensitivity-analysis"><span class="header-section-number">5.4.2</span> Example of prior and likelihood sensitivity analysis</a></li>
+  <li><a href="#final-remarks-about-prior-and-likelihood-sensitivity-analysis" id="toc-final-remarks-about-prior-and-likelihood-sensitivity-analysis" class="nav-link" data-scroll-target="#final-remarks-about-prior-and-likelihood-sensitivity-analysis"><span class="header-section-number">5.4.3</span> Final remarks about prior (and likelihood) sensitivity analysis</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -340,7 +346,7 @@ window.Quarto = {
 </header>
 
 
-<div id="a12ff83f" class="cell" data-execution_count="1">
+<div id="b09d3b53" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
 </div>
@@ -381,7 +387,7 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="7f651240" class="cell" data-execution_count="3">
+<div id="7f8a98a4" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb2-2"><a href="#cb2-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -425,7 +431,7 @@ Figure&nbsp;5.1: The prior predictive check for the model of heights. We can see
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="47dca732" class="cell" data-execution_count="5">
+<div id="13ffafa5" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb6-2"><a href="#cb6-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">175</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -521,7 +527,7 @@ p(\tilde y) = \int_{\Theta} p(\tilde y \mid \theta) \; p(\theta \mid y) \; d\the
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="57d98ab5" class="cell" data-execution_count="8">
+<div id="7f9a1c6c" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="cf">with</span> model: </span>
 <span id="cb11-2"><a href="#cb11-2"></a>    idata <span class="op">=</span> pm.sample()</span>
 <span id="cb11-3"><a href="#cb11-3"></a>    pm.sample_posterior_predictive(idata, random_seed<span class="op">=</span>SEED, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -536,7 +542,7 @@ Sampling: [Y_obs]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"75151a99b3774700872321d4d603ff1f","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"7493640ede6c4c96a7ed1c7f2934414a","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -544,7 +550,7 @@ Sampling: [Y_obs]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"cf15d60228874b7ba329440da7b85403","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"12cc884557464a3f88e7b92d0dfc17d8","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -761,6 +767,53 @@ Figure&nbsp;5.11: Separation plot for a dummy logistic regression model.
 </section>
 <section id="prior-sensitivity-checks" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="prior-sensitivity-checks"><span class="header-section-number">5.4</span> Prior sensitivity checks</h2>
+<p>Determining the sensitivity of the posterior to perturbations of the prior is an important part of building Bayesian models. By sensitivity of the posterior to the prior we mean how much the posterior distribution changes when the prior is changed. Usually this is done by comparing the results obtained using reference prior against the results obtained using alternative priors. The reference prior can be the default prior in packages like Bambi or some other “template” prior from literature or pevious analysis of a similar dataset/problem. But it can also be the prior obtained after a more careful elicitation process. Once we have this prior we compute the posterior, diagnose samples and check everything is OK with this model. As usual is import to check that we can trust the model and samples. Then we come up with a set of “alternative” priors that for some reason we consider as relevant. We then fit and check model with these alternative priors. To asses how different posteriors are we can use a series of visual and numerical comparisons as we already explained in this the previous sections. For instance, when working with ArviZ, we can use <code>az.plot_forest</code> or <code>az.plot_density</code>, as both plots allows us to compare multiple posteriors in a single plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.</p>
+<p>This process can be a very time-consuming, but it can help us understand how robust the model is to different prior choices. We also notice, that the same procedure can also be used to compare how different likelihoods affect the posterior. So we can discuss the sensitivity of the posterior to the likelihood, the prior or both. It the next section we are going to discuss a more automated way to do this kind of analysis.</p>
+<section id="prior-and-likelihood-sensitivity-with-power-scaling" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="prior-and-likelihood-sensitivity-with-power-scaling"><span class="header-section-number">5.4.1</span> Prior and likelihood sensitivity with power-scaling</h3>
+<p>The method we are going to discuss is described in detail in <span class="citation" data-cites="kallioinen_2023">(<a href="references.html#ref-kallioinen_2023" role="doc-biblioref">Kallioinen et al. 2023</a>)</span>. The main idea of the method is that it is possible to fit a models once and then approximate the effect of making the prior more or less “informative” with respect to the likelihood, and viceversa. The method uses two ideas. Importance sampling, that we have already discussed in <a href="Model_comparison.html" class="quarto-xref"><span>Chapter 6</span></a>, and power-scaling the prior or likelihood. By power-scaling we mean raising a distribution to a power <span class="math inline">\(\alpha\)</span>. As we can see from <a href="#fig-beta-normal-power-scaling" class="quarto-xref">Figure&nbsp;<span>5.12</span></a> the effect of power-scaling is to “stretch” or “compress” the distribution. This transformation is very general and it will work for many distributions, one exception being the uniform distribution.</p>
+<div id="cell-fig-beta-normal-power-scaling" class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div id="fig-beta-normal-power-scaling" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-beta-normal-power-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Model_criticism_files/figure-html/fig-beta-normal-power-scaling-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beta-normal-power-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.12: The effect of power-scaling on Beta and Normal distributions
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In the context of Bayes Theorem we can use power-scaling to modulate the relative weights of the likelihood and prior. For instance we could write:</p>
+<p><span class="math display">\[
+p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)**\alpha \; p(\theta)
+\]</span></p>
+<p>Setting <span class="math inline">\(\alpha=1\)</span> is the same as ommiting the power, and we recover the usual or “unperturbed” expresion for Bayes’ theorem posterior. Setting <span class="math inline">\(\alpha=0\)</span> is equivalent to ignoring the likelihood, thus <span class="math inline">\(p(\theta \mid y)_{\alpha}\)</span> will be equivalent to the prior. We can then conclude that any number between 0 and 1 will have the effect of “weakening” the likelihood with respect to the prior. By the same token any number greater than 1 will “strength” the likelihood with respect to the prior. Thus by adjusting the value of <span class="math inline">\(\alpha\)</span> we can modulate a stronger or weaker likelihood, if we use values close to 1, we emulate relative small perturbations. This very same idea can be aplly to the prior. <a href="#fig-posterior-power-scaling" class="quarto-xref">Figure&nbsp;<span>5.13</span></a> shows the effect on the posterior of power-scaling the prior for a fixed likelihood.</p>
+<div id="cell-fig-posterior-power-scaling" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div id="fig-posterior-power-scaling" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-posterior-power-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Model_criticism_files/figure-html/fig-posterior-power-scaling-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-posterior-power-scaling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.13: The effect of power-scaling the prior on the posterior for a fixed likelihood.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As we usually work with MCMC samples, we can use importance sampling to approximate the effect of power-scaling the prior or likelihood. This allows us to approximate the sensitivity of the posterior to the prior and likelihood without the need to fit the model multiple times. <span class="citation" data-cites="kallioinen_2023">(<a href="references.html#ref-kallioinen_2023" role="doc-biblioref">Kallioinen et al. 2023</a>)</span> proposed to use Pareto smoothed importance sampling (PSIS), the same method used to compute the ELPD discussed in <a href="Model_comparison.html" class="quarto-xref"><span>Chapter 6</span></a>.</p>
+</section>
+<section id="example-of-prior-and-likelihood-sensitivity-analysis" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="example-of-prior-and-likelihood-sensitivity-analysis"><span class="header-section-number">5.4.2</span> Example of prior and likelihood sensitivity analysis</h3>
+<p>ToDO</p>
+</section>
+<section id="final-remarks-about-prior-and-likelihood-sensitivity-analysis" class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="final-remarks-about-prior-and-likelihood-sensitivity-analysis"><span class="header-section-number">5.4.3</span> Final remarks about prior (and likelihood) sensitivity analysis</h3>
+<p>A couple of final remarks. First, the presence of prior sensitivity (or the absence of likelihood sensitivity) is not an issue by itself. Context and modeling purpose should always be part of an analysis. Sometimes we may expect a certain degree of prior sensitivity, for instance when we are working with very small datasets and/or very informative priors, but in other cases we may not expect it. In any case, the presence of prior sensitivity should be reported and discussed. Second, sensitivity analysis should be performed thoughtfully, without repeatedly adjusting priors to eliminate discrepancis or diagnostic warnings. One way to avoid this is to keep the reference prior unchanged during the process and simply report the results of the sensitivity analysis. But there may be the case that the prior sensitivity uncover a problem with the model, in that case it may be more useful to address the problem and not just report the results of the sensitivity analysis. As usual in statistics and data analysis, the goal is to understand the data and the model, not to get a particular result.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -770,6 +823,9 @@ Brockmann, H. Jane. 1996. <span>“Satellite Male Groups in Horseshoe Crabs, Lim
 <div id="ref-Greenhill_2011" class="csl-entry" role="listitem">
 Greenhill, Brian, Michael D. Ward, and Audrey Sacks. 2011. <span>“The Separation Plot: A New Visual Method for Evaluating the Fit of Binary Models.”</span> <em>American Journal of Political Science</em> 55 (4): 991–1002. https://doi.org/<a href="https://doi.org/10.1111/j.1540-5907.2011.00525.x">https://doi.org/10.1111/j.1540-5907.2011.00525.x</a>.
 </div>
+<div id="ref-kallioinen_2023" class="csl-entry" role="listitem">
+Kallioinen, Noa, Topi Paananen, Paul-Christian Bürkner, and Aki Vehtari. 2023. <span>“Detecting and Diagnosing Prior and Likelihood Sensitivity with Power-Scaling.”</span> <em>Statistics and Computing</em> 34 (1): 57. <a href="https://doi.org/10.1007/s11222-023-10366-5">https://doi.org/10.1007/s11222-023-10366-5</a>.
+</div>
 <div id="ref-Kleiber_2016" class="csl-entry" role="listitem">
 Kleiber, Christian, and Achim Zeileis. 2016. <span>“Visualizing Count Data Regressions Using Rootograms.”</span> <em>The American Statistician</em> 70 (3): 296–303. <a href="https://doi.org/10.1080/00031305.2016.1173590">https://doi.org/10.1080/00031305.2016.1173590</a>.
 </div>
@@ -778,10 +834,11 @@ Tukey, John W. 1977. <em>Exploratory <span>Data</span> <span>Analysis</span></em
 </div>
 </div>
 </section>
+</section>
 
 </main> <!-- /main -->
 <script type="application/vnd.jupyter.widget-state+json">
-{"state":{"1425f7fa56d04a85b01e8b65e81826a5":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"75151a99b3774700872321d4d603ff1f":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_e69eed7123fc47c1931abe9501fdf624","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"cf15d60228874b7ba329440da7b85403":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_1425f7fa56d04a85b01e8b65e81826a5","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling ... <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:00</span>\n</pre>\n","text/plain":"Sampling ... \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:00\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"e69eed7123fc47c1931abe9501fdf624":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}}},"version_major":2,"version_minor":0}
+{"state":{"12cc884557464a3f88e7b92d0dfc17d8":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_3b0d0f24faa6420c9a9fd0b60915515d","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling ... <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:00</span>\n</pre>\n","text/plain":"Sampling ... \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:00\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"3b0d0f24faa6420c9a9fd0b60915515d":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"6f0191344bdc43f6a1d0e6319607f4ee":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"7493640ede6c4c96a7ed1c7f2934414a":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_6f0191344bdc43f6a1d0e6319607f4ee","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
