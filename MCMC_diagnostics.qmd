@@ -100,7 +100,7 @@ for pos in [736, 916, 1463]:
 
 Trace plots are probably the first plots we make after inference and also probably the most popular plots in Bayesian literature. But there are more as we will see next.
 
-## Rank plots
+## Rank plots {#sec-rank-plots}
 
 The basic idea is the following. For a parameter we take all the chains and order the values from lowest to highest and assign them a rank, that is, to the lowest value assign 0, to the following 1, and so on until we reach the total number of samples, (number of chains multiplied by the number of draws per chain). Then we regroup the rankings according to the chains that gave rise to them and for each chain we make a histogram. If the chains were indistinguishable we would expect the histograms to be uniform. Since there is no reason for one chain to have more low (or medium or high) rankings than the rest.
 
@@ -294,6 +294,23 @@ With ArviZ we can get the MCSE with `az.mcse(⋅)` or `az.summary(⋅)`.
 ```{python}
 az.mcse(sample)
 ```
+
+### Thinning
+
+One way to reduce autocorrelation in an MCMC chain is through thinning, where we retain only every $n$-th sample. While this method is straightforward, it has the drawback of discarding useful information. Research generally suggests that it's better to keep all the samples when calculating estimates [@maceachern_1994; @link_2011]. Provided the variance is finite, the central limit theorem applies even to correlated samples. Then if higher accuracy is needed, it's more effective to increase the number of draws rather than to perform thinning. Still, there are situations where thinning might be useful, such as:
+
+* Reducing the size of stored data, which is especially important when dealing with a large number of models or when the postprocessing of the samples is expensive, for instance when we need to run expensive computations on every draw.
+* Addressing bias in extreme ordered statistics, which may affect diagnostics like rank-plots (@sec-rank-plots) and uniformity tests typically done for posterior predictive checks, as shown in @fig-post_pred_check_u_value and @fig-loo_pit or as part of [Simulation Based Calibration](https://github.com/arviz-devs/simulation_based_calibration) [@talts_2020].
+
+To determine an appropriate thinning factor, we can use the effective sample size (ESS). For instance, if you have 2,000 samples and an ESS of 1,000, you would thin by a factor of 2, keeping every other sample. The higher the ESS, the lower the thinning factor required. A more refined approach is to calculate both ESS-tail and ESS-bulk, then use the smaller value, which better accounts for differences in sampling efficiency between the central 90% quantile and the 5% tail quantiles [@sailynoja_2022].
+
+In ArviZ we have the `thin` function, which allows us to perform thinning automatically.
+
+```{python}
+# Comming soon in ArviZ 1.0
+```
+
+Additionally, if needed, we can specify the thinning factor manually or we can pass a `target_ess`, this last option is useful when we want as much thinning as possible provided we still get an ESS around the specified value of `target_ess`. 
 
 ## Diagnosis of gradient-based algorithms
 
