@@ -317,7 +317,7 @@ While the main function of LOO is to compare models, the values ​​of $k$ can
 * If $p_{\text{loo}} > p$, then the model has very serious problems. If $p<<N$, then posterior predictive tests should also report problems. If, however, p is relatively large (say $p>N/5$). So post-hoc predictive testing may not reflect problems.
 
 
-Finally, another way to use LOO even in the absence of another model is through `plot_loo_pit`. If the graph looks similar to the one we saw for the marginal Bayesian p-values, it is because we are doing the same thing. But this time using LOO, we are considering:
+Finally, another way to use LOO even in the absence of another model is through `plot_loo_pit`. If the graph looks similar to the one we saw for the marginal Bayesian p-values (@fig-post_pred_check_u_value), it is because we are doing the same thing. But this time using LOO, we are considering:
 
 $$
 p(\tilde y_i \le y_i \mid y_{-i})
@@ -326,8 +326,11 @@ $$
 That is, we are evaluating, approximately, the model's ability to predict an observation when we remove that observation from the observed data.
 
 ```{python}
+#| label: fig-loo_pit
+#| fig-cap: "LOO-PIT plot for the rugby model"
 az.plot_loo_pit(idata_rug, y="home_points", use_hdi=True)
 ```
+
 
 #### Other information criteria
 

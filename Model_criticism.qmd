@@ -397,7 +397,7 @@ r1=4
 r2=3
 
 distributions = [(pz.Beta, lambda α:(α*s1 - α + 1, α*s2 - α + 1)),
-                 (pz.Normal, lambda α:(0, α**0.5*σ)),
+                 (pz.Normal, lambda α:(0, (1/α**0.5)*σ)),
                  ]
 
 _, axes = plt.subplots(2, 1, figsize=(12, 7))
