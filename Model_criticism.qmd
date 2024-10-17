@@ -342,10 +342,17 @@ There are a few variations of rootograms. Here we are going to discuss hanging r
 
 How do we read hanging rootograms? For a count, if a bar goes below the dashed line at y=0 the model is undestimating that count. Instead, if the bar goes above the dashed line at y=0, the model is overestimating that count. 
 
+```{python}
+# Coming soon with ArviZ 1.0
+```
+
 ![Hanging rootograms, showing the uncertainty in the predictions](img/rootogram_hanging.png){#fig-rootogram_hang width=100%}
 
 A variant of the hanging rootogram is the suspended rootogram (see @fig-rootogram_sus). As for the hanging version a bar that goes below the dashed line means that the model is underestimating that count, and a bar that goes above the dashed line means that the model is overestimating that count. The difference is that for suspended rootograms we plot the residuals (predicted-observed counts) as departing from the dashed line at y=0, instead of "haging" from the predictions. Ideally, for each count we would expect a small departure from the dashed line equally distributed above and below.
 
+```{python}
+# Coming soon with ArviZ 1.0
+```
 
 ![Suspended rootograms, showing the uncertainty in the predictions](img/rootogram_suspended.png){#fig-rootogram_sus width=100%}
 
@@ -426,7 +433,7 @@ Setting $\alpha=1$ is the same as ommiting the power, and we recover the usual o
 trial = 10
 success = 7
 
-_, axes = plt.subplots(3, 1, sharex=True, figsize=(12, 10))
+_, axes = plt.subplots(3, 1, sharex=True, figsize=(12, 8))
 
 for α, ax in zip([0.5, 1, 2], axes.ravel()):
     a_prior = α*2 - α + 1
@@ -450,7 +457,9 @@ As we usually work with MCMC samples, we can use importance sampling to approxim
 
 ### Example of prior and likelihood sensitivity analysis
 
-ToDO
+```{python}
+# Coming soon with ArviZ 1.0
+```
 
 
 ### Final remarks about prior (and likelihood) sensitivity analysis

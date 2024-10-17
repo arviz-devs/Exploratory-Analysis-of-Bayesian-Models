@@ -364,7 +364,7 @@ with pm.Model() as modelo_t:
 ## PyStan
 
 ``` {.python}
-## comming soon
+## coming soon
 ```
 :::
 
@@ -487,7 +487,7 @@ with pm.Model() as model_uni:
 ## PyStan
 
 ``` {.python}
-## comming soon
+## coming soon
 ```
 :::
 
@@ -518,7 +518,7 @@ with pm.Model() as model_conc:
 ## PyStan
 
 ``` {.python}
-## comming soon
+## coming soon
 ```
 :::
 

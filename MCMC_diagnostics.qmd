@@ -307,7 +307,7 @@ To determine an appropriate thinning factor, we can use the effective sample siz
 In ArviZ we have the `thin` function, which allows us to perform thinning automatically.
 
 ```{python}
-# Comming soon in ArviZ 1.0
+# Coming soon with ArviZ 1.0
 ```
 
 Additionally, if needed, we can specify the thinning factor manually or we can pass a `target_ess`, this last option is useful when we want as much thinning as possible provided we still get an ESS around the specified value of `target_ess`. 
