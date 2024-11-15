@@ -2,11 +2,11 @@
 
 ```{python}
 #| echo : false
-import arviz as az
+import arviz_plots as azp
 import numpy as np
 import preliz as pz
 import matplotlib.pyplot as plt
-az.style.use("arviz-doc")
+azp.style.use("arviz-clean")
 ```
 Plots occupy a central place in modern statistics, both in exploratory data analysis and inferential statistics.
 
@@ -90,21 +90,19 @@ Matplotlib allows users to easily switch between plotting styles by defining sty
 
 ```{python}
 #| label: fig-style_sheets
-#| fig-cap: "arviz-white style use a color-blind friendly palette"
-az.style.use('arviz-white')
+#| fig-cap: "arviz-clean style use a color-blind friendly palette"
+azp.style.use('arviz-clean')
 x = np.linspace(0, 1, 100)
 dist = pz.Beta(2, 5).pdf(x)
 
 fig = plt.figure()
 for i in range(10):
-    plt.plot(x, dist - i, f'C{i}', label=f'C{i}')
+    plt.plot(x, dist - i, f'C{i}', label=f'C{i}', lw=3)
 plt.xlabel('x')
 plt.ylabel('f(x)', rotation=0, labelpad=15);
 ```
 
-`az.style` is just an alias of `matplotlib.pyplot.style`, so everything you can do with one of them you can do with the other. 
+The color palettes in ArviZ were designed with the help of [colorcyclepicker](https://colorcyclepicker.mpetroff.net). Other pallettes distributed with ArviZ are `'arviz-cetrino'`, and `'arviz-vibrant'`. To list all available styles use `azp.style.available()`.
 
-The styles `arviz-colors`, `arviz-white`, `arviz-darkgrid`, and `arviz-whitegrid` use the same color-blind friendly palette. This palette was designed using [colorcyclepicker](https://colorcyclepicker.mpetroff.net). `arviz-doc`, the style used in ArviZ documentation, uses another color-blind friendly and it looks gorgeous on-screen and in printed documents, although it can be tricky for projections if the room is not dark enough.
-
-If you need to do plots in grey-scale we recommend restricting yourself to the first 3 colors of the ArviZ default palette ("C0", "C1" and "C2"), otherwise, you may need to use different [line styles](https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linestyle) or [different markers](https://matplotlib.org/api/markers_api.html#module-matplotlib.markers). Another useful palette when the number of colors is restricted is the `grayscale` which assigns greys to the first four colors ("C0", "C1", "C2" and "C3") and the *ArviZ's blue* to "C5". Check [the style gallery](https://arviz-devs.github.io/arviz/examples/styles.html) to see all the available ArviZ's styles.
+If you need to do plots in grey-scale we recommend restricting yourself to the first 3 colors of the ArviZ palettes ("C0", "C1" and "C2"), otherwise, you may need to use different [line styles](https://matplotlib.org/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D.set_linestyle) or [different markers](https://matplotlib.org/api/markers_api.html#module-matplotlib.markers).
 
