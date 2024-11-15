@@ -2,12 +2,13 @@
 
 ```{python}
 #| echo : false
-import arviz as az
+import arviz_base as azb
+import arviz_plots as azp
 import numpy as np
 import preliz as pz
 import matplotlib.pyplot as plt
 np.random.seed(19)
-az.style.use("arviz-doc")
+azp.style.use("arviz-clean")
 ```
 
 ## Random variables
@@ -151,13 +152,15 @@ We will discuss these methods in the next subsections with special emphasis on h
 
 ![](videos/histogram.mp4)
 
-Histograms can be used to represent both discrete and continuous random variables. Discrete variables are usually represented using integers. When ArviZ is asked to plot integer data it will use histograms as the default method. Arguably the most important parameter of a histogram is the number of bins. Too few bins and we will miss details, too many and we will plot noise. You can pick the number of bins with a bit of trial and error, especially when you are sure of what you want to show. However, there are many methods to compute the number of bins automatically from the data, like the  [Freedman–Diaconis rule](https://en.wikipedia.org/wiki/Freedman-Diaconis_rule) or the [Sturges' rule](https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width). By default, ArviZ computes the number of bins using both rules and then picks the one that gives the largest number of bins. This is the same approach used by `np.histogram(., bins="auto)` and `plt.hist(., bins="auto)`. Additionally, when the data is of type integers, ArviZ will preserve that structure and will associate bins to integers, instead of floats. If the number of unique integers is relatively small then, it will associate one bin to each integer. For example, in the following plot each _bar_ is associated with an integer in the interval [0, 9].
+Histograms can be used to represent both discrete and continuous random variables. Discrete variables are usually represented using integers. 
+<!-- When ArviZ is asked to plot integer data it will use histograms as the default method.  -->
+Arguably the most important parameter of a histogram is the number of bins. Too few bins and we will miss details, too many and we will plot noise. You can pick the number of bins with a bit of trial and error, especially when you have good idea of what you want to show. However, there are many methods to compute the number of bins automatically from the data, like the  [Freedman–Diaconis rule](https://en.wikipedia.org/wiki/Freedman-Diaconis_rule) or the [Sturges' rule](https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width). By default, ArviZ computes the number of bins using both rules and then picks the one that gives the largest number of bins. This is the same approach used by `np.histogram(., bins="auto)` and `plt.hist(., bins="auto)`. Additionally, when the data is of type integers, ArviZ will preserve that structure and will associate bins to integers, instead of floats. If the number of unique integers is relatively small then, it will associate one bin to each integer. For example, in the following plot each _bar_ is associated with an integer in the interval [0, 9].
 
 ```{python}
 #| label: fig-dist_histogram_0
 #| fig-cap: "Histogram from a sample of integers. Each bin corresponds to a single integer."
-d_values = pz.Poisson(3).rvs(500)
-az.plot_dist(d_values);
+d_values = azb.convert_to_dataset(pz.Poisson(3).rvs((1, 500)))
+azp.plot_dist(d_values, kind="hist");
 ```
 
 When the discrete values take higher values, like in @fig-dist_histogram_1, bins are still associated with integers but many integers are binned together.
@@ -165,8 +168,8 @@ When the discrete values take higher values, like in @fig-dist_histogram_1, bins
 ```{python}
 #| label: fig-dist_histogram_1
 #| fig-cap: "Histogram from a sample of integers. Bins group together many integers."
-d_values = pz.Poisson(100).rvs(500)
-az.plot_dist(d_values);
+d_values = azb.convert_to_dataset(pz.Poisson(100).rvs((1, 500)))
+azp.plot_dist(d_values, kind="hist");
 ```
 
 If you don't like the default binning criteria of ArviZ, you can change it by passing the `bins` argument using the `hist_kwargs`.
@@ -174,9 +177,8 @@ If you don't like the default binning criteria of ArviZ, you can change it by pa
 ```{python}
 #| label: fig-dist_histogram_2
 #| fig-cap: "Histogram from a sample of integers, with bins automatically computed by Matplotlib, not ArviZ."
-d_values = pz.Poisson(100).rvs(500)
-ax = az.plot_dist(d_values, hist_kwargs={"bins":"auto"})
-plt.setp(ax.get_xticklabels(), rotation=45);
+d_values = azb.convert_to_dataset(pz.Poisson(100).rvs((1, 500)))
+azp.plot_dist(d_values, kind="hist", stats_kwargs={"density":{"bins":20}})
 ```
 
 ### KDE
@@ -210,8 +212,8 @@ The following example shows a KDE computed from a sample from a `Gamma` distribu
 ```{python}
 #| label: fig-dist_KDE_0
 #| fig-cap: "KDE from a sample of floats. By default, ArviZ computes a KDE instead of a histogram."
-c_values = pz.Gamma(2, 3).rvs(1000)
-az.plot_dist(c_values);
+c_values = azb.convert_to_dataset(pz.Gamma(2, 3).rvs((1,1000)))
+azp.plot_dist(c_values);
 ```
 
 ### ECDF
@@ -226,8 +228,7 @@ The following block of code shows a very simple example of an ECDF.
 ```{python}
 #| label: fig-dist_ecdf
 #| fig-cap: "empirical cumulative distribution function"
-c_values = pz.Poisson(3).rvs(500)
-az.plot_ecdf(c_values);
+azp.plot_dist(c_values, kind="ecdf");
 ```
 
 ### Quantile dot plots
@@ -244,8 +245,11 @@ From @fig-dist_qdot we can easily see that 30% of the data is below 2. We do thi
 ```{python}
 #| label: fig-dist_qdot
 #| fig-cap: "Quantile dot plot"
-c_values = pz.Poisson(2.4).rvs(500)
-az.plot_dot(c_values, nquantiles=10);
+d_values = azb.convert_to_dataset(pz.Poisson(3).rvs((1, 500)))
+try:
+    azp.plot_dist(d_values, kind="dots");
+except NotImplementedError:
+    pass
 ```
 
 
