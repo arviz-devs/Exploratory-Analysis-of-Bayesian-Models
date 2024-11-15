@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./MCMC_diagnostics.html" rel="next">
-<link href="./InferenceData.html" rel="prev">
+<link href="./DataTree.html" rel="prev">
 <link href="./favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -228,8 +228,8 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./InferenceData.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with InferenceData</span></span></a>
+  <a href="./DataTree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -320,7 +320,7 @@ window.Quarto = {
 </header>
 
 
-<div id="d3912d0f" class="cell" data-execution_count="1">
+<div id="3afef7f8" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
 </div>
@@ -477,14 +477,14 @@ Figure&nbsp;3.7: CDF of a normal distribution
 </div>
 </div>
 <p>The CDF is usually easier to read than the PDF, as we already saw y-axis for a PDF is a density that has no intrinsic meaning, and to get probability from a PDF we need to evaluate areas. Instead for a CDF the y-axis is a probability. For the PMF/PDF it is easier to get the mode (the highest value for the point/curve), and for the CDF it is easier to get the median (the value of <span class="math inline">\(x\)</span> for which <span class="math inline">\(y=0.5\)</span>), or other quantiles. From the CDF it is also easier to quickly get quantities like <em>the probability of getting a temperature equal or lower than 35 degrees</em>. It is the value of the CDF at 35. From <a href="#fig-normal_cdf" class="quarto-xref">Figure&nbsp;<span>3.7</span></a> we can see that it is roughly 0.9 or 90%, if you want more accuracy you could use a matplotlib/ArviZ style with a grid (like <code>arviz-darkgrid</code>) or use the <code>cdf()</code> function.</p>
-<div id="89f9dd73" class="cell" data-execution_count="9">
+<div id="19789144" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>pz.Normal(<span class="dv">30</span>, <span class="dv">4</span>).cdf(<span class="dv">35</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>0.894350157794624</code></pre>
 </div>
 </div>
 <p>From the CDF we can also easily get the probability of a range of values. For example, the probability of the temperature being between 25 and 35 degrees is the difference between the CDF at 35 and the CDF at 25. From <a href="#fig-normal_cdf" class="quarto-xref">Figure&nbsp;<span>3.7</span></a> we can get that it is roughly 0.9 or 90%. Again even when you can get a good estimate just by looking at the graph you can use the <code>cdf()</code> function to get a more accurate estimate. But the fact that you can get a good estimate by looking at the graph is a good feature.</p>
-<div id="c7a5aafd" class="cell" data-execution_count="10">
+<div id="f3608bf1" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>np.diff(pz.Normal(<span class="dv">30</span>, <span class="dv">4</span>).cdf([<span class="dv">25</span>, <span class="dv">35</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>array([0.78870032])</code></pre>
@@ -539,10 +539,10 @@ Figure&nbsp;3.9: PPF of a normal distribution
 <h3 data-number="3.5.1" class="anchored" data-anchor-id="histograms"><span class="header-section-number">3.5.1</span> Histograms</h3>
 <p><a href="https://en.wikipedia.org/wiki/Histogram">Histograms</a> are a very simple and effective way to represent a distribution. The basic idea is to divide the range of the data into a set of bins and count how many data points fall into each bin. Then we use as many bars as bins, with the height of the bars being proportional to the counts. The following video shows a step-by-step animation of a histogram being built.</p>
 <p><video src="videos/histogram.mp4" class="img-fluid" controls=""><a href="videos/histogram.mp4">Video</a></video></p>
-<p>Histograms can be used to represent both discrete and continuous random variables. Discrete variables are usually represented using integers. When ArviZ is asked to plot integer data it will use histograms as the default method. Arguably the most important parameter of a histogram is the number of bins. Too few bins and we will miss details, too many and we will plot noise. You can pick the number of bins with a bit of trial and error, especially when you are sure of what you want to show. However, there are many methods to compute the number of bins automatically from the data, like the <a href="https://en.wikipedia.org/wiki/Freedman-Diaconis_rule">Freedman–Diaconis rule</a> or the <a href="https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width">Sturges’ rule</a>. By default, ArviZ computes the number of bins using both rules and then picks the one that gives the largest number of bins. This is the same approach used by <code>np.histogram(., bins="auto)</code> and <code>plt.hist(., bins="auto)</code>. Additionally, when the data is of type integers, ArviZ will preserve that structure and will associate bins to integers, instead of floats. If the number of unique integers is relatively small then, it will associate one bin to each integer. For example, in the following plot each <em>bar</em> is associated with an integer in the interval [0, 9].</p>
+<p>Histograms can be used to represent both discrete and continuous random variables. Discrete variables are usually represented using integers. <!-- When ArviZ is asked to plot integer data it will use histograms as the default method.  --> Arguably the most important parameter of a histogram is the number of bins. Too few bins and we will miss details, too many and we will plot noise. You can pick the number of bins with a bit of trial and error, especially when you have good idea of what you want to show. However, there are many methods to compute the number of bins automatically from the data, like the <a href="https://en.wikipedia.org/wiki/Freedman-Diaconis_rule">Freedman–Diaconis rule</a> or the <a href="https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width">Sturges’ rule</a>. By default, ArviZ computes the number of bins using both rules and then picks the one that gives the largest number of bins. This is the same approach used by <code>np.histogram(., bins="auto)</code> and <code>plt.hist(., bins="auto)</code>. Additionally, when the data is of type integers, ArviZ will preserve that structure and will associate bins to integers, instead of floats. If the number of unique integers is relatively small then, it will associate one bin to each integer. For example, in the following plot each <em>bar</em> is associated with an integer in the interval [0, 9].</p>
 <div id="cell-fig-dist_histogram_0" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">3</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb15-2"><a href="#cb15-2"></a>az.plot_dist(d_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>d_values <span class="op">=</span> azb.convert_to_dataset(pz.Poisson(<span class="dv">3</span>).rvs((<span class="dv">1</span>, <span class="dv">500</span>)))</span>
+<span id="cb15-2"><a href="#cb15-2"></a>azp.plot_dist(d_values, kind<span class="op">=</span><span class="st">"hist"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-dist_histogram_0" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -558,8 +558,8 @@ Figure&nbsp;3.10: Histogram from a sample of integers. Each bin corresponds to a
 </div>
 <p>When the discrete values take higher values, like in <a href="#fig-dist_histogram_1" class="quarto-xref">Figure&nbsp;<span>3.11</span></a>, bins are still associated with integers but many integers are binned together.</p>
 <div id="cell-fig-dist_histogram_1" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb16-2"><a href="#cb16-2"></a>az.plot_dist(d_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>d_values <span class="op">=</span> azb.convert_to_dataset(pz.Poisson(<span class="dv">100</span>).rvs((<span class="dv">1</span>, <span class="dv">500</span>)))</span>
+<span id="cb16-2"><a href="#cb16-2"></a>azp.plot_dist(d_values, kind<span class="op">=</span><span class="st">"hist"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-dist_histogram_1" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -575,9 +575,8 @@ Figure&nbsp;3.11: Histogram from a sample of integers. Bins group together many 
 </div>
 <p>If you don’t like the default binning criteria of ArviZ, you can change it by passing the <code>bins</code> argument using the <code>hist_kwargs</code>.</p>
 <div id="cell-fig-dist_histogram_2" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>d_values <span class="op">=</span> pz.Poisson(<span class="dv">100</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb17-2"><a href="#cb17-2"></a>ax <span class="op">=</span> az.plot_dist(d_values, hist_kwargs<span class="op">=</span>{<span class="st">"bins"</span>:<span class="st">"auto"</span>})</span>
-<span id="cb17-3"><a href="#cb17-3"></a>plt.setp(ax.get_xticklabels(), rotation<span class="op">=</span><span class="dv">45</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>d_values <span class="op">=</span> azb.convert_to_dataset(pz.Poisson(<span class="dv">100</span>).rvs((<span class="dv">1</span>, <span class="dv">500</span>)))</span>
+<span id="cb17-2"><a href="#cb17-2"></a>azp.plot_dist(d_values, kind<span class="op">=</span><span class="st">"hist"</span>, stats_kwargs<span class="op">=</span>{<span class="st">"density"</span>:{<span class="st">"bins"</span>:<span class="dv">20</span>}})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-dist_histogram_2" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -597,7 +596,7 @@ Figure&nbsp;3.12: Histogram from a sample of integers, with bins automatically c
 <p><a href="https://en.wikipedia.org/wiki/Kernel_density_estimation">Kernel density estimation</a> (KDE) is a non-parametric way to estimate the probability density function from a sample. Intuitivelly you can think of it as the smooth version of a histogram. Conceptually you place a <em>kernel function</em> like a Gaussian <em>on top</em> of a data point, then you sum all the Gaussians, generally evaluated over a grid and not over the data points. Results are normalized so the total area under the curve is one. The following video shows a step-by-step animation of a KDE being built. You can see a version with border corrections and without them. Border corrections avoid adding a positive density outside the range of the data.</p>
 <p><video src="videos/kde.mp4" class="img-fluid" controls=""><a href="videos/kde.mp4">Video</a></video></p>
 <p>The following block of code shows a very simple example of a KDE.</p>
-<div id="0ca59af7" class="cell" data-execution_count="16">
+<div id="fff6dea7" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>_, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb18-2"><a href="#cb18-2"></a>bandwidth <span class="op">=</span> <span class="fl">0.4</span></span>
 <span id="cb18-3"><a href="#cb18-3"></a>np.random.seed(<span class="dv">19</span>)</span>
@@ -622,8 +621,8 @@ Figure&nbsp;3.12: Histogram from a sample of integers, with bins automatically c
 <p>The most important parameter of a KDE is the <em>bandwidth</em> which controls the degree of smoothness of the resulting curve. It is analogous to the number of bins for the histograms. ArviZ’s default method to compute the bandwidth works well for a wide range of distributions including multimodal ones. Compared to other KDEs in the Python ecosystem, the KDE implemented in ArviZ automatically handles the boundaries of a distribution. ArviZ will assign a density of zero to any point outside the range of the data.</p>
 <p>The following example shows a KDE computed from a sample from a <code>Gamma</code> distribution. Notice that ArviZ computes a KDE instead of a histogram, and notice that there is no density for negative values.</p>
 <div id="cell-fig-dist_KDE_0" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>c_values <span class="op">=</span> pz.Gamma(<span class="dv">2</span>, <span class="dv">3</span>).rvs(<span class="dv">1000</span>)</span>
-<span id="cb19-2"><a href="#cb19-2"></a>az.plot_dist(c_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>c_values <span class="op">=</span> azb.convert_to_dataset(pz.Gamma(<span class="dv">2</span>, <span class="dv">3</span>).rvs((<span class="dv">1</span>,<span class="dv">1000</span>)))</span>
+<span id="cb19-2"><a href="#cb19-2"></a>azp.plot_dist(c_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-dist_kde_0" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -644,17 +643,12 @@ Figure&nbsp;3.13: KDE from a sample of floats. By default, ArviZ computes a KDE 
 <p><video src="videos/ecdf.mp4" class="img-fluid" controls=""><a href="videos/ecdf.mp4">Video</a></video></p>
 <p>The following block of code shows a very simple example of an ECDF.</p>
 <div id="cell-fig-dist_ecdf" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>c_values <span class="op">=</span> pz.Poisson(<span class="dv">3</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb20-2"><a href="#cb20-2"></a>az.plot_ecdf(c_values)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/opt/hostedtoolcache/Python/3.10.15/x64/lib/python3.10/site-packages/arviz/plots/ecdfplot.py:295: BehaviourChangeWarning: In future versions, if `eval_points` is not provided, then the ECDF will be evaluated at the unique values of the sample. To keep the current behavior, provide `eval_points` explicitly.
-  warnings.warn(</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>azp.plot_dist(c_values, kind<span class="op">=</span><span class="st">"ecdf"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-dist_ecdf" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dist_ecdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="distributions_files/figure-html/fig-dist_ecdf-output-2.png" class="img-fluid figure-img">
+<img src="distributions_files/figure-html/fig-dist_ecdf-output-1.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dist_ecdf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.14: empirical cumulative distribution function
@@ -671,8 +665,11 @@ Figure&nbsp;3.14: empirical cumulative distribution function
 <p><video src="videos/dotplot.mp4" class="img-fluid" controls=""><a href="videos/dotplot.mp4">Video</a></video></p>
 <p>From <a href="#fig-dist_qdot" class="quarto-xref">Figure&nbsp;<span>3.15</span></a> we can easily see that 30% of the data is below 2. We do this by noticing that we have a total of 10 dots and 3 of them are below 2.</p>
 <div id="cell-fig-dist_qdot" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>c_values <span class="op">=</span> pz.Poisson(<span class="fl">2.4</span>).rvs(<span class="dv">500</span>)</span>
-<span id="cb22-2"><a href="#cb22-2"></a>az.plot_dot(c_values, nquantiles<span class="op">=</span><span class="dv">10</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>d_values <span class="op">=</span> azb.convert_to_dataset(pz.Poisson(<span class="dv">3</span>).rvs((<span class="dv">1</span>, <span class="dv">500</span>)))</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="cf">try</span>:</span>
+<span id="cb21-3"><a href="#cb21-3"></a>    azp.plot_dist(d_values, kind<span class="op">=</span><span class="st">"dots"</span>)<span class="op">;</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="cf">except</span> <span class="pp">NotImplementedError</span>:</span>
+<span id="cb21-5"><a href="#cb21-5"></a>    <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-dist_qdot" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1248,8 +1245,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./InferenceData.html" class="pagination-link" aria-label="Working with InferenceData">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with InferenceData</span></span>
+      <a href="./DataTree.html" class="pagination-link" aria-label="Working with DataTree">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
