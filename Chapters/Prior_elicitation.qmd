@@ -32,7 +32,7 @@ It is important to recognize that usually the amount of information a priors can
 
 A useful way to give these categories a more concrete meaning, in the context of particular problems, is to think in terms of the prior predictive distribution induced by them. In other words, we think about the priors in terms of the predictions they make about unobserved, but potentially observable data. This mental scafold can be helpful in many ways. It make us think in terms of the prior in relation to other priors and the likelihood, i.e. it reflects the fact that we cannot understood a prior without the context of the model @gelman_2017. But this also helps to give us an operational definition of what we mean by vague, informative, or weakly informative prior. Let see, if we are able to identify how the prior predictive distribution looks like, then we can say that a vague prior is a prior that makes predictions that are broader than what we would expect the prior predictive distribution to be. An informative prior is a prior that makes predictions that are about the same. And a weakly informative prior is a prior that makes predictions that are somewhere in between. The distinctions are still qualitative and subjective, but we have a criteria that is context dependant. Figure @fig-prior_vagueness shows a very schematic representation of this idea.
 
-![Prior amount of information in terms of the prior predictive distribution induced by them](../../img/prior_vagueness.png){#fig-prior_vagueness}
+![Prior amount of information in terms of the prior predictive distribution induced by them](../img/prior_vagueness.png){#fig-prior_vagueness}
 
 Later, we will see how we can use these ideas in practice.
 
@@ -53,3 +53,4 @@ The prior elicitation process should also include a step to verify the usefulnes
 
 Finally we want to highlight that the process of prior elicitation is not only about choosing the _right_ prior, but also about understanding the model and the problem.  So even if we end up with a prior that has little impact on the posterior, compared to let's say a vague or default prior. Still, the process of prior elicitation could be useful for the modeller. Especially among newcomers setting priors can be seen as an anxiogenic task. Spending sometime thinking about priors, with the help of proper tools, can then hep reducing this brain drain and save mental resources for other modelling tasks.
 
+it 

@@ -17,6 +17,7 @@ book:
     - Chapters/Model_criticism.qmd
     - Chapters/Model_comparison.qmd
     - Chapters/Case_study_model_comparison.qmd
+    - Chapters/Prior_elicitation.qmd
     - Chapters/Presenting_results.qmd
     - Chapters/References.qmd
 
