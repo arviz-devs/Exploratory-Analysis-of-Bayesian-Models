@@ -172,7 +172,7 @@ As expected, ArviZ has no way of knowing what predictive task we have in mind so
 ### Predicting the goals scored by the away team
 In this particular case, we are interested in predicting the goals scored by the away team. We will still use the goals scored by the home team, but won't take them into account when assessing the predictive accuracy. Below there is an illustration of how would cross validation be performed to assess the predictive accuracy in this particular case:
 
-![](img/cv_away.png)
+![](../img/cv_away.png)
 
 This can also be seen from a mathematical point of view. We can write the pointwise log likelihood in the following way so it defines the predictive task at hand:
 
@@ -197,7 +197,7 @@ az.compare(model_dict, var_name="away_goals")
 ### Predicting the outcome of a match
 Another option is being interested in the outcome of the matches. In our current model, the outcome of a match is not who wins or the aggregate of scored goals by both teams, the outcome is the goals scored by the home team _and_ by the away team, both quantities at the same time. Below there is an illustration on how would cross validation be used to assess the predictive accuracy in this situation:
 
-![](img/cv_match.png)
+![](../img/cv_match.png)
 
 The _one observation_ in this situation is therefore a vector with two components: $y_i = (y_{i,h}, y_{i,a})$. Like above, we also have $M$ observations. The pointwise likelihood is therefore a product:
 
@@ -230,7 +230,7 @@ az.compare(model_dict, var_name="matches")
 ### Predicting the goals scored per match and per team
 Another example described above is being interested in the scored goals per match and per team. In this situation, our observations are a scalar once again. 
 
-![](img/cv_any_goals.png)
+![](../img/cv_any_goals.png)
 
 The expression of the likelihood is basically the same as the one in the first example (both cases are scalars), but the difference is in the index, but that does not make it less significant:
 
@@ -272,7 +272,7 @@ Although theoretically possible, importance sampling tends to fail at the group 
 
 In this situation, we could describe the cross validation as excluding a team. When we exclude a team, we will exclude all the matches played by the team, not only the goals scored by the team but the whole match. Here is the illustration:
 
-![](img/cv_team.png)
+![](../img/cv_team.png)
 
 In the first column, we are excluding "Levante U.D." which in the rows shown only appears once. In the second one, we are excluding "Athletic Club" which appears two times. This goes on following the order of appearance in the away team column.
 

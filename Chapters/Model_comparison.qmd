@@ -189,7 +189,7 @@ A model where $\beta=0$ will be less flexible, since it is equivalent to a model
 
 Cross-validation is a simple and, in most cases, effective solution for comparing models. We take our data and divide it into $K$ slices. We try to keep the portions more or less the same (in size and sometimes also in other characteristics, such as an equal number of classes). We then use $K-1$ portions to train the model and the rest to evaluate it. This process is systematically repeated leaving, for each iteration, a different portion out of the training set and using that portion as the evaluation set. This is repeated until we have completed $K$ rounds of adjustment-evaluation. The accuracy of the model will be the average over the $K$ rounds. This is known as K-fold cross validation. Finally, once we have cross-validated, we use all the data to final fit our model and this is the model that is used to make predictions or for any other purpose.
 
-<img src='img/cv.png' width=500 >
+<img src='../img/cv.png' width=500 >
 
 When $K$ is equal to the number of data points, we get what is known as leave-one-out cross-validation (LOOCV).
 

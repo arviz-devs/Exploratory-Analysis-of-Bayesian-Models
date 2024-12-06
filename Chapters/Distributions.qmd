@@ -31,9 +31,9 @@ Random variables can be classified into two main types: discrete and continuous.
 
 * Discrete Random Variables: They can take on a countable number of distinct values. We already saw an example of a discrete random variable, the `weather tomorrow`. It can take on three values: `Rainy`, `Sunny`, and `Cloudy`. No intermediate values are allowed in our experiment, even when it is true that it can be partially sunny and still rain. And it has to be at least partially cloudy to rain. But we are not considering those possibilities.
 
-* Continuous Random Variables: They can take on any value within a certain range. For example, the temperature tomorrow is a continuous random variable. If we use a Celcius scale, then it can take on any value between -273.15 Celsius to $+ \infty$. Of course, in practice, the expected temperature is restricted to a much narrower range. The lowest recorded temperature on Earth is −89.2 °C and the highest is 56.7 °C, and that range will be even narrower if we consider a particular region of our planet.
+* Continuous Random Variables: They can take on any value within a certain range. For example, the temperature tomorrow is a continuous random variable. If we use a Celsius scale, then it can take on any value between -273.15 Celsius to $+ \infty$. Of course, in practice, the expected temperature is restricted to a much narrower range. The lowest recorded temperature on Earth is −89.2 °C and the highest is 56.7 °C, and that range will be even narrower if we consider a particular region of our planet.
 
-## Probability mass and density functions
+## Probability mass and density functionsc
 
 The probability distribution of a discrete random variable is often described using a `probability mass function` (PMF), which gives the probability of each possible outcome. For instance, the following plot shows the probability mass function of a `categorical` distribution with three possible outcomes, like  `Rainy`, `Sunny`, and `Cloudy`.
 
@@ -183,7 +183,7 @@ azp.plot_dist(d_values, kind="hist", stats_kwargs={"density":{"bins":20}})
 
 ### KDE
 
-[Kernel density estimation](https://en.wikipedia.org/wiki/Kernel_density_estimation) (KDE) is a non-parametric way to estimate the probability density function from a sample. Intuitivelly you can think of it as the smooth version of a histogram. Conceptually you place a _kernel function_ like a Gaussian _on top_ of a data point, then you sum all the Gaussians, generally evaluated over a grid and not over the data points. Results are normalized so the total area under the curve is one. The following video shows a step-by-step animation of a KDE being built. You can see a version with border corrections and without them. Border corrections avoid adding a positive density outside the range of the data.
+[Kernel density estimation](https://en.wikipedia.org/wiki/Kernel_density_estimation) (KDE) is a non-parametric way to estimate the probability density function from a sample. Intuitively you can think of it as the smooth version of a histogram. Conceptually you place a _kernel function_ like a Gaussian _on top_ of a data point, then you sum all the Gaussians, generally evaluated over a grid and not over the data points. Results are normalized so the total area under the curve is one. The following video shows a step-by-step animation of a KDE being built. You can see a version with border corrections and without them. Border corrections avoid adding a positive density outside the range of the data.
 
 ![](videos/kde.mp4)
 
@@ -235,7 +235,7 @@ azp.plot_dist(c_values, kind="ecdf");
 
 A quantile dot plot displays the distribution of a sample in terms of its quantiles. Reading the median or other quantiles from quantile dot plots is generally easy, we just need to count the number of dots. 
 
-The folowing video shows a step-by-step animation of a quantile dot plot being built.
+The following video shows a step-by-step animation of a quantile dot plot being built.
 
 ![](videos/dotplot.mp4)
 

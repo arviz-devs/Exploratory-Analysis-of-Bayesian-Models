@@ -10,13 +10,13 @@ book:
 
   chapters:
     - index.qmd
-    - Chapters/elements_of_visualization.qmd
+    - Chapters/Elements_of_visualization.qmd
     - Chapters/DataTree.qmd
-    - Chapters/distributions.qmd
+    - Chapters/Distributions.qmd
     - Chapters/MCMC_diagnostics.qmd
     - Chapters/Model_criticism.qmd
     - Chapters/Model_comparison.qmd
-    - Chapters/case_study_model_comparison.qmd
+    - Chapters/Case_study_model_comparison.qmd
     - Chapters/Presenting_results.qmd
     - Chapters/references.qmd
 

@@ -1,19 +1,4 @@
----
-title: Model criticism
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .qmd
-      format_name: quarto
-      format_version: '1.0'
-      jupytext_version: 1.16.1
-  kernelspec:
-    display_name: Python 3 (ipykernel)
-    language: python
-    name: python3
----
-
-
+# Model comparison {#sec-model-criticism}
 
 ```{python}
 #| echo: false
@@ -215,7 +200,7 @@ The dashed orange line, labeled as "posterior predictive mean", is the aggregate
 ```{python}
 #| label: fig-post_pred
 #| fig-cap: "Posterior predictive check for the model of heights."
-az.plot_ppc(idata, num_pp_samples=200, colors=["C0", "k", "C2"]);
+az.plot_ppc(idata, num_pp_samples=200, colours=["C0", "k", "C2"]);
 ```
 
 Other common visualizations to compare observed and precitive values are empirical CDFs, histograms and less often quantile dotplots. Like with other types of visulizations, you may want to try different options, to be sure visualizations are not missleading and you may also want to adapt the visualization to your audience.
@@ -346,7 +331,7 @@ How do we read hanging rootograms? For a count, if a bar goes below the dashed l
 # Coming soon with ArviZ 1.0
 ```
 
-![Hanging rootograms, showing the uncertainty in the predictions](img/rootogram_hanging.png){#fig-rootogram_hang width=100%}
+![Hanging rootograms, showing the uncertainty in the predictions](../img/rootogram_hanging.png){#fig-rootogram_hang width=100%}
 
 A variant of the hanging rootogram is the suspended rootogram (see @fig-rootogram_sus). As for the hanging version a bar that goes below the dashed line means that the model is underestimating that count, and a bar that goes above the dashed line means that the model is overestimating that count. The difference is that for suspended rootograms we plot the residuals (predicted-observed counts) as departing from the dashed line at y=0, instead of "haging" from the predictions. Ideally, for each count we would expect a small departure from the dashed line equally distributed above and below.
 
@@ -354,7 +339,7 @@ A variant of the hanging rootogram is the suspended rootogram (see @fig-rootogra
 # Coming soon with ArviZ 1.0
 ```
 
-![Suspended rootograms, showing the uncertainty in the predictions](img/rootogram_suspended.png){#fig-rootogram_sus width=100%}
+![Suspended rootograms, showing the uncertainty in the predictions](../img/rootogram_suspended.png){#fig-rootogram_sus width=100%}
 
 
 ArviZ currently does not support rootograms, but it will in the [future](https://arviz-plots.readthedocs.io/en/latest/gallery/plot_rootogram.html). 
@@ -367,7 +352,7 @@ For those curious about the data, we are using the horseshoe crab dataset [@Broc
 
 Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. Modeling binary data poses a unique challenge for assessing model fit because these models generate predicted values on a probability scale (0-1), while the actual values of the response variable are dichotomous (either 0 or 1).
 
-One solution to this challenge was presented by @Greenhill_2011 and is a know as separation plot. This graphical tool consists of a sequence of bars, where each bar represents a data point. Bars can have one of two colors, one for positive cases and one for negative cases. The bars are sorted by the predicted probabilities, so that the bars with the lowest predicted probabilities are on the left and the bars with the highest predicted probabilities are on the right. Usually the plot also includes a marker showing the expected number of total events. For and ideal fit all the bars with one color should be on one side of the marker and all the bars with the other color on the other side.
+One solution to this challenge was presented by @Greenhill_2011 and is a know as separation plot. This graphical tool consists of a sequence of bars, where each bar represents a data point. Bars can have one of two colours, one for positive cases and one for negative cases. The bars are sorted by the predicted probabilities, so that the bars with the lowest predicted probabilities are on the left and the bars with the highest predicted probabilities are on the right. Usually the plot also includes a marker showing the expected number of total events. For and ideal fit all the bars with one color should be on one side of the marker and all the bars with the other color on the other side.
 
 The following example show a separation plot for a logistic regression model.
 
