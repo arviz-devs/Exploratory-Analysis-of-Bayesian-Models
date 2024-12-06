@@ -18,7 +18,7 @@ book:
     - Chapters/Model_comparison.qmd
     - Chapters/Case_study_model_comparison.qmd
     - Chapters/Presenting_results.qmd
-    - Chapters/references.qmd
+    - Chapters/References.qmd
 
   page-navigation: true
   reader-mode: true

@@ -19,11 +19,11 @@ y = np.random.normal(174, 6, 127)
 
 Models are simplifications of reality, sometimes even very crude simplifications. Thus, we can never fully trust them. While hoping they are good enough is an option, we should try to do better. One general approach to criticizing model is to judge them by their predictions. If a model is robust, its predictions should align well with observations, domain knowledge, or some other benchmark. There are at least four avenues to explore:
 
-* Compare to prior knowledge. For example, if we are modeling the size of planets we can evaluate if the model is making predictions in a sensible range. Even if we are equipped with a very rudimentary knowledge of astronomy we know that planets are larger than persons and smaller than galaxies. So if the model is predicting that the size of a planet is 1 meter, then we know that the model is not that good. The better your prior knowledge is, the better you will be able to critique your model assumptions. If you are not an expert in the field, and maybe even if you are, you can always try to find someone who is.
+* Compare to prior knowledge. For example, if we are modelling the size of planets we can evaluate if the model is making predictions in a sensible range. Even if we are equipped with a very rudimentary knowledge of astronomy we know that planets are larger than persons and smaller than galaxies. So if the model is predicting that the size of a planet is 1 meter, then we know that the model is not that good. The better your prior knowledge is, the better you will be able to critique your model assumptions. If you are not an expert in the field, and maybe even if you are, you can always try to find someone who is.
 
 * Compare to observed data. We fit a model and compare the predictions to the same data that we used to fit the model. This is an internal consistency check of the model, and we should expect good agreement. But reality is complex and models can be too simple or they can be misspecified so there is a lot of potential in these types of checks. Additionally, even very good models might be good at recovering some aspects of the data but not others, for instance, a model could be good at predicting the bulk of the data, but it could overestimate extreme values.
 
-* Compared to unobserved data. We fit a model to one dataset and then evaluate it on a different dataset. This is similar to the previous point, but this is a more stringent test because the model is being asked to make predictions on data that it has not seen before. How similar the observed and unobserved data are will depend on the problem. For instance, a model trained with data from a particular population of elephants might do a good job at predicting the weight of elephants in general, but it might not do a good job at predicting the weight of other mamamals like shrews. 
+* Compared to unobserved data. We fit a model to one dataset and then evaluate it on a different dataset. This is similar to the previous point, but this is a more stringent test because the model is being asked to make predictions on data that it has not seen before. How similar the observed and unobserved data are will depend on the problem. For instance, a model trained with data from a particular population of elephants might do a good job at predicting the weight of elephants in general, but it might not do a good job at predicting the weight of other mammals like shrews. 
 
 * Compare to other models. We fit different models to the same data and then compare the predictions of the models. This particular case is discussed in detail on @sec-model-comparison.
 
@@ -58,7 +58,7 @@ $$
 p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 $$
 
-where $y^\ast$ represents unobserved but potentially observable data. Notice that to compute $y^\ast$ we are evaluating the likelihood over all possible values ​​of the prior. Thus we are effectivelly marginalizing out the values of $\theta$, the parameters. 
+where $y^\ast$ represents unobserved but potentially observable data. Notice that to compute $y^\ast$ we are evaluating the likelihood over all possible values ​​of the prior. Thus we are effectively marginalizing out the values of $\theta$, the parameters. 
 
 To exemplify a prior predictive check, let's try with a super simple example. Let's say we want to model the height of humans. We know that the heights are positive numbers, so we should use a distribution that assigns zero mass to negative values. But we also know that at least for adults using a normal distribution could be a good approximation. So we create the following model, without too much thought, and then draw 500 samples from the prior predictive distribution.
 
@@ -130,9 +130,9 @@ ax.axvline(175, color="0.5", linestyle="--", label="adult")
 plt.legend()
 ```
 
-Weakly informative priors can have practical advantages over very vague priors because adding some prior information is usually better than adding none. By adding some information we reduce the chances of spurious results or non-sensical results. Additionally, weakly informative priors can provide computational advantages, like helping with faster sampling. 
+Weakly informative priors can have practical advantages over very vague priors because adding some prior information is usually better than adding none. By adding some information we reduce the chances of spurious results or nonsensical results. Additionally, weakly informative priors can provide computational advantages, like helping with faster sampling. 
 
-Weakly informative priors can also have a practical advantage over informative priors. To be clear, if you have trushhwothy informative priors you should use them, it doesn't make sense to ignore information that you have. But in many setting informative priors can be hard to set, and they can be very time-consuming to get. That's why in practice weakly informative priors can be a good compromise. 
+Weakly informative priors can also have a practical advantage over informative priors. To be clear, if you have trustworthy informative priors you should use them, it doesn't make sense to ignore information that you have. But in many setting informative priors can be hard to set, and they can be very time-consuming to get. That's why in practice weakly informative priors can be a good compromise. 
 
 ```{python}
 #| label: fig-prior_pred_check_narrow_ecdf
@@ -163,7 +163,7 @@ The general algorithm for posterior predictive checks is:
 5. If simulated values do not agree with observations, change the prior distribution, likelihood, or both and repeat the simulation from step 1.
 6. If simulated values reflect prior knowledge, compute the posterior.
 
-Notice that in contrast with prior predictive checks, we use observations here. Of course, we can also include domain knowledge to assess whether the simulated values are reasonable, but because we are using observations we do more stringents evaluations. 
+Notice that in contrast with prior predictive checks, we use observations here. Of course, we can also include domain knowledge to assess whether the simulated values are reasonable, but because we are using observations we do more stringent evaluations. 
 
 In steps 1 and 2 what we are doing is approximating this integral:
 $$
@@ -195,21 +195,21 @@ with model:
 
 And then we use ArviZ to plot the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).
 
-The dashed orange line, labeled as "posterior predictive mean", is the aggregated posterior predictive distribution. If you combine all the individual densities into a single density, that's what you would get. 
+The dashed orange line, labelled as "posterior predictive mean", is the aggregated posterior predictive distribution. If you combine all the individual densities into a single density, that's what you would get. 
 
 ```{python}
 #| label: fig-post_pred
 #| fig-cap: "Posterior predictive check for the model of heights."
-az.plot_ppc(idata, num_pp_samples=200, colours=["C0", "k", "C2"]);
+az.plot_ppc(idata, num_pp_samples=200, colors=["C0", "k", "C2"]);
 ```
 
-Other common visualizations to compare observed and precitive values are empirical CDFs, histograms and less often quantile dotplots. Like with other types of visulizations, you may want to try different options, to be sure visualizations are not missleading and you may also want to adapt the visualization to your audience.
+Other common visualizations to compare observed and predictive values are empirical CDFs, histograms and less often quantile dotplots. Like with other types of visualizations, you may want to try different options, to be sure visualizations are not misleading and you may also want to adapt the visualization to your audience.
 
 ### Using summary statistics
 
 Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics. Which ones, we decide to use may vary  from one data-analysis problem to another, and ideally it should be informed by the data-analysis goals. 
 
-The following plot shows a comparison in terms of the mean, median and interquantile range (IQR). The dots at the bottom of each subplots corresponds to the summmary statistics computed for the observed data and the KDE is for the model's predictions.
+The following plot shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model's predictions.
 
 ```{python}
 #| label: fig-post_pred_check_stats
@@ -240,11 +240,11 @@ Where $T$ is the summary statistic of our choice, computed for both the observed
 This probabilities are often called Bayesian p-values, and their ideal value is 0.5, meaning that half of the predictions are below the observed values and half above.
 
 
-The following paragraph is for those of you that are familiar with the p-values as used in frequentist statistics for null hypotesis testing and computation of "statistical significance". If that's the case you should be aware that the Bayesian p-values are something different. While frequentist p-values measure the probability of obtaining results at least as extreme as the observed data under the assumption that the null hypothesis is true, Bayesian p-values assess the discrepancy between the observed data and simulated data based on the posterior predictive distribution. They are used as a diagnostic tool to evaluate the adequacy of a model rather than as a measure of "statistical significance" or evidence against a null hypothesis.
+The following paragraph is for those of you that are familiar with the p-values as used in frequentist statistics for null hypothesis testing and computation of "statistical significance". If that's the case you should be aware that the Bayesian p-values are something different. While frequentist p-values measure the probability of obtaining results at least as extreme as the observed data under the assumption that the null hypothesis is true, Bayesian p-values assess the discrepancy between the observed data and simulated data based on the posterior predictive distribution. They are used as a diagnostic tool to evaluate the adequacy of a model rather than as a measure of "statistical significance" or evidence against a null hypothesis.
 
 Bayesian p-values are not tied to a null hypothesis and are not subject to the same kind of binary decision-making framework (reject/accept). Instead, they provide insight into how well the model, given the data, predicts the summary statistics. Values close to 0.5 indicates a well-calibrated model. However, the interpretation is more nuanced, as the goal is model assessment and improvement rather than hypothesis testing.
 
-If you want to use `plot_bpv` to do the plots, but you prefer to ommit the Bayesian p-values pass `bpv=False`. `plot_bpv` supports to other types of plots `kind="p_value"`, that corresponds to computing 
+If you want to use `plot_bpv` to do the plots, but you prefer to omit the Bayesian p-values pass `bpv=False`. `plot_bpv` supports to other types of plots `kind="p_value"`, that corresponds to computing 
 
 $$
 p(\tilde y \le y_{\text{obs}} \mid y)
@@ -313,19 +313,19 @@ You can read more about HPOs [here](https://medium.com/hci-design-at-uw/hypothet
 ## Posterior predictive checks for discrete data
 
 So far we have show examples with continuous data. Many of the tools can still be used for discrete data, for instance 
-`az.plot_ppc` will automatically use histograms instead of KDEs when the data is discrete. And the bins of the histograms will be centered at integers. Also cumulative plots can be used for discrete data. Still, there are some tools that are more specific for discrete data. In the next sections we discuss posterior predictive checks for count data and binary data.
+`az.plot_ppc` will automatically use histograms instead of KDEs when the data is discrete. And the bins of the histograms will be centred at integers. Also cumulative plots can be used for discrete data. Still, there are some tools that are more specific for discrete data. In the next sections we discuss posterior predictive checks for count data and binary data.
 
 
 
 ### Posterior predictive checks for count data
 
-Count data is a type of discrete data that is very common in many fields. For instance, the number of iguanas per square meter in a rainforest, the number of bikes in a bike-sharing station, the number of calls to a call center, the number of emails received, etc. When assesing the fit of a model to count data we need to consider that the data is non-negative and typically skewed. Additionally we also care about the amount of (over/under-)dispersion.
+Count data is a type of discrete data that is very common in many fields. For instance, the number of iguanas per square meter in a rainforest, the number of bikes in a bike-sharing station, the number of calls to a call center, the number of emails received, etc. When assessing the fit of a model to count data we need to consider that the data is non-negative and typically skewed. Additionally we also care about the amount of (over/under-)dispersion.
 
 Rootograms are a graphical tool to assess the fit of count data models [@tukey_1977; @Kleiber_2016]. This tool is handy for diagnosing overdispersion and/or excess zeros in count data models. The name originates from the fact that rootograms plot the square *root* of the observed counts against the square *root* of the expected counts. 
 
 There are a few variations of rootograms. Here we are going to discuss hanging rootograms and suspended rootograms. For the first one the predicted counts are plotted as dots with oblique lines, to represent uncertainty in the predictions. In the absect of uncertainty this lines will be flat (parallel to the x-axis). The observed counts are plotted as (oblique) bars hanging from the lines, see @fig-rootogram_hang. 
 
-How do we read hanging rootograms? For a count, if a bar goes below the dashed line at y=0 the model is undestimating that count. Instead, if the bar goes above the dashed line at y=0, the model is overestimating that count. 
+How do we read hanging rootograms? For a count, if a bar goes below the dashed line at y=0 the model is underestimating that count. Instead, if the bar goes above the dashed line at y=0, the model is overestimating that count. 
 
 ```{python}
 # Coming soon with ArviZ 1.0
@@ -333,7 +333,7 @@ How do we read hanging rootograms? For a count, if a bar goes below the dashed l
 
 ![Hanging rootograms, showing the uncertainty in the predictions](../img/rootogram_hanging.png){#fig-rootogram_hang width=100%}
 
-A variant of the hanging rootogram is the suspended rootogram (see @fig-rootogram_sus). As for the hanging version a bar that goes below the dashed line means that the model is underestimating that count, and a bar that goes above the dashed line means that the model is overestimating that count. The difference is that for suspended rootograms we plot the residuals (predicted-observed counts) as departing from the dashed line at y=0, instead of "haging" from the predictions. Ideally, for each count we would expect a small departure from the dashed line equally distributed above and below.
+A variant of the hanging rootogram is the suspended rootogram (see @fig-rootogram_sus). As for the hanging version a bar that goes below the dashed line means that the model is underestimating that count, and a bar that goes above the dashed line means that the model is overestimating that count. The difference is that for suspended rootograms we plot the residuals (predicted-observed counts) as departing from the dashed line at y=0, instead of "hanging" from the predictions. Ideally, for each count we would expect a small departure from the dashed line equally distributed above and below.
 
 ```{python}
 # Coming soon with ArviZ 1.0
@@ -350,7 +350,7 @@ For those curious about the data, we are using the horseshoe crab dataset [@Broc
 
 ### Posterior predictive checks for binary data
 
-Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. Modeling binary data poses a unique challenge for assessing model fit because these models generate predicted values on a probability scale (0-1), while the actual values of the response variable are dichotomous (either 0 or 1).
+Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. Modelling binary data poses a unique challenge for assessing model fit because these models generate predicted values on a probability scale (0-1), while the actual values of the response variable are dichotomous (either 0 or 1).
 
 One solution to this challenge was presented by @Greenhill_2011 and is a know as separation plot. This graphical tool consists of a sequence of bars, where each bar represents a data point. Bars can have one of two colours, one for positive cases and one for negative cases. The bars are sorted by the predicted probabilities, so that the bars with the lowest predicted probabilities are on the left and the bars with the highest predicted probabilities are on the right. Usually the plot also includes a marker showing the expected number of total events. For and ideal fit all the bars with one color should be on one side of the marker and all the bars with the other color on the other side.
 
@@ -370,7 +370,7 @@ az.plot_separation(idata=idata,
 
 ## Prior sensitivity checks
 
-Determining the sensitivity of the posterior to perturbations of the prior is an important part of building Bayesian models. By sensitivity of the posterior to the prior we mean how much the posterior distribution changes when the prior is changed. Usually this is done by comparing the results obtained using reference prior against the results obtained using alternative priors. The reference prior can be the default prior in packages like Bambi or some other "template" prior from literature or pevious analysis of a similar dataset/problem. But it can also be the prior obtained after a more careful elicitation process. Once we have this prior we compute the posterior, diagnose samples and check everything is OK with this model. As usual is import to check that we can trust the model and samples. Then we come up with a set of "alternative" priors that for some reason we consider as relevant. We then fit and check model with these alternative priors. To asses how different posteriors are we can use a series of visual and numerical comparisons as we already explained in this the previous sections. For instance, when working with ArviZ, we can use `az.plot_forest` or `az.plot_density`, as both plots allows us to compare multiple posteriors in a single plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.
+Determining the sensitivity of the posterior to perturbations of the prior is an important part of building Bayesian models. By sensitivity of the posterior to the prior we mean how much the posterior distribution changes when the prior is changed. Usually this is done by comparing the results obtained using reference prior against the results obtained using alternative priors. The reference prior can be the default prior in packages like Bambi or some other "template" prior from literature or previous analysis of a similar dataset/problem. But it can also be the prior obtained after a more careful elicitation process. Once we have this prior we compute the posterior, diagnose samples and check everything is OK with this model. As usual is import to check that we can trust the model and samples. Then we come up with a set of "alternative" priors that for some reason we consider as relevant. We then fit and check model with these alternative priors. To asses how different posteriors are we can use a series of visual and numerical comparisons as we already explained in this the previous sections. For instance, when working with ArviZ, we can use `az.plot_forest` or `az.plot_density`, as both plots allows us to compare multiple posteriors in a single plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.
 
 This process can be a very time-consuming, but it can help us understand how robust the model is to different prior choices. We also notice, that the same procedure can also be used to compare how different likelihoods affect the posterior. So we can discuss the sensitivity of the posterior to the likelihood, the prior or both. It the next section we are going to discuss a more automated way to do this kind of analysis.
 
@@ -408,7 +408,7 @@ $$
 p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)**\alpha \; p(\theta)
 $$
 
-Setting $\alpha=1$ is the same as ommiting the power, and we recover the usual or "unperturbed" expresion for Bayes' theorem posterior. Setting $\alpha=0$ is equivalent to ignoring the likelihood, thus $p(\theta \mid y)_{\alpha}$ will be equivalent to the prior. We can then conclude that any number between 0 and 1 will have the effect of "weakening" the likelihood with respect to the prior. By the same token any number greater than 1 will "strength" the likelihood with respect to the prior. Thus by adjusting the value of $\alpha$ we can modulate a stronger or weaker likelihood, if we use values close to 1, we emulate relative small perturbations. This very same idea can be aplly to the prior. @fig-posterior-power-scaling shows the effect on the posterior of power-scaling the prior for a fixed likelihood.
+Setting $\alpha=1$ is the same as omitting the power, and we recover the usual or "unperturbed" expresion for Bayes' theorem posterior. Setting $\alpha=0$ is equivalent to ignoring the likelihood, thus $p(\theta \mid y)_{\alpha}$ will be equivalent to the prior. We can then conclude that any number between 0 and 1 will have the effect of "weakening" the likelihood with respect to the prior. By the same token any number greater than 1 will "strength" the likelihood with respect to the prior. Thus by adjusting the value of $\alpha$ we can modulate a stronger or weaker likelihood, if we use values close to 1, we emulate relative small perturbations. This very same idea can be apply to the prior. @fig-posterior-power-scaling shows the effect on the posterior of power-scaling the prior for a fixed likelihood.
 
 
 ```{python}
