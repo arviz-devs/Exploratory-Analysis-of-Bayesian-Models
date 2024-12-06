@@ -3,11 +3,14 @@
 ```{python}
 #| echo : false
 import arviz as az
+import arviz_base as azb
+import arviz_stats as azs
+import arviz_plots as azp
 import numpy as np
 import preliz as pz
 import matplotlib.pyplot as plt
-np.random.seed(7914)
-az.style.use("arviz-doc")
+rng = np.random.default_rng(793)
+azp.style.use("arviz-clean")
 ```
 
 The Achilles heel of computing posterior distributions is, more often than not, the computation of the denominator of Bayes's theorem. Markov Chain Monte Carlo Methods (MCMC), such as Metropolis, Hamiltonian Monte Carlo (and its variants like NUTS) are clever mathematical and computational devices that let us circumvent this problem. The main idea is based on sampling values of the parameters of interest from an easy-to-sample distribution and then applying a rule, known as the Metropolis acceptance criterion, to decide if you accept or not that proposal. By applying this rule we ensure that even when we propose samples from an arbitrary distribution we end up getting samples from the correct posterior distribution. The better performance of NUTS over Metropolis can be explained by the fact that the former uses a clever way to propose values. 
@@ -46,17 +49,20 @@ To keep the focus on the diagnostics and not on any particular Bayesian model. W
 ```{python}
 #| code-fold: true
 #| code-summary: "Show the code for more details"
-good_sample = pz.Gamma(2, 5).rvs((2, 2000))
-bad_sample0 = np.random.normal(np.sort(good_sample, axis=None), 0.05,
-                               size=4000).reshape(2, -1)
+
+good_sample = pz.Gamma(2, 5).rvs((2, 2000), random_state=rng)
+bad_sample0 = pz.Normal(np.sort(good_sample, axis=None),
+                        0.05).rvs(4000, random_state=rng).reshape(2, -1)
 
 bad_sample1 = good_sample.copy()
-for i in np.random.randint(1900, size=4):
-    bad_sample1[i%2:,i:i+100] = pz.Beta(i, 150).rvs(size=100)
+stuck = []
+for i in pz.DiscreteUniform(0, 1900).rvs(3, random_state=rng):
+    stuck.append((i, i+100))
+    bad_sample1[i%2:,i:i+100] = pz.Beta(i, 150).rvs(100, random_state=rng)
 
-sample = {"good_sample":good_sample,
+sample = azb.convert_to_dataset({"good_sample":good_sample,
           "bad_sample_0":bad_sample0,
-          "bad_sample_1":bad_sample1}
+          "bad_sample_1":bad_sample1})
 ```
 
 
@@ -67,38 +73,49 @@ After reading this chapter a good exercise is to come back here and modify these
 ## Trace plots
 
 
-A trace plot is created by drawing the sampled values at each iteration step. Ideally, we should expect to see a very noisy plot, some people call it a caterpillar. The reason is that draws should be uncorrelated from each other, the value of a draw should not provide any hint about the previous or next draw. Also, the draws from the first iterations should be indistinguishable from the ones coming from the last iterations the middle iterations, or any other region. The ideal scenario is the lack of any clear pattern as we can see at the right panel of @fig-traceplot_good_sample.
+A trace plot is created by drawing the sampled values at each iteration step. Ideally, we should expect to see a very noisy plot, some people call it a caterpillar. The reason is that draws should be uncorrelated from each other, the value of a draw should not provide any hint about the previous or next draw. Also, the draws from the first iterations should be indistinguishable from the ones coming from the last iterations the middle iterations, or any other region. The ideal scenario is the lack of any clear pattern as we can see at the right panel of @fig-tracedistplot_good_sample.
 
-In ArviZ by calling the function `az.plot_trace(.)` we get a trace plot on the right and on the left a KDE (for continuous variables) or a histogram (for discrete variables). @fig-traceplot_good_sample is an example of this. The KDE/histogram can help to spot differences between chains, ideally, distributions should overlap. 
+In ArviZ by calling the function `az.plot_trace_dist(.)` we get a trace plot on the right and on the left a KDE (for continuous variables) or a histogram (for discrete variables). @fig-tracedistplot_good_sample is an example of this. The KDE/histogram can help to spot differences between chains, ideally, distributions should overlap. 
+
+```{python}
+#| label: fig-tracedistplot_good_sample
+#| fig-cap: "Trace plot of a sample without issues"
+azp.plot_trace_dist(sample, var_names="good_sample");
+```
+
+This represents a scenario where the sampler is visiting two different regions of the parameter space and is not able to _jump_ from one to the other. Additionally, it is also moving very slowly within each region.
+@fig-traceplot_bad_sample_0 shows two problems. On the one hand, each chain is visiting a different region of the parameter space. We can see this from the trace plot itself and the KDE. On the other hand, even within each region, the sampler is having trouble properly exploring the space, notice how it keeps _moving up_, instead of being **stationary**.  
+
+If you just want the trace without the density call  `az.plot_trace(.)`
 
 ```{python}
 #| label: fig-traceplot_good_sample
 #| fig-cap: "Trace plot of a sample without issues"
-az.plot_trace(sample, var_names="good_sample");
+azp.plot_trace(sample, var_names="good_sample");
 ```
-This represents a scenario where the sampler is visiting two different regions of the parameter space and is not able to _jump_ from one to the other. Additionally, it is also moving very slowly within each region.
-@fig-traceplot_bad_sample_0 shows two problems. On the one hand, each chain is visiting a different region of the parameter space. We can see this from the trace plot itself and the KDE. On the other hand, even within each region, the sampler is having trouble properly exploring the space, notice how it keeps _moving up_, instead of being **stationary**.  
+
+Let's see an example of two chains that did not converge.
 
 ```{python}
 #| label: fig-traceplot_bad_sample_0
 #| code-fold: true
 #| fig-cap: "Trace plot of two chains that has not converged"
-az.plot_trace(sample, var_names="bad_sample_0");
+azp.plot_trace_dist(sample, var_names="bad_sample_0");
 ```
 
-Finally from @fig-traceplot_bad_sample_1, we can see another common scenario. This time we see that globally everything looks fine. But there are 3 regions where the sampler gets stuck, see the orange lines at the bottom of the traceplot. For the first two regions, starting at iterations 736 and 916, both chains got stuck. For the third region, starting in 1463, only one chain got stuck. 
+Finally from @fig-traceplot_bad_sample_1, we can see another common scenario. This time we see that globally everything looks fine. But there are 3 regions where the sampler gets stuck, see the orange bands at the bottom of the traceplot.
 
 ```{python}
 #| label: fig-traceplot_bad_sample_1
 #| code-fold: true
 #| fig-cap: "Trace plot showing a sampler being stuck in some regions (see orange lines)"
-axes = az.plot_trace(sample, var_names="bad_sample_1")
-for pos in [736, 916, 1463]:
-    axes[0, 1].plot((pos, pos+100), (0, 0), "C2", lw=3)
+pc = azp.plot_trace_dist(sample, var_names="bad_sample_1")
+ax = pc.viz["bad_sample_1"]["plot"].sel(column="trace").item()
+for s in stuck:
+    ax.fill_between(s, 2.5, color="C2", alpha=0.5);
 ```
 
-
-Trace plots are probably the first plots we make after inference and also probably the most popular plots in Bayesian literature. But there are more as we will see next.
+Trace plots are probably the first plots we make after inference and also probably the most popular plots in Bayesian literature. But there are more options, as we will see next.
 
 ## Rank plots {#sec-rank-plots}
 
@@ -168,7 +185,7 @@ mean = 0
 lag = 30
 size = 300
 
-iid_samples = np.random.normal(mean, 1, size=(1000, size))
+iid_samples = pz.Normal(mean, 1).rvs((1000, size))
 
 rhos = np.linspace(0, 0.90, 7)
 N = len(rhos)
@@ -212,7 +229,7 @@ As for MCMC samples, the sample size can be misleading, we instead estimate the 
 mean = 0
 size = 300
 
-iid_samples = np.random.normal(mean, 1, size=(500, size))
+iid_samples =  pz.Normal(mean, 1).rvs((500, size))
 
 rhos = np.linspace(0, 0.90, 7)
 N = len(rhos)
@@ -269,8 +286,9 @@ If we are going to use the MCMC samples to calculate central values such as mean
 ArviZ offers several functions linked to the ESS. For example, if we want to evaluate the performance of the sampler for several regions at the same time we can use `az.plot_ess`.
 
 ```{python}
-_, ax = plt.subplots(3, 1, figsize=(10, 8))
-az.plot_ess(sample, ax=ax);
+azp.plot_ess(sample,
+            pc_kwargs={"plot_grid_kws": {"figsize": (10, 8)},
+                       "col_wrap": 1})
 ```
 
 A simple way to increase the ESS is to increase the number of samples, but it could be the case that the ESS grows very slowly with the number of samples, so even if we increased the number of samples 10 times we could still be very far from our target value. One way to estimate "how many more samples do we need" is to use `az.plot_ess(⋅, kind="evolution")`. This graph shows us how the ESS changed with each iteration, which allows us to make predictions. 
@@ -279,9 +297,11 @@ From @fig-ess_evolution we can see that the ESS grows linearly with the number o
 
 ```{python}
 #| label: fig-ess_evolution
-#| fig-cap: "ESS evolution plot for `good_sample` and `bad_sample_0`."
-_, axes = plt.subplots(2, 1) 
-az.plot_ess(sample, var_names=["good_sample", "bad_sample_0"], kind="evolution", ax=axes);
+#| fig-cap: "ESS evolution plot for `good_sample` and `bad_sample_0`." 
+azp.plot_ess_evolution(sample,
+            var_names=["good_sample", "bad_sample_0"],
+            pc_kwargs={"col_wrap":1},
+            );
 ```
 
 ### Monte Carlo standard error (MCSE)
@@ -308,6 +328,7 @@ In ArviZ we have the `thin` function, which allows us to perform thinning automa
 
 ```{python}
 # Coming soon with ArviZ 1.0
+#azs.thin(sample)
 ```
 
 Additionally, if needed, we can specify the thinning factor manually or we can pass a `target_ess`, this last option is useful when we want as much thinning as possible provided we still get an ESS around the specified value of `target_ess`. 
