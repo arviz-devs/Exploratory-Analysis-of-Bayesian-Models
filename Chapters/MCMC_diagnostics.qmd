@@ -142,7 +142,7 @@ The version implemented in ArviZ does several things under the hood, but the cen
 Using ArviZ we can get the $\hat R$ usando `az.rhat(⋅)`, `az.summary(⋅)` and `az.plot_forest(⋅, r_hat=True)`
 
 ```{python}
-azs.rhat(sample)
+az.rhat(sample)
 ```
 
 ### Effective Sample Size (ESS)
@@ -266,7 +266,7 @@ ax.plot(48, 1, "^k", transform=ax.get_xaxis_transform(), clip_on=False)
 With ArviZ we can get `az.ess(⋅)`, `az.summary(⋅)` and `az.plot_forest(⋅, ess=True)`
 
 ```{python}
-azs.ess(sample)
+az.ess(sample)
 ```
 
 One way to use the ESS is as a minimum requirement for trustworthy MCMC samples.  It is recommended the ESS to be greater than 100 per chain. That is, for 4 chains we want a minimum of 400 effective samples. 
@@ -327,7 +327,8 @@ To determine an appropriate thinning factor, we can use the effective sample siz
 In ArviZ we have the `thin` function, which allows us to perform thinning automatically.
 
 ```{python}
-azs.thin(sample)
+# Coming soon with ArviZ 1.0
+#azs.thin(sample)
 ```
 
 Additionally, if needed, we can specify the thinning factor manually or we can pass a `target_ess`, this last option is useful when we want as much thinning as possible provided we still get an ESS around the specified value of `target_ess`. 
