@@ -1,0 +1,55 @@
+# Prior Elicitation
+
+```{python}
+#| echo : false
+import arviz_plots as azp
+import numpy as np
+import preliz as pz
+import matplotlib.pyplot as plt
+rng = np.random.default_rng(793)
+azp.style.use("arviz-clean")
+```
+
+Specification of the prior distribution for a Bayesian model is key, but it is often difficult even for statistical experts. Having to choose a prior distribution is portrayed both as a burden and as a blessing. We choose to affirm that is a necessity, if you are not choosing your priors someone else is doing it for you. Letting others decide for you is not always a bad idea. Defaults priors provided by tools like [Bambi](https://github.com/bambinos/bambi) or [brms](http://paulbuerkner.com/brms/) can be very useful in many problems, but it's advantageous to be able to specify custom priors when needed.
+
+The process of transforming domain knowledge into well-defined prior distributions its called Prior Elicitation and as we already said is an important part of Bayesian modelling. In this chapter, we will discuss some general approaches to prior elicitation and provide some examples. 
+
+## Priors
+
+If you are reading this guide, you probably already know what a prior distribution is. But let's do a quick recap. In Bayesian statistics, the prior distribution is the probability distribution that expresses information about the parameters of the model before observing the data. The prior distribution is combined with the likelihood to obtain the posterior distribution, which is the distribution of the parameters after observing the data.
+
+Priors are one way to convey domain-knowledge information into models. Other ways to include information in a model is the type of model or it's overall structure, e.g. using a linear model, and the choice of likelihood. Nevertheless, usually the selling point when discussing in favor of priors is that they allow to include prior information. But there are potentially other advantages:
+
+* Sampling efficiency. Often a more informed priors results in better sampling. This does not mean we should tweak the prior to solve sampling problems, instead that incorporating some domain-knowledge information can help to avoid them.
+* Regularization. More informed priors can help to regularize the model, reducing the risk of overfitting. We make a distinction between regularization and "conveying domain-knowledge information", because motivations and justifications can be different in each case.
+
+
+### Types of Priors
+
+Usually priors are described as informative and non-informative. Informative priors are priors that convey specific information about the parameters of the model. Non-informative priors are priors that do not convey specific information about the parameters of the model. Non-informative priors are often used when there is little or no prior information available. Historically, non-informative priors has been called objective priors, and were motivated by a desire to avoid the need to specify a prior distribution. This can be useful when we do not have any prior information about the parameters of the model. However, it is now recognized that non-informative priors can be detrimental and/or difficult to implement and use. Thus they are not recommended in many cases. Moreover, it is usually the case that at least some information is available, even if it is just an approximate range of the parameters, and there is nothing objective in neglecting this information.
+
+It is important to recognize that usually the amount of information a priors can carry will vary continuously and that the categories we use to discuss priors are a matter of convenience and not a matter of principle. For instance we could say that a prior is vague if its provides very little information, informative if it provides a lot of information, and weakly informative if it provides some information but is not overly specific. Notice the qualitative nature of these categories, they are not well defined and are not meant to be. They are just a way to talk about priors in a more intuitive way. Also notice that we are just talking about the amount of information and not it correctness. Thus, we could have a very informative prior based on wrong assumptions that could potentially harm the results, but it's still informative in the sense that it restrict the possible values of the parameters. 
+
+A useful way to give these categories a more concrete meaning, in the context of particular problems, is to think in terms of the prior predictive distribution induced by them. In other words, we think about the priors in terms of the predictions they make about unobserved, but potentially observable data. This mental scafold can be helpful in many ways. It make us think in terms of the prior in relation to other priors and the likelihood, i.e. it reflects the fact that we cannot understood a prior without the context of the model @gelman_2017. But this also helps to give us an operational definition of what we mean by vague, informative, or weakly informative prior. Let see, if we are able to identify how the prior predictive distribution looks like, then we can say that a vague prior is a prior that makes predictions that are broader than what we would expect the prior predictive distribution to be. An informative prior is a prior that makes predictions that are about the same. And a weakly informative prior is a prior that makes predictions that are somewhere in between. The distinctions are still qualitative and subjective, but we have a criteria that is context dependant. Figure @fig-prior_vagueness shows a very schematic representation of this idea.
+
+![Prior amount of information in terms of the prior predictive distribution induced by them](../../img/prior_vagueness.png){#fig-prior_vagueness}
+
+Later, we will see how we can use these ideas in practice.
+
+### Priors and entropy
+
+Another way to think about priors is in terms of entropy. Entropy is a measure of the information or uncertainty of a distribution. The entropy is a property of probability distributions the same way the mean or variance are, actually it's  the expected value of the negative log probability of the distribution. Loosely speaking the entropy of a distribution is high when the distribution is spread out and low when the distribution is concentrated. In the context of prior elicitation maximum entropy can be a guiding principle. The idea is that we should choose the prior that maximizes the entropy, subject to known constraints of the prior. This is a way to choose a prior that is as vague as possible, given the information we have. 
+
+
+### Bayesian Workflow for Prior Elicitation
+
+Prior elicitation plays a crucial role in the Bayesian workflow, as it helps inform model assumptions and guide the selection of appropriate priors to improve inference and analysis @Mikkola_2024.
+
+In some situations, default priors and models may be sufficient, especially for routine inference that applies the same, or very similar, model to similar new datasets. But even for new datasets, default priors can be a good starting point, adjusting them only after initial analysis reveals issues with the posterior or computational problems. As with other component of the Bayesian workflow, prior elicitation isn’t just a one-time task. Is not even one that it is always done at the beginning of the analysis. 
+
+Knowing when to perform prior elicitation is central to a prior elicitation workﬂow. For simple models with strong data, the prior may have minimal impact, and starting with default or weakly informed priors may be more appropriate and provide better results than attempting to generate very informative priors. The key is knowing when it’s worth investing resources in prior elicitation. Or more nuanced how much time and domain knowledge is needed in prior specification. Usually, getting rough estimates can be sufficient to improve inference. Thus, in practice weakly informative priors are often enough. In a model with many parameters eliciting all of them one by one may be too time consuming and not worth the effort. Refining just a few priors in a model can be sufficient to improve inference. 
+
+The prior elicitation process should also include a step to verify the usefulness of the information and assess how sensitive the results are to the choice of priors, including potential conflicts with the data. This process can help identify when more or less informative priors are needed and when the model may need to be adjusted.
+
+Finally we want to highlight that the process of prior elicitation is not only about choosing the _right_ prior, but also about understanding the model and the problem.  So even if we end up with a prior that has little impact on the posterior, compared to let's say a vague or default prior. Still, the process of prior elicitation could be useful for the modeller. Especially among newcomers setting priors can be seen as an anxiogenic task. Spending sometime thinking about priors, with the help of proper tools, can then hep reducing this brain drain and save mental resources for other modelling tasks.
+
