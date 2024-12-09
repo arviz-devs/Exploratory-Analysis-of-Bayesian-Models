@@ -11,8 +11,8 @@ azp.style.use("arviz-clean")
 _, ax = plt.subplots(1, 1, figsize=(12, 4))
 
 pz.Normal(0, 10).plot_cdf(ax=ax, legend=None)
-pz.Normal(0, 0.1).plot_cdf(ax=ax, legend=None)
-pz.Normal(0, 3).plot_cdf(ax=ax, legend=None)
+pz.Normal(0, 1.3).plot_cdf(ax=ax, legend=None)
+pz.Normal(0, 3.5).plot_cdf(ax=ax, legend=None)
 
 
 for line in ax.get_lines():
@@ -21,7 +21,7 @@ for line in ax.get_lines():
 
 alpha = 0.001
 for i in np.linspace(-6, 0, 100):
-    ax.fill_between([-i-1, i-1], -0.3, 1.3, alpha=alpha, color="0.3")
+    ax.fill_between([-i, i], -0.3, 1.3, alpha=alpha, color="0.3")
     alpha += 0.0001
 
 ax.legend([mpatches.Patch(color="0.75")], 
