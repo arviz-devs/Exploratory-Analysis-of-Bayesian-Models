@@ -73,3 +73,41 @@ The entropy is a property of probability distributions the same way the mean or 
 For some priors in a model, we may know or assume that most of the mass is within a certain interval. This information is useful for determining a suitable prior, but this information alone may not be enough to obtain a unique set of parameters. @fig-beta_bounds shows Beta distributions with 90% of the mass between 0.1 and 0.7. As you can see we can obtain very different distributions, conveying very different prior knowledge. The red distribution is the one with maximum entropy, given the constraints.
 
 ![Beta distributions with a 90% of it mass between 0.1 and 0.7, the red one is the one with maximum entropy](../img/beta_bounds.png){#fig-beta_bounds}
+
+
+## Preliz
+
+[PreliZ](https://preliz.readthedocs.io) is a Python package that helps practitioners choose prior distributions by offering a set of tools for the various facets of prior elicitation. It covers a range of methods, from unidimensional prior elicitation on the parameter space to predictive elicitation on the observed space. The goal is to be compatible with probabilistic programming languages (PPL) in the Python ecosystem like PyMC and PyStan, while remaining agnostic of any specific PPL.
+
+### maxent
+
+In PreliZ we can compute maximum entropy priors using the function `maxent`. It works for unidimensional distributions. The first argument is a PreliZ distribution. Then we specify an upper and lower bounds and then the probability inside the range defined by the bounds.
+
+Let's say that we want to elicitate a scale parameter and from domain knowledge we know that the parameter has a relatively high probability of being less than 3. In that case we could use a HalfNormal and then do:
+
+```{python}
+pz.maxent(pz.HalfNormal(), 0, 3, 0.8);
+```
+
+When we want to avoid values too close to zero, other distributions like Gamma or InverseGamma may be a better choice.
+
+```{python}
+pz.maxent(pz.Gamma(), 0, 3, 0.8);
+```
+
+Furthermore, we may have more information that just a plausible range. We could also has extra restrictions like knowledge about the mean or mode. Let's say we think a mean of 2 is very likely, then we can take advantage of the fact that the Gamma can also be parametrized in terms of the mean and pass the distribution `pz.Gamma(mu=2)`. If instead we think is the mode the one is likely to be 2, then `maxent` has a `mode` argument we can use.
+```{python}
+dist_mean = pz.Gamma(mu=2)
+pz.maxent(dist_mean, 0, 3, 0.8)
+
+dist_mode = pz.Gamma()
+pz.maxent(dist_mode, 0, 3, 0.8, mode=2);
+```
+
+Notice that if you call `maxent` several times in the same cell, as we just did, we will get all the distributions in the same plot. This can be very useful to visually compare several alternatives.
+
+The function `maxent` as others in PreliZ modify distribution in place, so a common workflow is to instantiate a distribution first, perform the elicitation, and then inspect its properties, plot it, or use it in some other way. For instance, we may want to check a summary of some of its properties:
+
+```{python}
+dist_mean.summary(), dist_mode.summary()
+```
