@@ -38,7 +38,6 @@ lower = 0.1
 upper = 0.7
 prob = 0.90
 mode = 0.5
-#dist = zero_iter(lower, upper, mode=mode, mass=prob)
 
 _, ax = plt.subplots(figsize=(10, 4))
 dist_ = pz.Beta()
@@ -47,9 +46,9 @@ for mode in np.arange(0.15, 0.66, 0.01):
     dist = one_iter(lower, upper, mode=mode, mass=prob)
     vals = dist.xvals("full")
     ax.plot(mode, np.max(dist.pdf(vals)), ".", color="0.5")
-#ax.set_xticks([])
 pz.maxent(dist_, lower, upper, prob, plot_kwargs={"legend":"None", "color":"C1"});
 for line in ax.get_lines()[::3]:
     line.remove()
+ax.get_lines()[-2].set_linewidth(2)
 
 plt.savefig("../img/beta_bounds.png")
