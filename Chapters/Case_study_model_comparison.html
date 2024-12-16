@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exploratory Analysis of Bayesian Models - 7&nbsp; Model Comparison (case study)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../Chapters/Prior_elicitation.html" rel="next">
+<link href="../Chapters/Model_comparison.html" rel="prev">
+<link href="../favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta name="citation_title" content="[7]{.chapter-number}&nbsp; [Model Comparison (case study)]{.chapter-title}">
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=Graphical perception: Theory, experimentation, and application to the development of graphical methods;,citation_author=William S. Cleveland;,citation_author=Robert McGill;,citation_publication_date=1984;,citation_cover_date=1984;,citation_year=1984;,citation_fulltext_html_url= https://www.tandfonline.com/doi/abs/10.1080/01621459.1984.10478080;,citation_issue=387;,citation_doi=10.1080/01621459.1984.10478080;,citation_volume=79;,citation_journal_title=Journal of the American Statistical Association;,citation_publisher=Taylor &amp;amp;amp; Francis;">
+<meta name="citation_reference" content="citation_title=Crowdsourcing graphical perception: Using mechanical turk to assess visualization design;,citation_author=Jeffrey Heer;,citation_author=Michael Bostock;,citation_publication_date=2010-04;,citation_cover_date=2010-04;,citation_year=2010;,citation_fulltext_html_url=https://doi.org/10.1145/1753326.1753357;,citation_doi=10.1145/1753326.1753357;,citation_isbn=978-1-60558-929-9;,citation_conference_title=Proceedings of the SIGCHI Conference on Human Factors in Computing Systems;,citation_conference=Association for Computing Machinery;,citation_series_title=CHI ’10;">
+<meta name="citation_reference" content="citation_title=Theories of Data Analysis: From Magical Thinking Through Classical Statistics;,citation_abstract=This chapter contains sections titled: Intuitive Statistics— Some Inferential Problems Multiplicity— A Pervasive Problem Some Remedies Theories for Data Analysis Uses for Mathematics In Defense of Controlled Magical Thinking;,citation_author=Persi Diaconis;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_doi=10.1002/9781118150702.ch1;,citation_isbn=978-1-118-15070-2;,citation_inbook_title=Exploring Data Tables, Trends, and Shapes;">
+<meta name="citation_reference" content="citation_title=Probabilistic Machine Learning and Artificial Intelligence;,citation_abstract=How can a machine learn from experience? Probabilistic modelling provides a framework for understanding what learning is, and has therefore emerged as one of the principal theoretical and practical approaches for designing machines that learn from data acquired through experience. The probabilistic framework, which describes how to represent and manipulate uncertainty about models and predictions, has a central role in scientific data analysis, machine learning, robotics, cognitive science and artificial intelligence. This Review provides an introduction to this framework, and discusses some of the state-of-the-art advances in the field, namely, probabilistic programming, Bayesian optimization, data compression and automatic model discovery.;,citation_author=Zoubin Ghahramani;,citation_publication_date=2015-05;,citation_cover_date=2015-05;,citation_year=2015;,citation_issue=7553;,citation_doi=10.1038/nature14541;,citation_issn=0028-0836;,citation_volume=521;,citation_journal_title=Nature;">
+<meta name="citation_reference" content="citation_title=Bayesian Programming;,citation_author=Pierre Bessiere;,citation_author=Emmanuel Mazer;,citation_author=Juan Manuel Ahuactzin;,citation_author=Kamel Mekhnacha;,citation_publication_date=2013-12;,citation_cover_date=2013-12;,citation_year=2013;,citation_fulltext_html_url=https://www.crcpress.com/Bayesian-Programming/Bessiere-Mazer-Ahuactzin-Mekhnacha/p/book/9781439880326;,citation_isbn=978-1-4398-8032-6;">
+<meta name="citation_reference" content="citation_title=Probabilistic Programming;,citation_author=Daniel Roy;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_fulltext_html_url=http://probabilistic-programming.org;">
+<meta name="citation_reference" content="citation_title=Xarray: N-D Labeled Arrays and Datasets in Python;,citation_author=Stephan Hoyer;,citation_author=Joe Hamman;,citation_publication_date=2017-04;,citation_cover_date=2017-04;,citation_year=2017;,citation_issue=1;,citation_doi=10.5334/jors.148;,citation_issn=2049-9647;,citation_volume=5;,citation_journal_title=Journal of Open Research Software;">
+<meta name="citation_reference" content="citation_title=Visualizing count data regressions using rootograms;,citation_author=Christian Kleiber;,citation_author=Achim Zeileis;,citation_publication_date=2016-07;,citation_cover_date=2016-07;,citation_year=2016;,citation_fulltext_html_url=http://dx.doi.org/10.1080/00031305.2016.1173590;,citation_issue=3;,citation_doi=10.1080/00031305.2016.1173590;,citation_issn=1537-2731;,citation_volume=70;,citation_journal_title=The American Statistician;,citation_publisher=Informa UK Limited;">
+<meta name="citation_reference" content="citation_title=Satellite male groups in horseshoe crabs, limulus polyphemus;,citation_author=H. Jane Brockmann;,citation_publication_date=1996;,citation_cover_date=1996;,citation_year=1996;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1439-0310.1996.tb01099.x;,citation_issue=1;,citation_doi=https://doi.org/10.1111/j.1439-0310.1996.tb01099.x;,citation_volume=102;,citation_journal_title=Ethology;">
+<meta name="citation_reference" content="citation_title=Exploratory Data Analysis;,citation_author=John W. Tukey;,citation_publication_date=1977;,citation_cover_date=1977;,citation_year=1977;,citation_isbn=978-0-201-07616-5;">
+<meta name="citation_reference" content="citation_title=The separation plot: A new visual method for evaluating the fit of binary models;,citation_author=Brian Greenhill;,citation_author=Michael D. Ward;,citation_author=Audrey Sacks;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1540-5907.2011.00525.x;,citation_issue=4;,citation_doi=https://doi.org/10.1111/j.1540-5907.2011.00525.x;,citation_volume=55;,citation_journal_title=American Journal of Political Science;">
+<meta name="citation_reference" content="citation_title=Detecting and diagnosing prior and likelihood sensitivity with power-scaling;,citation_author=Noa Kallioinen;,citation_author=Topi Paananen;,citation_author=Paul-Christian Bürkner;,citation_author=Aki Vehtari;,citation_publication_date=2023-12;,citation_cover_date=2023-12;,citation_year=2023;,citation_fulltext_html_url=https://doi.org/10.1007/s11222-023-10366-5;,citation_issue=1;,citation_doi=10.1007/s11222-023-10366-5;,citation_issn=1573-1375;,citation_volume=34;,citation_journal_title=Statistics and Computing;">
+<meta name="citation_reference" content="citation_title=Graphical test for discrete uniformity and its applications in goodness-of-fit evaluation and multiple sample comparison;,citation_author=Teemu Säilynoja;,citation_author=Paul-Christian Bürkner;,citation_author=Aki Vehtari;,citation_publication_date=2022-03;,citation_cover_date=2022-03;,citation_year=2022;,citation_fulltext_html_url=https://doi.org/10.1007/s11222-022-10090-6;,citation_issue=2;,citation_doi=10.1007/s11222-022-10090-6;,citation_issn=1573-1375;,citation_volume=32;,citation_journal_title=Statistics and Computing;">
+<meta name="citation_reference" content="citation_title=Validating bayesian inference algorithms with simulation-based calibration;,citation_author=Sean Talts;,citation_author=Michael Betancourt;,citation_author=Daniel Simpson;,citation_author=Aki Vehtari;,citation_author=Andrew Gelman;,citation_publication_date=2020;,citation_cover_date=2020;,citation_year=2020;,citation_fulltext_html_url=https://arxiv.org/abs/1804.06788;">
+<meta name="citation_reference" content="citation_title=On thinning of chains in MCMC;,citation_author=William A. Link;,citation_author=Mitchell J. Eaton;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_fulltext_html_url=https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/j.2041-210X.2011.00131.x;,citation_issue=1;,citation_doi=https://doi.org/10.1111/j.2041-210X.2011.00131.x;,citation_volume=3;,citation_journal_title=Methods in Ecology and Evolution;">
+<meta name="citation_reference" content="citation_title=Subsampling the Gibbs Sampler;,citation_author=Steven N. MacEachern;,citation_author=L. Mark Berliner;,citation_publication_date=1994;,citation_cover_date=1994;,citation_year=1994;,citation_fulltext_html_url=https://www.jstor.org/stable/2684714;,citation_issue=3;,citation_doi=10.2307/2684714;,citation_issn=0003-1305;,citation_volume=48;,citation_journal_title=The American Statistician;">
+<meta name="citation_reference" content="citation_title=The Prior Can Often Only Be Understood in the Context of the Likelihood;,citation_author=Andrew Gelman;,citation_author=Daniel Simpson;,citation_author=Michael Betancourt;,citation_publication_date=2017-10;,citation_cover_date=2017-10;,citation_year=2017;,citation_fulltext_html_url=https://www.mdpi.com/1099-4300/19/10/555;,citation_issue=10;,citation_doi=10.3390/e19100555;,citation_issn=1099-4300;,citation_volume=19;,citation_journal_title=Entropy;">
+<meta name="citation_reference" content="citation_title=Prior Knowledge Elicitation: The Past, Present, and Future;,citation_author=Petrus Mikkola;,citation_author=Osvaldo A. Martin;,citation_author=Suyog Chandramouli;,citation_author=Marcelo Hartmann;,citation_author=Oriol Abril Pla;,citation_author=Owen Thomas;,citation_author=Henri Pesonen;,citation_author=Jukka Corander;,citation_author=Aki Vehtari;,citation_author=Samuel Kaski;,citation_author=Paul-Christian Bürkner;,citation_author=Arto Klami;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_fulltext_html_url=https://doi.org/10.1214/23-BA1381;,citation_issue=4;,citation_doi=10.1214/23-BA1381;,citation_volume=19;,citation_journal_title=Bayesian Analysis;,citation_publisher=International Society for Bayesian Analysis;">
+<meta name="citation_reference" content="citation_title=Probability Theory: The Logic of Science;,citation_abstract=Going beyond the conventional mathematics of probability theory, this study views the subject in a wider context. It discusses new results, along with applications of probability theory to a variety of problems. The book contains many exercises and is suitable for use as a textbook on graduate-level courses involving data analysis. Aimed at readers already familiar with applied mathematics at an advanced undergraduate level or higher, it is of interest to scientists concerned with inference from incomplete information.;,citation_author=E. T. Jaynes;,citation_editor=G. Larry Bretthorst;,citation_publication_date=2003-06;,citation_cover_date=2003-06;,citation_year=2003;,citation_isbn=978-0-521-59271-0;">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Chapters/Case_study_model_comparison.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model Comparison (case study)</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Exploratory Analysis of Bayesian Models</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <div class="dropdown">
+      <a href="" title="github" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="github"><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/arviz-devs/Exploratory-Analysis-of-Bayesian-Models">
+            source
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/arviz-devs/Exploratory-Analysis-of-Bayesian-Models/issues/new">
+            issues
+            </a>
+          </li>
+      </ul>
+    </div>
+    <a href="https://numfocus.org/donate-to-arviz" title="donations" class="quarto-navigation-tool px-1" aria-label="donations"><i class="bi bi-coin"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">‎</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/Elements_of_visualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Elements of visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/DataTree.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Working with DataTree</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/Distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Random variables, distributions, and uncertainty</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/MCMC_diagnostics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">MCMC Diagnostics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/Model_criticism.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Model comparison</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/Model_comparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Model comparison</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/Case_study_model_comparison.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model Comparison (case study)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/Prior_elicitation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Prior Elicitation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/Presenting_results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Presentation of results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters/References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#information-criteria-for-hierarchical-and-multi-likelihood-models" id="toc-information-criteria-for-hierarchical-and-multi-likelihood-models" class="nav-link active" data-scroll-target="#information-criteria-for-hierarchical-and-multi-likelihood-models"><span class="header-section-number">7.1</span> Information criteria for hierarchical and multi-likelihood models</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data"><span class="header-section-number">7.2</span> The data</a></li>
+  <li><a href="#base-model" id="toc-base-model" class="nav-link" data-scroll-target="#base-model"><span class="header-section-number">7.3</span> Base model</a></li>
+  <li><a href="#budget-model" id="toc-budget-model" class="nav-link" data-scroll-target="#budget-model"><span class="header-section-number">7.4</span> Budget model</a></li>
+  <li><a href="#no-field-effect-model" id="toc-no-field-effect-model" class="nav-link" data-scroll-target="#no-field-effect-model"><span class="header-section-number">7.5</span> No field effect model</a></li>
+  <li><a href="#variable-and-index-glossary" id="toc-variable-and-index-glossary" class="nav-link" data-scroll-target="#variable-and-index-glossary"><span class="header-section-number">7.6</span> Variable and index glossary</a></li>
+  <li><a href="#information-criterion-calculation" id="toc-information-criterion-calculation" class="nav-link" data-scroll-target="#information-criterion-calculation"><span class="header-section-number">7.7</span> Information criterion calculation</a>
+  <ul class="collapse">
+  <li><a href="#predicting-the-goals-scored-by-the-away-team" id="toc-predicting-the-goals-scored-by-the-away-team" class="nav-link" data-scroll-target="#predicting-the-goals-scored-by-the-away-team"><span class="header-section-number">7.7.1</span> Predicting the goals scored by the away team</a></li>
+  <li><a href="#predicting-the-outcome-of-a-match" id="toc-predicting-the-outcome-of-a-match" class="nav-link" data-scroll-target="#predicting-the-outcome-of-a-match"><span class="header-section-number">7.7.2</span> Predicting the outcome of a match</a></li>
+  <li><a href="#predicting-the-goals-scored-per-match-and-per-team" id="toc-predicting-the-goals-scored-per-match-and-per-team" class="nav-link" data-scroll-target="#predicting-the-goals-scored-per-match-and-per-team"><span class="header-section-number">7.7.3</span> Predicting the goals scored per match and per team</a></li>
+  <li><a href="#predicting-team-level-performance" id="toc-predicting-team-level-performance" class="nav-link" data-scroll-target="#predicting-team-level-performance"><span class="header-section-number">7.7.4</span> Predicting team level performance</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Model Comparison (case study)</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="1d09886c" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-stderr">
+<pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
+</div>
+</div>
+<section id="information-criteria-for-hierarchical-and-multi-likelihood-models" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="information-criteria-for-hierarchical-and-multi-likelihood-models"><span class="header-section-number">7.1</span> Information criteria for hierarchical and multi-likelihood models</h2>
+<p>There are many situations where one model can be used for several prediction tasks at the same time. Hierarchical models or models with multiple observations are examples of such cases. With two observations for example, the same model can be used to predict only the first observation, only the second or both observations at the same time.</p>
+<p>Before estimating the predictive accuracy, there are two important questions to answer: what is the predictive task we are interested in and, whether or not the exchangeability criteria is met. This section will show several alternative ways to define the predictive task using the same model.</p>
+<p>We are going to analyze data from the <a href="https://es.wikipedia.org/wiki/Primera_Divisi%C3%B3n_de_Espa%C3%B1a_2022-23">2022-2023 season</a> of Spain’s highest men’s football league. In this notebook, we will start from InferenceData files, but the model and data used is also described because they are key to understanding what is going on. If you are interested in the model itself in more depth, or the coding of the models themselves, refer to <a href="fill here link to models">TODO</a>.</p>
+</section>
+<section id="the-data" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="the-data"><span class="header-section-number">7.2</span> The data</h2>
+<p>The data used to fit the models are the results of all matches from 2022-2023 and the budget of each team (for the 2nd model only). Our data therefore consists of two tables: one with one row per match, containing the home and away teams and the goals scored by each; another with one row per team, containing the team and its budget.</p>
+<div id="732ae725" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> arviz.data.datasets <span class="im">as</span> azd</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>azd.REMOTE_DATASETS.update({</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="st">"laliga_base"</span>: azd.RemoteFileMetadata(</span>
+<span id="cb2-5"><a href="#cb2-5"></a>        name<span class="op">=</span><span class="st">"laliga_base"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6"></a>        filename<span class="op">=</span><span class="st">"base_model.nc"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>        url<span class="op">=</span><span class="st">"http://figshare.com/ndownloader/files/44240747"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8"></a>        checksum<span class="op">=</span><span class="st">"6f39f2646bbef8259f0d8fa3c6d7f6304b9cf6d63f5df7cdae1e6b3a93094fda"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9"></a>        description<span class="op">=</span><span class="st">"""Base model for the analysis of LaLiga 2022-2023 results."""</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>    ),</span>
+<span id="cb2-11"><a href="#cb2-11"></a>    <span class="st">"laliga_budget"</span>: azd.RemoteFileMetadata(</span>
+<span id="cb2-12"><a href="#cb2-12"></a>        name<span class="op">=</span><span class="st">"laliga_budget"</span>,</span>
+<span id="cb2-13"><a href="#cb2-13"></a>        filename<span class="op">=</span><span class="st">"budget_model.nc"</span>,</span>
+<span id="cb2-14"><a href="#cb2-14"></a>        url<span class="op">=</span><span class="st">"http://figshare.com/ndownloader/files/44240762"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15"></a>        checksum<span class="op">=</span><span class="st">"5c77671b98bcf2ae30d45a7ab3fd47b855e285ffe15ce2cd176ca25b1fd369fd"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16"></a>        description<span class="op">=</span><span class="st">"""Budget model for the analysis of LaLiga 2022-2023 results."""</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>    ),</span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="st">"laliga_nofield"</span>: azd.RemoteFileMetadata(</span>
+<span id="cb2-19"><a href="#cb2-19"></a>        name<span class="op">=</span><span class="st">"laliga_nofield"</span>,</span>
+<span id="cb2-20"><a href="#cb2-20"></a>        filename<span class="op">=</span><span class="st">"nofield_model.nc"</span>,</span>
+<span id="cb2-21"><a href="#cb2-21"></a>        url<span class="op">=</span><span class="st">"http://figshare.com/ndownloader/files/44240807"</span>,</span>
+<span id="cb2-22"><a href="#cb2-22"></a>        checksum<span class="op">=</span><span class="st">"3e4910690cb2d8428e6486ba9973921d1b195bb8f14e2136422a0fc5d953d8e8"</span>,</span>
+<span id="cb2-23"><a href="#cb2-23"></a>        description<span class="op">=</span><span class="st">"""No field effect model for the analysis of LaLiga 2022-2023 results."""</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>    )</span>
+<span id="cb2-25"><a href="#cb2-25"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="base-model" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="base-model"><span class="header-section-number">7.3</span> Base model</h2>
+<p>The model used is taken from <a href="http://danielweitzenfeld.github.io/passtheroc/blog/2014/10/28/bayes-premier-league/">this blog post</a> which was added as an <a href="https://www.pymc.io/projects/examples/en/latest/case_studies/rugby_analytics.html">example notebook</a> to PyMC docs.</p>
+<p>We are trying to model a league in which all teams play against each other twice. We indicate the number of goals scored by the home and the away team in the <span class="math inline">\(m\)</span>-th match of the season (<span class="math inline">\(M\)</span> matches) as <span class="math inline">\(y_{m,h}\)</span> and <span class="math inline">\(y_{m,a}\)</span> respectively. The model assumes the goals scored by a team follow a Poisson distribution:</p>
+<p><span class="math display">\[y_{m,f} | \theta_{m,f} \sim \text{Poiss}(\theta_{m,f})\]</span></p>
+<p>where <span class="math inline">\(f = {h, a}\)</span> indicates the field, representing either home or away team. We will therefore start with a model containing two observation vectors: <span class="math inline">\(\mathbf{y_h} = (y_{1,h}, y_{2,h}, \dots, y_{M,h})\)</span> and <span class="math inline">\(\mathbf{y_a} = (y_{1,a}, \dots, y_{M,a})\)</span>. In order to take into account each team’s scoring and defensive power and also the advantage of playing home, we will use different formulas for <span class="math inline">\(\theta_{m,h}\)</span> and for <span class="math inline">\(\theta_{m,a}\)</span>:</p>
+<p><span class="math display">\[
+\begin{align}
+\theta_{m,h} &amp;= \alpha + home + atts_{home\_team} + defs_{away\_team}\\
+\theta_{m,a} &amp;= \alpha + atts_{away\_team} + defs_{home\_team}
+\end{align}
+\]</span></p>
+<p>The expected number of goals score by the home team <span class="math inline">\(\theta_{m,h}\)</span> depends on an intercept (<span class="math inline">\(\alpha\)</span>), <span class="math inline">\(home\)</span> to quantify the home advantage, on the attacking power of the home team and on the defensive power of the away team. Similarly, the expected number of goals score by the away team <span class="math inline">\(\theta_{m,a}\)</span> also depends on the intercept but not on the home advantage, and now, consequently, we use the attacking power of the away team and the defensive power of the home team.</p>
+<p>Summing up and including the priors, our base model is the following one:</p>
+<p><span class="math display">\[
+\begin{align}
+\alpha &amp;\sim \text{Normal}(0,5) \qquad &amp;\text{scalar} \\
+home &amp;\sim \text{Normal}(0,5) \qquad &amp;\text{scalar} \\
+sd_{att} &amp;\sim \text{HalfStudentT}(3,2.5) \qquad &amp;\text{scalar} \\
+sd_{def} &amp;\sim \text{HalfStudentT}(3,2.5) \qquad &amp;\text{scalar} \\
+atts_* &amp;\sim \text{Normal}(0,sd_{att}) \qquad &amp;\text{shape (T,)} \\
+defs_* &amp;\sim \text{Normal}(0,sd_{def}) \qquad &amp;\text{shape (T,)} \\
+atts &amp;= atts_* - \text{mean}(atts_*) \qquad &amp;\text{shape (T,)} \\
+defs &amp;= defs_* - \text{mean}(defs_*) \qquad &amp;\text{shape (T,)} \\
+\mathbf{y}_h &amp;\sim \text{Poiss}(\theta_h) \qquad &amp;\text{shape (M,)} \\
+\mathbf{y}_a &amp;\sim \text{Poiss}(\theta_a) \qquad &amp;\text{shape (M,)}
+\end{align}
+\]</span></p>
+<p>where <span class="math inline">\(\theta_j\)</span> has been defined above.</p>
+</section>
+<section id="budget-model" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="budget-model"><span class="header-section-number">7.4</span> Budget model</h2>
+<p>The budget model only represents a slight variation on the base model, adding two new parameters and modifying <span class="math inline">\(atts\)</span> and <span class="math inline">\(defs\)</span> variables:</p>
+<p><span class="math display">\[
+\begin{align}
+budget_{att} &amp;\sim \text{Normal}(0,5) \qquad &amp;\text{scalar} \\
+budget_{def} &amp;\sim \text{Normal}(0,5) \qquad &amp;\text{scalar} \\
+atts &amp;= atts_* - \text{mean}(atts_*) + budget_{att} \log{\mathbf{b}} \qquad &amp;\text{shape (T,)} \\
+defs &amp;= defs_* - \text{mean}(defs_*) + budget_{def} \log{\mathbf{b}} \qquad &amp;\text{shape (T,)} \\
+\end{align}
+\]</span></p>
+<p>with <span class="math inline">\(\mathbf{b} = (b_1, b_2, \dots, b_T)\)</span> the budgets of each team.</p>
+</section>
+<section id="no-field-effect-model" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="no-field-effect-model"><span class="header-section-number">7.5</span> No field effect model</h2>
+<p>This third model is another variation on the base model, where we remove the <span class="math inline">\(home\)</span> variable. Thus, the <span class="math inline">\(\theta\)</span> variables become:</p>
+<p><span class="math display">\[
+\begin{align}
+\theta_{m,h} &amp;= \alpha + atts_{home\_team} + defs_{away\_team}\\
+\theta_{m,a} &amp;= \alpha + atts_{away\_team} + defs_{home\_team}
+\end{align}
+\]</span></p>
+</section>
+<section id="variable-and-index-glossary" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="variable-and-index-glossary"><span class="header-section-number">7.6</span> Variable and index glossary</h2>
+<ul>
+<li>Matches. The total number of matches in the season, 380. <span class="math inline">\(M\)</span> denotes the total, and we use <span class="math inline">\(m\)</span> as the index going from <span class="math inline">\(1\)</span> to <span class="math inline">\(M\)</span>.</li>
+<li>Teams. The number of teams in the league, 20. <span class="math inline">\(T\)</span> denotes the total, and we use <span class="math inline">\(t\)</span> as the index going from <span class="math inline">\(1\)</span> to <span class="math inline">\(T\)</span>.</li>
+<li>Field. The field identifier. Two teams play in each game, one being the home team, the other the away one. We use <span class="math inline">\(f\)</span> as the index indicating the field, which can take only two values <span class="math inline">\(h\)</span> or <span class="math inline">\(a\)</span>.</li>
+<li>Arbitrary index. For theoretical concepts, we use <span class="math inline">\(i\)</span> to indicate an arbitrary index.</li>
+</ul>
+<div id="b416dafb" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># load data</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>base_idata <span class="op">=</span> az.load_arviz_data(<span class="st">"laliga_base"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>budget_idata <span class="op">=</span> az.load_arviz_data(<span class="st">"laliga_budget"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>nofield_idata <span class="op">=</span> az.load_arviz_data(<span class="st">"laliga_nofield"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>model_dict <span class="op">=</span> {<span class="st">"base"</span>: base_idata, <span class="st">"budget"</span>: budget_idata, <span class="st">"nofield"</span>: nofield_idata}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="information-criterion-calculation" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="information-criterion-calculation"><span class="header-section-number">7.7</span> Information criterion calculation</h2>
+<p>Due to the presence of the two likelihoods in our model, we cannot call <code>az.loo</code> or <code>az.waic</code> straight away because the predictive task to evaluate is ambiguous. The calculation of information criteria requires pointwise likelihood values, <span class="math inline">\(p(y_i|\theta)\)</span> with <span class="math inline">\(y_i\)</span> indicating observation <span class="math inline">\(i\)</span>-th and <span class="math inline">\(\theta\)</span> representing all the parameters in the model. We need to define <span class="math inline">\(y_i\)</span>, what does <em>one observation</em> represent in our model.</p>
+<p>As we were introducing above, this model alone can tackle several predictive tasks. These predictive tasks can be identified by the definition of <em>one observation</em> which at the same time defines how are pointwise likelihood values to be calculated. Here are some examples:</p>
+<ul>
+<li>We could be a group of students supporting different teams with budget to travel only to one away match of our respective teams. We may want to travel to the match where our team will score the most goals (while being the away team and also independently of the winner of the match). We will therefore assess the predictive accuracy of our model using only <span class="math inline">\(\mathbf{y}_a\)</span>.</li>
+<li>We could also be football fans without any clear allegiance who love an intense match between two teams of similar strength. Based on previous experience, we may consider matches that end up 3-3 or 4-4 the ones that better fit our football taste. Now we need to assess the predictive accuracy using the result of the whole match.</li>
+<li>Even another alternative would be wanting to be present at the match where a single team scores the most goals. In this situation, we would have to put both home and away goals in the same <em>bag</em> and assess the predictive accuracy on the ability to predict values from this <em>bag</em>, we may call the observations in this hypothetical bag “number of goals scored per match and per team”.</li>
+</ul>
+<p>There are even more examples of predictive tasks where this particular model can be of use. However, it is important to keep in mind that this model predicts the number of goals scored. Its results can be used to estimate probabilities of victory and other derived quantities, but calculating the likelihood of these derived quantities may not be straightforward. And as you can see above, there isn’t <em>one</em> unique predictive task: it all depends on the specific question you’re interested in. As often in statistics, the answer to these questions lies <em>outside</em> the model, <em>you</em> must tell the model what to do, not the other way around.</p>
+<p>Even though we know that the predictive task is ambiguous, we will start trying to calculate <code>az.loo</code> with <code>idata_base</code> and then work on the examples above and a couple more to show how would this kind of tasks be performed with ArviZ. But before that, let’s see what ArviZ says when you naively ask it for the LOO of a multi-likelihood model:</p>
+<div id="e23f76ef" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>az.loo(base_idata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-error">
+<pre><code>TypeError: Found several log likelihood arrays ['home_goals', 'away_goals'], var_name cannot be None</code></pre>
+</div>
+</div>
+<p>As expected, ArviZ has no way of knowing what predictive task we have in mind so it raises an error.</p>
+<section id="predicting-the-goals-scored-by-the-away-team" class="level3" data-number="7.7.1">
+<h3 data-number="7.7.1" class="anchored" data-anchor-id="predicting-the-goals-scored-by-the-away-team"><span class="header-section-number">7.7.1</span> Predicting the goals scored by the away team</h3>
+<p>In this particular case, we are interested in predicting the goals scored by the away team. We will still use the goals scored by the home team, but won’t take them into account when assessing the predictive accuracy. Below there is an illustration of how would cross validation be performed to assess the predictive accuracy in this particular case:</p>
+<p><img src="../img/cv_away.png" class="img-fluid"></p>
+<p>This can also be seen from a mathematical point of view. We can write the pointwise log likelihood in the following way so it defines the predictive task at hand:</p>
+<p><span class="math display">\[ p(y_i|\theta) = p(y_{i,h}|\theta_{i,h}) = \text{Poiss}(y_{i,h}; \theta_{i,h}) \]</span></p>
+<p>with <span class="math inline">\(i\)</span> being both the match indicator (<span class="math inline">\(m\)</span>, which varies with <span class="math inline">\(i\)</span>) and the field indicator (<span class="math inline">\(f\)</span>, here always fixed at <span class="math inline">\(h\)</span>). These are precisely the values stored in the <code>home_goals</code> of the <code>log_likelihood</code> group of <code>idata_base</code>.</p>
+<p>We can tell ArviZ to use these values using the argument <code>var_name</code>.</p>
+<div id="9da4ec11" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>az.loo(base_idata, var_name<span class="op">=</span><span class="st">"home_goals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>Computed from 8000 posterior samples and 380 observations log-likelihood matrix.
+
+         Estimate       SE
+elpd_loo  -568.55    12.66
+p_loo       15.59        -
+------
+
+Pareto k diagnostic values:
+                         Count   Pct.
+(-Inf, 0.70]   (good)      380  100.0%
+   (0.70, 1]   (bad)         0    0.0%
+   (1, Inf)   (very bad)    0    0.0%</code></pre>
+</div>
+</div>
+<div id="809e6468" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>az.compare(model_dict, var_name<span class="op">=</span><span class="st">"home_goals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">rank</th>
+<th data-quarto-table-cell-role="th">elpd_loo</th>
+<th data-quarto-table-cell-role="th">p_loo</th>
+<th data-quarto-table-cell-role="th">elpd_diff</th>
+<th data-quarto-table-cell-role="th">weight</th>
+<th data-quarto-table-cell-role="th">se</th>
+<th data-quarto-table-cell-role="th">dse</th>
+<th data-quarto-table-cell-role="th">warning</th>
+<th data-quarto-table-cell-role="th">scale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">budget</td>
+<td>0</td>
+<td>-567.057532</td>
+<td>10.716592</td>
+<td>0.000000</td>
+<td>0.715937</td>
+<td>13.055752</td>
+<td>0.000000</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">base</td>
+<td>1</td>
+<td>-568.553182</td>
+<td>15.589902</td>
+<td>1.495650</td>
+<td>0.284063</td>
+<td>12.661187</td>
+<td>2.767823</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">nofield</td>
+<td>2</td>
+<td>-574.119733</td>
+<td>15.814319</td>
+<td>7.062202</td>
+<td>0.000000</td>
+<td>15.312384</td>
+<td>4.387979</td>
+<td>False</td>
+<td>log</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div id="a1c9eb76" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>az.compare(model_dict, var_name<span class="op">=</span><span class="st">"away_goals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">rank</th>
+<th data-quarto-table-cell-role="th">elpd_loo</th>
+<th data-quarto-table-cell-role="th">p_loo</th>
+<th data-quarto-table-cell-role="th">elpd_diff</th>
+<th data-quarto-table-cell-role="th">weight</th>
+<th data-quarto-table-cell-role="th">se</th>
+<th data-quarto-table-cell-role="th">dse</th>
+<th data-quarto-table-cell-role="th">warning</th>
+<th data-quarto-table-cell-role="th">scale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">budget</td>
+<td>0</td>
+<td>-480.386626</td>
+<td>6.888639</td>
+<td>0.000000</td>
+<td>1.000000e+00</td>
+<td>11.546581</td>
+<td>0.000000</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">base</td>
+<td>1</td>
+<td>-482.936745</td>
+<td>10.241680</td>
+<td>2.550119</td>
+<td>2.781109e-14</td>
+<td>11.831405</td>
+<td>1.943906</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">nofield</td>
+<td>2</td>
+<td>-488.971732</td>
+<td>10.193199</td>
+<td>8.585106</td>
+<td>0.000000e+00</td>
+<td>9.456310</td>
+<td>3.420849</td>
+<td>False</td>
+<td>log</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="predicting-the-outcome-of-a-match" class="level3" data-number="7.7.2">
+<h3 data-number="7.7.2" class="anchored" data-anchor-id="predicting-the-outcome-of-a-match"><span class="header-section-number">7.7.2</span> Predicting the outcome of a match</h3>
+<p>Another option is being interested in the outcome of the matches. In our current model, the outcome of a match is not who wins or the aggregate of scored goals by both teams, the outcome is the goals scored by the home team <em>and</em> by the away team, both quantities at the same time. Below there is an illustration on how would cross validation be used to assess the predictive accuracy in this situation:</p>
+<p><img src="../img/cv_match.png" class="img-fluid"></p>
+<p>The <em>one observation</em> in this situation is therefore a vector with two components: <span class="math inline">\(y_i = (y_{i,h}, y_{i,a})\)</span>. Like above, we also have <span class="math inline">\(M\)</span> observations. The pointwise likelihood is therefore a product:</p>
+<p><span class="math display">\[
+p(y_i|\theta) = p(y_{i,h}|\theta_{i,h})p(y_{i,a}|\theta_{i,a}) =
+\text{Poiss}(y_{i,h}; \theta_{i,h})\text{Poiss}(y_{i,a}; \theta_{i,a})
+\]</span></p>
+<p>with <span class="math inline">\(i\)</span> being equal to the match indicator <span class="math inline">\(m\)</span>. Therefore, we have <span class="math inline">\(M\)</span> observations like in the previous example, but each observation has two components.</p>
+<p>We can calculate the product as a sum of logarithms and store the result in a new variable inside the <code>log_likelihood</code> group.</p>
+<div id="79b8fb74" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">def</span> match_lik(idata):</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    log_lik <span class="op">=</span> idata.log_likelihood</span>
+<span id="cb10-3"><a href="#cb10-3"></a>    log_lik[<span class="st">"matches"</span>] <span class="op">=</span> log_lik.home_goals <span class="op">+</span> log_lik.away_goals</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="cf">return</span> idata</span>
+<span id="cb10-5"><a href="#cb10-5"></a></span>
+<span id="cb10-6"><a href="#cb10-6"></a>base_idata <span class="op">=</span> match_lik(base_idata)</span>
+<span id="cb10-7"><a href="#cb10-7"></a>budget_idata <span class="op">=</span> match_lik(budget_idata)</span>
+<span id="cb10-8"><a href="#cb10-8"></a>nofield_idata <span class="op">=</span> match_lik(nofield_idata)</span>
+<span id="cb10-9"><a href="#cb10-9"></a></span>
+<span id="cb10-10"><a href="#cb10-10"></a>az.loo(base_idata, var_name<span class="op">=</span><span class="st">"matches"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>Computed from 8000 posterior samples and 380 observations log-likelihood matrix.
+
+         Estimate       SE
+elpd_loo -1051.48    16.93
+p_loo       25.81        -
+------
+
+Pareto k diagnostic values:
+                         Count   Pct.
+(-Inf, 0.70]   (good)      380  100.0%
+   (0.70, 1]   (bad)         0    0.0%
+   (1, Inf)   (very bad)    0    0.0%</code></pre>
+</div>
+</div>
+<div id="29c8f6cf" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>az.compare(model_dict, var_name<span class="op">=</span><span class="st">"matches"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">rank</th>
+<th data-quarto-table-cell-role="th">elpd_loo</th>
+<th data-quarto-table-cell-role="th">p_loo</th>
+<th data-quarto-table-cell-role="th">elpd_diff</th>
+<th data-quarto-table-cell-role="th">weight</th>
+<th data-quarto-table-cell-role="th">se</th>
+<th data-quarto-table-cell-role="th">dse</th>
+<th data-quarto-table-cell-role="th">warning</th>
+<th data-quarto-table-cell-role="th">scale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">budget</td>
+<td>0</td>
+<td>-1047.441755</td>
+<td>17.606963</td>
+<td>0.000000</td>
+<td>0.84896</td>
+<td>17.072842</td>
+<td>0.000000</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">base</td>
+<td>1</td>
+<td>-1051.475361</td>
+<td>25.812936</td>
+<td>4.033606</td>
+<td>0.15104</td>
+<td>16.927232</td>
+<td>3.399485</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">nofield</td>
+<td>2</td>
+<td>-1063.093483</td>
+<td>26.019985</td>
+<td>15.651728</td>
+<td>0.00000</td>
+<td>17.563750</td>
+<td>5.491706</td>
+<td>False</td>
+<td>log</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="predicting-the-goals-scored-per-match-and-per-team" class="level3" data-number="7.7.3">
+<h3 data-number="7.7.3" class="anchored" data-anchor-id="predicting-the-goals-scored-per-match-and-per-team"><span class="header-section-number">7.7.3</span> Predicting the goals scored per match and per team</h3>
+<p>Another example described above is being interested in the scored goals per match and per team. In this situation, our observations are a scalar once again.</p>
+<p><img src="../img/cv_any_goals.png" class="img-fluid"></p>
+<p>The expression of the likelihood is basically the same as the one in the first example (both cases are scalars), but the difference is in the index, but that does not make it less significant:</p>
+<p><span class="math display">\[
+p(y_i|\theta) = p(y_{i}|\theta_{i}) =
+\text{Poiss}(y_{i}; \theta_{i})
+\]</span></p>
+<p>with <span class="math inline">\(i\)</span> being both the match indicator <span class="math inline">\(m\)</span> and the field indicator <span class="math inline">\(f\)</span>, both varying with <span class="math inline">\(i\)</span>. Now, we will consider <span class="math inline">\(i\)</span> as an index iterating over the values in</p>
+<p><span class="math display">\[\big\{(1,h), (2,h), \dots, (M-1,h), (M,h), (1,a), (2,a) \dots (M-1,a), (M,a)\big\}\]</span></p>
+<p>Therefore, unlike in previous cases, we have <span class="math inline">\(2M\)</span> observations.</p>
+<p>We can obtain the pointwise log likelihood corresponding to this case by concatenating the pointwise log likelihoods of <code>home_goals</code> and <code>away_goals</code>. Then, like in the previous case, store the result in a new variable inside the <code>log_likelihood</code> group.</p>
+<div id="406bc26b" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">def</span> goals_lik(idata):</span>
+<span id="cb13-2"><a href="#cb13-2"></a>    log_lik <span class="op">=</span> idata.log_likelihood</span>
+<span id="cb13-3"><a href="#cb13-3"></a>    log_lik[<span class="st">"goals"</span>] <span class="op">=</span> xr.concat((log_lik.home_goals, log_lik.away_goals), <span class="st">"match"</span>).rename({<span class="st">"match"</span>: <span class="st">"goal"</span>})</span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="cf">return</span> idata</span>
+<span id="cb13-5"><a href="#cb13-5"></a>    </span>
+<span id="cb13-6"><a href="#cb13-6"></a>base_idata <span class="op">=</span> goals_lik(base_idata)</span>
+<span id="cb13-7"><a href="#cb13-7"></a>budget_idata <span class="op">=</span> goals_lik(budget_idata)</span>
+<span id="cb13-8"><a href="#cb13-8"></a>nofield_idata <span class="op">=</span> goals_lik(nofield_idata)</span>
+<span id="cb13-9"><a href="#cb13-9"></a></span>
+<span id="cb13-10"><a href="#cb13-10"></a>az.loo(base_idata, var_name<span class="op">=</span><span class="st">"goals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>Computed from 8000 posterior samples and 760 observations log-likelihood matrix.
+
+         Estimate       SE
+elpd_loo -1051.49    17.60
+p_loo       25.83        -
+------
+
+Pareto k diagnostic values:
+                         Count   Pct.
+(-Inf, 0.70]   (good)      760  100.0%
+   (0.70, 1]   (bad)         0    0.0%
+   (1, Inf)   (very bad)    0    0.0%</code></pre>
+</div>
+</div>
+<div id="4f412dbb" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>az.compare(model_dict, var_name<span class="op">=</span><span class="st">"goals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">rank</th>
+<th data-quarto-table-cell-role="th">elpd_loo</th>
+<th data-quarto-table-cell-role="th">p_loo</th>
+<th data-quarto-table-cell-role="th">elpd_diff</th>
+<th data-quarto-table-cell-role="th">weight</th>
+<th data-quarto-table-cell-role="th">se</th>
+<th data-quarto-table-cell-role="th">dse</th>
+<th data-quarto-table-cell-role="th">warning</th>
+<th data-quarto-table-cell-role="th">scale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">budget</td>
+<td>0</td>
+<td>-1047.444158</td>
+<td>17.605232</td>
+<td>0.000000</td>
+<td>8.519505e-01</td>
+<td>17.710455</td>
+<td>0.000000</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">base</td>
+<td>1</td>
+<td>-1051.489927</td>
+<td>25.831582</td>
+<td>4.045769</td>
+<td>1.480495e-01</td>
+<td>17.604908</td>
+<td>3.382467</td>
+<td>False</td>
+<td>log</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">nofield</td>
+<td>2</td>
+<td>-1063.091466</td>
+<td>26.007518</td>
+<td>15.647308</td>
+<td>9.992007e-16</td>
+<td>18.260083</td>
+<td>5.564137</td>
+<td>False</td>
+<td>log</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="predicting-team-level-performance" class="level3" data-number="7.7.4">
+<h3 data-number="7.7.4" class="anchored" data-anchor-id="predicting-team-level-performance"><span class="header-section-number">7.7.4</span> Predicting team level performance</h3>
+<p>The last example covered here is estimating the predictive accuracy at group level. This can be useful to assess the accuracy of predicting the whole season of a new team. In addition, this can also be used to evaluate the hierarchical part of the model.</p>
+<p>Although theoretically possible, importance sampling tends to fail at the group level due to all the observations being too informative. See <a href="https://avehtari.github.io/modelselection/rats_kcv.html#53_grouped_k-fold_for_leave-one-group-out">this post</a> for more details.</p>
+<p>In this situation, we could describe the cross validation as excluding a team. When we exclude a team, we will exclude all the matches played by the team, not only the goals scored by the team but the whole match. Here is the illustration:</p>
+<p><img src="../img/cv_team.png" class="img-fluid"></p>
+<p>In the first column, we are excluding “Levante U.D.” which in the rows shown only appears once. In the second one, we are excluding “Athletic Club” which appears two times. This goes on following the order of appearance in the away team column.</p>
+<div id="5fbf0157" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">def</span> team_lik(idata):</span>
+<span id="cb16-2"><a href="#cb16-2"></a>    log_lik <span class="op">=</span> idata.log_likelihood</span>
+<span id="cb16-3"><a href="#cb16-3"></a>    const <span class="op">=</span> idata.constant_data</span>
+<span id="cb16-4"><a href="#cb16-4"></a>    groupby_sum_home <span class="op">=</span> log_lik.groupby(const.home_team).<span class="bu">sum</span>().rename({<span class="st">"home_team"</span>: <span class="st">"team"</span>})</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    groupby_sum_away <span class="op">=</span> log_lik.groupby(const.away_team).<span class="bu">sum</span>().rename({<span class="st">"away_team"</span>: <span class="st">"team"</span>})</span>
+<span id="cb16-6"><a href="#cb16-6"></a></span>
+<span id="cb16-7"><a href="#cb16-7"></a>    log_lik[<span class="st">"teams_match"</span>] <span class="op">=</span> (</span>
+<span id="cb16-8"><a href="#cb16-8"></a>        groupby_sum_home.home_goals <span class="op">+</span> groupby_sum_home.away_goals <span class="op">+</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a>        groupby_sum_away.home_goals <span class="op">+</span> groupby_sum_away.away_goals</span>
+<span id="cb16-10"><a href="#cb16-10"></a>    )</span>
+<span id="cb16-11"><a href="#cb16-11"></a>    <span class="cf">return</span> idata</span>
+<span id="cb16-12"><a href="#cb16-12"></a>    </span>
+<span id="cb16-13"><a href="#cb16-13"></a>base_idata <span class="op">=</span> team_lik(base_idata)</span>
+<span id="cb16-14"><a href="#cb16-14"></a>budget_idata <span class="op">=</span> team_lik(budget_idata)</span>
+<span id="cb16-15"><a href="#cb16-15"></a>nofield_idata <span class="op">=</span> team_lik(nofield_idata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="40952b8e" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>az.loo(base_idata, var_name<span class="op">=</span><span class="st">"teams_match"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/arviz/stats/stats.py:792: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>Computed from 8000 posterior samples and 20 observations log-likelihood matrix.
+
+         Estimate       SE
+elpd_loo -2109.44    19.91
+p_loo       52.62        -
+
+There has been a warning during the calculation. Please check the results.
+------
+
+Pareto k diagnostic values:
+                         Count   Pct.
+(-Inf, 0.70]   (good)        3   15.0%
+   (0.70, 1]   (bad)        14   70.0%
+   (1, Inf)   (very bad)    3   15.0%</code></pre>
+</div>
+</div>
+<p>TODO: it would probably be best to run reloo for the three models for this case and include that on figshare too.</p>
+<div id="eaaf489a" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>az.compare(model_dict, var_name<span class="op">=</span><span class="st">"teams_match"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/arviz/stats/stats.py:792: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/arviz/stats/stats.py:792: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/arviz/stats/stats.py:792: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">rank</th>
+<th data-quarto-table-cell-role="th">elpd_loo</th>
+<th data-quarto-table-cell-role="th">p_loo</th>
+<th data-quarto-table-cell-role="th">elpd_diff</th>
+<th data-quarto-table-cell-role="th">weight</th>
+<th data-quarto-table-cell-role="th">se</th>
+<th data-quarto-table-cell-role="th">dse</th>
+<th data-quarto-table-cell-role="th">warning</th>
+<th data-quarto-table-cell-role="th">scale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">budget</td>
+<td>0</td>
+<td>-2098.768712</td>
+<td>36.970533</td>
+<td>0.000000</td>
+<td>8.019749e-01</td>
+<td>22.754832</td>
+<td>0.000000</td>
+<td>True</td>
+<td>log</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">base</td>
+<td>1</td>
+<td>-2109.444812</td>
+<td>52.616593</td>
+<td>10.676101</td>
+<td>1.980251e-01</td>
+<td>19.908256</td>
+<td>6.769330</td>
+<td>True</td>
+<td>log</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">nofield</td>
+<td>2</td>
+<td>-2133.223518</td>
+<td>52.665911</td>
+<td>34.454806</td>
+<td>2.220446e-16</td>
+<td>20.286200</td>
+<td>9.252461</td>
+<td>True</td>
+<td>log</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../Chapters/Model_comparison.html" class="pagination-link" aria-label="Model comparison">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Model comparison</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../Chapters/Prior_elicitation.html" class="pagination-link" aria-label="Prior Elicitation">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Prior Elicitation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
