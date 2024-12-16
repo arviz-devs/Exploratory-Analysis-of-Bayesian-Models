@@ -14,8 +14,7 @@ Specification of the prior distribution for a Bayesian model is key, but it is o
 
 ![Having to set priors are often seen as a burden, a nuisance of Bayesian statistics](../img/prior_anxiety.png){#fig-prior_anxiety width=30%}
 
-
-The process of transforming domain knowledge into well-defined prior distributions is called Prior Elicitation and as we already said is an important part of Bayesian modelling. In this chapter, we will discuss some general approaches to prior elicitation and provide some examples.
+The process of transforming domain knowledge into well-defined prior distributions is called Prior Elicitation and as we already said is an important part of Bayesian modelling. In this chapter, we will discuss some general approaches to prior elicitation and provide some examples. Two other sources of information about prior elicitation that complement this chapter are the [PreliZ documentation](https://preliz.readthedocs.io), a Python package for prior elicitation that we will discuss here, and [PriorDB](https://n-kall.github.io/priorDB/), a database of prior distributions for Bayesian analysis. 
 
 ## Priors and Bayesian Statistics
 
@@ -77,13 +76,13 @@ For some priors in a model, we may know or assume that most of the mass is withi
 
 ## Preliz
 
-[PreliZ](https://preliz.readthedocs.io) is a Python package that helps practitioners choose prior distributions by offering a set of tools for the various facets of prior elicitation. It covers a range of methods, from unidimensional prior elicitation on the parameter space to predictive elicitation on the observed space. The goal is to be compatible with probabilistic programming languages (PPL) in the Python ecosystem like PyMC and PyStan, while remaining agnostic of any specific PPL.
+[PreliZ](https://preliz.readthedocs.io) @icazatti_2023 is a Python package that helps practitioners choose prior distributions by offering a set of tools for the various facets of prior elicitation. It covers a range of methods, from unidimensional prior elicitation on the parameter space to predictive elicitation on the observed space. The goal is to be compatible with probabilistic programming languages (PPL) in the Python ecosystem like PyMC and PyStan, while remaining agnostic of any specific PPL.
 
-### maxent
+### Maximum entropy distributions with maxent
 
 In PreliZ we can compute maximum entropy priors using the function `maxent`. It works for unidimensional distributions. The first argument is a PreliZ distribution. Then we specify an upper and lower bounds and then the probability inside the range defined by the bounds.
 
-Let's say that we want to elicitate a scale parameter and from domain knowledge we know that the parameter has a relatively high probability of being less than 3. In that case we could use a HalfNormal and then do:
+Let's say that we want to elicit a scale parameter and from domain knowledge we know that the parameter has a relatively high probability of being less than 3. In that case we could use a HalfNormal and then do:
 
 ```{python}
 pz.maxent(pz.HalfNormal(), 0, 3, 0.8);
@@ -111,3 +110,8 @@ The function `maxent` as others in PreliZ modify distribution in place, so a com
 ```{python}
 dist_mean.summary(), dist_mode.summary()
 ```
+
+### Other direct elicitation methods
+
+
+### Predictive elicitation
