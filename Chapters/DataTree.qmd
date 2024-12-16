@@ -272,10 +272,12 @@ post["theta_school_diff"].sel(
 
 After checking the `mcse` and realizing you need more samples, you rerun the model with two chains and obtain an `dt_rerun` object.
 
+
 ```{python}
 dt_rerun = (
     dt.posterior.sel(chain=[0, 1])
     .copy()
+    .to_dataset()
     .assign_coords(coords={"chain": [4, 5]})
 )
 ```
@@ -283,7 +285,7 @@ dt_rerun = (
 You can combine the two into a single InferenceData object using the `concat` function from ArviZ:
 
 ```{python}
-dt_complete = xr.concat([dt.posterior.to_dataset(), dt_rerun.to_dataset()], dim="chain")
+dt_complete = xr.concat([dt.posterior.to_dataset(), dt_rerun], dim="chain")
 dt_complete.dims
 ```
 
@@ -293,15 +295,17 @@ dt_complete.dims
 To add new groups to InferenceData objects you can use the `extend` method if the new groups are already in an InferenceData object or the `add_groups` method if the new groups are dictionaries or `xarray.Dataset` objects.
 
 ```{python}
-from datatree import DataTree
 rng = np.random.default_rng(3)
 ds = azb.dict_to_dataset(
     {"obs": rng.normal(size=(4, 500, 2))},
     dims={"obs": ["new_school"]},
     coords={"new_school": ["Essex College", "Moordale"]},
 )
-DataTree(ds, name="predictions", parent=dt)
-dt
+dicto = {k:v for k,v in dt.items()}
+dicto["predictions"] = ds
+
+new_dt = xr.DataTree.from_dict(dicto)
+new_dt
 ```
 
 
