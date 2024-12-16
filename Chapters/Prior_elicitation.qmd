@@ -111,7 +111,36 @@ The function `maxent` as others in PreliZ modify distribution in place, so a com
 dist_mean.summary(), dist_mode.summary()
 ```
 
-### Other direct elicitation methods
+### Other direct elicitation methods from PreliZ
 
+There are many other method for direct elicitation of parameters. For instance the [quartile](https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.quartile) functions identifies a distribution that matches specified
+quartiles, and [Quartine_int](https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.QuartileInt) provides an interactive approach to achieve the same, offering a more hands-on experience for refining distributions.
+
+One method worth of special mention is the [Roulette](https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.Roulette) method allows which allows users to find a prior distribution by drawing it interactively @morris_2014. The name "roulette" comes from the analogy of placing a limited set of chips where one believes the mass of a distribution should be concentrated. In this method, a grid of `m` equally sized bins is provided, covering the range of `x`, and users allocate a total of `n` chips across the bins. Effectively, this creates a histogram,representing the user's information about the distribution. The method then identifies the best-fitting distribution from a predefined pool of options, translating the drawn histogram into a suitable probabilistic model. 
+
+As this is an interactive method we can't show it here, but you can run the following cell to see how it works.
+
+```{python}
+#| eval : false
+%matplotlib widget
+result = pz.Roulette()
+```
+
+And this gif should give you an idea on how to use it.
+
+![To elicit a distribution, we can interactively *draw* a histogram, and Roulette will identify the distribution that best matches it.](../img/roulette.gif){#fig-prior_anxiety}
+
+
+
+Once we have elicited the distribution we can call `.dist` attribute to get the selected distribution. In this example, it will be `result.dist`. 
+
+If needed, we can combine results for many independent "roulette sessions" with the [combine_roulette](https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.combine_roulette) function. Combining information from different elicitation sessions can be useful to aggregate information from different domain experts. Or even from a single person unable to pick a single option. For instance if we run `Roulette` twice, and for the first one we get `result0` and for the second `result1`. Then, we can combine both solutions into a single one using:
+
+```{python}
+#| eval : false
+pz.combine_roulette([result0.inputs, result1.inputs], weights=[0.3, 0.7])
+```
+
+In this example, we assign a larger weight to the results from the second elicitation session, we can do this to reflect uneven degrees of trust. By default, all sessions are weighted equally.
 
 ### Predictive elicitation
