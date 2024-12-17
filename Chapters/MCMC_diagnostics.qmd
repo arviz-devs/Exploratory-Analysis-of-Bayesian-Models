@@ -1,4 +1,4 @@
-# MCMC Diagnostics
+# MCMC Diagnostics {#sec-mcmc-diagnostics}
 
 ```{python}
 #| echo : false
