@@ -1,4 +1,4 @@
-# Model comparison {#sec-model-criticism}
+# Model Criticism {#sec-model-criticism}
 
 ```{python}
 #| echo: false
