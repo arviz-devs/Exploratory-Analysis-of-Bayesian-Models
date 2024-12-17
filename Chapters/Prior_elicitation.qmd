@@ -1,4 +1,4 @@
-# Prior Elicitation
+# Prior Elicitation  {#sec-prior-elicitation}
 
 ```{python}
 #| echo : false
