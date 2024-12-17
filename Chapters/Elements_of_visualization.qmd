@@ -1,4 +1,4 @@
-# Elements of visualization
+# Elements of visualization  {#sec-elements-visualization}
 
 ```{python}
 #| echo : false

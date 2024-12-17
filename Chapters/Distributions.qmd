@@ -1,4 +1,4 @@
-# Random variables, distributions, and uncertainty
+# Random variables, distributions, and uncertainty  {#sec-distributions}
 
 ```{python}
 #| echo : false
