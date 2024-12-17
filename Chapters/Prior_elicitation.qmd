@@ -2,9 +2,12 @@
 
 ```{python}
 #| echo : false
+import arviz as az
 import arviz_plots as azp
 import numpy as np
+import pandas as pd
 import preliz as pz
+import pymc as pm
 import matplotlib.pyplot as plt
 rng = np.random.default_rng(793)
 azp.style.use("arviz-clean")
@@ -27,7 +30,6 @@ Priors are one way to convey domain-knowledge information into models. Other way
 
 
 ## Types of Priors
-
 
 Usually, priors are described as informative vs non-informative. Informative priors are priors that convey specific information about the parameters of the model, while non-informative priors do not convey specific information about the parameters of the model. Non-informative priors are often used when little or no domain knowledge is available. A simple, intuitive and old rule for specifying a non-informative prior is the principle of indifference, which assigns the same probability to all possible events. Non-informative priors are also called objective priors especially when the main motivation for using them is to avoid the need to specify a prior distribution.
 
@@ -78,7 +80,7 @@ For some priors in a model, we may know or assume that most of the mass is withi
 
 [PreliZ](https://preliz.readthedocs.io) @icazatti_2023 is a Python package that helps practitioners choose prior distributions by offering a set of tools for the various facets of prior elicitation. It covers a range of methods, from unidimensional prior elicitation on the parameter space to predictive elicitation on the observed space. The goal is to be compatible with probabilistic programming languages (PPL) in the Python ecosystem like PyMC and PyStan, while remaining agnostic of any specific PPL.
 
-### Maximum entropy distributions with maxent
+## Maximum entropy distributions with maxent
 
 In PreliZ we can compute maximum entropy priors using the function `maxent`. It works for unidimensional distributions. The first argument is a PreliZ distribution. Then we specify an upper and lower bounds and then the probability inside the range defined by the bounds.
 
@@ -111,7 +113,7 @@ The function `maxent` as others in PreliZ modify distribution in place, so a com
 dist_mean.summary(), dist_mode.summary()
 ```
 
-### Other direct elicitation methods from PreliZ
+## Other direct elicitation methods from PreliZ
 
 There are many other method for direct elicitation of parameters. For instance the [quartile](https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.quartile) functions identifies a distribution that matches specified
 quartiles, and [Quartine_int](https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.QuartileInt) provides an interactive approach to achieve the same, offering a more hands-on experience for refining distributions.
@@ -143,4 +145,126 @@ pz.combine_roulette([result0.inputs, result1.inputs], weights=[0.3, 0.7])
 
 In this example, we assign a larger weight to the results from the second elicitation session, we can do this to reflect uneven degrees of trust. By default, all sessions are weighted equally.
 
-### Predictive elicitation
+## Predictive elicitation
+
+
+The simplest way to perform predictive elicitation is to generate a model, sample from its prior predictive distribution and then evaluate if the samples are consistent with the domain knowledge. If there is disagreement, we can refine the prior distribution and repeat the process. This is usually known as prior predictive check and is similar to the posterior predictive checks discussed in @sec-sec-model-criticism.
+
+
+To assess the agreement between the domain knowledge and the prior predictive distribution we may be tempted to use the observed data, as in posterior predictive checks. But, this can be problematic in many ways. Instead, we recommend using "reference values". We can obtain a reference value from domain knowledge, like previous studies, asking clients or experts, or educated guesses. They can be typical values, or usually "extreme" values. For instance, if we are studying the temperature of a city, we may use the historical record of world temperature and use -90 as the minimum, 60 as the maximum and 15 as the average. These are inclusive values. Hence this will lead us to very broad priors. If we want something tighter we should use historical records of areas more similar to the city we are studying or even the same city we are studying. These will lead to more informative priors.
+
+
+
+
+### Predator vs prey example
+
+
+We are interested in modelling the relationship between the masses of organisms that are prey and organisms that are predators, and since masses vary in orders of magnitude from a 1e-14 grams for the smallest cell to a 1.5e8 grams for the blue whale, it is convenient to work on a logarithmic scale. So a model might be
+
+
+\begin{align}
+   \mu =& Normal(\cdots, \cdots) \\
+   \sigma =& HalfNormal(\cdots) \\
+   log(masas) =& Normal(\mu, \sigma)
+\end{align}
+
+
+Let's define a model with some priors and see what these priors imply on the scale of the data. To sample from the predictive prior we use `pm.sample_prior_predictive()` instead of `sample` and we need to define dummy observations. This is necessary to indicate to PyMC which term is the likelihood and to control the size of each predicted distribution, but the actual values do not affect the prior predictive distributions.
+
+
+```{python}
+pp_mass = pd.read_csv("../data/pp_mass.csv")
+pp_mass["predator_log"] = np.log(pp_mass["predator"])
+pp_mass["prey_log"] = np.log(pp_mass["prey"])
+
+
+# Reference values in log-scale
+refs = {"Earth":np.log(5.97e+27),
+       "Blue Whale ":np.log(1.5e8),
+       "Smallest cell":np.log(1e-14)}
+```
+
+
+
+
+```{python}
+with pm.Model() as model:
+   α = pm.Normal("α", 0, 100)
+   β = pm.Normal("β", 0, 100)
+   σ = pm.HalfNormal("σ", 5)
+   pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
+   idata = pm.sample_prior_predictive(samples=100)
+```
+
+
+Now we can plot the prior predictive distribution and compare it with the reference values.
+
+
+
+
+```{python}
+ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=False, legend=False)
+
+
+for key, val in refs.items():
+   ax.axvline(val, ls="--", color="0.5")
+   ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
+```
+
+
+Priors are so vague that we can not even distinguish the reference values from each other. Let's try refining our priors.
+
+
+```{python}
+with pm.Model() as model:
+   α = pm.Normal("α", 0, 1)
+   β = pm.Normal("β", 0, 1)
+   σ = pm.HalfNormal("σ", 5)
+   presa = pm.Normal("presa", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
+   idata = pm.sample_prior_predictive(samples=100)
+```
+
+
+We can plot the prior predictive distribution and compare it with the reference values.
+
+
+
+
+```{python}
+ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=False, legend=False)
+
+
+for key, val in refs.items():
+   ax.axvline(val, ls="--", color="0.5")
+   ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
+```
+The new priors still generate some values that are too wide, But at least the bulk of the model predictions are in the right range. So, without too much effort and extra information, we were able to move from a very vague prior to a weakly informative prior.
+
+
+
+
+### Interactive predictive elicitation
+
+
+The process described in the previous section is straightforward: sample from the prior predictive --> plot --> refine --> repeat. On the good side, this is a very flexible approach and can be a good way to understand the effect of individual parameters in the predictions of a model. But it can be time-consuming and it requires some understanding of the model so you know which parameters to tweak and in which direction.
+
+
+One way to improve this workflow is by adding interactivity. We can do this with PreliZ's function, `predictive_explorer`.
+
+
+
+```{python}
+def pp_model(α_μ=0, α_σ=100, β_μ=0, β_σ=100, σ_σ=5):
+   α = pz.Normal(α_μ, α_σ).rvs()
+   β = pz.Normal(β_μ, β_σ).rvs()
+   σ = pz.HalfNormal(σ_σ).rvs()
+   prey = pz.Normal(α + β * pp_mass.predator_log, σ).rvs()
+   return prey
+
+
+refs = {"Earth":np.log(5.97e+27), "Blue whale":np.log(1.5e8), "Smallest cell":np.log(1e-14)}
+pz.predictive_explorer(pp_model, references=refs)
+```
+
+
+## Projective predictive elicitation
