@@ -127,7 +127,7 @@ div.csl-indent {
 }</script>
 
 
-<meta name="citation_title" content="[8]{.chapter-number}&nbsp; [Prior Elicitation]{.chapter-title}">
+<meta name="citation_title" content="[[8]{.chapter-number}&nbsp; [Prior Elicitation ]{.chapter-title}]{#sec-prior-elicitation .quarto-section-identifier}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Graphical perception: Theory, experimentation, and application to the development of graphical methods;,citation_author=William S. Cleveland;,citation_author=Robert McGill;,citation_publication_date=1984;,citation_cover_date=1984;,citation_year=1984;,citation_fulltext_html_url= https://www.tandfonline.com/doi/abs/10.1080/01621459.1984.10478080;,citation_issue=387;,citation_doi=10.1080/01621459.1984.10478080;,citation_volume=79;,citation_journal_title=Journal of the American Statistical Association;,citation_publisher=Taylor &amp;amp;amp; Francis;">
 <meta name="citation_reference" content="citation_title=Crowdsourcing graphical perception: Using mechanical turk to assess visualization design;,citation_author=Jeffrey Heer;,citation_author=Michael Bostock;,citation_publication_date=2010-04;,citation_cover_date=2010-04;,citation_year=2010;,citation_fulltext_html_url=https://doi.org/10.1145/1753326.1753357;,citation_doi=10.1145/1753326.1753357;,citation_isbn=978-1-60558-929-9;,citation_conference_title=Proceedings of the SIGCHI Conference on Human Factors in Computing Systems;,citation_conference=Association for Computing Machinery;,citation_series_title=CHI ’10;">
@@ -311,7 +311,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Prior Elicitation</span></h1>
+<h1 class="title"><span id="sec-prior-elicitation" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Prior Elicitation</span></span></h1>
 </div>
 
 
@@ -328,7 +328,7 @@ div.csl-indent {
 </header>
 
 
-<div id="96d021f2" class="cell" data-execution_count="1">
+<div id="0c651841" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
 </div>
@@ -428,7 +428,7 @@ Figure&nbsp;8.5: Beta distributions with a 90% of it mass between 0.1 and 0.7, t
 <h3 data-number="8.5.1" class="anchored" data-anchor-id="maximum-entropy-distributions-with-maxent"><span class="header-section-number">8.5.1</span> Maximum entropy distributions with maxent</h3>
 <p>In PreliZ we can compute maximum entropy priors using the function <code>maxent</code>. It works for unidimensional distributions. The first argument is a PreliZ distribution. Then we specify an upper and lower bounds and then the probability inside the range defined by the bounds.</p>
 <p>Let’s say that we want to elicit a scale parameter and from domain knowledge we know that the parameter has a relatively high probability of being less than 3. In that case we could use a HalfNormal and then do:</p>
-<div id="4e0a1f8d" class="cell" data-execution_count="2">
+<div id="02a1908f" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>pz.maxent(pz.HalfNormal(), <span class="dv">0</span>, <span class="dv">3</span>, <span class="fl">0.8</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -439,7 +439,7 @@ Figure&nbsp;8.5: Beta distributions with a 90% of it mass between 0.1 and 0.7, t
 </div>
 </div>
 <p>When we want to avoid values too close to zero, other distributions like Gamma or InverseGamma may be a better choice.</p>
-<div id="24b7fbf9" class="cell" data-execution_count="3">
+<div id="266e1660" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>pz.maxent(pz.Gamma(), <span class="dv">0</span>, <span class="dv">3</span>, <span class="fl">0.8</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -450,7 +450,7 @@ Figure&nbsp;8.5: Beta distributions with a 90% of it mass between 0.1 and 0.7, t
 </div>
 </div>
 <p>Furthermore, we may have more information that just a plausible range. We could also has extra restrictions like knowledge about the mean or mode. Let’s say we think a mean of 2 is very likely, then we can take advantage of the fact that the Gamma can also be parametrized in terms of the mean and pass the distribution <code>pz.Gamma(mu=2)</code>. If instead we think is the mode the one is likely to be 2, then <code>maxent</code> has a <code>mode</code> argument we can use.</p>
-<div id="f12e3a9a" class="cell" data-execution_count="4">
+<div id="e457e252" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>dist_mean <span class="op">=</span> pz.Gamma(mu<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb4-2"><a href="#cb4-2"></a>pz.maxent(dist_mean, <span class="dv">0</span>, <span class="dv">3</span>, <span class="fl">0.8</span>)</span>
 <span id="cb4-3"><a href="#cb4-3"></a></span>
@@ -466,7 +466,7 @@ Figure&nbsp;8.5: Beta distributions with a 90% of it mass between 0.1 and 0.7, t
 </div>
 <p>Notice that if you call <code>maxent</code> several times in the same cell, as we just did, we will get all the distributions in the same plot. This can be very useful to visually compare several alternatives.</p>
 <p>The function <code>maxent</code> as others in PreliZ modify distribution in place, so a common workflow is to instantiate a distribution first, perform the elicitation, and then inspect its properties, plot it, or use it in some other way. For instance, we may want to check a summary of some of its properties:</p>
-<div id="f8b79cac" class="cell" data-execution_count="5">
+<div id="14c419d8" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>dist_mean.summary(), dist_mode.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/numba/np/ufunc/dufunc.py:287: RuntimeWarning: invalid value encountered in nb_logpdf
@@ -485,7 +485,7 @@ Figure&nbsp;8.5: Beta distributions with a 90% of it mass between 0.1 and 0.7, t
 <p>There are many other method for direct elicitation of parameters. For instance the <a href="https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.quartile">quartile</a> functions identifies a distribution that matches specified quartiles, and <a href="https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.QuartileInt">Quartine_int</a> provides an interactive approach to achieve the same, offering a more hands-on experience for refining distributions.</p>
 <p>One method worth of special mention is the <a href="https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.Roulette">Roulette</a> method allows which allows users to find a prior distribution by drawing it interactively <span class="citation" data-cites="morris_2014">Morris, Oakley, and Crowe (<a href="References.html#ref-morris_2014" role="doc-biblioref">2014</a>)</span>. The name “roulette” comes from the analogy of placing a limited set of chips where one believes the mass of a distribution should be concentrated. In this method, a grid of <code>m</code> equally sized bins is provided, covering the range of <code>x</code>, and users allocate a total of <code>n</code> chips across the bins. Effectively, this creates a histogram,representing the user’s information about the distribution. The method then identifies the best-fitting distribution from a predefined pool of options, translating the drawn histogram into a suitable probabilistic model.</p>
 <p>As this is an interactive method we can’t show it here, but you can run the following cell to see how it works.</p>
-<div id="ef1c7d38" class="cell" data-execution_count="6">
+<div id="bdba63c8" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="op">%</span>matplotlib widget</span>
 <span id="cb8-2"><a href="#cb8-2"></a>result <span class="op">=</span> pz.Roulette()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -502,7 +502,7 @@ Figure&nbsp;8.6: To elicit a distribution, we can interactively <em>draw</em> a 
 </div>
 <p>Once we have elicited the distribution we can call <code>.dist</code> attribute to get the selected distribution. In this example, it will be <code>result.dist</code>.</p>
 <p>If needed, we can combine results for many independent “roulette sessions” with the <a href="https://preliz.readthedocs.io/en/latest/unidimensional.html#preliz.unidimensional.combine_roulette">combine_roulette</a> function. Combining information from different elicitation sessions can be useful to aggregate information from different domain experts. Or even from a single person unable to pick a single option. For instance if we run <code>Roulette</code> twice, and for the first one we get <code>result0</code> and for the second <code>result1</code>. Then, we can combine both solutions into a single one using:</p>
-<div id="f04702b4" class="cell" data-execution_count="7">
+<div id="7ea30dd5" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>pz.combine_roulette([result0.inputs, result1.inputs], weights<span class="op">=</span>[<span class="fl">0.3</span>, <span class="fl">0.7</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In this example, we assign a larger weight to the results from the second elicitation session, we can do this to reflect uneven degrees of trust. By default, all sessions are weighted equally.</p>

@@ -122,7 +122,7 @@ window.Quarto = {
 };
 </script>
 
-<meta name="citation_title" content="[10]{.chapter-number}&nbsp; [Bayesian Workflow]{.chapter-title}">
+<meta name="citation_title" content="[[10]{.chapter-number}&nbsp; [Bayesian Workflow ]{.chapter-title}]{#sec-bayesian-workflow .quarto-section-identifier}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Graphical perception: Theory, experimentation, and application to the development of graphical methods;,citation_author=William S. Cleveland;,citation_author=Robert McGill;,citation_publication_date=1984;,citation_cover_date=1984;,citation_year=1984;,citation_fulltext_html_url= https://www.tandfonline.com/doi/abs/10.1080/01621459.1984.10478080;,citation_issue=387;,citation_doi=10.1080/01621459.1984.10478080;,citation_volume=79;,citation_journal_title=Journal of the American Statistical Association;,citation_publisher=Taylor &amp;amp;amp; Francis;">
 <meta name="citation_reference" content="citation_title=Crowdsourcing graphical perception: Using mechanical turk to assess visualization design;,citation_author=Jeffrey Heer;,citation_author=Michael Bostock;,citation_publication_date=2010-04;,citation_cover_date=2010-04;,citation_year=2010;,citation_fulltext_html_url=https://doi.org/10.1145/1753326.1753357;,citation_doi=10.1145/1753326.1753357;,citation_isbn=978-1-60558-929-9;,citation_conference_title=Proceedings of the SIGCHI Conference on Human Factors in Computing Systems;,citation_conference=Association for Computing Machinery;,citation_series_title=CHI ’10;">
@@ -311,7 +311,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></h1>
+<h1 class="title"><span id="sec-bayesian-workflow" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Bayesian Workflow</span></span></h1>
 </div>
 
 
@@ -373,7 +373,7 @@ Figure&nbsp;10.1: A Bayesian workflow. Solid lines show a linear workflow starti
 <p>Try to translate the data-generating mechanism into a model. If you feel comfortable with math, use that. If you prefer a visual representation like a graphical model, use that. If you like code, then go for it. Incomplete models are fine as a first step. For instance, if you use code, feel free to use pseudo code or add comments to signal missing elements as you think about the model. You can refine it later. A common blocker is trying to do too much too soon.</p>
 <p>Try to start simple, don’t use hierarchies, keep prior 1D (instead of multivariate), skip interactions for linear models, etc. If for some reason you come first with a complex model, that’s ok, but you may want to save it for later use, and try with a simplified version.</p>
 <p>Sometimes you may be able to use a standard textbook model or something you saw on a blog post or a talk. It is common that for certain problems people tend to use certain “default” models. That may be a good start, or your final model. Keep things simple, unless you need something else.</p>
-<p>This is a good step to think about your priors (see section <span class="quarto-unresolved-ref">?sec-prior-elicitation</span> for details), not only which family are you going to use, but what specific parameters. If you don’t have a clue just use some vague prior. But if you have some information, use it. Try to encode very general information, like this parameter can not be negative, or this parameter is likely to be smaller than this, or within this range. Look for the low-hanging fruit, usually that will be enough. The exception will be when you have enough good quality information to define a very precise prior, but even then, that’s something you can add later.</p>
+<p>This is a good step to think about your priors (see section <a href="Prior_elicitation.html" class="quarto-xref"><span>Chapter 8</span></a> for details), not only which family are you going to use, but what specific parameters. If you don’t have a clue just use some vague prior. But if you have some information, use it. Try to encode very general information, like this parameter can not be negative, or this parameter is likely to be smaller than this, or within this range. Look for the low-hanging fruit, usually that will be enough. The exception will be when you have enough good quality information to define a very precise prior, but even then, that’s something you can add later.</p>
 </section>
 <section id="implement-the-model" class="level3" data-number="10.2.5">
 <h3 data-number="10.2.5" class="anchored" data-anchor-id="implement-the-model"><span class="header-section-number">10.2.5</span> Implement the model</h3>
@@ -382,7 +382,7 @@ Figure&nbsp;10.1: A Bayesian workflow. Solid lines show a linear workflow starti
 </section>
 <section id="evaluate-prior-predictive-distribution" class="level3" data-number="10.2.6">
 <h3 data-number="10.2.6" class="anchored" data-anchor-id="evaluate-prior-predictive-distribution"><span class="header-section-number">10.2.6</span> Evaluate prior predictive distribution</h3>
-<p>It is usually a good idea to generate data from the prior predictive distribution and compare that to your prior knowledge <span class="citation" data-cites="mikkola_2023">(<a href="References.html#ref-mikkola_2023" role="doc-biblioref"><strong>mikkola_2023?</strong></a>)</span>. Is the bulk of the simulated distribution in a reasonable range? Are there any extreme values? Use reference values as a guide. Reference values are empirical data or historical observations, usually, they will be minimum, maximum or expected values. Avoid comparing with the observed data, as that can lead to issues if you are not careful enough (see <span class="quarto-unresolved-ref">?sec-prior-elicitation</span> for details).</p>
+<p>It is usually a good idea to generate data from the prior predictive distribution and compare that to your prior knowledge <span class="citation" data-cites="mikkola_2023">(<a href="References.html#ref-mikkola_2023" role="doc-biblioref"><strong>mikkola_2023?</strong></a>)</span>. Is the bulk of the simulated distribution in a reasonable range? Are there any extreme values? Use reference values as a guide. Reference values are empirical data or historical observations, usually, they will be minimum, maximum or expected values. Avoid comparing with the observed data, as that can lead to issues if you are not careful enough (see <a href="Prior_elicitation.html" class="quarto-xref"><span>Chapter 8</span></a> for details).</p>
 </section>
 <section id="compute-posterior" class="level3" data-number="10.2.7">
 <h3 data-number="10.2.7" class="anchored" data-anchor-id="compute-posterior"><span class="header-section-number">10.2.7</span> Compute posterior</h3>
