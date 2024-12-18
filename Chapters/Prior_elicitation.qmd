@@ -183,18 +183,9 @@ To assess the agreement between the domain knowledge and the prior predictive di
 ### Predator vs prey example
 
 
-We are interested in modelling the relationship between the masses of organisms that are prey and organisms that are predators, and since masses vary in orders of magnitude from a 1e-9 grams for a typical cell to a 1.3e8 grams for the blue whale, it is convenient to work on a logarithmic scale. So a model might be
+We are interested in modelling the relationship between the masses of organisms that are prey and organisms that are predators, and since masses vary in orders of magnitude from a 1e-9 grams for a typical cell to a 1.3e8 grams for the blue whale, it is convenient to work on a logarithmic scale. 
 
-
-\begin{align}
-   \mu =& Normal(\cdots, \cdots) \\
-   \sigma =& HalfNormal(\cdots) \\
-   log(mass) =& Normal(\mu, \sigma)
-\end{align}
-
-
-Let's define a model with some priors and see what these priors imply on the scale of the data. To sample from the predictive prior we use `pm.sample_prior_predictive()` instead of `sample` and we need to define dummy observations. This is necessary to indicate to PyMC which term is the likelihood and to control the size of each predicted distribution, but the actual values do not affect the prior predictive distributions.
-
+Let's load the data and define the reference values.
 
 ```{python}
 pp_mass = pd.read_csv("../data/pp_mass.csv")
@@ -207,6 +198,15 @@ refs = {"Blue whale":np.log(1.3e8),
        "Typical cell":np.log(1e-9)}
 ```
 
+So a model might be something like:
+
+\begin{align}
+   \mu =& Normal(\cdots, \cdots) \\
+   \sigma =& HalfNormal(\cdots) \\
+   log(mass) =& Normal(\mu, \sigma)
+\end{align}
+
+Let's now define a model with some priors and see what these priors imply on the scale of the data. To sample from the predictive prior we use `pm.sample_prior_predictive()` instead of `sample` and we need to define dummy observations. This is necessary to indicate to PyMC which term is the likelihood and to control the size of each predicted distribution, but the actual values do not affect the prior predictive distributions.
 
 
 ```{python}
