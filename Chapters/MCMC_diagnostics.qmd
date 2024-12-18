@@ -135,7 +135,7 @@ az.plot_rank(sample, ax=ax);
 
 Plots are often useful for discovering patterns, but sometimes we want numbers, for example when quickly evaluating many parameters it may be easier to look at numbers than plots. Number are also easier to plug into some automatic routine, that call for human attention only if some threshold is exceeded.
 
-$\hat R$ is a numerical diagnostic that answers the question. Did the chains mix properly? But I also like to think of it as the score assigned by a jury in a trace (or rank) plot contest. 
+$\hat R$ is a numerical diagnostic that answers the question [@vehtari_2021]. Did the chains mix properly? But I also like to think of it as the score assigned by a jury in a trace (or rank) plot contest. 
 
 The version implemented in ArviZ does several things under the hood, but the central idea is that it compares the variance between chains with the variance within each chain. Ideally, we should get $\hat R = 1$, in practice $\hat R \lessapprox 1.01$ are considered safe and in the first modeling phases, even higher values like $\hat R \approx 1.1$ may be fine.
 
@@ -218,7 +218,7 @@ ax.plot(1, 0, ">k", transform=ax.get_yaxis_transform(), clip_on=False)
 ax.plot(-2, 1, "^k", transform=ax.get_xaxis_transform(), clip_on=False)
 ```
 
-As for MCMC samples, the sample size can be misleading, we instead estimate the **effective sample size** (ESS), that is, the size of a sample with the equivalent amount of information but without autocorrelation. @fig-ess_vs_ss shows how when the sample size increases the ESS tends to increase too, and more importantly, it shows that the slope is higher for lower autocorrelation values. 
+As for MCMC samples, the sample size can be misleading, we instead estimate the **effective sample size** (ESS) [@vehtari_2021], that is, the size of a sample with the equivalent amount of information but without autocorrelation. @fig-ess_vs_ss shows how when the sample size increases the ESS tends to increase too, and more importantly, it shows that the slope is higher for lower autocorrelation values. 
 
 ```{python}
 #| label: fig-ess_vs_ss
@@ -320,7 +320,7 @@ az.mcse(sample)
 One way to reduce autocorrelation in an MCMC chain is through thinning, where we retain only every $n$-th sample. While this method is straightforward, it has the drawback of discarding useful information. Research generally suggests that it's better to keep all the samples when calculating estimates [@maceachern_1994; @link_2011]. Provided the variance is finite, the central limit theorem applies even to correlated samples. Then if higher accuracy is needed, it's more effective to increase the number of draws rather than to perform thinning. Still, there are situations where thinning might be useful, such as:
 
 * Reducing the size of stored data, which is especially important when dealing with a large number of models or when the postprocessing of the samples is expensive, for instance when we need to run expensive computations on every draw.
-* Addressing bias in extreme ordered statistics, which may affect diagnostics like rank-plots (@sec-rank-plots) and uniformity tests typically done for posterior predictive checks, as shown in @fig-post_pred_check_u_value and @fig-loo_pit or as part of [Simulation Based Calibration](https://github.com/arviz-devs/simulation_based_calibration) [@talts_2020].
+* Addressing bias in extreme ordered statistics, which may affect diagnostics like rank-plots (see @sec-rank-plots) and uniformity tests typically done for posterior predictive checks, as shown in @fig-post_pred_check_u_value and @fig-loo_pit or as part of [Simulation Based Calibration](https://github.com/arviz-devs/simulation_based_calibration) [@talts_2020].
 
 To determine an appropriate thinning factor, we can use the effective sample size (ESS). For instance, if you have 2,000 samples and an ESS of 1,000, you would thin by a factor of 2, keeping every other sample. The higher the ESS, the lower the thinning factor required. A more refined approach is to calculate both ESS-tail and ESS-bulk, then use the smaller value, which better accounts for differences in sampling efficiency between the central 90% quantile and the 5% tail quantiles [@sailynoja_2022].
 

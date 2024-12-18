@@ -1,0 +1,422 @@
+
+<!-- 
+```{python}
+#| echo : false
+import arviz as az
+import numpy as np
+import pandas as pd
+import preliz as pz
+import pymc as pm
+np.random.seed(19)
+az.style.use("intuitivebayes.mplstyle")
+```
+
+# Predator-prey masses {#sec-chp_02}
+
+In this chapter, we'll go through a workflow through the lens of a researcher. You'll be introduced to various tools and concepts. Many of which you'll need in your workflow.
+
+We encourage you to pay attention one layer deeper to _how_ these decisions are being made. Specifically the considerations at each step. As you see in the workflow diagram, understanding the boxes is one component,
+and understanding how to move forward or backward is another.
+
+
+## The Setup
+We work at the statistical service unit at Bristol Beach University. We have been asked to help a biologist to analyze her data. She is interested in understanding the dynamics of predators and preys. We are handed a dataset of masses for different pairs of predators and preys. She asks a basic question:
+
+> Can you tell me the relationship between predator and prey size?
+
+## Summarize the problem
+::: {.callout-note icon=false appearance="simple"}
+**Goal**
+
+* Frame the problem, understand the biologist's need 
+* Get a rough idea of what the end deliverable will be
+
+**Tools Used**
+
+* Any brainstorming/communication tool for instance, docs or whiteboard
+:::
+
+After having a short but productive talk with the biologist we can write the key points and goals of the analysis.
+
+1.  **Research Focus:** The analysis revolves around understanding predator–prey interactions, with a specific interest in how body size influences these interactions.
+
+2.  **Relevance of Body Size:** Body size is identified as a crucial factor influencing predator–prey interactions. It is expected that larger predators possess the capability to consume larger prey due to their size, strength and energy requirement. But exceptions are possible, as large animals could eat a lot of small prey or a few large prey. This relationship is of interest to biologists.
+
+3.  **Dataset Information:** The dataset used for analysis contains 13,085 documented predator–prey interactions. The dataset includes information on the mean mass of each species involved.
+
+4.  **Primary Questions to Address:**
+
+    * How does body size affect predator-prey interactions based on the dataset?
+    * Are there discernible patterns or trends in the relationship between predator and prey body sizes?
+
+5.  **Consideration for Modeling Efforts:**
+
+    * We should be able to provide insight. 
+    * From the discussion with the biologist we feel using a simple linear regression model will be a good first step. 
+      * Being told there's limited data, this sounds like a good approach. We make a note to check data size during the next part of the workflow.
+
+6.  **Audience Perspective:**
+
+    * Our clients are biologists, who are scientific-minded people, who are familiar with the core ideas of simple linear regression models.
+    * This analysis is part of a paper so we want to be quite sure each decision has been fully explored and justified
+
+## Get familiar with your data
+::: {.callout-note icon=false appearance="simple"}
+**Goals**
+
+* Understand the characteristics of our data, do we have categorical variables? can we spot unusual values? Do we understand the meaning of the different variables? Can we identify any issues? etc.
+* Get a better sense of which modeling approach is appropriate
+
+**Concepts**
+
+* Exploratory data analysis
+
+**Tools**
+
+* Data manipulation - [Pandas](https://pandas.pydata.org/)
+* Data Visualization - [Matplotlib](https://pandas.pydata.org/)
+:::
+
+We load our data using Pandas into a DataFrame.
+
+```{python}
+pp_mass = pd.read_csv("data/pp_mass.csv")
+pp_mass.head()
+```
+
+As anticipated by the biologist, this is a very simple dataset with only two columns. We can further check and see that we do not have any missing data. So far, it seems this is a very nice tidy-up dataset, we can anticipate we will not need to spend time cleaning it or processing it.
+
+```{python}
+pp_mass.info()
+```
+
+Something that we forgot to ask is the unit of the masses. By checking the min and max values. It seems that grams could be a reasonable unit for the data. But it is kind of weird that we got so small values, this could be an error, or maybe the dataset includes microscopic life. This is not a blocker for continuing with the analysis, but it is something we should ask for clarification in the next meeting or send a short e-mail asking for details.
+
+```{python}
+pp_mass.min(), pp_mass.max()
+```
+
+Because we have a very simple dataset of two continuous variables a scatter plot should help us a lot.
+
+```{python}
+pp_mass.plot("predator", "prey", kind="scatter");
+```
+
+OK, maybe not! The data spans many orders of magnitude, so it is difficult to see anything clear. This goes in line with the minimum and maximum values we computed before. OK, one common solution to this is to take the logarithm of the data. Let's do that
+
+```{python}
+#| label: fig-scatter_log
+#| fig-cap: "Scatter plot of the predator-prey masses in a log-log scale."
+pp_mass.plot("predator", "prey", kind="scatter", loglog=True);
+```
+
+Nice, now we are talking. We can see that in a log-log scale, we indeed have a linear relationship. As the size of the predator increases the size of the prey also increases (on average). We can also see some block structure that seems to indicate that subgroups in a data, this is something we can explore in the future. For the moment we will keep it simple and just model the linear relationship. To simplify the rest of the analysis we are going to add two new columns to the `DataFrame`, the logarithm of the masses, and that is what we are going to model.
+
+```{python}
+pp_mass["predator_log"] = np.log(pp_mass["predator"])
+pp_mass["prey_log"] = np.log(pp_mass["prey"])
+```
+
+## Tell a story for the data
+::: {.callout-note icon=false appearance="simple"}
+**Goals**
+
+* Think more deeply about where the data came from and why it is the way it is
+
+**Concepts**
+
+* Data Generating Process
+
+**Tools**
+
+* Your imagination, but also feel free to use paper or a whiteboard for sketches
+:::
+
+For this example, we can imagine that there are at least several factors contributing to the predator-prey linear relationship. First, on average, we expect that the larger the predator the larger the mouth (or whatever they use to eat) should be, so they can accommodate larger prey. Also, we can think that a very tiny predator has no chance of catching much larger prey. Spiders are very good at catching flies and other insects, but they will have a very hard time catching Llamas. Also the larger the body size the larger (on average) the need to consume more food. 
+
+Anyway, all these ideas are very nice, but given the limited dataset we have we can not do much more than describe a linear relationship. Maybe we can discuss all this with the biologist, surely she has thought about this in a much deeper way than us. And maybe in the future, we will be able to collaborate in building a more complex model with more features!
+
+## Write a model
+::: {.callout-note icon=false appearance="simple"}
+**Concepts**
+
+* Model Specification
+:::
+
+The gist of our model is a simple linear model, something like this
+
+$$
+prey = \alpha + \beta \log(\text{predator}) + \text{Noise}
+$$
+
+While in the original scale, the prey mass is bound to be larger than zero, in the log scale, it's not and it should be something more symmetrical. So we may use a Normal as likelihood. Taking EDA and the data generating mechanism together we have reasons to argue that $\beta$ should be positive, so we could use a distribution like lognormal or gamma or something similar, but before getting fancy let's try with the good old normal, we all love. The same for $\alpha$. As the noise term must be positive a common choice is to use distributions restricted to positive values like the halfnormal. In statistical notation, this may look like:
+
+$$
+\begin{aligned}
+\alpha &= \mathcal{N}(., .) \\
+\beta &= \mathcal{N}(., .) \\
+\sigma &= \mathcal{HN}(.) \\
+prey &= \mathcal{N}(\mu=\alpha + \beta \log(\text{predator}), \sigma)
+\end{aligned}
+$$
+
+## Implement the model
+::: {.callout-note icon=false appearance="simple"}
+**Goals**
+
+* Write a model using a software tool
+
+**Concepts**
+
+* Priors
+* Distributions
+* Likelihoods
+
+**Tools**
+
+* Probabilistic programming language - [PyMC](https://www.pymc.io) @abrilpla_2023
+:::
+
+Now we are ready to implement the model in PyMC. We have set some vague priors for $\alpha$ and $\beta$ and for $\sigma$ we decided on a HalfNormal(5), why 5? because the standard deviation of `prey_log` is $\approx 4.5$ so we rounded up to the closet integer and used that value. Here we are using the data to set the prior, which is kind of cheating, but we are doing it in a very careful way. Even for a very bad model, we do not expect the value of $\sigma$ to exceed the standard deviation of `prey_log`.
+
+
+```{python}
+with pm.Model() as model:
+    α = pm.Normal("α", 0, 100)
+    β = pm.Normal("β", 0, 100)
+    σ = pm.HalfNormal("σ", 5)
+    prey = pm.Normal("prey", α + β * pp_mass.predator_log, σ,
+                            observed=pp_mass.prey_log)
+
+model.debug()
+```
+
+We use `model.debug` to check for possible errors before sampling. Also before sampling, we are going to do a prior predictive check and adjust the priors accordingly. 
+
+
+## Evaluate prior predictive distribution
+::: {.callout-note icon=false appearance="simple"}
+**Concepts**
+
+* Model Specification
+
+**Tools**
+
+* Prior elicitation - [PreliZ](https://preliz.readthedocs.io/) @icazatti_2023
+:::
+
+We are going to use the `predictive_explorer` function from PreliZ to explore the prior predictive distribution. For this we need to rewrite the model in PreliZ, in the future PreliZ will support PyMC models.
+
+```{python}
+def pp_model(α_μ=0, α_σ=100, β_μ=0, β_σ=100, σ_σ=5):
+    α = pz.Normal(α_μ, α_σ).rvs()
+    β = pz.Normal(β_μ, β_σ).rvs()
+    σ = pz.HalfNormal(σ_σ).rvs()
+    prey = pz.Normal(α + β * pp_mass.predator_log, σ).rvs()
+    return prey
+```
+
+With the model defined in PreliZ we can interactively explore it:
+
+```{python}
+#| eval: false
+refs = {"Earth":np.log(5.97e+27), "Blue whale":np.log(1.5e8), "Smallest cell":np.log(1e-14)} 
+pz.predictive_explorer(pp_model, references=refs)
+```
+
+We have added 3 reference values, the mass of Earth, a Blue whale, and the smallest cell. We can define a weakly informative prior, by choosing a prior that allocates most of the mass between the Earth and the smallest cell mass. @fig-prey_predator_pe shows a static image of `pz.predictive_explorer` for a particular set of priors.
+
+
+![Weakly informative prior. Output of pz.predictive_explorer](img/prey_predator_pe.png){#fig-prey_predator_pe}
+
+We will use the prior from @fig-prey_predator_pe.
+
+## Compute posterior
+::: {.callout-note icon=false appearance="simple"}
+**Concepts**
+
+* Model Specification and sampling
+
+**Tools**
+
+* Probabilistic programming language - [PyMC](https://www.pymc.io)
+:::
+
+
+We are ready to sample. 
+
+```{python}
+#| output: false
+with pm.Model() as model:
+    α = pm.Normal("α", 0, 1)
+    β = pm.Normal("β", 0, 1)
+    σ = pm.HalfNormal("σ", 5)
+    prey = pm.Normal("prey", α + β * pp_mass.predator_log, σ,
+                            observed=pp_mass.prey_log)
+    idata = pm.sample(idata_kwargs={"log_likelihood":True})
+    pm.sample_posterior_predictive(idata, extend_inferencedata=True)
+```
+
+This is a simple model, a small dataset. So we get a fast sampling.
+
+
+## Evaluate samples
+::: {.callout-note icon=false appearance="simple"}
+**Concepts**
+
+* Sampling diagnostics
+
+**Tools**
+
+* Exploratory Analysis of Bayesian Models - [ArviZ](https://python.arviz.org) @kumar_2019
+:::
+
+We did not get any warning messages after sampling, and no divergences! Still, we want to quickly check that we have high ESS and low $\hat R$. Otherwise, this will be an indication of sampling issues and to solve them we may need to run more samples or most likely go back and change something in the model specification. We can see, with relief, that the effective sample size is very high and $\hat R$ is low enough.
+
+```{python}
+az.summary(idata, kind="diagnostics")
+```
+
+Doing a visual check, just to be extra careful is also a good idea. 
+
+```{python}
+az.plot_trace(idata, kind="rank_bars");
+```
+
+Wow, we are really lucky all the ranks-plots look very uniform and the KDEs overlap. Time to move to the next step.
+
+
+## Validate the model
+::: {.callout-note icon=false appearance="simple"}
+**Concepts**
+
+* Posterior predictive check
+
+**Tools**
+
+* Exploratory Analysis of Bayesian Models - [ArviZ](https://python.arviz.org)
+:::
+
+Now that we have trustworthy posterior samples is time to check that our models make sense. One useful and intuitive way to do this is to compare the model's predictions with the observed data. This is called a posterior predictive check and allows us to what aspects of the data the posterior predictive distribution can reproduce.
+
+Let's use ArviZ to do a quick posterior predictive check:
+
+```{python}
+az.plot_ppc(idata, num_pp_samples=100, mean=False);
+```
+
+We can see that the observed data is not very Gaussian. A lot of the mass is concentrated around -10 and -3, but there are also many observations outside this range. As a result, the model captures the mean of the data, but not the shape of the distribution, which is leptokurtotic.
+
+Now we have at least 2 options
+
+* We can keep using the same data and try to fit a different model, like a Student-t distribution
+* Report the result to the biologist, and discuss if we can get access to other covariates. If we go back to the scatter plot @fig-scatter_log we can see different "blobs", maybe they correspond to different "groups" of animals, that is, maybe we can add a categorical variable to the model.
+
+Let's try the first option, and then we can discuss the second one with the biologist.
+
+## Many steps in one
+::: {.callout-note icon=false appearance="simple"}
+**Concepts**
+
+* Model Expansion
+:::
+
+Now we are going to skip many steps of the workflow. We do this when we want to quickly explore some alternative and save time and energy. For instance, we are going to change the likelihood and use a Student-t distribution. If this change gives us a better model, then we can retrace our steps, rethink priors, check MCMC diagnostics, etc. 
+
+
+```{python}
+#| output: false
+with pm.Model() as model_t0:
+    α = pm.Normal("α", 0, 1)
+    β = pm.Normal("β", 0, 1)
+    σ = pm.HalfNormal("σ", 5)
+    ν = pm.Exponential("ν", scale=30)
+    prey = pm.StudentT("prey", nu=ν, mu=α + β * pp_mass.predator_log, sigma=σ, observed=pp_mass.prey_log)
+    idata_t0 = pm.sample()
+    pm.sample_posterior_predictive(idata_t0, extend_inferencedata=True)
+```
+
+We do a posterior predictive check and we see that the result looks a little bit funky. This is highly expected when using a Student's T distribution. We can see that the tails are very heavy. So the plot looks like an inverted T, not very nice!
+
+```{python}
+ax = az.plot_ppc(idata_t0, num_pp_samples=100, mean=False);
+```
+
+To better see what is going on around the bulk of the data, we can restrict the x-axis to the observed data range. 
+```{python}
+ax = az.plot_ppc(idata_t0, num_pp_samples=100, mean=False);
+ax.set_xlim(pp_mass.prey_log.min(), pp_mass.prey_log.max())
+```
+
+An alternative is to plot the, empirical cumulative distribution function (eCDF) of the observed data and the posterior predictive samples. This will give us a better idea of how well the model fits the data.
+
+To better see what is going on around the bulk of the data, we can restrict the x-axis to the observed data range. 
+```{python}
+ax = az.plot_ppc(idata_t0, num_pp_samples=100, mean=False, kind="cumulative");
+```
+
+We can see that now we have a better fit. But predictions can easily go outside the observed range. This is not necessarily a problem, maybe the biologist does not care too much about the predictions. Or she could think that is fine to "clip" very low or high values. Let's try with a truncated likelihood.
+
+## Many steps in one, again
+::: {.callout-note icon=false appearance="simple"}
+**Concepts**
+
+* Model Expansion
+:::
+
+Again we are skipping many steps, the main goal is to try to find an alternative model. To prevent the Student's T distribution from predicting values outside the observed range, we can use a truncated likelihood. We are going to truncate and the min and max (log) observed values. We can later evaluate if these are good boundaries or we may use domain knowledge to set them.
+
+```{python}
+#| output: false
+with pm.Model() as model_t1:
+    α = pm.Normal("α", 0, 1)
+    β = pm.Normal("β", 0, 1)
+    σ = pm.HalfNormal("σ", 5)
+    ν = pm.Exponential("ν", scale=30)
+    student = pm.StudentT.dist(nu=ν, mu=α + β * pp_mass.predator_log, sigma=σ)
+    pm.Truncated("obs", student,
+                 lower=pp_mass.prey_log.min(),
+                 upper=pp_mass.prey_log.max(),
+                 observed=pp_mass.prey_log)
+    idata_t1 = pm.sample(idata_kwargs={"log_likelihood":True})
+    pm.sample_posterior_predictive(idata_t1, extend_inferencedata=True)
+```
+
+We can see that predictions look much nicer now.
+```{python}
+ax = az.plot_ppc(idata_t1, num_pp_samples=100, mean=False);
+```
+
+## Compare models
+::: {.callout-note icon=false appearance="simple"}
+**Concepts**
+
+* Model comparison
+
+**Tools**
+
+* Exploratory Analysis of Bayesian Models - [ArviZ](https://python.arviz.org)
+:::
+
+From the posterior predictive checks, we can see that the truncated Student's T model has a better fit, as tails are not as heavy as before (because we are truncating them). Still, we may want to do a numerical evaluation of the fit. An easy method to quantitatively evaluate models is by utilizing PSIS-LOO-CV (LOO for short). LOO reflects the predictive accuracy of the model, indicating how well we anticipate its predictions to perform on new yet unobserved datasets. The higher the value of LOO value the better we expect the performance of the model to be.
+
+
+```{python}
+#| output: false 
+cmp = az.compare({"Normal":idata, "Truncated Student":idata_t1})
+az.plot_compare(cmp)
+```
+
+Nice, LOO agrees with the posterior predictive checks. We can see that the truncated Student's T model is better than the normal model.
+
+## Summarize results
+
+We can summarize the results in a table. We can use the `az.summary` function to get the mean and the 94% HDI for the parameters. 
+
+```{python}
+az.summary(idata_t1, kind="stats")
+``` 
+
+We can see that we got a positive slope indicating a positive correlation between the masses of predators and prey.  In other words, as the mass of predators increases. This is in line with our discussion before the analysis. The magnitude of the slope is $\approx 0.3$, on the log-scale. On the original scale, this is $\approx 0.85$ on the original scale.
+
+We can also see a very low value of $\nu$, which is not of direct interest to us, still, it is good to know that the tails of the Student's T distribution are very heavy. -->
