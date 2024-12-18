@@ -203,7 +203,7 @@ pp_mass["prey_log"] = np.log(pp_mass["prey"])
 
 
 # Reference values in log-scale
-refs = {"Blue Whale":np.log(1.3e8),
+refs = {"Blue whale":np.log(1.3e8),
        "Typical cell":np.log(1e-9)}
 ```
 
@@ -287,7 +287,7 @@ This method has been implemented in PreliZ, let see one example first and then d
 
 ```{python}
 target = pz.Normal()
-pz.maxent(target, refs{"Typical cell"}, refs{"Blue whale"}, 0.98) 
+pz.maxent(target, refs["Typical cell"], refs["Blue whale"], 0.98) 
 ```
 
 This will be our target distribution. If for a particular problem you are unsure about what distribution to choose as a target, think that this should be the distribution that you expect to match in a prior predictive check as discussed in previous sections. And also think that usually the goal is to find a weakly informative prior. So, the target will usually be a very approximate distribution. 
@@ -309,10 +309,11 @@ OK, `ppe` function returns a solution, because this is an experimental method, a
 
 ```{python}
 with pm.Model() as model:
-    α = pm.Normal("α", mu=-1, sigma=0.09)
-    β = pm.Normal("β", mu=0, sigma=0.006)
-    σ = pm.HalfNormal("σ", sigma=8.5)
-    idata = pm.sample_prior_predictive()
+   α = pm.Normal("α", mu=-1, sigma=0.09)
+   β = pm.Normal("β", mu=0, sigma=0.006)
+   σ = pm.HalfNormal("σ", sigma=8.5)
+   prey = pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
+   idata = pm.sample_prior_predictive()
 ```
 Now we can plot the prior predictive distribution, the target distribution and compare it with the reference values.
 
