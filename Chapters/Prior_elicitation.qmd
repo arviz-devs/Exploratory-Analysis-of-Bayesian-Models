@@ -183,7 +183,7 @@ To assess the agreement between the domain knowledge and the prior predictive di
 ### Predator vs prey example
 
 
-We are interested in modelling the relationship between the masses of organisms that are prey and organisms that are predators, and since masses vary in orders of magnitude from a 1e-14 grams for the smallest cell to a 1.5e8 grams for the blue whale, it is convenient to work on a logarithmic scale. So a model might be
+We are interested in modelling the relationship between the masses of organisms that are prey and organisms that are predators, and since masses vary in orders of magnitude from a 1e-9 grams for a typical cell to a 1.3e8 grams for the blue whale, it is convenient to work on a logarithmic scale. So a model might be
 
 
 \begin{align}
@@ -203,11 +203,9 @@ pp_mass["prey_log"] = np.log(pp_mass["prey"])
 
 
 # Reference values in log-scale
-refs = {"Earth":np.log(5.97e+27),
-       "Blue Whale ":np.log(1.5e8),
-       "Smallest cell":np.log(1e-14)}
+refs = {"Blue Whale":np.log(1.3e8),
+       "Typical cell":np.log(1e-9)}
 ```
-
 
 
 
@@ -222,8 +220,6 @@ with pm.Model() as model:
 
 
 Now we can plot the prior predictive distribution and compare it with the reference values.
-
-
 
 
 ```{python}
@@ -248,9 +244,7 @@ with pm.Model() as model:
    idata = pm.sample_prior_predictive(samples=100)
 ```
 
-
 We can plot the prior predictive distribution and compare it with the reference values.
-
 
 
 
@@ -262,8 +256,8 @@ for key, val in refs.items():
    ax.axvline(val, ls="--", color="0.5")
    ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
 ```
-The new priors still generate some values that are too wide, But at least the bulk of the model predictions are in the right range. So, without too much effort and extra information, we were able to move from a very vague prior to a weakly informative prior.
 
+The new priors still generate some values that are too wide, but at least the bulk of the model predictions are in the right range. So, without too much effort and extra information, we were able to move from a very vague prior to a weakly informative prior. If we decided this prior is still very vague we can add more domain-knowledge.
 
 ### Interactive predictive elicitation
 
@@ -280,9 +274,85 @@ def pp_model(α_μ=0, α_σ=100, β_μ=0, β_σ=100, σ_σ=5):
    prey = pz.Normal(α + β * pp_mass.predator_log, σ).rvs()
    return prey
 
-
-refs = {"Earth":np.log(5.97e+27), "Blue whale":np.log(1.5e8), "Smallest cell":np.log(1e-14)}
 pz.predictive_explorer(pp_model, references=refs)
 ```
 
 ## Projective predictive elicitation
+
+Projective predictive elicitation is an experimental method to elicit priors by specifying an initial model and a prior predictive distribution. Then instead of elicitate the prior themselves, we elicit the prior predictive distribution, which we call the target distribution. Then we use a procedure that automatically find the parameters of the prior that induce a prior predictive distribution that is as close as possible to the target distribution. This method is particularly useful when we have a good idea of how the data should look like, but we are not sure how to translate this into a prior distribution. 
+
+This method has been implemented in PreliZ, let see one example first and then discuss some details. To keep things concrete and familiar let's assume we are still interested in the predator-prey example. And let assume that on a log-scale we think that the the prior predictive distribution is well described as a Normal distribution with most of its mass between the weight of a typical cell and the weight of a blue whale. The Normal is easy to work with and with this information we could derive its parameter. But let do something even easier. Let use `pz.maxent` and translate "most of it mass" to $0.98$.
+
+```{python}
+target = pz.Normal()
+pz.maxent(target, refs{"Typical cell"}, refs{"Blue whale"}, 0.98) 
+```
+
+This will be our target distribution. If for a particular problem you are unsure about what distribution to choose as a target, think that this should be the distribution that you expect to match in a prior predictive check as discussed in previous sections. And also think that usually the goal is to find a weakly informative prior. So, the target will usually be a very approximate distribution. 
+
+Now that we have the target, we write a model as you would do before a prior predictive check, we can reuse the model from previous section. The we pass the model and target to `ppe` 
+
+
+```{python}
+with pm.Model() as model:
+   α = pm.Normal("α", 0, 100)
+   β = pm.Normal("β", 0, 100)
+   σ = pm.HalfNormal("σ", 5)
+   prey = pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
+
+print(pz.ppe(model, target)) 
+```
+
+OK, `ppe` function returns a solution, because this is an experimental method, and because good data analysis always keep a good dose of scepticism of their tools, let's check that the suggested prior is reasonable given the provided information. To do this we write the model with the new prior and sample from the prior predictive. Notice that we could have copied the priors verbatim, but instead we are rounding them. We do not care of the exact solution and a rounded number looks easier to read. Feel free to not follow suggestion from machine blindly or be prepared [to end inside a lake](https://www.youtube.com/watch?v=DOW_kPzY_JY). 
+
+```{python}
+with pm.Model() as model:
+    α = pm.Normal("α", mu=-1, sigma=0.09)
+    β = pm.Normal("β", mu=0, sigma=0.006)
+    σ = pm.HalfNormal("σ", sigma=8.5)
+    idata = pm.sample_prior_predictive()
+```
+Now we can plot the prior predictive distribution, the target distribution and compare it with the reference values.
+
+
+```{python}
+ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=False, legend=False)
+target.plot_cdf(color="C1")
+
+for key, val in refs.items():
+   ax.axvline(val, ls="--", color="0.5")
+   ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
+```
+
+We see very good agreement. Let's do one more plot. This time we hide the individual prior predictive samples and instead plot the aggregated prior predictive distribution, labelled with "mean" as it is the average distribution when we average over all the computed prior predictive distributions.
+
+```{python}
+ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=True, legend=False, alpha=0.001)
+target.plot_cdf(color="black")
+
+for key, val in refs.items():
+   ax.axvline(val, ls="--", color="0.5")
+   ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
+```
+
+As before we point out that this prior is still relatively vague, and we could use more information to tighten up. But what we care at this point is that the prior we got is consistent with the target distribution, and thus a prior that is coherent the domain-knowledge information that we decide to use.
+
+
+### OK, but what's under the hood?
+
+The main idea is that once we have a target distribution we can define the prior elicitation problem as finding the parameters of the model that induce a prior predictive distribution as close as possible to the target distribution. Stated this way, this is a typical inference problem that could be solved using standard (Bayesian) inference methods that instead of conditioning on observed data we condition on synthetic data, our target distribution. Conceptually that's what `ppe` is doing, but we still have two plot twist ahead of us. 
+
+The procedure is as follows:
+
+\begin{enumerate}
+    \item Generate a sample from the target distribution.
+    \item Maximize the model's likelihood wrt that sample (i.e. we find the parameters for a fixed "observation").
+    \item Generate a new sample from the target distribution and find a new set of parameters.
+    \item Collect the parameters, one per prior parameter in the original model.
+    \item Use MLE to fit the optimized values to their corresponding families in the original model. 
+\end{enumerate}
+
+Instead of using standard inference methods like MCMC in step 1-3 we are using projection inference. See @sec-variable-selection for details. Essentially we are approximating a posterior using an optimization method. Yes, we say posterior, because from the inference point we are computing a posterior, once that we then will use as prior.
+On the last step, we use a second approximation, we _backfit_ the projected posterior into standard distributions used by PPLs as building blocks. We need to do this so we can write the resulting priors in terms a PPLs like PyMC, PyStan could understand. 
+
+This procedure ignores the prior information in the model passed to `ppe`, because the optimized function is just the likelihood. In the last step we use the information about each prior families. But in principle, we could even ignore this information and fit the optimized values to many families and pick the best fit. This allows the procedure to suggest alternative families. For instance, it could be that we use a Normal for a given parameters but the optimization only found positive values so a Gamma or HalfNormal could be a better choice. Having said that, the prior can have an effect because they are used to initialize the optimization routine. But for that to happen the prior has to be very off with respect to the target. Internally `ppe` performs many optimizations each time for a different sample from the target, the result of one optimization is stored as one projected posterior "sample" and also used as the initial guess for the next one. For the very first optimization, the one initialized from the prior, the result is discarded and only used as the initial guess for the next step.Another piece of information that is ignored is the observed data, the procedure only takes into account the sample size, but not the actual values. So you can pass dummy values, changing the sample size can we used to obtain more narrow (larger sample size) or more vague (smaller sample size) priors. Whether we should always use the same sample size of the data we are going to actually use or not is something that needs further research and evaluation.
