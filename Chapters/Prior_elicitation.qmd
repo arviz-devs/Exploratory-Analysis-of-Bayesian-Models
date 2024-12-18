@@ -24,11 +24,27 @@ The process of transforming domain knowledge into well-defined prior distributio
 
 If you are reading this guide, you probably already know what a prior distribution is. But let's do a quick recap. In Bayesian statistics, the prior distribution is the probability distribution that expresses information about the parameters of the model before observing the data. The prior distribution is combined with the likelihood to obtain the posterior distribution, which is the distribution of the parameters after observing the data.
 
-Priors are one way to convey domain-knowledge information into models. Other ways to include information in a model are the type of model or its overall structure, e.g. using a linear model, and the choice of likelihood. Nevertheless, usually, the selling point when discussing in favour of priors is that they allow the inclusion of domain information. But there are potentially other advantages:
+Priors are one way to convey domain-knowledge information into models. Other ways to include information in a model are the type of model or its overall structure, e.g. using a linear model, and the choice of likelihood. 
 
-* Sampling efficiency. Often a more informed priors results in better sampling. This does not mean we should tweak the prior distribution to solve sampling problems, instead incorporating some domain-knowledge information can help to avoid them.
-* Regularization. More informed priors can help to regularize the model, reducing the risk of overfitting. We make a distinction between regularization and "conveying domain-knowledge information" because motivations and justifications can be different in each case.
+Let use a couple of examples to think about priors and it's role in Bayesian statistics, @fig-prior_init shows two priors, one in blue (Beta(0.5, 0.5)) and one in red (Beta(10, 10)). 
 
+![Two different priors](../img/beta_binomial_update.png){#fig-prior_init}
+
+We are going to combine these priors with data using a Binomial likelihood. And we are going to update these priors sequentially, i.e. we will be adding some data and compute the posterior. And then add some more data and keep updating. So, at each step $i$ we add data and the distribution we are computing are the posteriors, but these posteriors are also the priors for step $i+1$. This sequential updating, where a posterior becomes the prior of the next analysis, is possible because the Beta distribution is conjugate with the Binomial. [Conjugate prior](https://en.wikipedia.org/wiki/Conjugate_prior) are priors that when combined with a likelihood function result in a posterior distribution that is of the same form as the prior distribution. Usually, we don't care too much about conjugate priors, but sometimes, like for this animation, they can be useful.
+
+We have represented these sequential updating in an animation (see @fig-prior_update). As the animation moves forward, i.e. we add more data, we will see that the posteriors gradually converge to the same distribution.
+
+![Prior update as we keep adding data](../img/beta_binomial_update.gif){#fig-prior_update}
+
+Asymptotically, priors have no meaning. If we have infinite data, not matter the prior you will get exactly the same posterior. When there is a large amount of data, the likelihood function dominates the updating process, and the prior has little influence on the posterior. In this limit, different reasonable priors will tend to converge to the same posterior as the amount of data increases.
+
+There is a catch in the previous statement, or maybe two. If we assign 0 prior probability to a value, no amount of data will turn that into a positive value. In other words, if a particular value or hypothesis is assigned zero prior probability, it will also have zero posterior probability, regardless of the data observed. Alternatively, if we assign a prior probability of 1 to a value (and zero to the rest), no amount of data will allow us to update that prior neither. This is known as Cromwell's rule and states that the use of prior probabilities of 1 ("the event will definitely occur") or 0 ("the event will definitely not occur") should be avoided, except when applied to statements that are logically true or false, such as $2+2=4$. 
+
+![If we give 0 prior probability, then we will always get 0 posterior probability](../img/bayes_theorem_01.png"){#fig-prior_Cromwell}
+
+OK, but if we take Cromwell's advice and avoid these corner cases eventually the data will dominate the priors. That's true, as well as that asymptotically, we are all dead. For real, finite data, we should expect priors to have some impact on the results. The actual impact will depend on the specific combinations of priors, likelihood and data. @sec-prior-elicitation-workflow shows a couple of combinations. In practice we often need to worry about our priors, but maybe less than we think. 
+
+![he posterior is an interplay of prior and likelihood](../img/prior_posterior.gif"){#fig-prior_posterior}
 
 ## Types of Priors
 
@@ -53,7 +69,7 @@ There is one way to frame the discussion about priors that can help to address t
 Using the prior predictive distribution to evaluate priors is inherently a global approach, as it assesses the combined impact of all priors and the likelihood. However, during prior elicitation, we may sometimes focus on making one or two priors more informative while keeping the others vague. In these cases, we can think of this as having a "local" mix of priors with varying levels of informativeness. In practice, we often balance this global perspective with the local approach, tailoring priors to the specific needs of the model.
 
 
-## Bayesian Workflow for Prior Elicitation
+## Bayesian Workflow for Prior Elicitation {#sec-prior-elicitation-workflow}
 
 It is important to think of prior elicitation in the context of a flexible workflow adapting to the specific needs of the model and the data. The workflow should also be iterative, as prior elicitation may need to be revisited as the model is developed and the data are analysed.
 
@@ -64,6 +80,14 @@ For simple models with strong data, the prior may have minimal impact, and start
 The prior elicitation process should also include a step to verify the usefulness of the information and assess how sensitive the results are to the choice of priors, including potential conflicts with the data. This process can help identify when more or less informative priors are needed and when the model may need to be adjusted.
 
 Finally, we want to highlight that prior elicitation isn't just about choosing the _right_ prior but also about understanding the model and the problem. So even if we end up with a prior that has little impact on the posterior, compared to a vague or default prior, performing prior elicitation could be useful for the modeller. Especially among newcomers setting priors can be seen as an anxiogenic task. Spending some time thinking about priors, with the help of proper tools, can help reduce this brain drain and save mental resources for other modelling tasks.
+
+
+Nevertheless, usually, the selling point when discussing in favour of priors is that they allow the inclusion of domain information.
+ But there are potentially other advantages of :
+
+* Sampling efficiency. Often a more informed priors results in better sampling. This does not mean we should tweak the prior distribution to solve sampling problems, instead incorporating some domain-knowledge information can help to avoid them.
+* Regularization. More informed priors can help to regularize the model, reducing the risk of overfitting. We make a distinction between regularization and "conveying domain-knowledge information" because motivations and justifications can be different in each case.
+
 
 
 ## Priors and entropy
@@ -245,9 +269,10 @@ The new priors still generate some values that are too wide, But at least the bu
 
 The process described in the previous section is straightforward: sample from the prior predictive --> plot --> refine --> repeat. On the good side, this is a very flexible approach and can be a good way to understand the effect of individual parameters in the predictions of a model. But it can be time-consuming and it requires some understanding of the model so you know which parameters to tweak and in which direction.
 
-One way to improve this workflow is by adding interactivity. We can do this with PreliZ's function, `predictive_explorer`.
+One way to improve this workflow is by adding interactivity. We can do this with PreliZ's function, `predictive_explorer`. Which we can not show here, because it is interactive. But you can try it for yourself by running the following block of code.
 
 ```{python}
+#| eval : false
 def pp_model(α_μ=0, α_σ=100, β_μ=0, β_σ=100, σ_σ=5):
    α = pz.Normal(α_μ, α_σ).rvs()
    β = pz.Normal(β_μ, β_σ).rvs()
