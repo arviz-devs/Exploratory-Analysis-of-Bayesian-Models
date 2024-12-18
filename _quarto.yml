@@ -4,7 +4,24 @@ project:
 
 book:
   title: "Exploratory Analysis of Bayesian Models"
-  author: "ArviZ-devs"
+  author:
+    - name: Osvaldo A. Martin 
+      url: https://aloctavodia.github.io/
+      affiliation: Aalto University
+      affiliation-url: https://research.cs.aalto.fi/pml/
+      orcid: 0000-0001-7419-8978
+      address: Otakaari 24, 02150
+      city: Espoo
+      country: Finland
+      postal-code: 02150
+    - name: Oriol Abril-Pla 
+      url: https://oriolabrilpla.cat/en/index.html
+      affiliation: PyMC Labs
+      affiliation-url: https://www.pymc-labs.com
+      city: Barcelona
+      country: Spain
+    - name: ArviZ-devs"
+      url: https://github.com/arviz-devs
   date: today
   favicon: favicon.ico
 

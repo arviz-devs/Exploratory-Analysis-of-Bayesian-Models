@@ -9,6 +9,7 @@ import pandas as pd
 import preliz as pz
 import pymc as pm
 import matplotlib.pyplot as plt
+plt.rcParams["figure.dpi"] = 100
 rng = np.random.default_rng(793)
 azp.style.use("arviz-clean")
 ```
@@ -148,8 +149,7 @@ In this example, we assign a larger weight to the results from the second elicit
 ## Predictive elicitation
 
 
-The simplest way to perform predictive elicitation is to generate a model, sample from its prior predictive distribution and then evaluate if the samples are consistent with the domain knowledge. If there is disagreement, we can refine the prior distribution and repeat the process. This is usually known as prior predictive check and is similar to the posterior predictive checks discussed in @sec-sec-model-criticism.
-
+The simplest way to perform predictive elicitation is to generate a model, sample from its prior predictive distribution and then evaluate if the samples are consistent with the domain knowledge. If there is disagreement, we can refine the prior distribution and repeat the process. This is usually known as prior predictive check and we discussed them in @sec-sec-model-criticism together with posterior predictive checks.
 
 To assess the agreement between the domain knowledge and the prior predictive distribution we may be tempted to use the observed data, as in posterior predictive checks. But, this can be problematic in many ways. Instead, we recommend using "reference values". We can obtain a reference value from domain knowledge, like previous studies, asking clients or experts, or educated guesses. They can be typical values, or usually "extreme" values. For instance, if we are studying the temperature of a city, we may use the historical record of world temperature and use -90 as the minimum, 60 as the maximum and 15 as the average. These are inclusive values. Hence this will lead us to very broad priors. If we want something tighter we should use historical records of areas more similar to the city we are studying or even the same city we are studying. These will lead to more informative priors.
 
@@ -165,7 +165,7 @@ We are interested in modelling the relationship between the masses of organisms 
 \begin{align}
    \mu =& Normal(\cdots, \cdots) \\
    \sigma =& HalfNormal(\cdots) \\
-   log(masas) =& Normal(\mu, \sigma)
+   log(mass) =& Normal(\mu, \sigma)
 \end{align}
 
 
@@ -220,7 +220,7 @@ with pm.Model() as model:
    α = pm.Normal("α", 0, 1)
    β = pm.Normal("β", 0, 1)
    σ = pm.HalfNormal("σ", 5)
-   presa = pm.Normal("presa", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
+   prey = pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
    idata = pm.sample_prior_predictive(samples=100)
 ```
 
@@ -241,17 +241,11 @@ for key, val in refs.items():
 The new priors still generate some values that are too wide, But at least the bulk of the model predictions are in the right range. So, without too much effort and extra information, we were able to move from a very vague prior to a weakly informative prior.
 
 
-
-
 ### Interactive predictive elicitation
-
 
 The process described in the previous section is straightforward: sample from the prior predictive --> plot --> refine --> repeat. On the good side, this is a very flexible approach and can be a good way to understand the effect of individual parameters in the predictions of a model. But it can be time-consuming and it requires some understanding of the model so you know which parameters to tweak and in which direction.
 
-
 One way to improve this workflow is by adding interactivity. We can do this with PreliZ's function, `predictive_explorer`.
-
-
 
 ```{python}
 def pp_model(α_μ=0, α_σ=100, β_μ=0, β_σ=100, σ_σ=5):
@@ -265,6 +259,5 @@ def pp_model(α_μ=0, α_σ=100, β_μ=0, β_σ=100, σ_σ=5):
 refs = {"Earth":np.log(5.97e+27), "Blue whale":np.log(1.5e8), "Smallest cell":np.log(1e-14)}
 pz.predictive_explorer(pp_model, references=refs)
 ```
-
 
 ## Projective predictive elicitation
