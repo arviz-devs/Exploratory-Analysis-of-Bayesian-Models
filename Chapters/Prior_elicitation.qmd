@@ -34,17 +34,17 @@ We are going to combine these priors with data using a Binomial likelihood. And 
 
 We have represented these sequential updating in an animation (see @fig-prior_update). As the animation moves forward, i.e. we add more data, we will see that the posteriors gradually converge to the same distribution.
 
-![Prior update as we keep adding data](../img/beta_binomial_update.gif){#fig-prior_update}
+![Priors updating as we keep adding data](../img/beta_binomial_update.gif){#fig-prior_update}
 
 Asymptotically, priors have no meaning. If we have infinite data, not matter the prior you will get exactly the same posterior. When there is a large amount of data, the likelihood function dominates the updating process, and the prior has little influence on the posterior. In this limit, different reasonable priors will tend to converge to the same posterior as the amount of data increases.
 
 There is a catch in the previous statement, or maybe two. If we assign 0 prior probability to a value, no amount of data will turn that into a positive value. In other words, if a particular value or hypothesis is assigned zero prior probability, it will also have zero posterior probability, regardless of the data observed. Alternatively, if we assign a prior probability of 1 to a value (and zero to the rest), no amount of data will allow us to update that prior neither. This is known as Cromwell's rule and states that the use of prior probabilities of 1 ("the event will definitely occur") or 0 ("the event will definitely not occur") should be avoided, except when applied to statements that are logically true or false, such as $2+2=4$. 
 
-![If we give 0 prior probability, then we will always get 0 posterior probability](../img/bayes_theorem_01.png"){#fig-prior_Cromwell}
+![If we give 0 prior probability, then we will always get 0 posterior probability](../img/bayes_theorem_01.png){#fig-prior_Cromwell}
 
 OK, but if we take Cromwell's advice and avoid these corner cases eventually the data will dominate the priors. That's true, as well as that asymptotically, we are all dead. For real, finite data, we should expect priors to have some impact on the results. The actual impact will depend on the specific combinations of priors, likelihood and data. @sec-prior-elicitation-workflow shows a couple of combinations. In practice we often need to worry about our priors, but maybe less than we think. 
 
-![he posterior is an interplay of prior and likelihood](../img/prior_posterior.gif"){#fig-prior_posterior}
+![The posterior is an interplay of prior and likelihood](../img/prior_posterior.gif){#fig-prior_posterior}
 
 ## Types of Priors
 
@@ -263,7 +263,7 @@ The new priors still generate some values that are too wide, but at least the bu
 
 The process described in the previous section is straightforward: sample from the prior predictive --> plot --> refine --> repeat. On the good side, this is a very flexible approach and can be a good way to understand the effect of individual parameters in the predictions of a model. But it can be time-consuming and it requires some understanding of the model so you know which parameters to tweak and in which direction.
 
-One way to improve this workflow is by adding interactivity. We can do this with PreliZ's function, `predictive_explorer`. Which we can not show here, because it is interactive. But you can try it for yourself by running the following block of code.
+One way to improve this workflow is by adding interactivity. We can do this with PreliZ's function, `predictive_explorer`. Which we can not show here, in a full glory but you can see an static image in @fig-predictive-explorer, and you can try it for yourself by running the following block of code.
 
 ```{python}
 #| eval : false
@@ -276,6 +276,8 @@ def pp_model(α_μ=0, α_σ=100, β_μ=0, β_σ=100, σ_σ=5):
 
 pz.predictive_explorer(pp_model, references=refs)
 ```
+
+![We can use the boxes to specify different prior values and see how the prior predictive changes, here we have changed the initial values of α_σ and β_σ from 100 to 1](../img/predictive_explorer.png){#fig-predictive-explorer}
 
 ## Projective predictive elicitation
 
