@@ -20,7 +20,7 @@ book:
       affiliation-url: https://www.pymc-labs.com
       city: Barcelona
       country: Spain
-    - name: ArviZ-devs"
+    - name: ArviZ-devs
       url: https://github.com/arviz-devs
   date: today
   favicon: favicon.ico
