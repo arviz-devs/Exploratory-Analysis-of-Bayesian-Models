@@ -313,9 +313,7 @@ with pm.Model() as model:
    β = pm.Normal("β", mu=0, sigma=0.006)
    σ = pm.HalfNormal("σ", sigma=8.5)
    prey = pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
-
    idata = pm.sample_prior_predictive()
-
 ```
 Now we can plot the prior predictive distribution, the target distribution and compare it with the reference values.
 
