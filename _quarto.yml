@@ -16,8 +16,9 @@ book:
       postal-code: 02150
     - name: Oriol Abril-Pla 
       url: https://oriolabrilpla.cat/en/index.html
-      affiliation: PyMC Labs
-      affiliation-url: https://www.pymc-labs.com
+      affiliation: ArviZ
+      affiliation-url: https://github.com/arviz-devs
+      orcid: https://orcid.org/0000-0002-1847-9481
       city: Barcelona
       country: Spain
     - name: ArviZ-devs

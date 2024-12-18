@@ -316,7 +316,6 @@ So far we have show examples with continuous data. Many of the tools can still b
 `az.plot_ppc` will automatically use histograms instead of KDEs when the data is discrete. And the bins of the histograms will be centred at integers. Also cumulative plots can be used for discrete data. Still, there are some tools that are more specific for discrete data. In the next sections we discuss posterior predictive checks for count data and binary data.
 
 
-
 ### Posterior predictive checks for count data
 
 Count data is a type of discrete data that is very common in many fields. For instance, the number of iguanas per square meter in a rainforest, the number of bikes in a bike-sharing station, the number of calls to a call center, the number of emails received, etc. When assessing the fit of a model to count data we need to consider that the data is non-negative and typically skewed. Additionally we also care about the amount of (over/under-)dispersion.
@@ -352,7 +351,7 @@ For those curious about the data, we are using the horseshoe crab dataset [@Broc
 
 Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. Modelling binary data poses a unique challenge for assessing model fit because these models generate predicted values on a probability scale (0-1), while the actual values of the response variable are dichotomous (either 0 or 1).
 
-One solution to this challenge was presented by @Greenhill_2011 and is a know as separation plot. This graphical tool consists of a sequence of bars, where each bar represents a data point. Bars can have one of two colours, one for positive cases and one for negative cases. The bars are sorted by the predicted probabilities, so that the bars with the lowest predicted probabilities are on the left and the bars with the highest predicted probabilities are on the right. Usually the plot also includes a marker showing the expected number of total events. For and ideal fit all the bars with one color should be on one side of the marker and all the bars with the other color on the other side.
+One solution to this challenge was presented by [@Greenhill_2011] and is a know as separation plot. This graphical tool consists of a sequence of bars, where each bar represents a data point. Bars can have one of two colours, one for positive cases and one for negative cases. The bars are sorted by the predicted probabilities, so that the bars with the lowest predicted probabilities are on the left and the bars with the highest predicted probabilities are on the right. Usually the plot also includes a marker showing the expected number of total events. For and ideal fit all the bars with one color should be on one side of the marker and all the bars with the other color on the other side.
 
 The following example show a separation plot for a logistic regression model.
 

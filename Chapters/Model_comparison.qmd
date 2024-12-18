@@ -23,7 +23,7 @@ Intuitively, it seems that when comparing models, we tend to prefer those that f
 
 ### Predictive accuracy measures
 
-If we evaluate a model solelly by it capacity to reproduce the data used to fit it, for instance by measuring the mean quadratic error between observations and predictions, we will likely be overoptimistic about the performance of the model to predict unobserved data. Additionally, for a flexible enough model (and without proper regularization), we may tweak it parameters until we fit the data perfectly. Thus, instead of computing the **Within-sample accuracy**, that is, the accuracy measured with the same data used to fit the model, we prefer to compute the **Out-of-sample accuracy**, that is, the accuracy measured with data not used to fit the model. 
+If we evaluate a model solely by it capacity to reproduce the data used to fit it, for instance by measuring the mean quadratic error between observations and predictions, we will likely be overoptimistic about the performance of the model to predict unobserved data. Additionally, for a flexible enough model (and without proper regularization), we may tweak it parameters until we fit the data perfectly. Thus, instead of computing the **Within-sample accuracy**, that is, the accuracy measured with the same data used to fit the model, we prefer to compute the **Out-of-sample accuracy**, that is, the accuracy measured with data not used to fit the model. 
 
 
 ::: {.callout-note}
@@ -121,7 +121,7 @@ In practice we also do not have access to $\mathbb{E}[\log{q}]$, what we can do 
 
 #### Akaike information criterion
 
-This is a very well-known and widely used information criterion outside the Bayesian universe and is defined as:
+The Akaike information criterion [@akaike_1974] (AIC) is a very well-known and widely used information criterion outside the Bayesian universe and is defined as:
 
 $$
 AIC = -2 \sum_i^N \log p(y_i \mid \hat{\theta}_{mle}) + 2 k
@@ -147,7 +147,7 @@ Can we find something like the Bayesian version of AIC? Yes, we can.
 
 ### WAIC
 
-We can see the Widely applicable information criterion (WAIC) as the fully Bayesian version of AIC. Not to be confused with the Bayesian Information Criterion (BIC), which is not very Bayesian in practice.
+We can see the Widely applicable information criterion (WAIC) [@watanabe_2013] as the fully Bayesian version of AIC. Not to be confused with the Bayesian Information Criterion (BIC), which is not very Bayesian in practice.
 
 Anyway, as we already saw in the Akaike criterion, the goodness of fit is given by:
 
@@ -274,7 +274,7 @@ The catch, because there is always a catch, is that it is expected that $p(\thet
 
 One way to correct this problem is to simply truncate the "too high" weights, but this brings other problems that we are not going to discuss. Another way is to rely on theory. The theory indicates that under certain conditions high weights are distributed according to a Pareto pattern. So instead of truncating them we can fit them to a Pareto distribution and then replace them with values ​​obtained from that distribution. This is a form of smoothing that, within a certain range, allows stabilizing the importance sampling estimate, since it will make some "very large" values ​​not so large.
 
-When we combine all these ideas we get a method called Pareto-Smooth Importance Sampling Leave-One-Out Cross Validation, which is abbreviated as PSIS-LOO-CV. Since the name and acronym are horribly long and difficult to pronounce we will call it LOO.
+When we combine all these ideas we get a method called Pareto-Smooth Importance Sampling Leave-One-Out Cross Validation [@vehtari_2017; @yao_2018], which is abbreviated as PSIS-LOO-CV. Since the name and acronym are horribly long and difficult to pronounce we will call it LOO.
 
 ### LOO and WAIC
 
