@@ -248,10 +248,8 @@ We can plot the prior predictive distribution and compare it with the reference 
 
 ```{python}
 ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=False, legend=False)
-
-
 for key, val in refs.items():
-	ax.axvline(val, ls="--", color="0.5")
+    ax.axvline(val, ls="--", color="0.5")
     ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
 ```
 
@@ -281,11 +279,11 @@ pz.predictive_explorer(pp_model, references=refs)
 
 Projective predictive elicitation is an experimental method to elicit priors by specifying an initial model and a prior predictive distribution. Then instead of elicitate the prior themselves, we elicit the prior predictive distribution, which we call the target distribution. Then we use a procedure that automatically find the parameters of the prior that induce a prior predictive distribution that is as close as possible to the target distribution. This method is particularly useful when we have a good idea of how the data should look like, but we are not sure how to translate this into a prior distribution. 
 
-This method has been implemented in PreliZ, let see one example first and then discuss some details. To keep things concrete and familiar let's assume we are still interested in the predator-prey example. And let assume that on a log-scale we think that the the prior predictive distribution is well described as a Normal distribution with most of its mass between the weight of a typical cell and the weight of a blue whale. The Normal is easy to work with and with this information we could derive its parameter. But let do something even easier. Let use `pz.maxent` and translate "most of it mass" to $0.98$.
+This method has been implemented in PreliZ, let see one example first and then discuss some details. To keep things concrete and familiar let's assume we are still interested in the predator-prey example. And let assume that on a log-scale we think that the the prior predictive distribution is well described as a Normal distribution with most of its mass between the weight of a typical cell and the weight of a blue whale. The Normal is easy to work with and with this information we could derive its parameter. But let do something even easier. Let use `pz.maxent` and translate "most of it mass" to $0.94$.
 
 ```{python}
 target = pz.Normal()
-pz.maxent(target, refs["Typical cell"], refs["Blue whale"], 0.98) 
+pz.maxent(target, refs["Typical cell"], refs["Blue whale"], 0.94) 
 ```
 
 This will be our target distribution. If for a particular problem you are unsure about what distribution to choose as a target, think that this should be the distribution that you expect to match in a prior predictive check as discussed in previous sections. And also think that usually the goal is to find a weakly informative prior. So, the target will usually be a very approximate distribution. 
@@ -295,7 +293,7 @@ Now that we have the target, we write a model as you would do before a prior pre
 
 ```{python}
 with pm.Model() as model:
-	α = pm.Normal("α", 0, 100)
+    α = pm.Normal("α", 0, 100)
     β = pm.Normal("β", 0, 100)
     σ = pm.HalfNormal("σ", 5)
     prey = pm.Normal("prey", α + β * pp_mass["prey_log"][:100], σ, observed=pp_mass["predator_log"][:100])
@@ -321,8 +319,8 @@ ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=False, legend=Fal
 target.plot_cdf(color="C1")
 
 for key, val in refs.items():
-   ax.axvline(val, ls="--", color="0.5")
-   ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
+    ax.axvline(val, ls="--", color="0.5")
+    ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
 ```
 
 We see very good agreement. Let's do one more plot. This time we hide the individual prior predictive samples and instead plot the aggregated prior predictive distribution, labelled with "mean" as it is the average distribution when we average over all the computed prior predictive distributions.
@@ -332,8 +330,8 @@ ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=True, legend=Fals
 target.plot_cdf(color="black")
 
 for key, val in refs.items():
-   ax.axvline(val, ls="--", color="0.5")
-   ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
+    ax.axvline(val, ls="--", color="0.5")
+    ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
 ```
 
 As before we point out that this prior is still relatively vague, and we could use more information to tighten up. But what we care at this point is that the prior we got is consistent with the target distribution, and thus a prior that is coherent the domain-knowledge information that we decide to use.
