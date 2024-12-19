@@ -22,7 +22,7 @@ import pandas as pd
 import pymc as pm
 import pytensor.tensor as pt
 import xarray as xr
-
+import matplotlib.pyplot as plt
 azp.style.use("arviz-clean")
 plt.rcParams["figure.dpi"] = 100
 ```
