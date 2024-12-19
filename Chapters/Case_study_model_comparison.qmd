@@ -24,6 +24,7 @@ import pytensor.tensor as pt
 import xarray as xr
 
 azp.style.use("arviz-clean")
+plt.rcParams["figure.dpi"] = 100
 ```
 
 ## Information criteria for hierarchical and multi-likelihood models

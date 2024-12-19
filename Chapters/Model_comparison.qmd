@@ -10,6 +10,7 @@ import preliz as pz
 import pymc as pm
 import matplotlib.pyplot as plt
 azp.style.use("arviz-clean")
+plt.rcParams["figure.dpi"] = 100
 SEED = 3592
 ```
 
