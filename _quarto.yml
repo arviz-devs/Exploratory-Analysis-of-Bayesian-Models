@@ -7,13 +7,20 @@ book:
   author:
     - name: Osvaldo A. Martin 
       url: https://aloctavodia.github.io/
-      affiliation: Aalto University
-      affiliation-url: https://research.cs.aalto.fi/pml/
       orcid: 0000-0001-7419-8978
-      address: Otakaari 24, 02150
-      city: Espoo
-      country: Finland
-      postal-code: 02150
+      affiliations:
+        - name: Aalto University
+          affiliation-url: https://research.cs.aalto.fi/pml/
+          address: Otakaari 24, 02150
+          city: Espoo
+          country: Finland
+          postal-code: 02150
+        - name: UNSAM
+          affiliation-url: https://unsam.edu.ar/escuelas/ecyt/661/ciencia/ciencia-de-datos
+          address: Campus Miguelete, 25 de Mayo y Francia
+          city: Buenos Aires
+          country: Argentina
+          postal-code: 1650
     - name: Oriol Abril-Pla 
       url: https://oriolabrilpla.cat/en/index.html
       affiliation: ArviZ
@@ -34,6 +41,7 @@ book:
     - Chapters/MCMC_diagnostics.qmd
     - Chapters/Model_criticism.qmd
     - Chapters/Model_comparison.qmd
+    - Chapters/Variable_selection.qmd
     - Chapters/Case_study_model_comparison.qmd
     - Chapters/Prior_elicitation.qmd
     - Chapters/Presenting_results.qmd
