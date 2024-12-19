@@ -347,13 +347,11 @@ The main idea is that once we have a target distribution we can define the prior
 
 The procedure is as follows:
 
-\begin{enumerate}
-    \item Generate a sample from the target distribution.
-    \item Maximize the model's likelihood wrt that sample (i.e. we find the parameters for a fixed "observation").
-    \item Generate a new sample from the target distribution and find a new set of parameters.
-    \item Collect the parameters, one per prior parameter in the original model.
-    \item Use MLE to fit the optimized values to their corresponding families in the original model. 
-\end{enumerate}
+1. Generate a sample from the target distribution.
+2. Maximize the model's likelihood wrt that sample (i.e. we find the parameters for a fixed "observation").
+3. Generate a new sample from the target distribution and find a new set of parameters.
+4. Collect the parameters, one per prior parameter in the original model.
+5. Use MLE to fit the optimized values to their corresponding families in the original model. 
 
 Instead of using standard inference methods like MCMC in step 1-3 we are using projection inference. See @sec-variable-selection for details. Essentially we are approximating a posterior using an optimization method. Yes, we say posterior, because from the inference point we are computing a posterior, once that we then will use as prior.
 On the last step, we use a second approximation, we _backfit_ the projected posterior into standard distributions used by PPLs as building blocks. We need to do this so we can write the resulting priors in terms a PPLs like PyMC, PyStan could understand. 
