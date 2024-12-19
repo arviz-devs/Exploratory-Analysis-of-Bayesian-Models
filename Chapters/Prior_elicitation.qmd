@@ -178,8 +178,6 @@ The simplest way to perform predictive elicitation is to generate a model, sampl
 To assess the agreement between the domain knowledge and the prior predictive distribution we may be tempted to use the observed data, as in posterior predictive checks. But, this can be problematic in many ways. Instead, we recommend using "reference values". We can obtain a reference value from domain knowledge, like previous studies, asking clients or experts, or educated guesses. They can be typical values, or usually "extreme" values. For instance, if we are studying the temperature of a city, we may use the historical record of world temperature and use -90 as the minimum, 60 as the maximum and 15 as the average. These are inclusive values. Hence this will lead us to very broad priors. If we want something tighter we should use historical records of areas more similar to the city we are studying or even the same city we are studying. These will lead to more informative priors.
 
 
-
-
 ### Predator vs prey example
 
 
@@ -201,9 +199,9 @@ refs = {"Blue whale":np.log(1.3e8),
 So a model might be something like:
 
 \begin{align}
-   \mu =& Normal(\cdots, \cdots) \\
-   \sigma =& HalfNormal(\cdots) \\
-   log(mass) =& Normal(\mu, \sigma)
+    \mu =& Normal(\cdots, \cdots) \\
+    \sigma =& HalfNormal(\cdots) \\
+    log(mass) =& Normal(\mu, \sigma)
 \end{align}
 
 Let's now define a model with some priors and see what these priors imply on the scale of the data. To sample from the predictive prior we use `pm.sample_prior_predictive()` instead of `sample` and we need to define dummy observations. This is necessary to indicate to PyMC which term is the likelihood and to control the size of each predicted distribution, but the actual values do not affect the prior predictive distributions.
@@ -211,11 +209,11 @@ Let's now define a model with some priors and see what these priors imply on the
 
 ```{python}
 with pm.Model() as model:
-   α = pm.Normal("α", 0, 100)
-   β = pm.Normal("β", 0, 100)
-   σ = pm.HalfNormal("σ", 5)
-   pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
-   idata = pm.sample_prior_predictive(samples=100)
+	α = pm.Normal("α", 0, 100)
+	β = pm.Normal("β", 0, 100)
+	σ = pm.HalfNormal("σ", 5)
+	pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
+	idata = pm.sample_prior_predictive(samples=100)
 ```
 
 
@@ -227,8 +225,8 @@ ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=False, legend=Fal
 
 
 for key, val in refs.items():
-   ax.axvline(val, ls="--", color="0.5")
-   ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
+	ax.axvline(val, ls="--", color="0.5")
+	ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
 ```
 
 
@@ -237,11 +235,11 @@ Priors are so vague that we can not even distinguish the reference values from e
 
 ```{python}
 with pm.Model() as model:
-   α = pm.Normal("α", 0, 1)
-   β = pm.Normal("β", 0, 1)
-   σ = pm.HalfNormal("σ", 5)
-   prey = pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
-   idata = pm.sample_prior_predictive(samples=100)
+	α = pm.Normal("α", 0, 1)
+	β = pm.Normal("β", 0, 1)
+	σ = pm.HalfNormal("σ", 5)
+	prey = pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
+	idata = pm.sample_prior_predictive(samples=100)
 ```
 
 We can plot the prior predictive distribution and compare it with the reference values.
@@ -253,8 +251,8 @@ ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=False, legend=Fal
 
 
 for key, val in refs.items():
-   ax.axvline(val, ls="--", color="0.5")
-   ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
+	ax.axvline(val, ls="--", color="0.5")
+    ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
 ```
 
 The new priors still generate some values that are too wide, but at least the bulk of the model predictions are in the right range. So, without too much effort and extra information, we were able to move from a very vague prior to a weakly informative prior. If we decided this prior is still very vague we can add more domain-knowledge.
@@ -268,11 +266,11 @@ One way to improve this workflow is by adding interactivity. We can do this with
 ```{python}
 #| eval : false
 def pp_model(α_μ=0, α_σ=100, β_μ=0, β_σ=100, σ_σ=5):
-   α = pz.Normal(α_μ, α_σ).rvs()
-   β = pz.Normal(β_μ, β_σ).rvs()
-   σ = pz.HalfNormal(σ_σ).rvs()
-   prey = pz.Normal(α + β * pp_mass.predator_log, σ).rvs()
-   return prey
+	α = pz.Normal(α_μ, α_σ).rvs()
+    β = pz.Normal(β_μ, β_σ).rvs()
+    σ = pz.HalfNormal(σ_σ).rvs()
+    prey = pz.Normal(α + β * pp_mass.predator_log, σ).rvs()
+    return prey
 
 pz.predictive_explorer(pp_model, references=refs)
 ```
@@ -297,23 +295,23 @@ Now that we have the target, we write a model as you would do before a prior pre
 
 ```{python}
 with pm.Model() as model:
-   α = pm.Normal("α", 0, 100)
-   β = pm.Normal("β", 0, 100)
-   σ = pm.HalfNormal("σ", 5)
-   prey = pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
+	α = pm.Normal("α", 0, 100)
+    β = pm.Normal("β", 0, 100)
+    σ = pm.HalfNormal("σ", 5)
+    prey = pm.Normal("prey", α + β * pp_mass["prey_log"][:100], σ, observed=pp_mass["predator_log"][:100])
 
 print(pz.ppe(model, target)) 
 ```
 
-OK, `ppe` function returns a solution, because this is an experimental method, and because good data analysis always keep a good dose of scepticism of their tools, let's check that the suggested prior is reasonable given the provided information. To do this we write the model with the new prior and sample from the prior predictive. Notice that we could have copied the priors verbatim, but instead we are rounding them. We do not care of the exact solution and a rounded number looks easier to read. Feel free to not follow suggestion from machine blindly or be prepared [to end inside a lake](https://www.youtube.com/watch?v=DOW_kPzY_JY). 
+OK, `ppe` function returns a solution, because this is an experimental method, and because good data analysis always keep a good dose of scepticism of their tools, let's check that the suggested prior is reasonable given the provided information. To do this we write the model with the new prior and sample from the prior predictive. Notice that we could have copied the priors verbatim, but instead we are rounding them. We do not care of the exact solution, a rounded number is easier to read. Feel free to not follow suggestion from machine blindly or be prepared [to end inside a lake](https://www.youtube.com/watch?v=DOW_kPzY_JY). 
 
 ```{python}
 with pm.Model() as model:
-   α = pm.Normal("α", mu=-1, sigma=0.09)
-   β = pm.Normal("β", mu=0, sigma=0.006)
-   σ = pm.HalfNormal("σ", sigma=8.5)
-   prey = pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
-   idata = pm.sample_prior_predictive()
+    α = pm.Normal("α", mu=-1, sigma=1.1)
+    β = pm.Normal("β", mu=0.015, sigma=0.2)
+    σ = pm.HalfNormal("σ", sigma=10)
+    prey = pm.Normal("prey", α + β * pp_mass["prey_log"], σ, observed=pp_mass["predator_log"])
+    idata = pm.sample_prior_predictive()
 ```
 Now we can plot the prior predictive distribution, the target distribution and compare it with the reference values.
 
@@ -354,6 +352,6 @@ The procedure is as follows:
 5. Use MLE to fit the optimized values to their corresponding families in the original model. 
 
 Instead of using standard inference methods like MCMC in step 1-3 we are using projection inference. See @sec-variable-selection for details. Essentially we are approximating a posterior using an optimization method. Yes, we say posterior, because from the inference point we are computing a posterior, once that we then will use as prior.
-On the last step, we use a second approximation, we _backfit_ the projected posterior into standard distributions used by PPLs as building blocks. We need to do this so we can write the resulting priors in terms a PPLs like PyMC, PyStan could understand. 
+On the last step, we use a second approximation, we fit the projected posterior into standard distributions used by PPLs as building blocks. We need to do this so we can write the resulting priors in terms a PPLs like PyMC, PyStan could understand. 
 
 This procedure ignores the prior information in the model passed to `ppe`, because the optimized function is just the likelihood. In the last step we use the information about each prior families. But in principle, we could even ignore this information and fit the optimized values to many families and pick the best fit. This allows the procedure to suggest alternative families. For instance, it could be that we use a Normal for a given parameters but the optimization only found positive values so a Gamma or HalfNormal could be a better choice. Having said that, the prior can have an effect because they are used to initialize the optimization routine. But for that to happen the prior has to be very off with respect to the target. Internally `ppe` performs many optimizations each time for a different sample from the target, the result of one optimization is stored as one projected posterior "sample" and also used as the initial guess for the next one. For the very first optimization, the one initialized from the prior, the result is discarded and only used as the initial guess for the next step.Another piece of information that is ignored is the observed data, the procedure only takes into account the sample size, but not the actual values. So you can pass dummy values, changing the sample size can we used to obtain more narrow (larger sample size) or more vague (smaller sample size) priors. Whether we should always use the same sample size of the data we are going to actually use or not is something that needs further research and evaluation.
