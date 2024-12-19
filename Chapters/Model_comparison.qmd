@@ -4,11 +4,12 @@
 ```{python}
 #| echo : false
 import arviz as az
+import arviz_plots as azp
 import numpy as np
 import preliz as pz
 import pymc as pm
 import matplotlib.pyplot as plt
-az.style.use("arviz-doc")
+azp.style.use("arviz-clean")
 SEED = 3592
 ```
 
