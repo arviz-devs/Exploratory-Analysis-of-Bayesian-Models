@@ -374,7 +374,7 @@ window.Quarto = {
 </header>
 
 
-<div id="0573b73c" class="cell" data-execution_count="1">
+<div id="f241f8d0" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
 </div>
@@ -415,7 +415,7 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="598be0be" class="cell" data-execution_count="3">
+<div id="7091307f" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb2-2"><a href="#cb2-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -436,7 +436,7 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 </div>
 <p>In the following plot, we can see samples from the prior predictive distribution (blue solid lines). If we aggregate all the individual samples into a single large sample we get the dashed cyan line. To help us interpret this plot we have added two <strong>reference values</strong>, the average length/height of a newborn and the average (male) adult height. These reference values, are values that are meaningful to the problem at hand that we obtain from domain-knowledge (not from the observed data). We used reference values to get a sense of the scale of the expected data. Expected or <em>typical</em> values could also be used.</p>
 <p>We can see that our model is bananas, not only heights can be negative, but the bulk of the prior predictive distribution is outside of our reference values.</p>
-<div id="cell-fig-prior_pred_check_wide" class="cell" data-execution_count="4">
+<div id="cell-fig-prior_pred_check_wide" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -459,7 +459,7 @@ Figure&nbsp;5.1: The prior predictive check for the model of heights. We can see
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="af1244f7" class="cell" data-execution_count="5">
+<div id="8896a656" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb6-2"><a href="#cb6-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">175</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -479,7 +479,7 @@ Figure&nbsp;5.1: The prior predictive check for the model of heights. We can see
 </div>
 </div>
 <p>We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are free to pick other priors and other reference values. Maybe you can use the historical record for the taller and shorter persons in the world as33 reference values.</p>
-<div id="cell-fig-prior_pred_check_narrow" class="cell" data-execution_count="6">
+<div id="cell-fig-prior_pred_check_narrow" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -499,7 +499,7 @@ Figure&nbsp;5.2: The prior predictive check for the model of heights with a more
 </div>
 <p>Weakly informative priors can have practical advantages over very vague priors because adding some prior information is usually better than adding none. By adding some information we reduce the chances of spurious results or nonsensical results. Additionally, weakly informative priors can provide computational advantages, like helping with faster sampling.</p>
 <p>Weakly informative priors can also have a practical advantage over informative priors. To be clear, if you have trustworthy informative priors you should use them, it doesn’t make sense to ignore information that you have. But in many setting informative priors can be hard to set, and they can be very time-consuming to get. That’s why in practice weakly informative priors can be a good compromise.</p>
-<div id="cell-fig-prior_pred_check_narrow_ecdf" class="cell" data-execution_count="7">
+<div id="cell-fig-prior_pred_check_narrow_ecdf" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>ax <span class="op">=</span> az.plot_ppc(idata, group<span class="op">=</span><span class="st">"prior"</span>, kind<span class="op">=</span><span class="st">"cumulative"</span>)</span>
 <span id="cb10-2"><a href="#cb10-2"></a>ax.axvline(<span class="dv">50</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"newborn"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3"></a>ax.axvline(<span class="dv">175</span>, color<span class="op">=</span><span class="st">"0.5"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">"adult"</span>)</span>
@@ -555,7 +555,7 @@ p(\tilde y) = \int_{\Theta} p(\tilde y \mid \theta) \; p(\theta \mid y) \; d\the
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="fe30b451" class="cell" data-execution_count="8">
+<div id="0c2381a3" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a><span class="cf">with</span> model: </span>
 <span id="cb11-2"><a href="#cb11-2"></a>    idata <span class="op">=</span> pm.sample()</span>
 <span id="cb11-3"><a href="#cb11-3"></a>    pm.sample_posterior_predictive(idata, random_seed<span class="op">=</span>SEED, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -570,7 +570,7 @@ Sampling: [Y_obs]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"8e68ac2d1f86484291e21496d3b72f8a","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"c91f474baa9d446eb5ef858c3f673550","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -578,7 +578,7 @@ Sampling: [Y_obs]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"487cebfcbf524785a7aebabfa406de4d","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"5c491bdd92184ef0a37a3bb6a8dac65c","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -593,7 +593,7 @@ Sampling: [Y_obs]</code></pre>
 </div>
 <p>And then we use ArviZ to plot the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).</p>
 <p>The dashed orange line, labelled as “posterior predictive mean”, is the aggregated posterior predictive distribution. If you combine all the individual densities into a single density, that’s what you would get.</p>
-<div id="cell-fig-post_pred" class="cell" data-execution_count="9">
+<div id="cell-fig-post_pred" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>az.plot_ppc(idata, num_pp_samples<span class="op">=</span><span class="dv">200</span>, colors<span class="op">=</span>[<span class="st">"C0"</span>, <span class="st">"k"</span>, <span class="st">"C2"</span>])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_pred" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -613,7 +613,7 @@ Figure&nbsp;5.4: Posterior predictive check for the model of heights.
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="using-summary-statistics"><span class="header-section-number">5.2.1</span> Using summary statistics</h3>
 <p>Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics. Which ones, we decide to use may vary from one data-analysis problem to another, and ideally it should be informed by the data-analysis goals.</p>
 <p>The following plot shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model’s predictions.</p>
-<div id="cell-fig-post_pred_check_stats" class="cell" data-execution_count="10">
+<div id="cell-fig-post_pred_check_stats" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>_, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">3</span>))</span>
 <span id="cb15-2"><a href="#cb15-2"></a></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="kw">def</span> iqr(x, a<span class="op">=-</span><span class="dv">1</span>):</span>
@@ -652,7 +652,7 @@ p(T_{\text{sim}} \le T_{\text{obs}} \mid \tilde y)
 p(\tilde y \le y_{\text{obs}} \mid y)
 \]</span></p>
 <p>that is, instead of using a summary statistics, as before, we directly compare observations and predictions. In the following plots the dashed black line represent the expected distribution.</p>
-<div id="cell-fig-post_pred_check_p_value" class="cell" data-execution_count="11">
+<div id="cell-fig-post_pred_check_p_value" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>az.plot_bpv(idata, kind<span class="op">=</span><span class="st">"p_value"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_pred_check_p_value" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -673,7 +673,7 @@ p(\tilde y_i \le y_i \mid y)
 \]</span></p>
 <p>This is often called the marginal p-value and the ideal distribution is the standard uniform distribution.</p>
 <p>The white line in the following figure represents the ideal scenario and the grey band the expected deviation given the size of the data. The x values corresponds to the quantiles of the original distribution, i.e.&nbsp;the central values represent the “bulk” of the distribution and the extreme values the “tails”.</p>
-<div id="cell-fig-post_pred_check_u_value" class="cell" data-execution_count="12">
+<div id="cell-fig-post_pred_check_u_value" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>az.plot_bpv(idata)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_pred_check_u_value" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -695,7 +695,7 @@ Figure&nbsp;5.7: Posterior predictive check for the model of heights using margi
 <li>The predictions have a wider spread (larger variance).</li>
 <li>The predictions have a narrower spread (smaller variance).</li>
 </ul>
-<div id="cell-fig-post_pred_check_u_value_alt" class="cell" data-execution_count="13">
+<div id="cell-fig-post_pred_check_u_value_alt" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>observed <span class="op">=</span> pz.Normal(<span class="dv">0</span>, <span class="dv">1</span>).rvs(<span class="dv">500</span>)</span>
 <span id="cb18-2"><a href="#cb18-2"></a></span>
 <span id="cb18-3"><a href="#cb18-3"></a>_, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
@@ -741,7 +741,7 @@ Figure&nbsp;5.8: Posterior predictive check for the model of heights using u-val
 <p>Rootograms are a graphical tool to assess the fit of count data models <span class="citation" data-cites="tukey_1977 Kleiber_2016">(<a href="References.html#ref-tukey_1977" role="doc-biblioref">Tukey 1977</a>; <a href="References.html#ref-Kleiber_2016" role="doc-biblioref">Kleiber and Zeileis 2016</a>)</span>. This tool is handy for diagnosing overdispersion and/or excess zeros in count data models. The name originates from the fact that rootograms plot the square <em>root</em> of the observed counts against the square <em>root</em> of the expected counts.</p>
 <p>There are a few variations of rootograms. Here we are going to discuss hanging rootograms and suspended rootograms. For the first one the predicted counts are plotted as dots with oblique lines, to represent uncertainty in the predictions. In the absect of uncertainty this lines will be flat (parallel to the x-axis). The observed counts are plotted as (oblique) bars hanging from the lines, see <a href="#fig-rootogram_hang" class="quarto-xref">Figure&nbsp;<span>5.9</span></a>.</p>
 <p>How do we read hanging rootograms? For a count, if a bar goes below the dashed line at y=0 the model is underestimating that count. Instead, if the bar goes above the dashed line at y=0, the model is overestimating that count.</p>
-<div id="da80b372" class="cell" data-execution_count="14">
+<div id="b94eac8f" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Coming soon with ArviZ 1.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="fig-rootogram_hang" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -755,7 +755,7 @@ Figure&nbsp;5.9: Hanging rootograms, showing the uncertainty in the predictions
 </figure>
 </div>
 <p>A variant of the hanging rootogram is the suspended rootogram (see <a href="#fig-rootogram_sus" class="quarto-xref">Figure&nbsp;<span>5.10</span></a>). As for the hanging version a bar that goes below the dashed line means that the model is underestimating that count, and a bar that goes above the dashed line means that the model is overestimating that count. The difference is that for suspended rootograms we plot the residuals (predicted-observed counts) as departing from the dashed line at y=0, instead of “hanging” from the predictions. Ideally, for each count we would expect a small departure from the dashed line equally distributed above and below.</p>
-<div id="353a25d3" class="cell" data-execution_count="15">
+<div id="4c1af5bc" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Coming soon with ArviZ 1.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="fig-rootogram_sus" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -776,7 +776,7 @@ Figure&nbsp;5.10: Suspended rootograms, showing the uncertainty in the predictio
 <p>Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. Modelling binary data poses a unique challenge for assessing model fit because these models generate predicted values on a probability scale (0-1), while the actual values of the response variable are dichotomous (either 0 or 1).</p>
 <p>One solution to this challenge was presented by <span class="citation" data-cites="Greenhill_2011">(<a href="References.html#ref-Greenhill_2011" role="doc-biblioref">Greenhill, Ward, and Sacks 2011</a>)</span> and is a know as separation plot. This graphical tool consists of a sequence of bars, where each bar represents a data point. Bars can have one of two colours, one for positive cases and one for negative cases. The bars are sorted by the predicted probabilities, so that the bars with the lowest predicted probabilities are on the left and the bars with the highest predicted probabilities are on the right. Usually the plot also includes a marker showing the expected number of total events. For and ideal fit all the bars with one color should be on one side of the marker and all the bars with the other color on the other side.</p>
 <p>The following example show a separation plot for a logistic regression model.</p>
-<div id="cell-fig-post_pred_sep" class="cell" data-execution_count="16">
+<div id="cell-fig-post_pred_sep" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>idata <span class="op">=</span> az.load_arviz_data(<span class="st">'classification10d'</span>)</span>
 <span id="cb21-2"><a href="#cb21-2"></a></span>
 <span id="cb21-3"><a href="#cb21-3"></a>az.plot_separation(idata<span class="op">=</span>idata,</span>
@@ -806,7 +806,7 @@ Figure&nbsp;5.11: Separation plot for a dummy logistic regression model.
 <section id="prior-and-likelihood-sensitivity-with-power-scaling" class="level3" data-number="5.4.1">
 <h3 data-number="5.4.1" class="anchored" data-anchor-id="prior-and-likelihood-sensitivity-with-power-scaling"><span class="header-section-number">5.4.1</span> Prior and likelihood sensitivity with power-scaling</h3>
 <p>The method we are going to discuss is described in detail in <span class="citation" data-cites="kallioinen_2023">(<a href="References.html#ref-kallioinen_2023" role="doc-biblioref">Kallioinen et al. 2023</a>)</span>. The main idea of the method is that it is possible to fit a models once and then approximate the effect of making the prior more or less “informative” with respect to the likelihood, and viceversa. The method uses two ideas. Importance sampling, that we have already discussed in <a href="Model_comparison.html" class="quarto-xref"><span>Chapter 6</span></a>, and power-scaling the prior or likelihood. By power-scaling we mean raising a distribution to a power <span class="math inline">\(\alpha\)</span>. As we can see from <a href="#fig-beta-normal-power-scaling" class="quarto-xref">Figure&nbsp;<span>5.12</span></a> the effect of power-scaling is to “stretch” or “compress” the distribution. This transformation is very general and it will work for many distributions, one exception being the uniform distribution.</p>
-<div id="cell-fig-beta-normal-power-scaling" class="cell" data-execution_count="17">
+<div id="cell-fig-beta-normal-power-scaling" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div id="fig-beta-normal-power-scaling" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -825,7 +825,7 @@ Figure&nbsp;5.12: The effect of power-scaling on Beta and Normal distributions
 p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)**\alpha \; p(\theta)
 \]</span></p>
 <p>Setting <span class="math inline">\(\alpha=1\)</span> is the same as omitting the power, and we recover the usual or “unperturbed” expresion for Bayes’ theorem posterior. Setting <span class="math inline">\(\alpha=0\)</span> is equivalent to ignoring the likelihood, thus <span class="math inline">\(p(\theta \mid y)_{\alpha}\)</span> will be equivalent to the prior. We can then conclude that any number between 0 and 1 will have the effect of “weakening” the likelihood with respect to the prior. By the same token any number greater than 1 will “strength” the likelihood with respect to the prior. Thus by adjusting the value of <span class="math inline">\(\alpha\)</span> we can modulate a stronger or weaker likelihood, if we use values close to 1, we emulate relative small perturbations. This very same idea can be apply to the prior. <a href="#fig-posterior-power-scaling" class="quarto-xref">Figure&nbsp;<span>5.13</span></a> shows the effect on the posterior of power-scaling the prior for a fixed likelihood.</p>
-<div id="cell-fig-posterior-power-scaling" class="cell" data-execution_count="18">
+<div id="cell-fig-posterior-power-scaling" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div id="fig-posterior-power-scaling" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -843,7 +843,7 @@ Figure&nbsp;5.13: The effect of power-scaling the prior on the posterior for a f
 </section>
 <section id="example-of-prior-and-likelihood-sensitivity-analysis" class="level3" data-number="5.4.2">
 <h3 data-number="5.4.2" class="anchored" data-anchor-id="example-of-prior-and-likelihood-sensitivity-analysis"><span class="header-section-number">5.4.2</span> Example of prior and likelihood sensitivity analysis</h3>
-<div id="714d4105" class="cell" data-execution_count="19">
+<div id="62a19aa2" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Coming soon with ArviZ 1.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -874,7 +874,7 @@ Tukey, John W. 1977. <em>Exploratory <span>Data</span> <span>Analysis</span></em
 
 </main> <!-- /main -->
 <script type="application/vnd.jupyter.widget-state+json">
-{"state":{"487cebfcbf524785a7aebabfa406de4d":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_76169a7adf774fca9fca85903a2c2c4d","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling ... <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:00</span>\n</pre>\n","text/plain":"Sampling ... \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:00\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"76169a7adf774fca9fca85903a2c2c4d":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"8e68ac2d1f86484291e21496d3b72f8a":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_c659b2d31cbc4195b2bab4b74832c9f7","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"c659b2d31cbc4195b2bab4b74832c9f7":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}}},"version_major":2,"version_minor":0}
+{"state":{"32f1a5f1efac464382138420e2b2b0b6":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"5c491bdd92184ef0a37a3bb6a8dac65c":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_7cf5b07983ee458d9e3fdebcd277a56f","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling ... <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:00</span>\n</pre>\n","text/plain":"Sampling ... \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:00\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"7cf5b07983ee458d9e3fdebcd277a56f":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"c91f474baa9d446eb5ef858c3f673550":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_32f1a5f1efac464382138420e2b2b0b6","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
