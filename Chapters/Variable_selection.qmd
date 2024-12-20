@@ -2,14 +2,16 @@
 
 ```{python}
 #| echo: false
-import arviz as az
 import arviz_plots as azp
+import bambi as bmb
+import kulprit as kpt
 import numpy as np
-import preliz as pz
+import pandas as pd
 import pymc as pm
+import pymc_bart as pmb
 import matplotlib.pyplot as plt
 plt.rcParams["figure.dpi"] = 100
-rng = np.random.default_rng(793)
+seed = 793
 azp.style.use("arviz-clean")
 ```
 
@@ -49,10 +51,10 @@ Let's see one example. We have a [record]([bike-sharing dataset](https://archive
 Let's first load the data and define the variables.
 
 ```{python}
-body_fat = pd.read_csv("../data/bikes.csv")
+bikes = pd.read_csv("../data/bikes.csv")
 
-Y = body_fat.pop("count")
-X = body_fat
+Y = bikes.pop("count")
+X = bikes
 ```
 
 Now we define the BART model using PyMC-BART, for details on how to define BART models, please check the [PyMC-BART documentation](https://www.pymc.io/projects/bart/en/latest/)
