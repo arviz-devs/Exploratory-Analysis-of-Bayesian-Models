@@ -342,11 +342,6 @@ div.csl-indent {
 </header>
 
 
-<div id="4c763056" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-stderr">
-<pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
-</div>
-</div>
 <p>Plots occupy a central place in modern statistics, both in exploratory data analysis and inferential statistics.</p>
 <p>Data visualization has an aesthetic and a scientific component. The challenge usually is to generate nice-looking graphics without losing the rigor and veracity of what you want to show. In this chapter, we will focus on the scientific component, but we will also give some tips on how to make the graphics look good.</p>
 <p>Data visualization is a very broad area with graphical representations targeting very different audiences ranging from scientific papers for ultra-specialists to newspapers with millions of readers. We will focus on scientific visualizations and in particular visualizations useful in a Bayesian setting, but some of the principles we will discuss are general and can be applied to other types of visualizations.</p>
@@ -454,15 +449,15 @@ Figure&nbsp;1.7: non-uniformly perceptual maps like jet can be very misleading
 <h2 data-number="1.4" class="anchored" data-anchor-id="style-sheets"><span class="header-section-number">1.4</span> Style sheets</h2>
 <p>Matplotlib allows users to easily switch between plotting styles by defining style sheets. ArviZ is delivered with a few additional styles that can be applied globally by writing <code>az.style.use(name_of_style)</code> or inside a <code>with</code> statement.</p>
 <div id="cell-fig-style_sheets" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>azp.style.use(<span class="st">'arviz-clean'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
-<span id="cb2-3"><a href="#cb2-3"></a>dist <span class="op">=</span> pz.Beta(<span class="dv">2</span>, <span class="dv">5</span>).pdf(x)</span>
-<span id="cb2-4"><a href="#cb2-4"></a></span>
-<span id="cb2-5"><a href="#cb2-5"></a>fig <span class="op">=</span> plt.figure()</span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
-<span id="cb2-7"><a href="#cb2-7"></a>    plt.plot(x, dist <span class="op">-</span> i, <span class="ss">f'C</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span>, label<span class="op">=</span><span class="ss">f'C</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span>, lw<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb2-8"><a href="#cb2-8"></a>plt.xlabel(<span class="st">'x'</span>)</span>
-<span id="cb2-9"><a href="#cb2-9"></a>plt.ylabel(<span class="st">'f(x)'</span>, rotation<span class="op">=</span><span class="dv">0</span>, labelpad<span class="op">=</span><span class="dv">15</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>azp.style.use(<span class="st">'arviz-clean'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>dist <span class="op">=</span> pz.Beta(<span class="dv">2</span>, <span class="dv">5</span>).pdf(x)</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb1-7"><a href="#cb1-7"></a>    plt.plot(x, dist <span class="op">-</span> i, <span class="ss">f'C</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span>, label<span class="op">=</span><span class="ss">f'C</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span>, lw<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb1-8"><a href="#cb1-8"></a>plt.xlabel(<span class="st">'x'</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>plt.ylabel(<span class="st">'f(x)'</span>, rotation<span class="op">=</span><span class="dv">0</span>, labelpad<span class="op">=</span><span class="dv">15</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-style_sheets" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
