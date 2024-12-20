@@ -62,7 +62,7 @@ Now we define the BART model using PyMC-BART, for details on how to define BART 
 ```{python}
 with pm.Model() as model:
     α = pm.HalfNormal("α", 2)
-    μ_ = pmb.BART("μ_", X, np.log(Y), m=50)
+    μ_ = pmb.BART("μ_", X, np.log(Y))
     μ = pm.Deterministic("μ", np.exp(μ_))
     y = pm.NegativeBinomial("y", mu=μ, alpha=α, observed=Y)
     idata = pm.sample(random_seed=seed,
@@ -154,12 +154,14 @@ Now we can repeat the process.
 
 
 ```{python}
+model = bmb.Model("count ~" +  " + ".join([c for c in bikes.columns if c!="count"]), data=bikes, family="negativebinomial")
+idata = model.fit(idata_kwargs={'log_likelihood': True}, random_seed=seed)
 ppi = kpt.ProjectionPredictive(model, idata)
 ppi.project()
 ppi.compare(min_model_size=1);
 ```
 
-And voila! If we consider `hour_cos` and `hour_sin` as a single variable, then the two most relevant variables are `hour` and `temperature`, in agreement with PyMC-BART.
+And voilà! If we consider `hour_cos` and `hour_sin` as a single variable, then the two most relevant variables are `hour` and `temperature`, in agreement with PyMC-BART.
 
 
 ### Consequences of performing a nom-penalized optimization
