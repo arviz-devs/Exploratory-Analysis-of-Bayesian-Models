@@ -16,14 +16,15 @@ jupyter:
 ```{python}
 #| echo: false
 import arviz as az
-import arviz.plots as azp
+import arviz_plots as azp
 import numpy as np
 import pandas as pd
 import pymc as pm
 import pytensor.tensor as pt
 import xarray as xr
-
+import matplotlib.pyplot as plt
 azp.style.use("arviz-clean")
+plt.rcParams["figure.dpi"] = 100
 ```
 
 ## Information criteria for hierarchical and multi-likelihood models
