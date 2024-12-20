@@ -41,6 +41,7 @@ book:
     - Chapters/MCMC_diagnostics.qmd
     - Chapters/Model_criticism.qmd
     - Chapters/Model_comparison.qmd
+    - Chapters/Variable_selection.qmd
     - Chapters/Case_study_model_comparison.qmd
     - Chapters/Prior_elicitation.qmd
     - Chapters/Presenting_results.qmd
