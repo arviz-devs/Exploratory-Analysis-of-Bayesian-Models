@@ -89,12 +89,9 @@ Strictly speaking when we say we _prune_ the trees we are actually computing the
 
 ```{python}
 axes = pmb.plot_pdp(μ_, X=X, Y=Y, grid=(2, 3), func=np.exp, var_discrete=[0, 2], xs_interval="insample", figsize=(12, 5))
-null = np.exp(idata.posterior["μ_"].mean())
-for ax in axes.ravel():
-    ax.axhline(null, color="0.5", linestyle="--")
 ```
 
-The dashed lines represent a null model, the more a variable deviates from these lines the more its impact on the response variable. We can see a qualitative agreement between the variable importance and the partial dependence plots.
+The dashed lines represent the null model, the more a variable deviates from these lines the more its impact on the response variable. We can see a qualitative agreement between the variable importance and the partial dependence plots.
 
 ## Variable selection with Kulprit
 
