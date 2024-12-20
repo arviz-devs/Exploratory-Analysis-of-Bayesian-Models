@@ -3,7 +3,7 @@
 
 ```{python}
 #| echo : false
-#import arviz as az
+#| warning: false
 import arviz_base as azb
 import arviz_stats as azs
 import arviz_plots as azp

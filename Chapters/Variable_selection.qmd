@@ -2,6 +2,7 @@
 
 ```{python}
 #| echo: false
+#| warning: false
 import arviz_plots as azp
 import bambi as bmb
 import kulprit as kpt

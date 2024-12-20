@@ -2,6 +2,7 @@
 
 ```{python}
 #| echo : false
+#| warning: false
 import arviz as az
 import arviz_plots as azp
 import numpy as np
