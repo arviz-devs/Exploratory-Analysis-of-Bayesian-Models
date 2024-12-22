@@ -1,4 +1,4 @@
-# Presentation of results  {#sec-presentation-results}
+# Presentation of Results  {#sec-presentation-results}
 
 * Summarizing results
 * Monte Carlo Standard error and accuracy
