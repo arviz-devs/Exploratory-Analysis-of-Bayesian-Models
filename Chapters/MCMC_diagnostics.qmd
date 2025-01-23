@@ -141,10 +141,10 @@ $\hat R$ is a numerical diagnostic that answers the question [@vehtari_2021]. Di
 
 The version implemented in ArviZ does several things under the hood, but the central idea is that it compares the variance between chains with the variance within each chain. Ideally, we should get $\hat R = 1$, in practice $\hat R \lessapprox 1.01$ are considered safe and in the first modeling phases, even higher values like $\hat R \approx 1.1$ may be fine.
 
-Using ArviZ we can get the $\hat R$ usando `az.rhat(⋅)`, `az.summary(⋅)` and `az.plot_forest(⋅, r_hat=True)`
+Using ArviZ we can get the $\hat R$ with `azs.rhat(⋅)`, `az.summary(⋅)` and `az.plot_forest(⋅, r_hat=True)`
 
 ```{python}
-az.rhat(sample)
+azs.rhat(sample)
 ```
 
 ### Effective Sample Size (ESS)
@@ -265,10 +265,10 @@ ax.plot(1, 0, ">k", transform=ax.get_yaxis_transform(), clip_on=False)
 ax.plot(48, 1, "^k", transform=ax.get_xaxis_transform(), clip_on=False)
 ```
 
-With ArviZ we can get `az.ess(⋅)`, `az.summary(⋅)` and `az.plot_forest(⋅, ess=True)`
+With ArviZ we can get `azs.ess(⋅)`, `az.summary(⋅)` and `az.plot_forest(⋅, ess=True)`
 
 ```{python}
-az.ess(sample)
+azs.ess(sample)
 ```
 
 One way to use the ESS is as a minimum requirement for trustworthy MCMC samples.  It is recommended the ESS to be greater than 100 per chain. That is, for 4 chains we want a minimum of 400 effective samples. 
@@ -311,10 +311,10 @@ azp.plot_ess_evolution(sample,
 An advantage of the ESS is that it is scale-free, it does not matter if one parameter varies between 0.1 and 0.2 and another between -2000 and 0, an ESS of 400 has the same meaning for both parameters. In models with many parameters, we can quickly identify which parameters are most problematic. However, when reporting results it is not very informative to know whether the ESS was 1372 or 1501. Instead, we would like to know the order of the errors we are making when approximating the posterior. This information is given by the **Monte Carlo standard error** (MCSE). Like the ESS, the MCSE takes into account the autocorrelation of the samples. This error should be below the desired precision in our results. That is, if for a parameter the MCSE is 0.1, it does not make sense to report that the mean of that parameter is 3.15. Since the correct value could easily be between 3.4 and 2.8.
 
 
-With ArviZ we can get the MCSE with `az.mcse(⋅)` or `az.summary(⋅)`.
+With ArviZ we can get the MCSE with `azs.mcse(⋅)` or `az.summary(⋅)`.
 
 ```{python}
-az.mcse(sample)
+azs.mcse(sample)
 ```
 
 ### Thinning
