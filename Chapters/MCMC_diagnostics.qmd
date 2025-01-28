@@ -192,7 +192,7 @@ iid_samples = pz.Normal(mean, 1).rvs((1000, size))
 rhos = np.linspace(0, 0.90, 7)
 N = len(rhos)
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(12, 4))
 
 for k, rho in enumerate(rhos):
     auto_samples = np.stack([generate_autocorrelated_sample(iid_sample, rho) for iid_sample in iid_samples])
@@ -236,7 +236,7 @@ iid_samples =  pz.Normal(mean, 1).rvs((500, size))
 rhos = np.linspace(0, 0.90, 7)
 N = len(rhos)
 
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(12, 4))
 
 for k, rho in enumerate(rhos):
     auto_samples = np.stack([generate_autocorrelated_sample(iid_sample, rho) for iid_sample in iid_samples])
@@ -329,8 +329,7 @@ To determine an appropriate thinning factor, we can use the effective sample siz
 In ArviZ we have the `thin` function, which allows us to perform thinning automatically.
 
 ```{python}
-# Coming soon with ArviZ 1.0
-#azs.thin(sample)
+azs.thin(sample)
 ```
 
 Additionally, if needed, we can specify the thinning factor manually or we can pass a `target_ess`, this last option is useful when we want as much thinning as possible provided we still get an ESS around the specified value of `target_ess`. 
