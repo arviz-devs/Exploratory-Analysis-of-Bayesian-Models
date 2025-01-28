@@ -403,7 +403,7 @@ for (dist_, params), ax in zip(distributions, axes.ravel()):
 In the context of Bayes Theorem we can use power-scaling to modulate the relative weights of the likelihood and prior. For instance we could write:
 
 $$
-p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)**\alpha \; p(\theta)
+p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)^\alpha \; p(\theta)
 $$
 
 Setting $\alpha=1$ is the same as omitting the power, and we recover the usual or "unperturbed" expresion for Bayes' theorem posterior. Setting $\alpha=0$ is equivalent to ignoring the likelihood, thus $p(\theta \mid y)_{\alpha}$ will be equivalent to the prior. We can then conclude that any number between 0 and 1 will have the effect of "weakening" the likelihood with respect to the prior. By the same token any number greater than 1 will "strength" the likelihood with respect to the prior. Thus by adjusting the value of $\alpha$ we can modulate a stronger or weaker likelihood, if we use values close to 1, we emulate relative small perturbations. This very same idea can be apply to the prior. @fig-posterior-power-scaling shows the effect on the posterior of power-scaling the prior for a fixed likelihood.
