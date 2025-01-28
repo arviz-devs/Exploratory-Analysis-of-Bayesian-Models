@@ -412,7 +412,7 @@ window.Quarto = {
 <li><code>bad_sample_0</code>: We sorted good_sample, split it into two chains, and then added a small Gaussian error. This is a representation of a bad sample because values are not independent (we sorted the values!) and they do not come from the same distribution, because of the split the first half has values that are lower than the second. This represents a scenario where the sampler has very poor mixing.</li>
 <li><code>bad_sample_1</code>: we start from <code>good_chains</code>, and turn into a poor sample by randomly introducing portions where consecutive samples are highly correlated to each other. This represents a common scenario, a sampler can resolve a region of the parameter space very well, but get stuck into one or more regions.</li>
 </ul>
-<div id="25d24986" class="cell" data-execution_count="2">
+<div id="9dd3d977" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Show the code for more details</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>good_sample <span class="op">=</span> pz.Gamma(<span class="dv">2</span>, <span class="dv">5</span>).rvs((<span class="dv">2</span>, <span class="dv">2000</span>), random_state<span class="op">=</span>rng)</span>
@@ -553,7 +553,7 @@ Figure&nbsp;4.5: Rank plot for <code>good_sample</code>, <code>bad_sample_0</cod
 <p><span class="math inline">\(\hat R\)</span> is a numerical diagnostic that answers the question <span class="citation" data-cites="vehtari_2021">(<a href="References.html#ref-vehtari_2021" role="doc-biblioref">Vehtari et al. 2021</a>)</span>. Did the chains mix properly? But I also like to think of it as the score assigned by a jury in a trace (or rank) plot contest.</p>
 <p>The version implemented in ArviZ does several things under the hood, but the central idea is that it compares the variance between chains with the variance within each chain. Ideally, we should get <span class="math inline">\(\hat R = 1\)</span>, in practice <span class="math inline">\(\hat R \lessapprox 1.01\)</span> are considered safe and in the first modeling phases, even higher values like <span class="math inline">\(\hat R \approx 1.1\)</span> may be fine.</p>
 <p>Using ArviZ we can get the <span class="math inline">\(\hat R\)</span> with <code>azs.rhat(⋅)</code>, <code>az.summary(⋅)</code> and <code>az.plot_forest(⋅, r_hat=True)</code></p>
-<div id="040c09fa" class="cell" data-execution_count="8">
+<div id="8f08383c" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>azs.rhat(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
@@ -931,7 +931,7 @@ Dimensions:       ()
 Data variables:
     good_sample   float64 8B 1.0
     bad_sample_0  float64 8B 2.635
-    bad_sample_1  float64 8B 1.034</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-88c9c5c9-e3b0-4b78-819d-04baf77f7fe7" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-88c9c5c9-e3b0-4b78-819d-04baf77f7fe7" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-9bb7a2c7-cfcf-4b25-853a-6b7233dcc78e" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-9bb7a2c7-cfcf-4b25-853a-6b7233dcc78e" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-1497c2e3-00ca-4983-83ef-0acb98dfc0af" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-1497c2e3-00ca-4983-83ef-0acb98dfc0af" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">1.0</div><input id="attrs-7abb74f9-fff5-4264-a1bf-98017b97e376" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-7abb74f9-fff5-4264-a1bf-98017b97e376" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-449bc853-d6ab-42cd-9965-bc6adbb23a1a" class="xr-var-data-in" type="checkbox"><label for="data-449bc853-d6ab-42cd-9965-bc6adbb23a1a" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(1.00025509)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">2.635</div><input id="attrs-c28c14c3-d68e-47e3-9fe1-f45a2d618791" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-c28c14c3-d68e-47e3-9fe1-f45a2d618791" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-77c1e3bf-cfc4-4713-81e5-3392ab9c8d03" class="xr-var-data-in" type="checkbox"><label for="data-77c1e3bf-cfc4-4713-81e5-3392ab9c8d03" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(2.63541676)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">1.034</div><input id="attrs-e46831b9-6a43-4ae8-983a-6bab678bb764" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-e46831b9-6a43-4ae8-983a-6bab678bb764" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-7815e213-e94d-42f3-952c-966425d492f6" class="xr-var-data-in" type="checkbox"><label for="data-7815e213-e94d-42f3-952c-966425d492f6" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(1.0343114)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-aa852685-e9f4-4663-9905-38e511fcaf19" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-aa852685-e9f4-4663-9905-38e511fcaf19" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-5fd64f77-6cd6-4074-8a9f-46418c25563d" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-5fd64f77-6cd6-4074-8a9f-46418c25563d" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
+    bad_sample_1  float64 8B 1.034</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-f7bb6e5e-c086-4460-9b09-29a672285099" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-f7bb6e5e-c086-4460-9b09-29a672285099" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-6e42006f-8f04-461d-87c4-fa740c4eece0" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-6e42006f-8f04-461d-87c4-fa740c4eece0" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-809d2e67-2704-43a0-8dab-5323b45d1f82" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-809d2e67-2704-43a0-8dab-5323b45d1f82" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">1.0</div><input id="attrs-ea09142c-3b3e-49ad-97be-65718acdc49e" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-ea09142c-3b3e-49ad-97be-65718acdc49e" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-10846518-72df-4c8a-bbdf-464abfecfb5c" class="xr-var-data-in" type="checkbox"><label for="data-10846518-72df-4c8a-bbdf-464abfecfb5c" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(1.00025509)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">2.635</div><input id="attrs-25009842-e6fd-4c19-9d47-a5972e7d9459" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-25009842-e6fd-4c19-9d47-a5972e7d9459" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-c77127ea-a0c1-454d-9f46-0908ec53af56" class="xr-var-data-in" type="checkbox"><label for="data-c77127ea-a0c1-454d-9f46-0908ec53af56" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(2.63541676)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">1.034</div><input id="attrs-304c2cd5-56ef-4c25-84b5-a710e27c215c" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-304c2cd5-56ef-4c25-84b5-a710e27c215c" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-eb2bf800-6d98-44f4-b17f-ee7d4ad7cd51" class="xr-var-data-in" type="checkbox"><label for="data-eb2bf800-6d98-44f4-b17f-ee7d4ad7cd51" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(1.0343114)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-d94a07c4-80fa-422b-ad02-0a02a229450f" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-d94a07c4-80fa-422b-ad02-0a02a229450f" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-c2885477-fab5-4c2a-946f-1d46ed326643" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-c2885477-fab5-4c2a-946f-1d46ed326643" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
 </div>
 </div>
 <section id="effective-sample-size-ess" class="level3" data-number="4.4.1">
@@ -973,7 +973,7 @@ Data variables:
 <span id="cb8-30"><a href="#cb8-30"></a>rhos <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.90</span>, <span class="dv">7</span>)</span>
 <span id="cb8-31"><a href="#cb8-31"></a>N <span class="op">=</span> <span class="bu">len</span>(rhos)</span>
 <span id="cb8-32"><a href="#cb8-32"></a></span>
-<span id="cb8-33"><a href="#cb8-33"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb8-33"><a href="#cb8-33"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb8-34"><a href="#cb8-34"></a></span>
 <span id="cb8-35"><a href="#cb8-35"></a><span class="cf">for</span> k, rho <span class="kw">in</span> <span class="bu">enumerate</span>(rhos):</span>
 <span id="cb8-36"><a href="#cb8-36"></a>    auto_samples <span class="op">=</span> np.stack([generate_autocorrelated_sample(iid_sample, rho) <span class="cf">for</span> iid_sample <span class="kw">in</span> iid_samples])</span>
@@ -1025,7 +1025,7 @@ Figure&nbsp;4.6: Average error as a function of the sample size for different au
 <span id="cb9-6"><a href="#cb9-6"></a>rhos <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">0.90</span>, <span class="dv">7</span>)</span>
 <span id="cb9-7"><a href="#cb9-7"></a>N <span class="op">=</span> <span class="bu">len</span>(rhos)</span>
 <span id="cb9-8"><a href="#cb9-8"></a></span>
-<span id="cb9-9"><a href="#cb9-9"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb9-9"><a href="#cb9-9"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
 <span id="cb9-10"><a href="#cb9-10"></a></span>
 <span id="cb9-11"><a href="#cb9-11"></a><span class="cf">for</span> k, rho <span class="kw">in</span> <span class="bu">enumerate</span>(rhos):</span>
 <span id="cb9-12"><a href="#cb9-12"></a>    auto_samples <span class="op">=</span> np.stack([generate_autocorrelated_sample(iid_sample, rho) <span class="cf">for</span> iid_sample <span class="kw">in</span> iid_samples])</span>
@@ -1067,7 +1067,7 @@ Figure&nbsp;4.7: Effective sample size as a function of the sample size for diff
 </div>
 </div>
 <p>With ArviZ we can get <code>azs.ess(⋅)</code>, <code>az.summary(⋅)</code> and <code>az.plot_forest(⋅, ess=True)</code></p>
-<div id="801864eb" class="cell" data-execution_count="11">
+<div id="00471b62" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>azs.ess(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
@@ -1445,7 +1445,7 @@ Dimensions:       ()
 Data variables:
     good_sample   float64 8B 4.171e+03
     bad_sample_0  float64 8B 2.354
-    bad_sample_1  float64 8B 163.8</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-11bc5d57-1ebc-499c-be10-2eae4a6d0d7c" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-11bc5d57-1ebc-499c-be10-2eae4a6d0d7c" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-0384cdd1-5934-4643-b553-edf015ec37cd" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-0384cdd1-5934-4643-b553-edf015ec37cd" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-c6d60103-d90d-40aa-a436-0df99ed49300" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-c6d60103-d90d-40aa-a436-0df99ed49300" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">4.171e+03</div><input id="attrs-613c99f3-01f7-40bf-89b8-a594616b33bc" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-613c99f3-01f7-40bf-89b8-a594616b33bc" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-ddb15ecf-86da-4e95-a642-84f34c6ea765" class="xr-var-data-in" type="checkbox"><label for="data-ddb15ecf-86da-4e95-a642-84f34c6ea765" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(4170.96051113)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">2.354</div><input id="attrs-43b746f4-ce9e-46b5-99d7-9be4d21e9208" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-43b746f4-ce9e-46b5-99d7-9be4d21e9208" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-42709848-2a6d-490e-bd7e-f78e26ce4852" class="xr-var-data-in" type="checkbox"><label for="data-42709848-2a6d-490e-bd7e-f78e26ce4852" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(2.35401828)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">163.8</div><input id="attrs-ecdcad78-f1d5-44ec-8e76-03119cc2d192" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-ecdcad78-f1d5-44ec-8e76-03119cc2d192" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-21c464b5-1fa8-4ab3-b9c9-cfd7360969f6" class="xr-var-data-in" type="checkbox"><label for="data-21c464b5-1fa8-4ab3-b9c9-cfd7360969f6" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(163.83284461)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-74805946-e7c1-4882-a9e0-293f2274a3ba" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-74805946-e7c1-4882-a9e0-293f2274a3ba" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-6fcc1caa-9de2-4e5c-86f9-90b8abaafa46" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-6fcc1caa-9de2-4e5c-86f9-90b8abaafa46" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
+    bad_sample_1  float64 8B 163.8</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-839a2847-dd3d-4579-aa00-aa1e1d7c4916" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-839a2847-dd3d-4579-aa00-aa1e1d7c4916" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-2f537ed5-b896-4ad3-b680-cf1e94c7250e" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-2f537ed5-b896-4ad3-b680-cf1e94c7250e" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-7e7013dd-8cbe-4530-914e-34d6081817fe" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-7e7013dd-8cbe-4530-914e-34d6081817fe" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">4.171e+03</div><input id="attrs-be2ce133-f0f1-416c-9aee-2e65a76d2a5a" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-be2ce133-f0f1-416c-9aee-2e65a76d2a5a" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-372d3101-83bb-4ae0-92dc-559411868d62" class="xr-var-data-in" type="checkbox"><label for="data-372d3101-83bb-4ae0-92dc-559411868d62" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(4170.96051113)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">2.354</div><input id="attrs-09f49d05-8122-4912-b447-0ff87aecdcd6" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-09f49d05-8122-4912-b447-0ff87aecdcd6" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-10889be8-1333-40e1-b71a-efdc05b4b054" class="xr-var-data-in" type="checkbox"><label for="data-10889be8-1333-40e1-b71a-efdc05b4b054" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(2.35401828)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">163.8</div><input id="attrs-f9b0d4d3-7419-42e7-8026-b173bb0ce261" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-f9b0d4d3-7419-42e7-8026-b173bb0ce261" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-b63e30ce-41a1-4731-8b1c-aeb715d70146" class="xr-var-data-in" type="checkbox"><label for="data-b63e30ce-41a1-4731-8b1c-aeb715d70146" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(163.83284461)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-962a7526-7527-46dd-bb43-5ef663294718" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-962a7526-7527-46dd-bb43-5ef663294718" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-49ccaeb4-fb18-4506-ac46-a52e4166fb37" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-49ccaeb4-fb18-4506-ac46-a52e4166fb37" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
 </div>
 </div>
 <p>One way to use the ESS is as a minimum requirement for trustworthy MCMC samples. It is recommended the ESS to be greater than 100 per chain. That is, for 4 chains we want a minimum of 400 effective samples.</p>
@@ -1463,7 +1463,7 @@ Note
 </div>
 </div>
 <p>We see that <code>az.summary(⋅)</code> returns two ESS values, <code>ess_bulk</code> and <code>ess_tail</code>. This is because different regions of the parameter space may have different ESS values since not all regions are sampled with the same efficiency. Intuitively, one may think that when sampling a distribution like a Gaussian it is easier to obtain better sample quality around the mean than around the tails, simply because we have more samples from that region. For some models, it could be the other way around, but the take-home message remains, not all regions are necessarily sampled with the same efficiency</p>
-<div id="0e13a896" class="cell" data-execution_count="12">
+<div id="30f0cfdb" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>az.summary(sample, kind<span class="op">=</span><span class="st">"diagnostics"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <div>
@@ -1515,7 +1515,7 @@ Note
 </div>
 <p>If we are going to use the MCMC samples to calculate central values such as means or medians then we have to make sure that the <code>ess_bulk</code> is sufficiently large, however, if we want to calculate intervals such as an HDI 94% we have to make sure that <code>ess_tail</code> be appropriate.</p>
 <p>ArviZ offers several functions linked to the ESS. For example, if we want to evaluate the performance of the sampler for several regions at the same time we can use <code>az.plot_ess</code>.</p>
-<div id="56294cd0" class="cell" data-execution_count="13">
+<div id="55f5d99f" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>azp.plot_ess(sample,</span>
 <span id="cb12-2"><a href="#cb12-2"></a>            pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>: {<span class="st">"figsize"</span>: (<span class="dv">10</span>, <span class="dv">8</span>)},</span>
 <span id="cb12-3"><a href="#cb12-3"></a>                       <span class="st">"col_wrap"</span>: <span class="dv">1</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1552,7 +1552,7 @@ Figure&nbsp;4.8: ESS evolution plot for <code>good_sample</code> and <code>bad_s
 <h3 data-number="4.4.2" class="anchored" data-anchor-id="monte-carlo-standard-error-mcse"><span class="header-section-number">4.4.2</span> Monte Carlo standard error (MCSE)</h3>
 <p>An advantage of the ESS is that it is scale-free, it does not matter if one parameter varies between 0.1 and 0.2 and another between -2000 and 0, an ESS of 400 has the same meaning for both parameters. In models with many parameters, we can quickly identify which parameters are most problematic. However, when reporting results it is not very informative to know whether the ESS was 1372 or 1501. Instead, we would like to know the order of the errors we are making when approximating the posterior. This information is given by the <strong>Monte Carlo standard error</strong> (MCSE). Like the ESS, the MCSE takes into account the autocorrelation of the samples. This error should be below the desired precision in our results. That is, if for a parameter the MCSE is 0.1, it does not make sense to report that the mean of that parameter is 3.15. Since the correct value could easily be between 3.4 and 2.8.</p>
 <p>With ArviZ we can get the MCSE with <code>azs.mcse(⋅)</code> or <code>az.summary(⋅)</code>.</p>
-<div id="9a1c24e6" class="cell" data-execution_count="15">
+<div id="8afd763c" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>azs.mcse(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
@@ -1930,7 +1930,7 @@ Dimensions:       ()
 Data variables:
     good_sample   float64 8B 0.004354
     bad_sample_0  float64 8B 0.1816
-    bad_sample_1  float64 8B 0.02821</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-abfa4ec8-88dc-404f-b599-cede48fd1e38" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-abfa4ec8-88dc-404f-b599-cede48fd1e38" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-12c695f3-c910-415e-9e56-13fe650dfaeb" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-12c695f3-c910-415e-9e56-13fe650dfaeb" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-ffa1cef1-6781-4376-9c5a-ebc994d33601" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-ffa1cef1-6781-4376-9c5a-ebc994d33601" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.004354</div><input id="attrs-07408ff5-abed-43cf-b862-4eb5ff40db61" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-07408ff5-abed-43cf-b862-4eb5ff40db61" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-2e813dc2-1556-4722-8fcf-8e771c9dee96" class="xr-var-data-in" type="checkbox"><label for="data-2e813dc2-1556-4722-8fcf-8e771c9dee96" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.00435365)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.1816</div><input id="attrs-66144ac9-bb4b-4109-8caf-fbc4971c3344" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-66144ac9-bb4b-4109-8caf-fbc4971c3344" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-49a503b1-6907-491f-a9e5-87db8603ea90" class="xr-var-data-in" type="checkbox"><label for="data-49a503b1-6907-491f-a9e5-87db8603ea90" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.1816053)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.02821</div><input id="attrs-350e78c8-064c-4bc1-9b66-0ef571b70f6a" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-350e78c8-064c-4bc1-9b66-0ef571b70f6a" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-3d7c03c4-f0d0-4ff7-9c9a-b39af368337b" class="xr-var-data-in" type="checkbox"><label for="data-3d7c03c4-f0d0-4ff7-9c9a-b39af368337b" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.02820501)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-5c84530e-7589-4f60-8210-537b670b06a4" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-5c84530e-7589-4f60-8210-537b670b06a4" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-fbdd66b3-c076-450f-bf0f-a865a4562594" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-fbdd66b3-c076-450f-bf0f-a865a4562594" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
+    bad_sample_1  float64 8B 0.02821</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-dee69305-3ca9-4336-8aa6-fb6f331628e5" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-dee69305-3ca9-4336-8aa6-fb6f331628e5" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-0b8c9ba5-1a35-473c-863d-2e65eb675014" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-0b8c9ba5-1a35-473c-863d-2e65eb675014" class="xr-section-summary" title="Expand/collapse section">Coordinates: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-edc4f415-fdc4-4378-9708-29b8bea92780" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-edc4f415-fdc4-4378-9708-29b8bea92780" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.004354</div><input id="attrs-b7026d4d-8023-4b14-a1aa-800b02d83599" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-b7026d4d-8023-4b14-a1aa-800b02d83599" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-8831a538-512a-4d3e-8a1f-8781b9b508b6" class="xr-var-data-in" type="checkbox"><label for="data-8831a538-512a-4d3e-8a1f-8781b9b508b6" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.00435365)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.1816</div><input id="attrs-26ca26b5-bdbc-4def-8cb7-740b4a10dde2" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-26ca26b5-bdbc-4def-8cb7-740b4a10dde2" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-30b0f448-169d-422d-a9f3-7223091dc2b0" class="xr-var-data-in" type="checkbox"><label for="data-30b0f448-169d-422d-a9f3-7223091dc2b0" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.1816053)</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">()</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.02821</div><input id="attrs-5b9b13d8-ad54-4e80-9637-520b85723281" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-5b9b13d8-ad54-4e80-9637-520b85723281" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-934f9d41-4a8d-47f9-b6c1-f51f26df5e28" class="xr-var-data-in" type="checkbox"><label for="data-934f9d41-4a8d-47f9-b6c1-f51f26df5e28" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(0.02820501)</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-9ee6382f-2117-43be-b5cb-3520cb0bc703" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-9ee6382f-2117-43be-b5cb-3520cb0bc703" class="xr-section-summary" title="Expand/collapse section">Indexes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"></ul></div></li><li class="xr-section-item"><input id="section-708df827-3398-4369-adb8-79870f126488" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-708df827-3398-4369-adb8-79870f126488" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
 </div>
 </div>
 </section>
@@ -1943,9 +1943,392 @@ Data variables:
 </ul>
 <p>To determine an appropriate thinning factor, we can use the effective sample size (ESS). For instance, if you have 2,000 samples and an ESS of 1,000, you would thin by a factor of 2, keeping every other sample. The higher the ESS, the lower the thinning factor required. A more refined approach is to calculate both ESS-tail and ESS-bulk, then use the smaller value, which better accounts for differences in sampling efficiency between the central 90% quantile and the 5% tail quantiles <span class="citation" data-cites="sailynoja_2022">(<a href="References.html#ref-sailynoja_2022" role="doc-biblioref">Säilynoja, Bürkner, and Vehtari 2022</a>)</span>.</p>
 <p>In ArviZ we have the <code>thin</code> function, which allows us to perform thinning automatically.</p>
-<div id="06133254" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Coming soon with ArviZ 1.0</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="co">#azs.thin(sample)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ea4f9b5b" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>azs.thin(sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewbox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewbox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1f1f1f;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: inline-block;
+  opacity: 0;
+  height: 0;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:focus + label {
+  border: 2px solid var(--xr-font-color0);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: "►";
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: "▼";
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: "(";
+}
+
+.xr-dim-list:after {
+  content: ")";
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ",";
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class="xr-text-repr-fallback">&lt;xarray.Dataset&gt; Size: 240B
+Dimensions:       (chain: 2, draw: 4)
+Coordinates:
+  * chain         (chain) int64 16B 0 1
+  * draw          (draw) int64 32B 0 575 1150 1725
+Data variables:
+    good_sample   (chain, draw) float64 64B 0.3661 0.7474 ... 0.1344 0.06991
+    bad_sample_0  (chain, draw) float64 64B 0.0714 0.05764 ... 0.5725 0.9131
+    bad_sample_1  (chain, draw) float64 64B 0.3661 0.7474 ... 0.1344 0.06991</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.Dataset</div></div><ul class="xr-sections"><li class="xr-section-item"><input id="section-129f861f-385f-4d48-b96d-77c83cba937b" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-129f861f-385f-4d48-b96d-77c83cba937b" class="xr-section-summary" title="Expand/collapse section">Dimensions:</label><div class="xr-section-inline-details"><ul class="xr-dim-list"><li><span class="xr-has-index">chain</span>: 2</li><li><span class="xr-has-index">draw</span>: 4</li></ul></div><div class="xr-section-details"></div></li><li class="xr-section-item"><input id="section-3b3d7ce4-a357-48a3-be4d-71a76562166f" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-3b3d7ce4-a357-48a3-be4d-71a76562166f" class="xr-section-summary">Coordinates: <span>(2)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">chain</span></div><div class="xr-var-dims">(chain)</div><div class="xr-var-dtype">int64</div><div class="xr-var-preview xr-preview">0 1</div><input id="attrs-8eb89416-0a8e-4619-ba34-eaca0148ed68" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-8eb89416-0a8e-4619-ba34-eaca0148ed68" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-db353d77-306e-4f66-ab5d-6f9a65591fad" class="xr-var-data-in" type="checkbox"><label for="data-db353d77-306e-4f66-ab5d-6f9a65591fad" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array([0, 1])</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">draw</span></div><div class="xr-var-dims">(draw)</div><div class="xr-var-dtype">int64</div><div class="xr-var-preview xr-preview">0 575 1150 1725</div><input id="attrs-781d54c2-04eb-46f1-864e-41aaa12c35c2" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-781d54c2-04eb-46f1-864e-41aaa12c35c2" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-b42aa4c5-acf9-4d23-acfd-7aa182eccc9d" class="xr-var-data-in" type="checkbox"><label for="data-b42aa4c5-acf9-4d23-acfd-7aa182eccc9d" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array([   0,  575, 1150, 1725])</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-706049a5-950a-4444-8d45-43b7416fdd3b" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-706049a5-950a-4444-8d45-43b7416fdd3b" class="xr-section-summary">Data variables: <span>(3)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span>good_sample</span></div><div class="xr-var-dims">(chain, draw)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.3661 0.7474 ... 0.1344 0.06991</div><input id="attrs-92b235c7-af0a-48b9-b662-e0f71ab9b4cf" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-92b235c7-af0a-48b9-b662-e0f71ab9b4cf" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-20961dbd-5c39-4956-9d8a-7338bd697844" class="xr-var-data-in" type="checkbox"><label for="data-20961dbd-5c39-4956-9d8a-7338bd697844" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array([[0.36610475, 0.74737007, 0.20311446, 0.94159276],
+       [0.40832387, 0.45893751, 0.13440787, 0.06990963]])</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_0</span></div><div class="xr-var-dims">(chain, draw)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.0714 0.05764 ... 0.5725 0.9131</div><input id="attrs-9783bd92-d884-4fda-8822-6ff72da1c982" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-9783bd92-d884-4fda-8822-6ff72da1c982" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-311242aa-d31d-4dad-b4cf-ebeda43bfb0e" class="xr-var-data-in" type="checkbox"><label for="data-311242aa-d31d-4dad-b4cf-ebeda43bfb0e" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array([[0.07139604, 0.05764417, 0.15855657, 0.36470337],
+       [0.31445014, 0.38014003, 0.57254264, 0.91309794]])</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>bad_sample_1</span></div><div class="xr-var-dims">(chain, draw)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.3661 0.7474 ... 0.1344 0.06991</div><input id="attrs-d4ed87ba-9b8b-4978-9df0-5132171e11db" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-d4ed87ba-9b8b-4978-9df0-5132171e11db" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-4456a7d2-0a11-4798-bfc6-39509b914656" class="xr-var-data-in" type="checkbox"><label for="data-4456a7d2-0a11-4798-bfc6-39509b914656" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array([[0.36610475, 0.74737007, 0.20311446, 0.94159276],
+       [0.40832387, 0.45893751, 0.13440787, 0.06990963]])</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-47073b38-5cf0-45e5-97ab-98210d21117e" class="xr-section-summary-in" type="checkbox"><label for="section-47073b38-5cf0-45e5-97ab-98210d21117e" class="xr-section-summary">Indexes: <span>(2)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-index-name"><div>chain</div></div><div class="xr-index-preview">PandasIndex</div><input type="checkbox" disabled=""><label></label><input id="index-d3f0dc99-e69b-41ea-9f3d-5cef29d6c015" class="xr-index-data-in" type="checkbox"><label for="index-d3f0dc99-e69b-41ea-9f3d-5cef29d6c015" title="Show/Hide index repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-index-data"><pre>PandasIndex(Index([0, 1], dtype='int64', name='chain'))</pre></div></li><li class="xr-var-item"><div class="xr-index-name"><div>draw</div></div><div class="xr-index-preview">PandasIndex</div><input type="checkbox" disabled=""><label></label><input id="index-7bfc46be-34de-4b98-b36a-df9b156e808d" class="xr-index-data-in" type="checkbox"><label for="index-7bfc46be-34de-4b98-b36a-df9b156e808d" title="Show/Hide index repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-index-data"><pre>PandasIndex(Index([0, 575, 1150, 1725], dtype='int64', name='draw'))</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-9578afa1-0cce-469b-af10-a5239a5670fe" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-9578afa1-0cce-469b-af10-a5239a5670fe" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
+</div>
 </div>
 <p>Additionally, if needed, we can specify the thinning factor manually or we can pass a <code>target_ess</code>, this last option is useful when we want as much thinning as possible provided we still get an ESS around the specified value of <code>target_ess</code>.</p>
 </section>
@@ -1954,7 +2337,7 @@ Data variables:
 <h2 data-number="4.5" class="anchored" data-anchor-id="diagnosis-of-gradient-based-algorithms"><span class="header-section-number">4.5</span> Diagnosis of gradient-based algorithms</h2>
 <p>Due to its internal workings, algorithms like NUTS offer some specific tests that are not available to other methods. These tests are generally very sensitive.</p>
 <p>To exemplify this we are going to load two InferenceData from pre-calculated models. The details of how these data were generated are not relevant at the moment. We will only say that they are two models that are mathematically equivalent but parameterized in different ways. In this case, the parameterization affects the efficiency of the sampler. The <code>centered</code> model is sampled more efficiently than the <code>uncentered</code> model.</p>
-<div id="21f59a6e" class="cell" data-execution_count="17">
+<div id="23f877a1" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>idata_cm <span class="op">=</span> az.load_arviz_data(<span class="st">"centered_eight"</span>)</span>
 <span id="cb16-2"><a href="#cb16-2"></a>idata_ncm <span class="op">=</span> az.load_arviz_data(<span class="st">"non_centered_eight"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1966,7 +2349,7 @@ Data variables:
 <li>A random walk in momentum space</li>
 </ul>
 <p>If the transition energy distribution is similar to the marginal energy distribution, then NUTS can generate samples of the marginal energy distribution that are <em>almost</em> independent between transitions. We can evaluate this visually or numerically, calculating the Bayesian Fraction of Missing Information (BFMI), as shown in the following figure.</p>
-<div id="e21f8803" class="cell" data-execution_count="18">
+<div id="b092d980" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>_, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>), constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb17-2"><a href="#cb17-2"></a></span>
 <span id="cb17-3"><a href="#cb17-3"></a><span class="cf">for</span> ax, idata, nombre <span class="kw">in</span> <span class="bu">zip</span>(axes.ravel(), (idata_cm, idata_ncm), (<span class="st">"centered"</span>, <span class="st">"non-centered"</span>)):</span>
@@ -1985,7 +2368,7 @@ Data variables:
 <h3 data-number="4.5.2" class="anchored" data-anchor-id="divergences"><span class="header-section-number">4.5.2</span> Divergences</h3>
 <p>One advantage of NUTS is that it <em>fails with style</em>. This happens, for example, when trying to go from regions of low curvature to regions of high curvature. In these cases, the numerical trajectories may diverge. Essentially this happens because in these cases there is no single set of hyper-parameters that allows efficient sampling of both regions. So one region is sampled properly and when the sampler moves to the other region it fails. Divergent numerical trajectories are extremely sensitive identifiers of <em>pathological neighborhoods</em>.</p>
 <p>The following example shows two things the <code>non-centered</code> model shows several divergences (turquoise circles) grouped in one region. In the <code>centered</code> model, which has no divergence, you can see that around that same region, there are samples for smaller values of <code>tau</code>. That is to say, the ‘uncentered’ model fails to sample a region, but at least it warns that it is having problems sampling that region!</p>
-<div id="9cf0584d" class="cell" data-execution_count="19">
+<div id="52b5b7ad" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>_, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, sharey<span class="op">=</span><span class="va">True</span>, sharex<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>), constrained_layout<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb18-2"><a href="#cb18-2"></a></span>
 <span id="cb18-3"><a href="#cb18-3"></a></span>
