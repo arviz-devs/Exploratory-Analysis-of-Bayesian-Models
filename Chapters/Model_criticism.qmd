@@ -368,13 +368,19 @@ az.plot_separation(idata=idata,
 
 ## Prior sensitivity checks
 
-Determining the sensitivity of the posterior to perturbations of the prior is an important part of building Bayesian models. By sensitivity of the posterior to the prior we mean how much the posterior distribution changes when the prior is changed. Usually this is done by comparing the results obtained using reference prior against the results obtained using alternative priors. The reference prior can be the default prior in packages like Bambi or some other "template" prior from literature or previous analysis of a similar dataset/problem. But it can also be the prior obtained after a more careful elicitation process. Once we have this prior we compute the posterior, diagnose samples and check everything is OK with this model. As usual is import to check that we can trust the model and samples. Then we come up with a set of "alternative" priors that for some reason we consider as relevant. We then fit and check model with these alternative priors. To asses how different posteriors are we can use a series of visual and numerical comparisons as we already explained in this the previous sections. For instance, when working with ArviZ, we can use `az.plot_forest` or `az.plot_density`, as both plots allows us to compare multiple posteriors in a single plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.
+Determining the sensitivity of the posterior to perturbations of the prior is an important part of building Bayesian models. The traditional way to asses the prior sensitivity is to compare the posterior obtained using a reference prior against the posterior obtained using one or more alternative priors. 
 
-This process can be a very time-consuming, but it can help us understand how robust the model is to different prior choices. We also notice, that the same procedure can also be used to compare how different likelihoods affect the posterior. So we can discuss the sensitivity of the posterior to the likelihood, the prior or both. It the next section we are going to discuss a more automated way to do this kind of analysis.
+The reference prior can be the default prior in packages like Bambi or some other "template" prior from literature or previous analysis of a similar dataset/problem. But it can also be the prior obtained after a more careful elicitation process. And the "alternative" priors can be prior that for some reason we also consider relevant, or deviations from the reference prior that we consider important to evaluate.
+
+For the comparison we can use visual and numerical summaries as we already explained in previous sections. For instance, when working with ArviZ, we can use `az.plot_forest` or `az.plot_density`, as both plots allows us to compare multiple posteriors in a single plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.
+
+We also notice, that the same procedure can also be used to compare how different likelihoods affect the posterior. So we can discuss the sensitivity of the posterior to the likelihood, the prior or both.
+
+Conceptually, this traditional approach is simple to understand, simply try different models and see how results differ. In practice, thinking about alternative priors, building alternative models and fitting them can be very time-consuming. In the next section we are going to discuss a more automated way to do this kind of analysis.
 
 ### Prior and likelihood sensitivity with power-scaling
 
-The method we will discuss is detailed in [@kallioinen_2023], the practical advantage of this method is that we can fit a model once, and without explicitly modifying the prior, we can approximate the effect of changing its strength, in comparison to the likelihood. In this way we can easily assess the prior sensitivity. The method allows to do the same with the likelihood.
+The method we will discuss was presented by @kallioinen_2023, the practical advantage of this method is that we can fit a model once, and without explicitly modifying the prior, we can approximate the effect of changing its strength, in comparison to the likelihood. In this way we can easily assess the prior and/or likelihood sensitivity. If you are eager to see how this method is applied in practice, you can jump to the next section. If you want to understand the method in more detail, keep reading.
 
 A key idea of the method is the concept of power-scaling. By power-scaling we mean raising a distribution to a power $\alpha$. As we can see from @fig-beta-normal-power-scaling the effect of power-scaling is to "stretch" or "compress" the distribution. This transformation is very general and it will work for any distribution, except for the uniform distribution.
 
@@ -408,7 +414,7 @@ $$
 p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)^\alpha \; p(\theta)
 $$
 
-If we set $\alpha=1$ we recover the usual expression for Bayes' theorem that probably you have seen many times. Setting $\alpha=0$ is equivalent to ignoring the likelihood, thus $p(\theta \mid y)_{\alpha}$ will be equivalent to the prior. We can then conclude that any number between 0 and 1 will have the effect of "weakening" the likelihood with respect to the prior. By the same token any number greater than 1 will "strength" the likelihood with respect to the prior. Thus, by adjusting the value of $\alpha$ we can obtain a stronger or weaker likelihood, if we use values close to 1, we emulate relative small perturbations. This very same idea can be applied to the prior. @fig-posterior-power-scaling shows the effect on the posterior of power-scaling the prior for a fixed likelihood.
+If we set $\alpha=1$ we recover the usual expression for Bayes' theorem that you may have seen many times. Setting $\alpha=0$ is equivalent to ignoring the likelihood, thus $p(\theta \mid y)_{\alpha}$ will be equal to the prior. We can then conclude that any number between 0 and 1 will have the effect of "weakening" the likelihood with respect to the prior. By the same token any number greater than 1 will "strength" the likelihood with respect to the prior. Thus, by adjusting the value of $\alpha$ we can obtain a stronger or weaker likelihood. If we want to emulate relative small perturbations, then we should use values close to 1. This very same idea can be applied to the prior, @fig-posterior-power-scaling shows the effect on the posterior of power-scaling the prior for a fixed likelihood.
 
 
 ```{python}
@@ -437,10 +443,9 @@ axes[0].legend(lines,
                loc="upper left")
 ```
 
-We can analytically compute the effect of power scaling a distribution. For instance, for a Normal distribution, $\mathcal{N}(\theta \mid \mu, \sigma)$ and power-scaling factor $\alpha$ we get $\mathcal{N}(\theta \mid \mu, \sigma \; \alpha^{-1/2})$. But as we usually work with MCMC samples and arbitrary distributions a more convenient way to perform power-scaling in practice is to use importance sampling. As discussed in @sec-model-comparison importance sampling is a method to estimate the expected value of a function under a distribution different from the one we have samples from. @kallioinen_2023 proposed to use Pareto smoothed importance sampling (PSIS), a method we also discussed in @sec-model-comparison to estimate the ELPD.
+We can analytically compute the effect of power scaling a distribution. For instance, for a Normal distribution, $\mathcal{N}(\theta \mid \mu, \sigma)$ and power-scaling factor $\alpha$ we get $\mathcal{N}(\theta \mid \mu, \sigma \; \alpha^{-1/2})$. In practice we usually work with MCMC samples and arbitrary distributions, thus a more convenient way to perform power-scaling is to use importance sampling. As discussed in @sec-model-comparison importance sampling is a method to estimate the expected value of a function under a distribution different from the one we have samples from. @kallioinen_2023 proposed to use Pareto smoothed importance sampling (PSIS), a method we also discussed in @sec-model-comparison to estimate the ELPD.
 
-In the context of power-scaling perturbations, the proposal distribution is the posterior we computed using MCMC ($p(\theta \mid y)$) and the target distribution is the perturbed posterior ($p(\theta \mid y)_{\alpha}$). If the proposal and target distributions are expressed as the products of the prior $p(\theta)$ and likelihood $p(y \mid \theta)$, with one of these
-components raised to the power of $\alpha$, then we can write the importance weights as:
+In the context of power-scaling perturbations, the proposal distribution is the posterior we computed using MCMC ($p(\theta \mid y)$) and the target distribution is the perturbed posterior ($p(\theta \mid y)_{\alpha}$). If the proposal and target distributions are expressed as the products of the prior $p(\theta)$ and likelihood $p(y \mid \theta)$, with the prior raised to the power of $\alpha$, then we can write the importance weights for the prior as:
 
 $$
 w_{\alpha} = \frac{p(\theta)^{\alpha} \; p(y \mid \theta)}{p(\theta) \;\; p(y \mid \theta)}
@@ -458,20 +463,25 @@ $$
 w_{\alpha} = p(\theta)^{\alpha-1}
 $$
 
-Which means that the importance sampling weights for the prior only depend on the density of the prior being power-scaled. This σ
-simplifies the computation of the weights. The same applies to the likelihood.
+This resulta means that the importance sampling weights for the prior only depend on the density of the prior being power-scaled. This simplifies the computation of the weights. By the same logic the same applies to the likelihood.
 
-To sumarize, the method proposed by @kallioinen_2023 combines two key ideas, importance sampling and ower-scaling. This combination allow us to approximate the sensitivity of the posterior to the prior and likelihood without the need to explicitilly build and fit multiple models.
+To sumarize, the method proposed by @kallioinen_2023 combines two key ideas, importance sampling and power-scaling. This combination allow us to approximate the sensitivity of the posterior to the prior and likelihood without the need to explicitilly build and fit multiple models.
 
-Once we have perturbed the prior and likelihood we can visually inspect the effect of the perturbations, by plotting the marginal posterior distributions for the parameter of interest. We can also compute numerical values based on distances (or divergences) between the unperturbed and perturbed posteriors. In @sec-model-comparison we discussed the use of the Kullback-Leibler divergence to compare two distributions. @kallioinen_2023 instead suggest using the cumulative Jensen–Shannon divergence (CJS) [@Nguyen_2015]. This divergence has two good features, its symmetrised form is upper-bounded, which aids interpretation, and to compute it we can use the empirical cumulative distribution functions (ECDFs), which can be efficiently estimated from MCMC draws. Other methods requieres the estimation of the density of the distributions, which can be more computationally expensive and depends on the choice of the kernel and bandwidth.
+### Diagnosing sensitivity
+
+Once we have power-scaled the prior and likelihood we can visually inspect the effect of the perturbations, by plotting the marginal posterior distributions for the parameter of interest. KDEs, ECDFs and point-intervals allows easy comparison of several distributions. If the perturbations are small, the distributions should overlap. If the perturbations are large, the distributions will be separated.
+
+We can also compute numerical values based on distances (or divergences) between the unperturbed and perturbed posteriors. In @sec-model-comparison we discussed the use of the Kullback-Leibler divergence to compare how similar two distributions are. @kallioinen_2023 instead suggest using the cumulative Jensen–Shannon divergence (CJS) [@nguyen_2015]. This divergence has two good features, its symmetrised form is upper-bounded, which aids interpretation, and it can be computed from the ECDFs, which can be efficiently estimated from MCMC samples. Other methods requieres the estimation of the density of the distributions, which can be computationally expensive and sensible to the choice of the kernel and bandwidth.
 
 The authors suggest a cutoff value of 0.05 for the CJS. For a standard normal this value corresponds to the mean being shifted by more than $\approx 0.3$ standard deviations, or the standard deviation differing by a factor greater than $\approx 0.3$. This value is not set in stone, but it can be used as a reference to interpret the results of the sensitivity analysis.
 
-In the next section we are going to show two examples of on how to use this method in practice.
+If the value of CJS when power-scaling the prior and likelihood is larger than the threshold, we have a potential prior-data conflict. If the value of CJS is larger than the threshold but the value for the likelihood is smaller than the threshold, we potentially have a strong prior and weak likelihood. 
 
-### Example of prior and likelihood sensitivity analysis
+In the next two section we are going to show two examples of on how to use this method in practice.
 
-Let's see an example of prior-data conflict in a linear regression model. We will use the bodyfat data set [@Johnson_1996]. The aim of the analysis is to predict an expensive and cumbersome water immersion measurement of body fat percentage (observed variable named `siri`) from a set of thirteen easier to measure characteristics, including age, height, weight, and circumferences of various body parts.
+### Body fat example
+
+Let's see an example of prior-data conflict in a linear regression model. We will use the bodyfat data set [@johnson_1996]. The aim of the analysis is to predict an expensive and cumbersome water immersion measurement of body fat percentage (observed variable named `siri`) from a set of thirteen easier to measure characteristics, including age, height, weight, and circumferences of various body parts.
 
 Let's start by loading the data and creating a `siri` variable for the response and a `body_fat` variable for the predictors. We center the predictors.
 
@@ -480,7 +490,6 @@ body_fat = pd.read_csv("../data/body_fat.csv")
 siri = body_fat.pop("siri")
 body_fat = body_fat - body_fat.mean()
 ```
-
 
 We are going to start by assuming that a resonable prior for all coefficients is Normal(0, 1). With that in mind, we will fit the following linear regression model:
 
@@ -526,8 +535,6 @@ We can see that for our example, there may be a prior-data conflict for the `wri
 azs.psense_summary(idata_bf_00, var_names=["~μ"], round_to=2)
 ```
 
-XX PROVIDE MORE DETAILS ABOUT THE possible combinations of CJS and diagnostic messages.
-
 We can also evaluate the effect of power-scaling visually with the function `plot_psense_dist`. This function allow plot the posterior marginal using KDEs, ECDFs and other representation.
 
 
@@ -553,9 +560,7 @@ As there is prior sensitivity arising from prior-data conflict, which is unexpec
 wrist circumference is 0.83, while the variance of abdomen is 102.65. This leads to our chosen prior to be unintentionally
 informative for some of the regression coefficients, including wrist, while being weakly informative for others
 
-Now, let try with a different prior. We will use empirically scaled to the data, $βk \sim \mathcal{N}(0, 2.5 \frac{s_y}{s_{xk}})$, where $s_y$ is the standard
-deviation of $y$ and $s_{xk}$ is the standard deviation of predictor variable $xk$.
-
+Now, let try with a different prior. We will use empirically scaled to the data, $βk \sim \mathcal{N}(0, 2.5 \frac{s_y}{s_{xk}})$, where $s_y$ is the standard deviation of $y$ and $s_{xk}$ is the standard deviation of predictor variable $xk$.
 
 XXX continue with the example!
 
