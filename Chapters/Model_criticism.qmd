@@ -5,7 +5,9 @@
 #| warning: false
 import arviz as az
 import arviz_plots as azp
+import arviz_stats as azs
 import numpy as np
+import pandas as pd
 import preliz as pz
 import pymc as pm
 import matplotlib.pyplot as plt
@@ -387,7 +389,7 @@ A key idea of the method is the concept of power-scaling. By power-scaling we me
 ```{python}
 #| echo: false
 #| label: fig-beta-normal-power-scaling
-#| fig-cap: "The effect of power-scaling on Beta and Normal distributions". α values larger than 1 "compress" the distribution, while values of α below 1 "stretch" the distribution.
+#| fig-cap: "The effect of power-scaling on Beta and Normal distributions. α values larger than 1 'compress' the distribution while values of α below 1 'stretch' the distribution."
 s1 = 2
 s2 = 5
 σ = 1
@@ -515,7 +517,7 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_00:
     σ = pm.HalfStudentT("σ", nu=3, sigma=9.2)
     μ = pm.Deterministic("μ", β_0 + β @ body_fat.T)
     y = pm.Normal("y", μ, σ, observed=siri)
-    idata_bf_00 = pm.sample(random_seed=seed,
+    idata_bf_00 = pm.sample(random_seed=SEED,
                             idata_kwargs={"log_likelihood": True, "log_prior": True})
     pm.sample_posterior_predictive(idata_bf_00, extend_inferencedata=True)
 ```
@@ -564,6 +566,6 @@ Now, let try with a different prior. We will use empirically scaled to the data,
 
 XXX continue with the example!
 
-### Final remarks about prior (and likelihood) sensitivity analysis
+### Final remarks about prior and likelihood sensitivity analysis
 
 A couple of final remarks. First, the presence of prior sensitivity (or the absence of likelihood sensitivity) is not an issue by itself. Context and modeling purpose should always be part of an analysis. Sometimes we may expect a certain degree of prior sensitivity, for instance when we are working with very small datasets and/or very informative priors, but in other cases we may not expect it. In any case, the presence of prior sensitivity should be reported and discussed. Second, sensitivity analysis should be performed thoughtfully, without repeatedly adjusting priors to eliminate discrepancis or diagnostic warnings. One way to avoid this is to keep the reference prior unchanged during the process and simply report the results of the sensitivity analysis. But there may be the case that the prior sensitivity uncover a problem with the model, in that case it may be more useful to address the problem and not just report the results of the sensitivity analysis. As usual in statistics and data analysis, the goal is to understand the data and the model, not to get a particular result.
