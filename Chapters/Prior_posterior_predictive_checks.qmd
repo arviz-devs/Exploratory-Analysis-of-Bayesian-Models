@@ -15,6 +15,7 @@ azp.style.use("arviz-clean")
 plt.rcParams["figure.dpi"] = 100
 SEED = 3592
 np.random.seed(SEED)
+y = np.random.normal(174, 6, 127)
 ```
 
 Models are simplifications of reality, sometimes even very crude simplifications. Thus, we can never fully trust them. While hoping they are good enough is an option, we should try to do better. One general approach to criticizing model is to judge them by their predictions. If a model is robust, its predictions should align well with observations, domain knowledge, or some other benchmark. There are at least four avenues to explore:
