@@ -269,10 +269,9 @@ Overall, the power-scaling sensitivity analysis on the adjusted model shows that
 ### Bacteria treatment
 
 
-
 ## Interpreting sensitivity diagnostics (Summary)
 
-As with other diagnostics we need to interpret the results of the sensitivity analysis in the context of the model, the data and the problem we are trying to solve. Context and modelling purpose should always be part of an analysis. The purpose of the sensitivity analysis, with the discussed method or any other, is to understand how the model behaves under different prior and likelihood assumptions. Sensitivity analysis should be performed thoughtfully, without repeatedly adjusting priors to eliminate discrepancies or diagnostic warnings. If we change a prior to eliminate a warning, we should be able to justify the change based on domain knowledge, data characteristics and/or model assumptions.
+As with other diagnostics we need to interpret the results of the sensitivity analysis in the context of the model, the data and the problem we are trying to solve. Context and modelling purpose should always be part of an analysis. The purpose of the sensitivity analysis, with thegi discussed method or any other, is to understand how the model behaves under different prior and likelihood assumptions. Sensitivity analysis should be performed thoughtfully, without repeatedly adjusting priors to eliminate discrepancies or diagnostic warnings. If we change a prior to eliminate a warning, we should be able to justify the change based on domain knowledge, data characteristics and/or model assumptions.
 
 Not changing the model after seeing warnings could be valid option too, if we have reasons to consider the model valid as is. But in those cases we should be transparent, report the diagnostics and justify our decision for ignoring the sensitivity diagnostics.
 
