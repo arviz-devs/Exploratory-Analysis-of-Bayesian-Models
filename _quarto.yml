@@ -15,12 +15,6 @@ book:
           city: Espoo
           country: Finland
           postal-code: 02150
-        - name: UNSAM
-          affiliation-url: https://unsam.edu.ar/escuelas/ecyt/661/ciencia/ciencia-de-datos
-          address: Campus Miguelete, 25 de Mayo y Francia
-          city: Buenos Aires
-          country: Argentina
-          postal-code: 1650
     - name: Oriol Abril-Pla 
       url: https://oriolabrilpla.cat/en/index.html
       affiliation: ArviZ
