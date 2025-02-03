@@ -31,7 +31,7 @@ Conceptually, this traditional approach is simple to understand, simply try diff
 
 ## Prior and likelihood sensitivity via power-scaling
 
-The method we will discuss was presented by @kallioinen_2023, and offers visual and numerica diagnostics that can alert us of potential prior-data conflict or likelihood noninformativity. What makes this approach very practical is that we only need to fit a single model once, and without explicitly modifying the prior or likelihood, we can asses the effect of changing them. If you are eager to see how this method can be applied in practice, you can jump to the example section. If you want to understand the method in more detail, keep reading.
+The method we will discuss was presented by @kallioinen_2023, and offers visual and numerical diagnostics that can alert us of potential prior-data conflict or likelihood noninformativity. What makes this approach very practical is that we only need to fit a single model once, and without explicitly modifying the prior or likelihood, we can asses the effect of changing them. If you are eager to see how this method can be applied in practice, you can jump to the example section. If you want to understand the method in more detail, keep reading.
 
 ### Power-scaling
 A key idea of the method is the concept of power-scaling. By power-scaling we mean raising a distribution to a power $\alpha$. Why is this interesting? Because by power-scaling a distribution we can "stretch" it or "compress" it. Figure @fig-beta-normal-power-scaling shows the effect of power-scaling on a Beta and a Normal distribution. Power-scaling is a very general transformation that work for any distribution, except for the uniform distribution. Notice this restriction also applies to a Beta(1, 1), which is uniform. This is a minor restriction, because the uniform distribution is hardly a useful prior, unless we are dealing with a very special case.
@@ -50,14 +50,13 @@ distributions = [(pz.Beta, lambda α:(α*s1 - α + 1, α*s2 - α + 1)),
                  (pz.Normal, lambda α:(0, (1/α**0.5)*σ)),
                  ]
 
-_, axes = plt.subplots(2, 1, figsize=(12, 7))
+_, axes = plt.subplots(2, 1, figsize=(12, 5))
 for (dist_, params), ax in zip(distributions, axes.ravel()):
-    for α in [1, 0.5, 2]:
+    for α, color in zip([1, 0.5, 2], ["k", "C0", "C1"]):
         dist = dist_(*params(α))
-        dist.plot_pdf(ax=ax)
+        dist.plot_pdf(ax=ax, color=color)
         point = dist.ppf(0.35)
-        ax.annotate(f"α = {α}", (point, dist.pdf(point)+0.05), fontsize=14)
-        ax.set_title(dist.__class__.__name__)
+        ax.annotate(f"α = {α}", (point, dist.pdf(point)+0.05), fontsize=13)
 ```
 
 In the context of Bayes Theorem we can use power-scaling to modulate the relative weights of the likelihood and prior. For instance we can write a power-scaled version of Bayes' theorem as follows:
@@ -77,14 +76,14 @@ We can repeat this exercise for the prior and then we will be able to modulate t
 trial = 10
 success = 7
 
-_, axes = plt.subplots(3, 1, sharex=True, figsize=(12, 8))
+_, axes = plt.subplots(3, 1, sharex=True, figsize=(10, 5))
 
 for α, ax in zip([0.5, 1, 2], axes.ravel()):
     a_prior = α*2 - α + 1
     b_prior =  α*5 - α + 1
-    pz.Beta(a_prior, b_prior).plot_pdf(legend=False, ax=ax, color="C1")
+    pz.Beta(a_prior, b_prior).plot_pdf(legend=False, ax=ax, color="C5")
     pz.Beta(trial-2, success-3).plot_pdf(legend=False, ax=ax, color="0.6")
-    pz.Beta(a_prior + success, b_prior + trial - success).plot_pdf(legend=False, ax=ax, color="C2")
+    pz.Beta(a_prior + success, b_prior + trial - success).plot_pdf(legend=False, ax=ax, color="C6")
     ax.set_title(f"α = {α}")
 
     lines = np.array(ax.get_lines())[[1, 3, 5]]
@@ -93,7 +92,9 @@ for α, ax in zip([0.5, 1, 2], axes.ravel()):
 
 axes[0].legend(lines, 
                ["Prior", "Likelihood", "Posterior"], 
-               loc="upper left")
+               loc="upper right",
+               fontsize=11,
+               )
 ```
 
 ### Power-scaling and importance sampling
@@ -271,9 +272,7 @@ Overall, the power-scaling sensitivity analysis on the adjusted model shows that
 
 ## Interpreting sensitivity diagnostics (Summary)
 
-As with other diagnostics we need to interpret the results of the sensitivity analysis in the context of the model, the data and the problem we are trying to solve. Context and modelling purpose should always be part of an analysis. The purpose of the sensitivity analysis, with thegi discussed method or any other, is to understand how the model behaves under different prior and likelihood assumptions. Sensitivity analysis should be performed thoughtfully, without repeatedly adjusting priors to eliminate discrepancies or diagnostic warnings. If we change a prior to eliminate a warning, we should be able to justify the change based on domain knowledge, data characteristics and/or model assumptions.
-
-Not changing the model after seeing warnings could be valid option too, if we have reasons to consider the model valid as is. But in those cases we should be transparent, report the diagnostics and justify our decision for ignoring the sensitivity diagnostics.
+As with other diagnostics we need to interpret the results of the sensitivity analysis in the context of the model, the data and the problem we are trying to solve. Context and modelling purpose should always be part of an analysis. 
 
 ### Diagnostic value
 
@@ -285,14 +284,14 @@ Sensitivity diagnostic values are given for both prior and likelihood sensitivit
 
 **These diagnostic messages do not necessarily indicate problems with the model**. They are informative messages that describe the interplay between the chosen prior and likelihood. If your prior is meant to be informative, influence on the posterior is desired and prior-data conflict may not be an issue. However, if you did not put much effort into choosing the priors, these messages can let you know if you should be more deliberate in your prior specification.
 
-#### Strong prior / weak likelihood
+* **Strong prior / weak likelihood**. This can occur when:
+    * The prior is completely dominating the likelihood such that changing the likelihood strength has little to no impact on the posterior. The prior may be extremely informative and a using a weaker prior may remove this domination.
 
-This can occur when:
+    * The likelihood is uninformative and no information is gained by increasing the strength of the likelihood. The prior will always have an effect in this case.
 
-* The prior is completely dominating the likelihood such that changing the likelihood strength has little to no impact on the posterior. The prior may be extremely informative and a using a weaker prior may remove this domination.
+* **Prior-data conflict**. This can occur when:
+    * The posterior is sensitive to changes to both the prior and the likelihood. This indicates that the prior and likelihood are both influencing the posterior and may be in conflict with one-another.
 
-* The likelihood is uninformative and no information is gained by increasing the strength of the likelihood. The prior will always have an effect in this case.
+### What to do with the diagnostics
 
-## Prior-data conflict
-
-This occurs when the posterior is sensitive to changes to both the prior and the likelihood. This indicates that the prior and likelihood are both influencing the posterior and may be in conflict with one-another.
+Sensitivity analysis should be conducted with care, avoiding the repeated adjustment of priors solely to resolve discrepancies or diagnostic warnings. If a prior is modified to address a warning, the change must be justified based on domain expertise, data properties, or model assumptions. Conversely, choosing not to alter the model despite warnings can also be valid if there are compelling reasons to believe the model is sound. In such cases, it is essential to be transparent: report the diagnostic results and provide a clear rationale for disregarding the sensitivity diagnostics.
