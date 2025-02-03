@@ -1,11 +1,13 @@
-# Model Criticism {#sec-model-criticism}
+# Prior and Posterior predictive checks {#sec-ppc}
 
 ```{python}
 #| echo: false
 #| warning: false
 import arviz as az
 import arviz_plots as azp
+import arviz_stats as azs
 import numpy as np
+import pandas as pd
 import preliz as pz
 import pymc as pm
 import matplotlib.pyplot as plt
@@ -13,7 +15,6 @@ azp.style.use("arviz-clean")
 plt.rcParams["figure.dpi"] = 100
 SEED = 3592
 np.random.seed(SEED)
-y = np.random.normal(174, 6, 127)
 ```
 
 Models are simplifications of reality, sometimes even very crude simplifications. Thus, we can never fully trust them. While hoping they are good enough is an option, we should try to do better. One general approach to criticizing model is to judge them by their predictions. If a model is robust, its predictions should align well with observations, domain knowledge, or some other benchmark. There are at least four avenues to explore:
@@ -365,86 +366,3 @@ az.plot_separation(idata=idata,
                    expected_events=True, 
                    figsize=(10, 1))
 ```                   
-
-## Prior sensitivity checks
-
-Determining the sensitivity of the posterior to perturbations of the prior is an important part of building Bayesian models. By sensitivity of the posterior to the prior we mean how much the posterior distribution changes when the prior is changed. Usually this is done by comparing the results obtained using reference prior against the results obtained using alternative priors. The reference prior can be the default prior in packages like Bambi or some other "template" prior from literature or previous analysis of a similar dataset/problem. But it can also be the prior obtained after a more careful elicitation process. Once we have this prior we compute the posterior, diagnose samples and check everything is OK with this model. As usual is import to check that we can trust the model and samples. Then we come up with a set of "alternative" priors that for some reason we consider as relevant. We then fit and check model with these alternative priors. To asses how different posteriors are we can use a series of visual and numerical comparisons as we already explained in this the previous sections. For instance, when working with ArviZ, we can use `az.plot_forest` or `az.plot_density`, as both plots allows us to compare multiple posteriors in a single plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.
-
-This process can be a very time-consuming, but it can help us understand how robust the model is to different prior choices. We also notice, that the same procedure can also be used to compare how different likelihoods affect the posterior. So we can discuss the sensitivity of the posterior to the likelihood, the prior or both. It the next section we are going to discuss a more automated way to do this kind of analysis.
-
-### Prior and likelihood sensitivity with power-scaling
-
-The method we are going to discuss is described in detail in [@kallioinen_2023]. The main idea of the method is that it is possible to fit a models once and then approximate the effect of making the prior more or less "informative" with respect to the likelihood, and viceversa. The method uses two ideas. Importance sampling, that we have already discussed in @sec-model-comparison, and power-scaling the prior or likelihood. By power-scaling we mean raising a distribution to a power $\alpha$. As we can see from @fig-beta-normal-power-scaling the effect of power-scaling is to "stretch" or "compress" the distribution. This transformation is very general and it will work for many distributions, one exception being the uniform distribution.
-
-```{python}
-#| echo: false
-#| label: fig-beta-normal-power-scaling
-#| fig-cap: "The effect of power-scaling on Beta and Normal distributions"
-s1 = 2
-s2 = 5
-σ = 1
-r1=4
-r2=3
-
-distributions = [(pz.Beta, lambda α:(α*s1 - α + 1, α*s2 - α + 1)),
-                 (pz.Normal, lambda α:(0, (1/α**0.5)*σ)),
-                 ]
-
-_, axes = plt.subplots(2, 1, figsize=(12, 7))
-for (dist_, params), ax in zip(distributions, axes.ravel()):
-    for α in [1, 0.5, 2]:
-        dist = dist_(*params(α))
-        dist.plot_pdf(ax=ax)
-        point = dist.ppf(0.35)
-        ax.annotate(f"α = {α}", (point, dist.pdf(point)+0.05), fontsize=14)
-        ax.set_title(dist.__class__.__name__)
-```
-
-In the context of Bayes Theorem we can use power-scaling to modulate the relative weights of the likelihood and prior. For instance we could write:
-
-$$
-p(\theta \mid y)_{\alpha} \propto p(y \mid \theta)^\alpha \; p(\theta)
-$$
-
-Setting $\alpha=1$ is the same as omitting the power, and we recover the usual or "unperturbed" expresion for Bayes' theorem posterior. Setting $\alpha=0$ is equivalent to ignoring the likelihood, thus $p(\theta \mid y)_{\alpha}$ will be equivalent to the prior. We can then conclude that any number between 0 and 1 will have the effect of "weakening" the likelihood with respect to the prior. By the same token any number greater than 1 will "strength" the likelihood with respect to the prior. Thus by adjusting the value of $\alpha$ we can modulate a stronger or weaker likelihood, if we use values close to 1, we emulate relative small perturbations. This very same idea can be apply to the prior. @fig-posterior-power-scaling shows the effect on the posterior of power-scaling the prior for a fixed likelihood.
-
-
-```{python}
-#| echo: false
-#| label: fig-posterior-power-scaling
-#| fig-cap: "The effect of power-scaling the prior on the posterior for a fixed likelihood."
-trial = 10
-success = 7
-
-_, axes = plt.subplots(3, 1, sharex=True, figsize=(12, 8))
-
-for α, ax in zip([0.5, 1, 2], axes.ravel()):
-    a_prior = α*2 - α + 1
-    b_prior =  α*5 - α + 1
-    pz.Beta(a_prior, b_prior).plot_pdf(legend=False, ax=ax, color="C1")
-    pz.Beta(trial-2, success-3).plot_pdf(legend=False, ax=ax, color="0.6")
-    pz.Beta(a_prior + success, b_prior + trial - success).plot_pdf(legend=False, ax=ax, color="C2")
-    ax.set_title(f"α = {α}")
-
-    lines = np.array(ax.get_lines())[[1, 3, 5]]
-    for l in lines:
-        l.set_linewidth(3)
-
-axes[0].legend(lines, 
-               ["Prior", "Likelihood", "Posterior"], 
-               loc="upper left")
-```
-
-As we usually work with MCMC samples, we can use importance sampling to approximate the effect of power-scaling the prior or likelihood. This allows us to approximate the sensitivity of the posterior to the prior and likelihood without the need to fit the model multiple times. [@kallioinen_2023] proposed to use Pareto smoothed importance sampling (PSIS), the same method used to compute the ELPD discussed in @sec-model-comparison.
-
-
-### Example of prior and likelihood sensitivity analysis
-
-```{python}
-# Coming soon with ArviZ 1.0
-```
-
-
-### Final remarks about prior (and likelihood) sensitivity analysis
-
-A couple of final remarks. First, the presence of prior sensitivity (or the absence of likelihood sensitivity) is not an issue by itself. Context and modeling purpose should always be part of an analysis. Sometimes we may expect a certain degree of prior sensitivity, for instance when we are working with very small datasets and/or very informative priors, but in other cases we may not expect it. In any case, the presence of prior sensitivity should be reported and discussed. Second, sensitivity analysis should be performed thoughtfully, without repeatedly adjusting priors to eliminate discrepancis or diagnostic warnings. One way to avoid this is to keep the reference prior unchanged during the process and simply report the results of the sensitivity analysis. But there may be the case that the prior sensitivity uncover a problem with the model, in that case it may be more useful to address the problem and not just report the results of the sensitivity analysis. As usual in statistics and data analysis, the goal is to understand the data and the model, not to get a particular result.
