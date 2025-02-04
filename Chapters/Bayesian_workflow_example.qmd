@@ -274,7 +274,7 @@ This is a simple model, a small dataset. So we get a fast sampling.
 We did not get any warning messages after sampling, and no divergences! Still, we want to quickly check that we have high ESS and low $\hat R$. Otherwise, this will be an indication of sampling issues and to solve them we may need to run more samples or most likely go back and change something in the model specification. We can see, with relief, that the effective sample size is very high and $\hat R$ is low enough.
 
 ```{python}
-az.summary(idata, kind="diagnostics")
+azs.summary(idata, kind="diagnostics")
 ```
 
 Doing a visual check, just to be extra careful is also a good idea. 
@@ -411,10 +411,10 @@ Nice, LOO agrees with the posterior predictive checks. We can see that the trunc
 
 ## Summarize results
 
-We can summarize the results in a table. We can use the `az.summary` function to get the mean and the 94% HDI for the parameters. 
+We can summarize the results in a table. We can use the `azs.summary` function to get the mean and the 94% HDI for the parameters. 
 
 ```{python}
-az.summary(idata_t1, kind="stats")
+azs.summary(idata_t1, kind="stats")
 ``` 
 
 We can see that we got a positive slope indicating a positive correlation between the masses of predators and prey.  In other words, as the mass of predators increases. This is in line with our discussion before the analysis. The magnitude of the slope is $\approx 0.3$, on the log-scale. On the original scale, this is $\approx 0.85$ on the original scale.
