@@ -270,7 +270,7 @@ Overall, the power-scaling sensitivity analysis on the adjusted model shows that
 ### Bacteria treatment
 
 
-## Interpreting sensitivity diagnostics (Summary)
+## Interpreting sensitivity diagnostics: Summary
 
 As with other diagnostics we need to interpret the results of the sensitivity analysis in the context of the model, the data and the problem we are trying to solve. Context and modelling purpose should always be part of an analysis. 
 
