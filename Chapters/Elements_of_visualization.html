@@ -457,7 +457,7 @@ Figure&nbsp;1.7: non-uniformly perceptual maps like jet can be very misleading
 <h2 data-number="1.4" class="anchored" data-anchor-id="style-sheets"><span class="header-section-number">1.4</span> Style sheets</h2>
 <p>Matplotlib allows users to easily switch between plotting styles by defining style sheets. ArviZ is delivered with a few additional styles that can be applied globally by writing <code>az.style.use(name_of_style)</code> or inside a <code>with</code> statement.</p>
 <div id="cell-fig-style_sheets" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>azp.style.use(<span class="st">'arviz-clean'</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>azp.style.use(<span class="st">'arviz-variat'</span>)</span>
 <span id="cb1-2"><a href="#cb1-2"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
 <span id="cb1-3"><a href="#cb1-3"></a>dist <span class="op">=</span> pz.Beta(<span class="dv">2</span>, <span class="dv">5</span>).pdf(x)</span>
 <span id="cb1-4"><a href="#cb1-4"></a></span>
@@ -473,7 +473,7 @@ Figure&nbsp;1.7: non-uniformly perceptual maps like jet can be very misleading
 <img src="Elements_of_visualization_files/figure-html/fig-style_sheets-output-1.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-style_sheets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1.8: arviz-clean style use a color-blind friendly palette
+Figure&nbsp;1.8: arviz-variat style use a color-blind friendly palette
 </figcaption>
 </figure>
 </div>

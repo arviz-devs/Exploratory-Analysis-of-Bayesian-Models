@@ -574,7 +574,7 @@ w_i = \frac{f(x_i)}{g(x_i)}
 </ul>
 <p>Once the weights <span class="math inline">\(w_i\)</span> are obtained, we can use them to estimate properties of <span class="math inline">\(f\)</span>, its density, moments, quantiles, etc.</p>
 <p>In the code-block below <span class="math inline">\(g\)</span> is a Normal distribution and <span class="math inline">\(f\)</span> is a Gamma and we use importance sampling to estimate the PDF of <span class="math inline">\(f\)</span>. This is just a pedagogic example, since we actually have a very direct way to calculate the PDF of a Gamma. But in practice <span class="math inline">\(f\)</span> can be a much more complex object.</p>
-<div id="dd3b3c4c" class="cell" data-execution_count="3">
+<div id="98b63c4c" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>g <span class="op">=</span> pz.Normal(<span class="dv">0</span>, <span class="dv">10</span>)</span>
 <span id="cb2-2"><a href="#cb2-2"></a>samples <span class="op">=</span> g.rvs(<span class="dv">1000</span>)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>f <span class="op">=</span> pz.Gamma(mu<span class="op">=</span><span class="dv">4</span>, sigma<span class="op">=</span><span class="fl">1.5</span>)</span>
@@ -616,7 +616,7 @@ w_i^j = \frac{p(\theta^j \mid y_{-i} )}{p(\theta^j \mid y)} \propto \frac{p(\the
 <h3 data-number="7.0.10" class="anchored" data-anchor-id="calculating-loo"><span class="header-section-number">7.0.10</span> Calculating LOO</h3>
 <p>After all this introduction, calculating LOO may seem somewhat disappointing. We just need to call ArviZ’s <code>loo</code> function and pass it an InfereceData object containing a log-likelihood group.</p>
 <p>For the following example we are using an InferenceData distributed with ArviZ. More details about the model in the next chapter. For the moment we only need to know that is a model with two sets of observations, <code>home_points</code> and <code>away_points</code>. We can compute LOO for each one of those.</p>
-<div id="e15bc347" class="cell" data-execution_count="4">
+<div id="b3659323" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>idata_rug <span class="op">=</span> az.load_arviz_data(<span class="st">'rugby'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>loo_p <span class="op">=</span> az.loo(idata_rug, var_name<span class="op">=</span><span class="st">"home_points"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3"></a>loo_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -645,7 +645,7 @@ Pareto k diagnostic values:
 <p>Then we can see a table with the title “Pareto k diagnostic values”. We previously said that we used a Pareto to regularize the estimation of the importance weights. One of the parameters of that fit is called <span class="math inline">\(k\)</span>. Sometimes we call it <span class="math inline">\(\hat k\)</span> (because is an estimate of <span class="math inline">\(k\)</span>). Since we have a Pareto adjustment per observation we have a <span class="math inline">\(k\)</span> value per observation. This parameter is useful because it tells us two sides of the same story, it tells us when an observation is “very influential” and it tells us that the approximation used by LOO could be failing for that observation.</p>
 <p>As a general rule, if <span class="math inline">\(k\)</span> is less than 0.7 there are no problems, if it’s between 0.7 and 1 is very likely that we are in trouble and if it’s greater than 1, we are doom. The cutoff value 0.7 is not fixed, it can strictly be lower and depends on the total number of samples of the posterior distribution, 2000, in this example. But when the number of draws is about 2000 we are almost at 0.7. In practice it is common to use sample values ​​of 2000 or larger. Increasing the number of samples from the posterior may reduce the value of <span class="math inline">\(k\)</span> and so we could remove some of these warnings, but in general the number needed will be too large to make any practical sense.</p>
 <p>It is possible to visualize the values ​​of <span class="math inline">\(k\)</span>, using <code>plot_khat</code></p>
-<div id="bf156485" class="cell" data-execution_count="5">
+<div id="7bacd312" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>az.plot_khat(loo_p, threshold<span class="op">=</span><span class="fl">0.7</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -691,7 +691,7 @@ Figure&nbsp;7.2: LOO-PIT plot for the rugby model
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="e6528f07" class="cell" data-execution_count="7">
+<div id="7b1a09f8" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>target <span class="op">=</span> pz.StudentT(nu<span class="op">=</span><span class="dv">4</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>).rvs(<span class="dv">200</span>)</span>
 <span id="cb8-2"><a href="#cb8-2"></a></span>
 <span id="cb8-3"><a href="#cb8-3"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> modelo_n:</span>
@@ -716,11 +716,12 @@ Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (2 chains in 2 jobs)
 NUTS: [μ, σ, ν]
 Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 2 seconds.
+There were 2 divergences after tuning. Increase `target_accept` or reparameterize.
 We recommend running at least 4 chains for robust computation of convergence diagnostics</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"97abab14ffa64832be17321c684b46a0","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"0b86d73a856e45c1973654204d60f14f","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -728,7 +729,7 @@ We recommend running at least 4 chains for robust computation of convergence dia
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"d7fc194cd9844dab867d4b0ac85d0f06","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"c27d7c69535443939a6de5d8b3232db0","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -741,7 +742,7 @@ We recommend running at least 4 chains for robust computation of convergence dia
 </div>
 </div>
 </div>
-<div id="8e0f5dcc" class="cell" data-execution_count="8">
+<div id="852f1477" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>cmp_df <span class="op">=</span> az.compare({<span class="st">'modelo_n'</span>:idata_n, <span class="st">'modelo_t'</span>:idata_t})</span>
 <span id="cb11-2"><a href="#cb11-2"></a>cmp_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
@@ -768,24 +769,24 @@ We recommend running at least 4 chains for robust computation of convergence dia
 <tr class="odd">
 <td data-quarto-table-cell-role="th">modelo_t</td>
 <td>0</td>
-<td>-365.263760</td>
-<td>2.891210</td>
-<td>0.000000</td>
+<td>-338.185458</td>
+<td>3.033295</td>
+<td>0.00000</td>
 <td>1.000000e+00</td>
-<td>14.765174</td>
-<td>0.000000</td>
+<td>13.096308</td>
+<td>0.00000</td>
 <td>False</td>
 <td>log</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">modelo_n</td>
 <td>1</td>
-<td>-379.870612</td>
-<td>3.605996</td>
-<td>14.606853</td>
-<td>3.801404e-13</td>
-<td>16.177843</td>
-<td>6.500707</td>
+<td>-342.579367</td>
+<td>2.558263</td>
+<td>4.39391</td>
+<td>8.881784e-16</td>
+<td>12.993200</td>
+<td>2.73692</td>
 <td>False</td>
 <td>log</td>
 </tr>
@@ -809,7 +810,7 @@ We recommend running at least 4 chains for robust computation of convergence dia
 <li>scale: the scale on which the ELPD is calculated</li>
 </ul>
 <p>We can obtain similar information, but graphically, using the `az.compareplot function</p>
-<div id="7cd841ac" class="cell" data-execution_count="9">
+<div id="3a6ea1fa" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>az.plot_compare(cmp_df, plot_ic_diff<span class="op">=</span><span class="va">False</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -903,7 +904,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="23249fc2" class="cell" data-execution_count="10">
+<div id="b8dc0584" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>y <span class="op">=</span> np.repeat([<span class="dv">1</span>, <span class="dv">0</span>], [<span class="dv">50</span>, <span class="dv">50</span>])  <span class="co"># 50 heads, 50 tails</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_uni:</span>
 <span id="cb13-3"><a href="#cb13-3"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
@@ -920,7 +921,7 @@ Sampling: [a, yl]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"078b107e5b694d79a060bc10e49b52d1","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"a4435fdca8ca49f28ce44a41c2ccc828","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -934,7 +935,7 @@ Sampling: [a, yl]</code></pre>
 </div>
 </div>
 <p>And now we call <code>az.plot_bf</code></p>
-<div id="802f0635" class="cell" data-execution_count="11">
+<div id="704f70c7" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>az.plot_bf(idata_uni, var_name<span class="op">=</span><span class="st">"a"</span>, ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -951,7 +952,7 @@ Sampling: [a, yl]</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="0937236e" class="cell" data-execution_count="12">
+<div id="d5479d6d" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_conc:</span>
 <span id="cb17-2"><a href="#cb17-2"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">30</span>, <span class="dv">30</span>)</span>
 <span id="cb17-3"><a href="#cb17-3"></a>    yl <span class="op">=</span> pm.Bernoulli(<span class="st">"yl"</span>, a, observed<span class="op">=</span>y)</span>
@@ -967,7 +968,7 @@ Sampling: [a, yl]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"537237676ea64547bd4aa93f524e75ee","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"9f87dc2294a34f33ab7a4da978b6ef70","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -980,7 +981,7 @@ Sampling: [a, yl]</code></pre>
 </div>
 </div>
 </div>
-<div id="2e9a3675" class="cell" data-execution_count="13">
+<div id="faa60e1c" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>az.plot_bf(idata_conc, var_name<span class="op">=</span><span class="st">"a"</span>, ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1016,7 +1017,7 @@ Yao, Yuling, Aki Vehtari, Daniel Simpson, and Andrew Gelman. 2018. <span>“<spa
 
 </main> <!-- /main -->
 <script type="application/vnd.jupyter.widget-state+json">
-{"state":{"078b107e5b694d79a060bc10e49b52d1":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_964587cddf9e488e944d50f65fddfd15","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"3e09c3e2950346daa1c8d216c5d6f4fe":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"528dc8e1786c4c52ad6efea187734411":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"537237676ea64547bd4aa93f524e75ee":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_528dc8e1786c4c52ad6efea187734411","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"964587cddf9e488e944d50f65fddfd15":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"97abab14ffa64832be17321c684b46a0":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_bfa7ff4259104ecaae3335d647a6eed5","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"bfa7ff4259104ecaae3335d647a6eed5":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"d7fc194cd9844dab867d4b0ac85d0f06":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_3e09c3e2950346daa1c8d216c5d6f4fe","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
+{"state":{"0b86d73a856e45c1973654204d60f14f":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_a095a90f17444d908427cc7b9ec81867","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:00</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:00\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"4cb18ac2c0614da18a0a37d7a725793e":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"8439c76a158643a39edf653067e661d1":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"98fcc61e7623459ebfc6d64b1c32d043":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"9f87dc2294a34f33ab7a4da978b6ef70":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_4cb18ac2c0614da18a0a37d7a725793e","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"a095a90f17444d908427cc7b9ec81867":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"a4435fdca8ca49f28ce44a41c2ccc828":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_98fcc61e7623459ebfc6d64b1c32d043","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"c27d7c69535443939a6de5d8b3232db0":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_8439c76a158643a39edf653067e661d1","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 2 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:01</span>\n</pre>\n","text/plain":"Sampling 2 chains, 2 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:01\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
