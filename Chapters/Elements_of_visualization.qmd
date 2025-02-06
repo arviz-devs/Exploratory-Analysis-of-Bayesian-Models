@@ -7,7 +7,7 @@ import arviz_plots as azp
 import numpy as np
 import preliz as pz
 import matplotlib.pyplot as plt
-azp.style.use("arviz-clean")
+azp.style.use("arviz-variat")
 plt.rcParams["figure.dpi"] = 100
 ```
 Plots occupy a central place in modern statistics, both in exploratory data analysis and inferential statistics.
@@ -92,8 +92,8 @@ Matplotlib allows users to easily switch between plotting styles by defining sty
 
 ```{python}
 #| label: fig-style_sheets
-#| fig-cap: "arviz-clean style use a color-blind friendly palette"
-azp.style.use('arviz-clean')
+#| fig-cap: "arviz-variat style use a color-blind friendly palette"
+azp.style.use('arviz-variat')
 x = np.linspace(0, 1, 100)
 dist = pz.Beta(2, 5).pdf(x)
 

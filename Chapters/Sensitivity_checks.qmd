@@ -11,7 +11,7 @@ import pandas as pd
 import preliz as pz
 import pymc as pm
 import matplotlib.pyplot as plt
-azp.style.use("arviz-clean")
+azp.style.use("arviz-variat")
 plt.rcParams["figure.dpi"] = 100
 SEED = 3592
 np.random.seed(SEED)
@@ -205,13 +205,16 @@ azp.plot_psense_dist(idata_bf_00,
                      )
 ```
 
-We can also use the `plot_psense_quantities` function to plot quantities of interest like the mean, median, standard deviation, etc.
+We can also use the `plot_psense_quantities` function to plot quantities of interest like the mean, median, standard deviation, etc. With this plot we can evaluate how much the quantities of interest change when we perturb the prior and likelihood. As a reference the plot also shows the ±2 Monte Carlo standard errors (MCSE) of the base posterior quantity. From @fig-quantities_bf_00 we can see that power-scaling the prior and likelihood pulls the posterior mean in opposite directions. This suggests there might be a potential mismatch or conflict between the prior and the likelihood.
 
 ```{python}
-## coming soon
-## add plot_psense_quantities
+#| label: fig-quantities_bf_00
+#| fig-cap: "Posterior quantities of βwrist as a function of power-scaling of the prior (purple line and circle markers) and the likelihood (green line and square markers). Dashed lines are ± 2 Monte Carlo standard errors (MCSE) of the base posterior quantity"
+
+azp.plot_psense_quantities(idata_bf_00, var_names=["β"], coords={"covariates": ["wrist"]})
 ```
 
+#### Adjusting the prior
 As there is prior sensitivity arising from prior-data conflict, which is unexpected and unintentional as our priors were chosen to be weakly informative, we consider modifying the priors. On inspecting the raw data, we see that although the predictor variables are all measured on similar scales, the variances of the variables differ substantially. For example, the variance of
 wrist circumference is 0.83, while the variance of abdomen is 102.65. This leads to our chosen prior to be unintentionally
 informative for some of the regression coefficients, including wrist, while being weakly informative for others
@@ -242,7 +245,6 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_01:
 ```
 :::
 
-
 Now we can perform the sensitivity analysis again. We can see that we managed to remove the warning!
 
 ```{python}
@@ -251,7 +253,7 @@ azs.psense_summary(idata_bf_01, var_names=["~μ"])
 
 We can see that after changing the prior, the posterior mean for `wrist` changes from -1.45 to -1.86, indicating that the base prior was indeed unintentionally informative and in conflict with the data, pulling the estimate towards zero. 
 
-As previously, we can also evaluate the effect of power-scaling visually with the function `plot_psense_dist`.
+As previously, we can also evaluate the effect of power-scaling visually with the function `plot_psense_dist`. From @fig-posterior-sensitivity_bf_01 we can see a better overlap between the posterior distributions, compared to the original prior.
 
 ```{python}
 #| label: fig-posterior-sensitivity_bf_01
@@ -264,7 +266,15 @@ azp.plot_psense_dist(idata_bf_01,
                      )
 ```
 
-Overall, the power-scaling sensitivity analysis on the adjusted model shows that there is no longer prior sensitivity, and there is appropriate likelihood sensitivity.
+In terms or the mean for `βwrist`, we can see that there is no longer prior or likelihood sensitivity, indicating no prior-data conflict. For the standard deviation, likelihood sensitivity remains, indicating that the likelihood is informative.
+```{python}
+#| label: fig-quantities_bf_01
+#| fig-cap: "Posterior quantities of βwrist as a function of power-scaling of the prior (purple line and circle markers) and the likelihood (green line and square markers). Dashed lines are ± 2 Monte Carlo standard errors (MCSE) of the base posterior quantity"
+
+azp.plot_psense_quantities(idata_bf_01, var_names=["β"], coords={"covariates": ["wrist"]})
+```
+
+Overall, the power-scaling sensitivity analysis on the adjusted prior shows that there is no longer prior sensitivity, and there is appropriate likelihood sensitivity.
 
 
 ### Bacteria treatment
