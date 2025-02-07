@@ -298,7 +298,7 @@ Let's start by fitting a hierarchical model. The model is as follows:
 ## PyMC
 
 ```{python}
-with pm.Model() as model:
+with pm.Model() as model_bt:
     μ = pm.Normal('μ', mu=0, sigma=10)
     β_week = pm.Normal('β_week', mu=0, sigma=10)
     β_trtDrug = pm.Normal('β_trtDrug', mu=0, sigma=10)
@@ -311,9 +311,9 @@ with pm.Model() as model:
     
     y_obs = pm.Bernoulli('y_obs', logit_p=theta, observed=bacteria.y)
     
-    idata = pm.sample()
-    pm.compute_log_prior(idata, var_names=["μ", "β_week", "β_trtDrug", "β_trtDrugP", "σ"])
-    pm.compute_log_likelihood(idata)
+    idata_bt = pm.sample()
+    pm.compute_log_prior(idata_bt, var_names=["μ", "β_week", "β_trtDrug", "β_trtDrugP", "σ"])
+    pm.compute_log_likelihood(idata_bt)
 ```
 
 ## PyStan
@@ -329,7 +329,7 @@ From the power-scaling sensitivity analysis perspective the key element in the p
 Let's compute sensitivity diagnostics for all variables except `~b_Intercept`, if we want to check the sensitivity of all of them we can do it. The key point with hierarchical models is to not power-scale the lower level priors. 
 
 ```{python}
-azs.psense_summary(dt, var_names=["~b_Intercept"])
+azs.psense_summary(idata_bt, var_names=["~b_Intercept"])
 ```
 We see that everything looks fine. If you like to get potentials issues you could try running the model again with a prior like `σ = pm.HalfNormal('σ', sigma=1)`.
 
