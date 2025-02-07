@@ -279,6 +279,60 @@ Overall, the power-scaling sensitivity analysis on the adjusted prior shows that
 
 ### Bacteria treatment
 
+Now we discuss and example of power-scaling sensitivity analysis for hierarchical models. The main motivation for this example is to show that for certain models we should selectively power-scaled the priors. To illustrate this, consider two forms of prior, a non-hierarchical prior with two independent parameters $p(\theta)$ and $p(\phi)$ and a hierarchical prior of the form $p(\theta \mid \psi) p(\psi)$. In the first case, the appropriate power-scaling for the prior is $p(\theta)^{\alpha} p(\phi)^{\alpha}$. This is what we did in the previous example. In the second case, for the hierarchical model, we only want to power-scale the top level prior, that is, $p(\theta) p(\phi)^{\alpha}$.
+
+For this example we are going to use the bacteria data set [@venables_2002]. 
+
+```{python}
+bacteria = pd.read_csv("../data/bacteria.csv")
+bacteria["y"] = bacteria["y"].astype("category").cat.codes
+bacteria["ID"] = bacteria["ID"].astype("category").cat.codes
+bacteria["trtDrugP"] = bacteria["trt"] == "drug+"
+bacteria["trtDrug"] = bacteria["trt"] == "drug"
+K = len(bacteria["ID"].unique())
+```
+
+Let's start by fitting a hierarchical model. The model is as follows:
+
+::: {.panel-tabset}
+## PyMC
+
+```{python}
+with pm.Model() as model:
+    μ = pm.Normal('μ', mu=0, sigma=10)
+    β_week = pm.Normal('β_week', mu=0, sigma=10)
+    β_trtDrug = pm.Normal('β_trtDrug', mu=0, sigma=10)
+    β_trtDrugP = pm.Normal('β_trtDrugP', mu=0, sigma=10)    
+
+    σ = pm.HalfNormal('σ', sigma=5)
+    b_Intercept = pm.Normal('b_Intercept', mu=0, sigma=σ, shape=K)
+
+    theta = μ + b_Intercept[bacteria.ID] + β_week * bacteria.week + β_trtDrug * bacteria.trtDrug + β_trtDrugP * bacteria.trtDrugP
+    
+    y_obs = pm.Bernoulli('y_obs', logit_p=theta, observed=bacteria.y)
+    
+    idata = pm.sample()
+    pm.compute_log_prior(idata, var_names=["μ", "β_week", "β_trtDrug", "β_trtDrugP", "σ"])
+    pm.compute_log_likelihood(idata)
+```
+
+## PyStan
+
+``` {.python}
+## coming soon
+```
+:::
+
+From the power-scaling sensitivity analysis perspective the key element in the previous code-block is that we are specifying the variables we want to use for the prior-powerscaling
+`var_names=["μ", "β_week", "β_trtDrug", "β_trtDrugP", "σ"]` i.e. we are omitting the `b_Intercept` variable. This is because we are only interested in power-scaling the top level prior. There are two way to specify the variables for power-scaling, the first is to use the `var_names` argument when computing the log_prior and/or log_likelihood, as we just did. The second is to use the `prior_varnames` and `likelihood_varnames` arguments in the `psense`-related functions. 
+
+Let's compute sensitivity diagnostics for all variables except `~b_Intercept`, if we want to check the sensitivity of all of them we can do it. The key point with hierarchical models is to not power-scale the lower level priors. 
+
+```{python}
+azs.psense_summary(dt, var_names=["~b_Intercept"])
+```
+We see that everything looks fine. If you like to get potentials issues you could try running the model again with a prior like `σ = pm.HalfNormal('σ', sigma=1)`.
+
 
 ## Interpreting sensitivity diagnostics: Summary
 
