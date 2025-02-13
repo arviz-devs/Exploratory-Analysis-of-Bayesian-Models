@@ -37,9 +37,9 @@ We have represented these sequential updating in an animation (see @fig-prior_up
 
 ![Priors updating as we keep adding data](../img/beta_binomial_update.gif){#fig-prior_update}
 
-Asymptotically, priors have no meaning. If we have infinite data, not matter the prior you will get exactly the same posterior. When there is a large amount of data, the likelihood function dominates the updating process, and the prior has little influence on the posterior. In this limit, different reasonable priors will tend to converge to the same posterior as the amount of data increases.
+Asymptotically, priors have no meaning. If we have infinite data, the posterior will be the same regardless of the chosen prior. When there is large amount of data, the update is dominated by the likelihood function, and the prior has little influence. Different reasonable priors converge to the same posterior as data size is increased.
 
-There is a catch in the previous statement, or maybe two. If we assign 0 prior probability to a value, no amount of data will turn that into a positive value. In other words, if a particular value or hypothesis is assigned zero prior probability, it will also have zero posterior probability, regardless of the data observed. Alternatively, if we assign a prior probability of 1 to a value (and zero to the rest), no amount of data will allow us to update that prior neither. This is known as Cromwell's rule and states that the use of prior probabilities of 1 ("the event will definitely occur") or 0 ("the event will definitely not occur") should be avoided, except when applied to statements that are logically true or false, such as $2+2=4$. 
+But there are two catches. If we assign 0 prior probability to a value, no amount of data will turn that into a positive value. In other words, if a particular value or hypothesis is assigned zero prior probability, it will also have zero posterior probability, regardless of the data observed. Alternatively, if we assign a prior probability of 1 to a value (and zero to the rest), no amount of data will allow us to update that prior neither. This is known as Cromwell's rule and states that the use of prior probabilities of 1 ("the event will definitely occur") or 0 ("the event will definitely not occur") should be avoided, except when applied to statements that are logically true or false, such as $2+2=4$. 
 
 ![If we give 0 prior probability, then we will always get 0 posterior probability](../img/bayes_theorem_01.png){#fig-prior_Cromwell}
 
@@ -72,7 +72,7 @@ Using the prior predictive distribution to evaluate priors is inherently a globa
 
 ## Bayesian Workflow for Prior Elicitation {#sec-prior-elicitation-workflow}
 
-It is important to think of prior elicitation in the context of a flexible workflow adapting to the specific needs of the model and the data. The workflow should also be iterative, as prior elicitation may need to be revisited as the model is developed and the data are analysed.
+Prior elicitation is a key part of a flexible iterative workflow. It can be specific to the needs of the model and data at hand. It may need revision as we develop the model and analyse the data.
 
 Knowing when to perform prior elicitation is central to a prior elicitation workflow. In some situations, default priors and models may be sufficient, especially for routine inference that applies the same, or very similar, model to similar new datasets. But even for new datasets, default priors can be a good starting point, adjusting them only after initial analysis reveals issues with the posterior or computational problems. As with other components of the Bayesian workflow, prior elicitation isn’t just a one-time task. It's not even one that is always done at the beginning of the analysis. 
 
@@ -108,9 +108,9 @@ For some priors in a model, we may know or assume that most of the mass is withi
 
 ## Maximum entropy distributions with maxent
 
-In PreliZ we can compute maximum entropy priors using the function `maxent`. It works for unidimensional distributions. The first argument is a PreliZ distribution. Then we specify an upper and lower bounds and then the probability inside the range defined by the bounds.
+In PreliZ we can compute maximum entropy priors using the function `maxent`. It works for unidimensional distributions. The first argument is a PreliZ distribution. Then we specify an upper and lower bound and the probability between them.
 
-Let's say that we want to elicit a scale parameter and from domain knowledge we know that the parameter has a relatively high probability of being less than 3. In that case we could use a HalfNormal and then do:
+As an example, we want to elicit a scale parameter. From domain knowledge we know the parameter has a relatively high probability of being less than 3. Hence, we could use a HalfNormal distribution and do:
 
 ```{python}
 pz.maxent(pz.HalfNormal(), 0, 3, 0.8);
@@ -122,7 +122,7 @@ When we want to avoid values too close to zero, other distributions like Gamma o
 pz.maxent(pz.Gamma(), 0, 3, 0.8);
 ```
 
-Furthermore, we may have more information that just a plausible range. We could also has extra restrictions like knowledge about the mean or mode. Let's say we think a mean of 2 is very likely, then we can take advantage of the fact that the Gamma can also be parametrized in terms of the mean and pass the distribution `pz.Gamma(mu=2)`. If instead we think is the mode the one is likely to be 2, then `maxent` has a `mode` argument we can use.
+We could also have extra restrictions like knowledge about the mean or mode. Let's say we think a mean of 2 is very likely. The Gamma distribution can be parametrized in terms of the mean as `pz.Gamma(mu=2)`. If we instead believe the mode is likely to be 2, then `maxent` takes a `mode` argument.
 ```{python}
 dist_mean = pz.Gamma(mu=2)
 pz.maxent(dist_mean, 0, 3, 0.8)
