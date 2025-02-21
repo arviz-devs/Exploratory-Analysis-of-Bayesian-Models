@@ -319,33 +319,37 @@ So far we have show examples with continuous data. Many of the tools can still b
 
 ### Posterior predictive checks for count data
 
-Count data is a type of discrete data that is very common in many fields. For instance, the number of iguanas per square meter in a rainforest, the number of bikes in a bike-sharing station, the number of calls to a call center, the number of emails received, etc. When assessing the fit of a model to count data we need to consider that the data is non-negative and typically skewed. Additionally we also care about the amount of (over/under-)dispersion.
+Count data is a type of discrete data that is very common in many fields. For instance, the number of iguanas per square meter in a rainforest, the number of bikes in a bike-sharing station, the number of calls to a call center, the number of emails received, etc. When assessing the fit of a model to count data we need to consider the discretness of the data and that we usually care about the amount of (over/under-)dispersion.
 
-Rootograms are a graphical tool to assess the fit of count data models [@tukey_1977; @Kleiber_2016]. This tool is handy for diagnosing overdispersion and/or excess zeros in count data models. The name originates from the fact that rootograms plot the square *root* of the observed counts against the square *root* of the expected counts. 
+Rootograms are a graphical tool to assess the fit of count data models [@tukey_1977; @Kleiber_2016]. There are a few variations of rootograms, but traditionally rootograms use bars for the predicted data, a lines+markers for the observed data and instead of plotting the raw data, they show the square *root* of the observed and predicted counts. Often the uncertainty in the predictions is omitted. The reason to square root the data is to make easier to compare observed and expected frequencies even for low frequencies.
 
-There are a few variations of rootograms. Here we are going to discuss hanging rootograms and suspended rootograms. For the first one the predicted counts are plotted as dots with oblique lines, to represent uncertainty in the predictions. In the absect of uncertainty this lines will be flat (parallel to the x-axis). The observed counts are plotted as (oblique) bars hanging from the lines, see @fig-rootogram_hang. 
+Here we are going to discuss the rootograms presented by @Säilynoja_2025. These rootograms emphasises the discreteness of the data and predictions by using points and point-wise credible intervals. And instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frecuencies from the plot (instead of reading the square root) while keeping the advantage of being able to discriminate details at lower frecuencies.
 
-How do we read hanging rootograms? For a count, if a bar goes below the dashed line at y=0 the model is underestimating that count. Instead, if the bar goes above the dashed line at y=0, the model is overestimating that count. 
+To illustrate rootograms we are going to use the Horseshoe crabs dataset [@Brockmann_1996]. Very briefly, horseshoe crabs arrive at the beach in pairs for their spawning ritual. Solitary males gather around the nesting couples and vying to fertilize the eggs. These individuals, known as satellite males, often congregate near certain nesting pairs while disregarding others. We used Bambi to create two models a poisson model and a hurdle-negative binomial model for the number of male satellites as a function of the carapace width and color of the female. 
 
-```{python}
-# Coming soon with ArviZ 1.0
-```
-
-![Hanging rootograms, showing the uncertainty in the predictions](../img/rootogram_hanging.png){#fig-rootogram_hang width=100%}
-
-A variant of the hanging rootogram is the suspended rootogram (see @fig-rootogram_sus). As for the hanging version a bar that goes below the dashed line means that the model is underestimating that count, and a bar that goes above the dashed line means that the model is overestimating that count. The difference is that for suspended rootograms we plot the residuals (predicted-observed counts) as departing from the dashed line at y=0, instead of "hanging" from the predictions. Ideally, for each count we would expect a small departure from the dashed line equally distributed above and below.
+We are going to omit the modelling details, and just upload prefitted models.
 
 ```{python}
-# Coming soon with ArviZ 1.0
+crabs_poisson = azb.load_arviz_data('crabs_poisson')
+crabs_hurdle_nb = azb.load_arviz_data('crabs_hurdle_nb')
 ```
 
-![Suspended rootograms, showing the uncertainty in the predictions](../img/rootogram_suspended.png){#fig-rootogram_sus width=100%}
+Let's first check the poisson model. We can see that the overall fit is not that bad, but the zeros are underpredicted, and counts 1 to 4 are overpredicted. Most
+counts from 6 onward are also underpredicted. This pattern is an indication of overdispersion in the data, and the huge difference for 0 indicates an excess of zeros.
 
+```{python}
+#| label: fig-ppc_rootogram_crab_poisson
+#| fig-cap: "Rootogram showing the uncertainty in the predictions for a Poisson model."
+azp.plot_ppc_rootogram(crabs_poisson)
+```
 
-ArviZ currently does not support rootograms, but it will in the [future](https://arviz-plots.readthedocs.io/en/latest/gallery/plot_rootogram.html). 
+Now we will check the fit for the hurdle model. As expected for a hurdle model we get a perfect fit for the zeros. For the positive values, we still get some deviations, but the fit is better than with the Poisson model. The model predict more values at the tail than observed.
 
-
-For those curious about the data, we are using the horseshoe crab dataset [@Brockmann_1996]. The motivation was to predict the number of "satellite" male crabs based on the features of the female crabs. Satellite crabs are solitary males that gather around a couple of nesting crabs vying for the opportunity to fertilize the eggs. For this example we have two models for one we have used a Poisson likelihood and for the other a Hurdle NegativeBinomial distribution.
+```{python}
+#| label: fig-ppc_rootogram_crab_hurdle_nb
+#| fig-cap: "Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model."
+azp.plot_ppc_rootogram(crabs_hurdle_nb)
+```
 
 
 ### Posterior predictive checks for binary data
