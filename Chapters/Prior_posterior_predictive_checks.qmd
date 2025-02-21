@@ -4,6 +4,7 @@
 #| echo: false
 #| warning: false
 import arviz as az
+import arviz_base as azb
 import arviz_plots as azp
 import arviz_stats as azs
 import numpy as np
@@ -340,17 +341,20 @@ counts from 6 onward are also underpredicted. This pattern is an indication of o
 ```{python}
 #| label: fig-ppc_rootogram_crab_poisson
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Poisson model."
-azp.plot_ppc_rootogram(crabs_poisson)
+pc = azp.plot_ppc_rootogram(crabs_poisson)
+pc.viz["satellite"].plot.item().set_xlim(-0.5, 20)
 ```
 
-Now we will check the fit for the hurdle model. As expected for a hurdle model we get a perfect fit for the zeros. For the positive values, we still get some deviations, but the fit is better than with the Poisson model. The model predict more values at the tail than observed.
+Now we will check the fit for the hurdle model. As expected for a hurdle model we get a perfect fit for the zeros. For the positive values, we still get some deviations, but the fit is better than with the Poisson model.
 
 ```{python}
 #| label: fig-ppc_rootogram_crab_hurdle_nb
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model."
-azp.plot_ppc_rootogram(crabs_hurdle_nb)
+pc = azp.plot_ppc_rootogram(crabs_hurdle_nb)
+pc.viz["satellite"].plot.item().set_xlim(-0.5, 20)
 ```
 
+Both models predict more values in the tail than observed, even if with low probability. For both plots, we restrict the x-range to (0, 20).
 
 ### Posterior predictive checks for binary data
 
