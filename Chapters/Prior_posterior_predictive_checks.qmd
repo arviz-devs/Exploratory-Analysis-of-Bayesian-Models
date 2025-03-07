@@ -411,20 +411,18 @@ Both models predict more values in the tail than observed, even if with low prob
 
 ### Posterior predictive checks for binary data
 
-Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. Modelling binary data poses a unique challenge for assessing model fit because these models generate predicted values on a probability scale (0-1), while the actual values of the response variable are dichotomous (either 0 or 1).
+Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. We may be tempted to asses the fit of a binary model using a bar plot, or a plot similar to the rootogram we showed in the previous section, but this is not a good idea. The reason is that even a very simple model with one parameter corresponding to the proportion of one class, can perfectly model the proportion, and a bar plot will not show any deviation [@Säilynoja_2025]. 
 
-One solution to this challenge was presented by [@Greenhill_2011] and is a know as separation plot. This graphical tool consists of a sequence of bars, where each bar represents a data point. Bars can have one of two colours, one for positive cases and one for negative cases. The bars are sorted by the predicted probabilities, so that the bars with the lowest predicted probabilities are on the left and the bars with the highest predicted probabilities are on the right. Usually the plot also includes a marker showing the expected number of total events. For and ideal fit all the bars with one color should be on one side of the marker and all the bars with the other color on the other side.
+One solution to this challenge is to use the so call calibration or reliability plots. To create this kind of plot we first bin the predicted probabilities (e.g., [0.0–0.1], [0.1–0.2], ..., [0.9–1.0]) and then for each bin we compute the fraction of observed positive outcomes. In this way we can compare the predicted probabilities to the observed frequencies. The ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies.
 
-The following example show a separation plot for a logistic regression model.
+The problem with this approach is that in practice we don't have good rules to select the bins and different bins can result in plots that look drastically different [@Dimitriadis_2021]. An alternative is to use the method proposed by @Dimitriadis_2021. This method uses conditional event probabilities (CEP), that is the probability that a certain event occurs given that the classifier has assigned a specific predicted probability. To compute the CEPs, the authors use the pool adjacent violators (PAV) algorithm [@Ayer_1955], which provides a way to assign CEPs that are monotonic (i.e. they increase or stay the same, but never decrease) with respect to the model predictions. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities. 
+
+@fig-ppc_pava shows a calibration plot for a dummy logistic regression model. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The plot also includes the confidence bands for the CEPs. The confidence bands are computed using the method proposed by @Dimitriadis_2021.
 
 ```{python}
-#| label: fig-post_pred_sep
+#| label: fig-ppc_pava
 #| fig-cap: "Separation plot for a dummy logistic regression model."
-idata = az.load_arviz_data('classification10d')
+dt = azb.load_arviz_data('classification10d')
 
-az.plot_separation(idata=idata,
-                   y='outcome',
-                   y_hat='outcome',
-                   expected_events=True, 
-                   figsize=(10, 1))
+azp.plot_ppc_pava(dt)
 ```                   
