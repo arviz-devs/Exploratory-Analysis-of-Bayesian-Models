@@ -209,7 +209,9 @@ Other common visualizations to compare observed and predictive values are empiri
 
 ### Using summary statistics
 
-Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics. Which ones, we decide to use may vary  from one data-analysis problem to another, and ideally it should be informed by the data-analysis goals. 
+Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics. Which ones we decide to use can vary from one data-analysis problem to another,
+and ideally they should be informed by the data-analysis goals. As in posterior predictive checks we use the data twice, first for fitting the model and then for checking it. It is advisable to select test statistics that are
+orthogonal to the model parameters [@Gabry_2019]. For example, in a Normal model with a location parameter, the mean should be easy to recover, so a posterior predictive check using the mean as a test statistic would not be a particularly stringent test. As in many common models there is a location parameter, then the mean is usually not a good test statistic.
 
 The following plot shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model's predictions.
 
@@ -230,77 +232,128 @@ ax[1].set_title("median")
 ax[2].set_title("IQR");
 ```
 
-The numerical values labeled as `bpv` correspond to the following probability:
+The numerical values labelled as `bpv` are know as Bayesian p-values, or posterior predictive p-values [@Meng_1994 @Gelman_2013]. If you want to use `plot_bpv`, but you prefer to omit the Bayesian p-values pass `bpv=False`. 
 
+
+The Bayesian p-values correspond to the following probability:
 $$
 p(T_{\text{sim}} \le T_{\text{obs}} \mid \tilde y)
 $$
 
-
 Where $T$ is the summary statistic of our choice, computed for both the observed data $T_{\text{obs}}$ and the simulated data $T_{\text{sim}}$. 
 
-This probabilities are often called Bayesian p-values, and their ideal value is 0.5, meaning that half of the predictions are below the observed values and half above.
+A posterior predictive p-value of 0.5 indicates that half of the predictions are below the observed values and half above. Posterior predictive p-values do not in general have uniform distributions under the null hypothesis but instead tend to have distributions more concentrated near 0.5 [@Gelman_2013b]. For instance, we already mentioned that the mean is easy to recover for many models and thus the posterior predictive p-value for the mean is often concentrated around 0.5.
+
+The term "Bayesian p-values" may sound like an oxymoron or paradoxical [@Meng_1994]. The Bayesian p-values are defined similar to their frequentist cousins and hence the name. But they are used in a very different way. We use posterior predictive p-values as a diagnostic tool to asses potential mismatches between model and data rather than as a measure of "statistical significance" or as a dichotomy decision tool. The null hypothesis is that the predictions from the model and the observed data are drawn from the same data-generating process, but in practice we are not interested in rejecting this hypothesis. We already know is not true! Instead, we are interested in understanding how well the model is doing at predicting the data, detecting potential problems, an if possible or desirable improving the model.
 
 
-The following paragraph is for those of you that are familiar with the p-values as used in frequentist statistics for null hypothesis testing and computation of "statistical significance". If that's the case you should be aware that the Bayesian p-values are something different. While frequentist p-values measure the probability of obtaining results at least as extreme as the observed data under the assumption that the null hypothesis is true, Bayesian p-values assess the discrepancy between the observed data and simulated data based on the posterior predictive distribution. They are used as a diagnostic tool to evaluate the adequacy of a model rather than as a measure of "statistical significance" or evidence against a null hypothesis.
+### PIT-ECDFs
 
-Bayesian p-values are not tied to a null hypothesis and are not subject to the same kind of binary decision-making framework (reject/accept). Instead, they provide insight into how well the model, given the data, predicts the summary statistics. Values close to 0.5 indicates a well-calibrated model. However, the interpretation is more nuanced, as the goal is model assessment and improvement rather than hypothesis testing.
-
-If you want to use `plot_bpv` to do the plots, but you prefer to omit the Bayesian p-values pass `bpv=False`. `plot_bpv` supports to other types of plots `kind="p_value"`, that corresponds to computing 
-
-$$
-p(\tilde y \le y_{\text{obs}} \mid y)
-$$
-
-that is, instead of using a summary statistics, as before, we directly compare observations and predictions. In the following plots the dashed black line represent the expected distribution.
-
-```{python}
-#| label: fig-post_pred_check_p_value
-#| fig-cap: "Posterior predictive check for the model of heights using Bayesian p-values."
-az.plot_bpv(idata, kind="p_value");
-```
-
-Another possibility is to perform the comparison per observation.
-
+Instead of using a summary statistics, as before, we can directly compare observations and predictions by computing:
 $$
 p(\tilde y_i \le y_i \mid y)
 $$
 
-This is often called the marginal p-value and the ideal distribution is the standard uniform distribution.
+This is often called the marginal p-value and the ideal distribution is the standard uniform distribution. The intuition is that if the model can generate predictions from the same distribution as the observed data, then the observed data can be thought of as just one random sample from the posterior predictive distribution. In this case, the observed data point is equally likely to appear anywhere within the range of the predicted values. This means there’s no systematic bias in where the observation falls, and the p-values derived from comparing the observed data to the predictions will be uniformly distributed. 
 
-The white line in the following figure represents the ideal scenario and the grey band the expected deviation given the size of the data. The x values corresponds to the quantiles of the original distribution, i.e. the central values represent the "bulk" of the distribution and the extreme values the "tails".
+A more formal justification for this result is provided by the [Probability Integral Transform](https://en.wikipedia.org/wiki/Probability_integral_transform) (PIT). This property, also known as the universality of the Uniform distribution, states that if $Y$ is a random variable with a continuous distribution and cumulative distribution function (CDF) $F_Y$, then the transformed variable  
+
+$$
+U = F_Y(Y)
+$$
+
+follows a standard Uniform distribution. A proof of this result can be found in the [The Book of Statistical Proofs](https://statproofbook.github.io/P/cdf-pit.html). 
+
+In other words if we apply the CDF of any continuous distribution to a random variable with that distribution, the result will be a random variable with a standard uniform distribution. This is a very powerful result, as it allows us to use the standard uniform distribution as a reference distribution for many statistical tests, including posterior predictive checks.
+
+As mentioned earlier, the marginal p-value is given by  
+
+$$
+p(\tilde y_i \leq y_i \mid y).
+$$
+
+If the observed data and predictions are drawn from the same distribution, this expression is then equivalent to the definition of the CDF:  
+
+$$
+F_Y(y) = \mathrm{Pr}(Y \leq y).
+$$
+
+Thus, we can see the computation of the marginal p-value as an application of the Probability Integral Transform.
+
+In practice we don't have the CDF, but this is no problem as we have samples from the posterior predictive and hence we can compute the empirical CDF (ECDF). The CDF of the standard Uniform distribution is a diagonal line that goes from (0, 0) to (1,1), as shown in @fig-post_pred_uniform_cdf. Deviations from this line may indicate problems with the model. This is a very simple to interpret plot. 
 
 ```{python}
-#| label: fig-post_pred_check_u_value
-#| fig-cap: "Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values."
-az.plot_bpv(idata);
+#| label: fig-post_pred_uniform_cdf
+#| fig-cap: "The CDF of the standard Uniform distribution."
+pz.Uniform(0, 1).plot_cdf()
 ```
 
-To build intuition, let's look at some synthetic data. The following plot shows four different scenarios, where the observed data follows a standard normal distribution ($\mu=0, \sigma^2=1$). In each case, we compare the observed data to predictions where:
-
-* The mean of the predictions is shifted to the right.
-* The mean of the predictions is shifted to the left.
-* The predictions have a wider spread (larger variance).
-* The predictions have a narrower spread (smaller variance).
+The disadvantage of such plot is that all the "action" is close to the diagonal line and most of the plot is just blank space. A simple trick to improve the *data-ink* ratio is to plot the difference between the observed and expected cumulative distribution functions, the $\Delta$-ECDF, as shown in Figure @fig-post_ppc_pit_ecdf. The last ingredient to improve this visual diagnostic is to add a confidence band. Due to finite sample size we should expect deviations from uniformity, so a confidence band gives us an idea of how much deviation is expected by chance. 
 
 ```{python}
-#| label: fig-post_pred_check_u_value_alt
-#| fig-cap: "Posterior predictive check for the model of heights using u-values and showing for alternative scenarios."
+#| label: fig-post_ppc_pit_ecdf
+#| fig-cap: "Posterior predictive check for the model of heights using marginal Bayesian p-values, also know as u-values."
+azp.plot_ppc_pit(idata);
+```
+
+In ArviZ, we use the simultaneous confidence bands described by @sailynoja_2022. The simultaneous confidence bands take into account the probability of observing deviations of the entire curve, as opposed to independent pointwise deviations. The band or envelope has an oval shape because the probability of observing a deviation is null at 0 and 1, all ECDFs must start at 0 and end at 1, and is higher in the middle of the curve.
+
+To build intuition on how to interpret the PIT-ECDF plots we are going to explore four common patterns using synthetic data. The following plot shows four different scenarios, where the observed data follows a standard normal distribution ($\mu=0, \sigma^2=1$). In each case, we compare the observed data to predictions where:
+
+* The mean of the predictions is shifted to the right. The model is overpredicting the data.
+* The mean of the predictions is shifted to the left. The model is underpredicting the data.
+* The predictions have a wider spread. The predictions are too uncertain.
+* The predictions have a narrower spread. The predictions are too certain.
+* The predictions are ok, except for . The model is doing a good job.
+
+```{python}
+#| label: fig-post_ppc_pit_ecdf_alt
+#| fig-cap: "Posterior predictive check showing four alternative scenarios. On the first row we have the KDEs of the observed data and the predictions. On the second row we have the ECDFs of the observed data and predictions and on the thirs we have the PIT-ECDFs."
 observed = pz.Normal(0, 1).rvs(500)
 
-_, axes = plt.subplots(2, 2, sharex=True, sharey=True)
+predictions = {}
+for i, (mu, sigma) in enumerate([
+                                (0.5, 1),  # shifted to the right
+                                (-0.5, 1), # shifted to the left
+                                (0, 2),    # wider 
+                                (0, 0.5),  # narrower
+                                ]):
+    predictions[f"y{i}"] =  pz.Normal(mu, sigma).rvs((4, 500, 100))
 
-for ax, (mu, sigma) in zip(axes.ravel(), 
-                           [(0.5, 1),   # shifted right
-                            (-0.5, 1),  # shifted left
-                            (0, 2),     # wider
-                            (0, 0.5)]): # narrower
-    
-    idata_i = az.from_dict(posterior_predictive={"y":pz.Normal(mu, sigma).rvs((50, 500))},
-                           observed_data={"y":observed})
-    
-    az.plot_bpv(idata_i, ax=ax);
-    ax.set_ylim(0, 2.5)
+idata_i = azb.from_dict({
+    "posterior_predictive":predictions,
+    "observed_data": {f"y{i}": observed for i in range(len(predictions))}
+})
+
+azp.plot_ppc_dist(idata_i,
+                  kind="kde",  
+                  plot_kwargs={"remove_axis":False},
+                  pc_kwargs={"plot_grid_kws":{"sharey":True}},             
+                 );
+azp.plot_ppc_dist(idata_i,
+                  kind="ecdf",
+                  pc_kwargs={"plot_grid_kws":{"sharey":True}},        
+                 );
+azp.plot_ppc_pit(idata_i,
+                 plot_kwargs={"ylabel":False},
+                 pc_kwargs={"plot_grid_kws":{"sharey":True}},        
+                 );
+
+```
+
+### Avoiding the data-twice problem
+
+All posterior predictive checks we have seen use the data twice, first to fit the model and then to evaluate it. Too avoid using the data twice, we can instead compute 
+
+$$
+p(\tilde y_i \leq y_i \mid y_{-i})
+$$
+
+where $y_{-i}$ is the observed data without the $i$-th observation. This is known as the leave-one-out cross-validation (LOO-CV) and it is a very popular method to assess the predictive performance of a model. In principle computing this will be too costly, as we need to compute the posterior predictive distribution $n$ times, where $n$ is the number of observations. However, we can use the Pareto-smoothed importance sampling (PSIS) to approximate the LOO-CV from a single posterior computation. This is a topic we will discuss in more detail in @sec-model-comparison. But next figure shows the LOO-PIT for the model of heights.
+
+```{python}
+# comming soon
+# loo-pit
 ```
 
 ### Hypothetical Outcome Plots
