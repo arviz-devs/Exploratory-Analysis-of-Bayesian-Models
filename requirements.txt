@@ -1,9 +1,9 @@
-arviz==0.19.0
+arviz==0.21.0
 arviz-base @ git+https://github.com/arviz-devs/arviz-base
 arviz-stats @ git+https://github.com/arviz-devs/arviz-stats
 arviz-plots @ git+https://github.com/arviz-devs/arviz-plots
-bambi==0.14.0
+bambi==0.15.0
 kulprit @ git+https://github.com/bambinos/kulprit
-preliz==0.13.0
-pymc==5.19.1
-pymc-bart==0.8.1
+preliz==0.15.0
+pymc==5.21.0
+pymc-bart==0.8.2
