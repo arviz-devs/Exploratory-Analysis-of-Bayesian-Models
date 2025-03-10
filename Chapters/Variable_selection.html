@@ -199,7 +199,13 @@ window.Quarto = {
 <meta name="citation_reference" content="citation_title=Non-parametric jensen-shannon divergence;,citation_author=Hoang-Vu Nguyen;,citation_author=Jilles Vreeken;,citation_editor=Annalisa Appice;,citation_editor=Pedro Pereira Rodrigues;,citation_editor=Vítor Santos Costa;,citation_editor=João Gama;,citation_editor=Alípio Jorge;,citation_editor=Carlos Soares;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_conference_title=Machine learning and knowledge discovery in databases;,citation_conference=Springer International Publishing;">
 <meta name="citation_reference" content="citation_title=Modern Applied Statistics with S;,citation_author=W. N. Venables;,citation_author=B. D. Ripley;,citation_publication_date=2002-08;,citation_cover_date=2002-08;,citation_year=2002;,citation_isbn=978-0-387-95457-8;">
 <meta name="citation_reference" content="citation_title=Satellite male groups in horseshoe crabs, limulus polyphemus;,citation_author=H. Jane Brockmann;,citation_publication_date=1996;,citation_cover_date=1996;,citation_year=1996;,citation_fulltext_html_url=https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1439-0310.1996.tb01099.x;,citation_issue=1;,citation_doi=https://doi.org/10.1111/j.1439-0310.1996.tb01099.x;,citation_volume=102;,citation_journal_title=Ethology;">
-<meta name="citation_reference" content="citation_title=Recommendations for visual predictive checks in bayesian workflow;,citation_author=Teemu Säilynoja;,citation_author=Andrew R. Johnson;,citation_author=Osvaldo A. Martin;,citation_author=Aki Vehtari;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_fulltext_html_url=https://arxiv.org/abs/0000.00000;">
+<meta name="citation_reference" content="citation_title=Recommendations for visual predictive checks in bayesian workflow;,citation_author=Teemu Säilynoja;,citation_author=Andrew R. Johnson;,citation_author=Osvaldo A. Martin;,citation_author=Aki Vehtari;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_fulltext_html_url=https://arxiv.org/abs/2503.01509;">
+<meta name="citation_reference" content="citation_title=Visualization in bayesian workflow;,citation_author=Jonah Gabry;,citation_author=Daniel Simpson;,citation_author=Aki Vehtari;,citation_author=Michael Betancourt;,citation_author=Andrew Gelman;,citation_publication_date=2019-01;,citation_cover_date=2019-01;,citation_year=2019;,citation_fulltext_html_url=https://doi.org/10.1111/rssa.12378;,citation_issue=2;,citation_doi=10.1111/rssa.12378;,citation_issn=0964-1998;,citation_volume=182;,citation_journal_title=Journal of the Royal Statistical Society Series A: Statistics in Society;">
+<meta name="citation_reference" content="citation_title=Posterior Predictive p-Values;,citation_author=Xiao-Li Meng;,citation_publication_date=1994;,citation_cover_date=1994;,citation_year=1994;,citation_fulltext_html_url=https://doi.org/10.1214/aos/1176325622;,citation_issue=3;,citation_doi=10.1214/aos/1176325622;,citation_volume=22;,citation_journal_title=The Annals of Statistics;,citation_publisher=Institute of Mathematical Statistics;">
+<meta name="citation_reference" content="citation_title=Bayesian Data Analysis;,citation_author=Andrew Gelman;,citation_author=John B. Carlin;,citation_author=Hal S. Stern;,citation_author=David B. Dunson;,citation_author=Aki Vehtari;,citation_author=Donald B. Rubin;,citation_publication_date=2013-11;,citation_cover_date=2013-11;,citation_year=2013;,citation_isbn=978-1-4398-4095-5;">
+<meta name="citation_reference" content="citation_title=Two simple examples for understanding posterior p-values whose distributions are far from uniform;,citation_author=Andrew Gelman;,citation_publication_date=2013;,citation_cover_date=2013;,citation_year=2013;,citation_fulltext_html_url=https://doi.org/10.1214/13-EJS854;,citation_issue=none;,citation_doi=10.1214/13-EJS854;,citation_volume=7;,citation_journal_title=Electronic Journal of Statistics;,citation_publisher=Institute of Mathematical Statistics; Bernoulli Society;">
+<meta name="citation_reference" content="citation_title=Stable reliability diagrams for probabilistic classifiers;,citation_author=Timo Dimitriadis;,citation_author=Tilmann Gneiting;,citation_author=Alexander I. Jordan;,citation_publication_date=2021-02;,citation_cover_date=2021-02;,citation_year=2021;,citation_fulltext_html_url=https://www.pnas.org/doi/abs/10.1073/pnas.2016191118;,citation_issue=8;,citation_doi=10.1073/pnas.2016191118;,citation_volume=118;,citation_journal_title=Proceedings of the National Academy of Sciences;">
+<meta name="citation_reference" content="citation_title=An Empirical Distribution Function for Sampling with Incomplete Information;,citation_author=Miriam Ayer;,citation_author=H. D. Brunk;,citation_author=G. M. Ewing;,citation_author=W. T. Reid;,citation_author=Edward Silverman;,citation_publication_date=1955;,citation_cover_date=1955;,citation_year=1955;,citation_fulltext_html_url=https://doi.org/10.1214/aoms/1177728423;,citation_issue=4;,citation_doi=10.1214/aoms/1177728423;,citation_volume=26;,citation_journal_title=The Annals of Mathematical Statistics;,citation_publisher=Institute of Mathematical Statistics;">
 </head>
 
 <body class="nav-sidebar docked">
@@ -413,14 +419,14 @@ window.Quarto = {
 <p>Once we fit a BART model we can count the number of times each covariate is used in the posterior distribution of trees. This count can be used as a measure of the importance of the covariate. We will call this the “variable inclusion” measure, or VI for short, and is normalized to sum to 1. One heuristic is to start with a model with a single covariate and then add covariates in decreasing order of VI. This is fast as we only need to evaluate as many models as covariates we have. This is the default heuristic in PyMC-BART. Then to evaluate the quality of each submodel we compute the predictions from it and compare the predictions with those from the reference model. Currently, PyMC-BART uses the R², but other metrics could be used. For the submodels the predictions are computed by <em>pruning</em> the trees in the posterior distribution of the reference model. That is we remove the trees the branches that do not use the covariates in the submodel. In this way, we approximate the posterior distribution of the submodel and we can compute the predictions without the need to refit each submodel.</p>
 <p>Let’s see one example. We have a <a href="[bike-sharing dataset](https://archive.ics.uci.edu/ml/datasets/bike+sharing+dataset)">record</a> of the number of rented bikes in a city and other variables like temperature, hour of the day etc. We want to model the relationship between temperature and the number of rented bikes.</p>
 <p>Let’s first load the data and define the variables.</p>
-<div id="194faca5" class="cell" data-execution_count="2">
+<div id="a0fed3ea" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>bikes <span class="op">=</span> pd.read_csv(<span class="st">"../data/bikes.csv"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2"></a></span>
 <span id="cb1-3"><a href="#cb1-3"></a>Y <span class="op">=</span> bikes.pop(<span class="st">"count"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4"></a>X <span class="op">=</span> bikes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we define the BART model using PyMC-BART, for details on how to define BART models, please check the <a href="https://www.pymc.io/projects/bart/en/latest/">PyMC-BART documentation</a></p>
-<div id="35741c83" class="cell" data-execution_count="3">
+<div id="db9d8369" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model:</span>
 <span id="cb2-2"><a href="#cb2-2"></a>    α <span class="op">=</span> pm.HalfNormal(<span class="st">"α"</span>, <span class="dv">2</span>)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>    μ_ <span class="op">=</span> pmb.BART(<span class="st">"μ_"</span>, X, np.log(Y))</span>
@@ -433,11 +439,11 @@ window.Quarto = {
 CompoundStep
 &gt;NUTS: [α]
 &gt;PGBART: [μ_]
-Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 53 seconds.</code></pre>
+Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 55 seconds.</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"e0a672665e434c24be55556516953bb1","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"2e2ee3d4f9ca4b82b1c42478b0c1e1e3","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -445,7 +451,7 @@ Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws 
 </div>
 </div>
 <p>We can now compute the variable importance and plot the results. The dashed lines represent the mean R² for the predictions from the reference model against themselves, the band captures the uncertainty. Then from left to right, we add covariates in decreasing order of VI. The first submodel is the one with only <code>hour</code>, the second is <code>hour + temperature</code>, the third is <code>hour + temperature + month</code> and so on.</p>
-<div id="7128dcea" class="cell" data-execution_count="4">
+<div id="483be433" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>vi_results <span class="op">=</span> pmb.compute_variable_importance(idata, μ_, X)<span class="op">;</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a>ax <span class="op">=</span> pmb.plot_variable_importance(vi_results, plot_kwargs<span class="op">=</span>{<span class="st">"rotation"</span>: <span class="dv">45</span>}, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
 <span id="cb4-3"><a href="#cb4-3"></a>ax.set_ylim(<span class="fl">0.5</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -462,7 +468,7 @@ Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws 
 <section id="partial-dependence-plot" class="level3" data-number="9.2.1">
 <h3 data-number="9.2.1" class="anchored" data-anchor-id="partial-dependence-plot"><span class="header-section-number">9.2.1</span> Partial dependence plot</h3>
 <p>Strictly speaking when we say we <em>prune</em> the trees we are actually computing the partial dependence, that is, we are computing the expected value of the outcome for a subset of the covariates while averaging over the complement of that subset. With PyMC-BART we can visually inspect the partial dependence when excluding all but one covariate. As in the following figure:</p>
-<div id="8f4c9a7c" class="cell" data-execution_count="5">
+<div id="69f65203" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>axes <span class="op">=</span> pmb.plot_pdp(μ_, X<span class="op">=</span>X, Y<span class="op">=</span>Y, grid<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">3</span>), func<span class="op">=</span>np.exp, var_discrete<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">2</span>], xs_interval<span class="op">=</span><span class="st">"insample"</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -488,19 +494,24 @@ Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws 
 <p>In the proposed approach <span class="math inline">\(\log q(\tilde{y} \mid \theta_\perp)\)</span> is the log-likelihood of our model evaluated with respect to samples from the posterior predictive distribution <span class="math inline">\(\tilde{y}\sim p(\tilde{y}\mid\theta)\)</span>. Thus to minimize the KL divergence we can maximize the model’s log-likelihood with respect to the posterior predictive samples from the reference model. This is the optimization problem we need to solve to find the posterior distribution of the submodel.</p>
 <p>Let’s use Kulprit to perform variable selection on the same dataset we used for PyMC-BART.</p>
 <p>The first thing we need to do is to define the model using Bambi. We need to set <code>idata_kwargs={'log_likelihood': True}</code> as we will later need to compute the ELPD of the reference models and submodels.</p>
-<div id="ceeca341" class="cell" data-execution_count="7">
+<div id="2718269b" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>model <span class="op">=</span> bmb.Model(<span class="st">"count ~"</span> <span class="op">+</span>  <span class="st">" + "</span>.join([c <span class="cf">for</span> c <span class="kw">in</span> bikes.columns <span class="cf">if</span> c<span class="op">!=</span><span class="st">"count"</span>]), data<span class="op">=</span>bikes, family<span class="op">=</span><span class="st">"negativebinomial"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2"></a>idata <span class="op">=</span> model.fit(idata_kwargs<span class="op">=</span>{<span class="st">'log_likelihood'</span>: <span class="va">True</span>}, random_seed<span class="op">=</span>seed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Initializing NUTS using jitter+adapt_diag...
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pytensor/link/c/cmodule.py:2959: UserWarning: PyTensor could not link to a BLAS installation. Operations that might benefit from BLAS will be severely degraded.
+This usually happens when PyTensor is installed via pip. We recommend it be installed via conda/mamba/pixi instead.
+Alternatively, you can use an experimental backend such as Numba or JAX that perform their own BLAS optimizations, by setting `pytensor.config.mode == 'NUMBA'` or passing `mode='NUMBA'` when compiling a PyTensor function.
+For more options and details see https://pytensor.readthedocs.io/en/latest/troubleshooting.html#how-do-i-configure-test-my-blas-library
+  warnings.warn(
 Multiprocess sampling (2 chains in 2 jobs)
 NUTS: [alpha, Intercept, month, hour, weekday, temperature, humidity, windspeed]
-Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 5 seconds.
+Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 4 seconds.
 We recommend running at least 4 chains for robust computation of convergence diagnostics</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"a55472117c534f519cb05343980c6dff","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"33d158d10bdc47c799f5f60e5690ef75","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -508,13 +519,59 @@ We recommend running at least 4 chains for robust computation of convergence dia
 </div>
 </div>
 <p>To use Kulprit we first instantiate the <code>ProjectionPredictive</code> class and then call the <code>project</code> method, which is the one doing all the hard work.</p>
-<div id="7ff1a658" class="cell" data-execution_count="8">
+<div id="3d5507c4" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>ppi <span class="op">=</span> kpt.ProjectionPredictive(model, idata)</span>
 <span id="cb8-2"><a href="#cb8-2"></a>ppi.project()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(</code></pre>
+</div>
 </div>
 <p>Once this is finished we can inspect the <code>ppi</code> object manually, but a plot is usually a better idea. By default, the <code>compare</code> function plots all the models, including the intercept-only model, i.e.&nbsp;a model without any covariate. In the following block of code, we are asking to omit this model.</p>
-<div id="60e8d3e8" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>ppi.compare(min_model_size<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="91ea87ea" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>ppi.compare(min_model_size<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -526,29 +583,87 @@ We recommend running at least 4 chains for robust computation of convergence dia
 <p>We can see that this plot is very similar to the one generated with <code>pmb.plot_variable_importance</code> and its interpretation is also similar. One important difference is that <code>compare</code> uses the ELPD to compare the models.</p>
 <p>We can see that for Kulprit the most relevant variable is <code>hour</code>, followed by <code>temperature</code> and then <code>humidity</code>, after that adding more variables does not improve the model. The order agrees with PyMC-BART but Kulprit considers 3 variables as relevant instead of 2. This is most likely because the effect of <code>hour</code> is non-linear and thus difficult to capture with a simple linear model. Let’s put this idea to the test.</p>
 <p>Instead of using the variable <code>hour</code>, let’s apply a transformation first.</p>
-<div id="727e995d" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>bikes <span class="op">=</span> pd.read_csv(<span class="st">"../data/bikes.csv"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2"></a>bikes[<span class="st">"hour_sin"</span>] <span class="op">=</span> np.sin(bikes.hour <span class="op">*</span> np.pi <span class="op">/</span> <span class="dv">12</span>)</span>
-<span id="cb10-3"><a href="#cb10-3"></a>bikes[<span class="st">"hour_cos"</span>] <span class="op">=</span> np.cos(bikes.hour <span class="op">*</span> np.pi <span class="op">/</span> <span class="dv">12</span>)</span>
-<span id="cb10-4"><a href="#cb10-4"></a>bikes.drop(columns<span class="op">=</span><span class="st">"hour"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="eb805267" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>bikes <span class="op">=</span> pd.read_csv(<span class="st">"../data/bikes.csv"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>bikes[<span class="st">"hour_sin"</span>] <span class="op">=</span> np.sin(bikes.hour <span class="op">*</span> np.pi <span class="op">/</span> <span class="dv">12</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a>bikes[<span class="st">"hour_cos"</span>] <span class="op">=</span> np.cos(bikes.hour <span class="op">*</span> np.pi <span class="op">/</span> <span class="dv">12</span>)</span>
+<span id="cb11-4"><a href="#cb11-4"></a>bikes.drop(columns<span class="op">=</span><span class="st">"hour"</span>, inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now we can repeat the process.</p>
-<div id="4368a993" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>model <span class="op">=</span> bmb.Model(<span class="st">"count ~"</span> <span class="op">+</span>  <span class="st">" + "</span>.join([c <span class="cf">for</span> c <span class="kw">in</span> bikes.columns <span class="cf">if</span> c<span class="op">!=</span><span class="st">"count"</span>]), data<span class="op">=</span>bikes, family<span class="op">=</span><span class="st">"negativebinomial"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2"></a>idata <span class="op">=</span> model.fit(idata_kwargs<span class="op">=</span>{<span class="st">'log_likelihood'</span>: <span class="va">True</span>}, random_seed<span class="op">=</span>seed)</span>
-<span id="cb11-3"><a href="#cb11-3"></a>ppi <span class="op">=</span> kpt.ProjectionPredictive(model, idata)</span>
-<span id="cb11-4"><a href="#cb11-4"></a>ppi.project()</span>
-<span id="cb11-5"><a href="#cb11-5"></a>ppi.compare(min_model_size<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="3c3bae7b" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>model <span class="op">=</span> bmb.Model(<span class="st">"count ~"</span> <span class="op">+</span>  <span class="st">" + "</span>.join([c <span class="cf">for</span> c <span class="kw">in</span> bikes.columns <span class="cf">if</span> c<span class="op">!=</span><span class="st">"count"</span>]), data<span class="op">=</span>bikes, family<span class="op">=</span><span class="st">"negativebinomial"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>idata <span class="op">=</span> model.fit(idata_kwargs<span class="op">=</span>{<span class="st">'log_likelihood'</span>: <span class="va">True</span>}, random_seed<span class="op">=</span>seed)</span>
+<span id="cb12-3"><a href="#cb12-3"></a>ppi <span class="op">=</span> kpt.ProjectionPredictive(model, idata)</span>
+<span id="cb12-4"><a href="#cb12-4"></a>ppi.project()</span>
+<span id="cb12-5"><a href="#cb12-5"></a>ppi.compare(min_model_size<span class="op">=</span><span class="dv">1</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (2 chains in 2 jobs)
 NUTS: [alpha, Intercept, month, weekday, temperature, humidity, windspeed, hour_sin, hour_cos]
 Sampling 2 chains for 1_000 tune and 1_000 draw iterations (2_000 + 2_000 draws total) took 5 seconds.
-We recommend running at least 4 chains for robust computation of convergence diagnostics</code></pre>
+We recommend running at least 4 chains for robust computation of convergence diagnostics
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/pymc/pytensorf.py:1057: FutureWarning: compile_pymc was renamed to compile. Old name will be removed in a future release of PyMC
+  warnings.warn(</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"1574091403af4e2b843df440b84355fd","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"b470843b8ebd40a4ab045bb8e6d93649","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -567,26 +682,26 @@ We recommend running at least 4 chains for robust computation of convergence dia
 <h3 data-number="9.3.1" class="anchored" data-anchor-id="consequences-of-performing-a-nom-penalized-optimization"><span class="header-section-number">9.3.1</span> Consequences of performing a nom-penalized optimization</h3>
 <p>In Bayesian statistics the priors, and the fact that the posterior computations involves integrating over those priors, instead of optimizing a loss function, is what provides the regularization. The current implementation of projective inference in Kulprit does not include any penalization term. This means that the optimization problem is not regularized. This has some consequences in practice. As Kulprit is still experimental and under development, what is discussed in this section could change in the future.</p>
 <p>We are going to use a synthetic example as this allows more control. We are going to use a function that has 5 covariables related to the response variable and 5 covariates that are unrelated, pure noise.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource {Python} number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1"><a href="#cb13-1"></a>np.random.seed(793)</span>
-<span id="cb13-2"><a href="#cb13-2"></a>N = 10</span>
-<span id="cb13-3"><a href="#cb13-3"></a>data = pd.DataFrame(</span>
-<span id="cb13-4"><a href="#cb13-4"></a>    np.random.normal(0, 1, size=(1253, N)), columns=[f"x_{i}" for i in range(N)]</span>
-<span id="cb13-5"><a href="#cb13-5"></a>)</span>
-<span id="cb13-6"><a href="#cb13-6"></a>f_x = (</span>
-<span id="cb13-7"><a href="#cb13-7"></a>    10 * data["x_0"]</span>
-<span id="cb13-8"><a href="#cb13-8"></a>    + 10 * data["x_1"]</span>
-<span id="cb13-9"><a href="#cb13-9"></a>    + 10 * data["x_2"]</span>
-<span id="cb13-10"><a href="#cb13-10"></a>    + 20 * (data["x_3"] - 0.5) ** 2</span>
-<span id="cb13-11"><a href="#cb13-11"></a>    + 5 * data["x_4"]</span>
-<span id="cb13-12"><a href="#cb13-12"></a>)</span>
-<span id="cb13-13"><a href="#cb13-13"></a>data["y"] = np.random.normal(f_x, 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource {Python} number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a href="#cb14-1"></a>np.random.seed(793)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>N = 10</span>
+<span id="cb14-3"><a href="#cb14-3"></a>data = pd.DataFrame(</span>
+<span id="cb14-4"><a href="#cb14-4"></a>    np.random.normal(0, 1, size=(1253, N)), columns=[f"x_{i}" for i in range(N)]</span>
+<span id="cb14-5"><a href="#cb14-5"></a>)</span>
+<span id="cb14-6"><a href="#cb14-6"></a>f_x = (</span>
+<span id="cb14-7"><a href="#cb14-7"></a>    10 * data["x_0"]</span>
+<span id="cb14-8"><a href="#cb14-8"></a>    + 10 * data["x_1"]</span>
+<span id="cb14-9"><a href="#cb14-9"></a>    + 10 * data["x_2"]</span>
+<span id="cb14-10"><a href="#cb14-10"></a>    + 20 * (data["x_3"] - 0.5) ** 2</span>
+<span id="cb14-11"><a href="#cb14-11"></a>    + 5 * data["x_4"]</span>
+<span id="cb14-12"><a href="#cb14-12"></a>)</span>
+<span id="cb14-13"><a href="#cb14-13"></a>data["y"] = np.random.normal(f_x, 1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Here we should expect Kulprit to identify the 5 variables from <code>x_0</code> to <code>x_1</code> as relevant. Ideally, <code>x_3</code> should be the most relevant, and <code>x_4</code> the least one.</p>
 <p>As previously done, we need to first fit a Bambi’s model then call the main class in Kulprit and finally project and plot.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource {Python} number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1"><a href="#cb14-1"></a>model = bmb.Model("y ~ " + " + ".join([f"x_{i}" for i in range(N)]), data=data)</span>
-<span id="cb14-2"><a href="#cb14-2"></a>idata = model.fit(idata_kwargs={'log_likelihood': True}, random_seed=seed)</span>
-<span id="cb14-3"><a href="#cb14-3"></a>ppi = kpt.ProjectionPredictive(model, idata)</span>
-<span id="cb14-4"><a href="#cb14-4"></a>ppi.project()</span>
-<span id="cb14-5"><a href="#cb14-5"></a>ppi.compare(min_model_size=1);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource {Python} number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1"><a href="#cb15-1"></a>model = bmb.Model("y ~ " + " + ".join([f"x_{i}" for i in range(N)]), data=data)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>idata = model.fit(idata_kwargs={'log_likelihood': True}, random_seed=seed)</span>
+<span id="cb15-3"><a href="#cb15-3"></a>ppi = kpt.ProjectionPredictive(model, idata)</span>
+<span id="cb15-4"><a href="#cb15-4"></a>ppi.project()</span>
+<span id="cb15-5"><a href="#cb15-5"></a>ppi.compare(min_model_size=1);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As expected, we have the ELPD increasing when we add the first 5 variables (from <code>x_0</code> to <code>x_4</code>) and then it plateaus for the rest, indicating that we just need variables <code>x_0</code> to <code>x_4</code>, and the rest are spurious.</p>
 <p>Let’s do two more tests. For the first one we increase the number of total variables to 25, that is the first 5 variables are relevant and the rest are spurious. For the second one, we do the same but also decrease the sample size from 1235 to 235.</p>
 <div id="fig-kulprit_25" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -605,15 +720,15 @@ Figure&nbsp;9.1: We have 5 relevant variables and 20 spurious ones. We can see h
 <section id="combining-pymc-bart-and-kulprit" class="level2" data-number="9.4">
 <h2 data-number="9.4" class="anchored" data-anchor-id="combining-pymc-bart-and-kulprit"><span class="header-section-number">9.4</span> Combining PyMC-BART and Kulprit</h2>
 <p>Both methods are not necessarily competitors and there is room for collaboration. When this is useful is still open to research but we can think of some scenarios where this could be useful. For instance, we could use PyMC-BART to find the most relevant variables, according to the variable inclusion metric, and then use Kulprit to perform the projection. We could also use the posterior predictive samples from PyMC-BART instead of a GLM. The second option requires some changes in Kulprit, but the first one is straightforward as the method project supports a <code>path</code> argument that allows to specify the submodels that we want to project. Notice that if we provide the <code>path</code> there is no search done, Kulprit will project and evaluate just the submodels we specify.</p>
-<div id="d8f73f06" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>path <span class="op">=</span> [[<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>],</span>
-<span id="cb15-2"><a href="#cb15-2"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>],</span>
-<span id="cb15-3"><a href="#cb15-3"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>, <span class="st">"humidity"</span>],</span>
-<span id="cb15-4"><a href="#cb15-4"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>, <span class="st">"humidity"</span>, <span class="st">"month"</span>],</span>
-<span id="cb15-5"><a href="#cb15-5"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>, <span class="st">"humidity"</span>, <span class="st">"month"</span>, <span class="st">"weekday"</span>],</span>
-<span id="cb15-6"><a href="#cb15-6"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>, <span class="st">"humidity"</span>, <span class="st">"month"</span>, <span class="st">"weekday"</span>, <span class="st">"windspeed"</span>],</span>
-<span id="cb15-7"><a href="#cb15-7"></a>        ]</span>
-<span id="cb15-8"><a href="#cb15-8"></a>ppi.project(path<span class="op">=</span>path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e51fff53" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>path <span class="op">=</span> [[<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>],</span>
+<span id="cb16-2"><a href="#cb16-2"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>],</span>
+<span id="cb16-3"><a href="#cb16-3"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>, <span class="st">"humidity"</span>],</span>
+<span id="cb16-4"><a href="#cb16-4"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>, <span class="st">"humidity"</span>, <span class="st">"month"</span>],</span>
+<span id="cb16-5"><a href="#cb16-5"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>, <span class="st">"humidity"</span>, <span class="st">"month"</span>, <span class="st">"weekday"</span>],</span>
+<span id="cb16-6"><a href="#cb16-6"></a>        [<span class="st">"hour_cos"</span>, <span class="st">"hour_sin"</span>, <span class="st">"temperature"</span>, <span class="st">"humidity"</span>, <span class="st">"month"</span>, <span class="st">"weekday"</span>, <span class="st">"windspeed"</span>],</span>
+<span id="cb16-7"><a href="#cb16-7"></a>        ]</span>
+<span id="cb16-8"><a href="#cb16-8"></a>ppi.project(path<span class="op">=</span>path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -638,7 +753,7 @@ Quiroga, Miriana, Pablo G Garay, Juan M. Alonso, Juan Martin Loyola, and Osvaldo
 
 </main> <!-- /main -->
 <script type="application/vnd.jupyter.widget-state+json">
-{"state":{"0d50c541568e4ec9b97043a62982c24e":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"1574091403af4e2b843df440b84355fd":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_d0580245d6ce4b6f91d18fd887f76eaf","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:04</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:04\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"16db39a52bfe459ca877d2eb2acb3f13":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"a55472117c534f519cb05343980c6dff":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_16db39a52bfe459ca877d2eb2acb3f13","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:04</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:04\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"d0580245d6ce4b6f91d18fd887f76eaf":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"e0a672665e434c24be55556516953bb1":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_0d50c541568e4ec9b97043a62982c24e","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling 2 chains, 0 divergences <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> <span style=\"color: #008080; text-decoration-color: #008080\">0:00:00</span> / <span style=\"color: #808000; text-decoration-color: #808000\">0:00:52</span>\n</pre>\n","text/plain":"Sampling 2 chains, 0 divergences \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m \u001b[36m0:00:00\u001b[0m / \u001b[33m0:00:52\u001b[0m\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
+{"state":{"2e2ee3d4f9ca4b82b1c42478b0c1e1e3":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_cb1c2af48cd441a58ac25e3eaf49a3b4","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                  </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.14        3            36.59 draws/s    0:00:54   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             0.93        1            36.50 draws/s    0:00:54   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                 \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.14        3            36.59 draws/s    0:00:54   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             0.93        1            36.50 draws/s    0:00:54   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"33d158d10bdc47c799f5f60e5690ef75":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_5bd1607d01b24fbf827bf60d666fef42","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                  </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             0.74        3            457.94 draws/s   0:00:04   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             0.83        7            451.08 draws/s   0:00:04   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                 \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             0.74        3            457.94 draws/s   0:00:04   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             0.83        7            451.08 draws/s   0:00:04   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"5bd1607d01b24fbf827bf60d666fef42":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"b470843b8ebd40a4ab045bb8e6d93649":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_da7d499a3a3d4a0f85a1ca82cb13f33a","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                  </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             0.97        3            392.78 draws/s   0:00:05   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             0.75        7            432.83 draws/s   0:00:04   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                 \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             0.97        3            392.78 draws/s   0:00:05   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             0.75        7            432.83 draws/s   0:00:04   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"cb1c2af48cd441a58ac25e3eaf49a3b4":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"da7d499a3a3d4a0f85a1ca82cb13f33a":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}}},"version_major":2,"version_minor":0}
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
