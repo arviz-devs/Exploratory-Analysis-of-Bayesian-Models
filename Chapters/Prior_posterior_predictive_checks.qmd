@@ -421,7 +421,7 @@ The problem with this approach is that in practice we don't have good rules to s
 
 ```{python}
 #| label: fig-ppc_pava
-#| fig-cap: "Separation plot for a dummy logistic regression model."
+#| fig-cap: "PAV-adjusted Calibration plot for a dummy logistic regression model."
 dt = azb.load_arviz_data('classification10d')
 
 azp.plot_ppc_pava(dt)
