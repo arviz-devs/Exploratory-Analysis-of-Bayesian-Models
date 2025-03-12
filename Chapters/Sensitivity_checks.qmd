@@ -173,7 +173,6 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_00:
     y = pm.Normal("y", μ, σ, observed=siri)
     idata_bf_00 = pm.sample(random_seed=SEED,
                             idata_kwargs={"log_likelihood": True, "log_prior": True})
-    pm.sample_posterior_predictive(idata_bf_00, extend_inferencedata=True)
 ```
 
 ## PyStan
