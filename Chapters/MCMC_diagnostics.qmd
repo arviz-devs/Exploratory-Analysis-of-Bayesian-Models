@@ -44,7 +44,7 @@ We are going to see that many diagnostics need multiple chains. Each chain is an
 To keep the focus on the diagnostics and not on any particular Bayesian model. We are going to first create 3 synthetic samples, we will use them to emulate samples from a posterior distribution. 
 
 * `good_sample`: A random sample from a `Gamma(2, 5)`. This is an example of a good sample because we are generating independent and identically distributed (iid) draws. This is the ideal scenario. 
-* `bad_sample_0`: We sorted good_sample, split it into two chains, and then added a small Gaussian error. This is a representation of a bad sample because values are not independent (we sorted the values!) and they do not come from the same distribution, because of the split the first half has values that are lower than the second. This represents a scenario where the sampler has very poor mixing. 
+* `bad_sample_0`: We sorted good_sample, split it into three chains, and then added a small Gaussian error. This is a representation of a bad sample because values are not independent (we sorted the values!) and they do not come from the same distribution. This represents a scenario where the sampler has very poor mixing. 
 * `bad_sample_1`: we start from `good_chains`, and turn into a poor sample by randomly introducing portions where consecutive samples are highly correlated to each other. This represents a common scenario, a sampler can resolve a region of the parameter space very well, but get stuck into one or more regions.
 
 
@@ -59,8 +59,8 @@ bad_sample0 = pz.Normal(np.sort(good_sample, axis=None),
 bad_sample1 = good_sample.copy()
 stuck = []
 for i in pz.DiscreteUniform(0, 900).rvs(3, random_state=rng):
-    stuck.append((i, i+100))
-    bad_sample1[0,i:i+100] = pz.Beta(i, 150).rvs(100, random_state=rng)
+    stuck.append((i, i+50))
+    bad_sample1[0,i:i+50] = pz.Beta(i, 150).rvs(50, random_state=rng)
 
 sample = azb.convert_to_dataset({"good_sample":good_sample,
           "bad_sample_0":bad_sample0,
@@ -77,16 +77,13 @@ After reading this chapter a good exercise is to come back here and modify these
 
 A trace plot is created by drawing the sampled values at each iteration step. Ideally, we should expect to see a very noisy plot, some people call it a caterpillar. The reason is that draws should be uncorrelated from each other, the value of a draw should not provide any hint about the previous or next draw. Also, the draws from the first iterations should be indistinguishable from the ones coming from the last iterations the middle iterations, or any other region. The ideal scenario is the lack of any clear pattern as we can see at the right panel of @fig-tracedistplot_good_sample.
 
-In ArviZ by calling the function `azp.plot_trace_dist(.)` we get a trace plot on the right and on the left a KDE (for continuous variables) or a histogram (for discrete variables). @fig-tracedistplot_good_sample is an example of this. The KDE/histogram can help to spot differences between chains, ideally, distributions should overlap. 
+In ArviZ by calling the function `azp.plot_trace_dist(.)` we get a trace plot on the right and on the left a KDE (we can also plot ECDFs, or histograms). @fig-tracedistplot_good_sample is an example of this. The KDE/ECDF/histogram can help to spot differences between chains, ideally, distributions should overlap. 
 
 ```{python}
 #| label: fig-tracedistplot_good_sample
-#| fig-cap: "Trace plot of a sample without issues"
-azp.plot_trace_dist(sample, var_names="good_sample");
+#| fig-cap: "Trace plot and Kernel Density Estimate (KDE) of a sample without issues"
+azp.plot_trace_dist(sample, var_names="good_sample", compact=False);
 ```
-
-This represents a scenario where the sampler is visiting two different regions of the parameter space and is not able to _jump_ from one to the other. Additionally, it is also moving very slowly within each region.
-@fig-traceplot_bad_sample_0 shows two problems. On the one hand, each chain is visiting a different region of the parameter space. We can see this from the trace plot itself and the KDE. On the other hand, even within each region, the sampler is having trouble properly exploring the space, notice how it keeps _moving up_, instead of being **stationary**.  
 
 If you just want the trace without the density call  `azp.plot_trace(.)`
 
@@ -96,28 +93,28 @@ If you just want the trace without the density call  `azp.plot_trace(.)`
 azp.plot_trace(sample, var_names="good_sample");
 ```
 
-Let's see an example of two chains that did not converge.
+Now let's see an example of a bad sample. @fig-traceplot_bad_sample_0 shows two problems. On the one hand, each chain is visiting a different region of the parameter space. We can see this from the trace plot itself and the KDE. On the other hand, even within each region, the sampler is having trouble properly exploring the space, notice how it keeps _moving up_, instead of being **stationary**.
 
 ```{python}
 #| label: fig-traceplot_bad_sample_0
 #| code-fold: true
-#| fig-cap: "Trace plot of two chains that has not converged"
-azp.plot_trace_dist(sample, var_names="bad_sample_0", compact=True);
+#| fig-cap: "Trace plot of 3 chains that has not converged"
+azp.plot_trace_dist(sample, var_names="bad_sample_0", compact=False);
 ```
 
-Finally from @fig-traceplot_bad_sample_1, we can see another common scenario. This time we see that globally everything looks fine. But there are 3 regions where the sampler gets stuck, see the orange bands across the traceplot.
+Finally from @fig-traceplot_bad_sample_1, we can see another common scenario. This time we see that globally everything looks fine. But there are 3 regions where the sampler got stuck, see the gray bands across the traceplot.
 
 ```{python}
 #| label: fig-traceplot_bad_sample_1
 #| code-fold: true
-#| fig-cap: "Trace plot showing a sampler being stuck in some regions (see orange lines)"
-pc = azp.plot_trace_dist(sample, var_names="bad_sample_1", compact=True)
+#| fig-cap: "Trace plot showing a sampler being stuck in 3 regions (see yellow bands). Because of the overlap, it's not easy to spot the problem for the first region."
+pc = azp.plot_trace_dist(sample, var_names="bad_sample_1", compact=False)
 ax = pc.viz["bad_sample_1"]["plot"].sel(column="trace").item()
 for s in stuck:
-    ax.fill_between(s, 2.5, color="C2", alpha=0.5);
+    ax.fill_between(s, 2.5, color="black", alpha=0.25);
 ```
 
-Trace plots are probably the first plots we make after inference and also probably the most popular plots in Bayesian literature. But there are more options, as we will see next.
+Trace plots are very popular in the Bayesian literature. But there are more modern and useful options, as we will see next.
 
 ## Rank plots {#sec-rank-plots}
 
@@ -153,11 +150,11 @@ Finally, we want to mention that we can use $\Delta$-ECDF plots to visually insp
 
 ## $\hat R$ (R-hat)
 
-Plots are often useful for discovering patterns, but sometimes we want numbers, for example when quickly evaluating many parameters it may be easier to look at numbers than plots. Number are also easier to plug into some automatic routine, that call for human attention only if some threshold is exceeded.
+Plots are often useful for discovering patterns, but sometimes we want numbers, for example when quickly evaluating a large number of parameters it may be easier to look at numbers than plots. Number are also easier to plug into automatic routine, that call for human attention only if some threshold is exceeded. This may be necessary when running a large number of models, for example in a simulation study.
 
-$\hat R$ is a numerical diagnostic that answers the question [@vehtari_2021]. Did the chains mix properly? But I also like to think of it as the score assigned by a jury in a trace (or rank) plot contest. 
+$\hat R$ is a numerical diagnostic that answers the question Did the chains mix properly? But I also like to think of it as the score assigned by a jury in a trace (or rank) plot contest. The central idea is to compare the variance between chains with the variance within each chain. The version implemented in ArviZ and described in @vehtari_2021 does several other things under the hood, but the main idea is the same.
 
-The version implemented in ArviZ does several things under the hood, but the central idea is that it compares the variance between chains with the variance within each chain. Ideally, we should get $\hat R = 1$, in practice $\hat R \lessapprox 1.01$ are considered safe and in the first modeling phases, even higher values like $\hat R \approx 1.1$ may be fine.
+Ideally, we should get $\hat R = 1$, in practice $\hat R \lessapprox 1.01$ are considered safe and in the first modeling phases, even higher values like $\hat R \approx 1.1$ may be fine.
 
 Using ArviZ we can get the $\hat R$ with `azs.rhat(⋅)`, `azs.summary(⋅)` and `azp.plot_forest(⋅, r_hat=True)`
 
@@ -381,15 +378,15 @@ azp.plot_energy(idata_cm)
 
 ```{python}
 #| label: fig-energy_plot_ncm
-#| fig-cap: "Energy plot for `centered_eight` model." 
-azp.plot_energy(idata_cm)
+#| fig-cap: "Energy plot for `non_centered_eight` model." 
+azp.plot_energy(idata_ncm)
 ```
 
 ### Divergences
 
 One advantage of NUTS is that it *fails with style*. This happens, for example, when trying to go from regions of low curvature to regions of high curvature. In these cases, the numerical trajectories may diverge. Essentially this happens because in these cases there is no single set of hyper-parameters that allows efficient sampling of both regions. So one region is sampled properly and when the sampler moves to the other region it fails. Divergent numerical trajectories are extremely sensitive identifiers of *pathological neighborhoods*.
 
-The following example shows two things; the `non_centered` model shows several divergences (turquoise circles) grouped in one region. In the `centered` model, which has no divergence, you can see that around that same region, there are samples for smaller values of `tau`. That is to say, the `non_centered` model fails to sample a region, but at least it warns that it is having problems sampling that region!
+The following example shows two things; the `non_centered` model shows several divergences (red circles) grouped in one region. In the `centered` model, which has no divergence, you can see that around that same region, there are samples for smaller values of `tau`. That is to say, the `non_centered` model fails to sample a region, but at least it warns that it is having problems sampling that region!
 
 
 ```{python}
