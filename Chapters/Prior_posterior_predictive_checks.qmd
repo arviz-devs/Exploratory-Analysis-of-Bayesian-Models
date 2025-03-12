@@ -298,17 +298,19 @@ azp.plot_ppc_pit(idata);
 
 In ArviZ, we use the simultaneous confidence bands described by @sailynoja_2022. The simultaneous confidence bands take into account the probability of observing deviations of the entire curve, as opposed to independent pointwise deviations. The band or envelope has an oval shape because the probability of observing a deviation is null at 0 and 1, all ECDFs must start at 0 and end at 1, and is higher in the middle of the curve.
 
-To build intuition on how to interpret the PIT-ECDF plots we are going to explore four common patterns using synthetic data. The following plot shows four different scenarios, where the observed data follows a standard normal distribution ($\mu=0, \sigma^2=1$). In each case, we compare the observed data to predictions where:
+To build intuition on how to interpret the PIT-ECDF plots we are going to explore four common patterns using synthetic data. The following three plots show four different scenarios, where the observed data follows a standard normal distribution ($\mu=0, \sigma^2=1$). In each case, we compare the observed data to predictions where:
 
 * The mean of the predictions is shifted to the right. The model is overpredicting the data.
 * The mean of the predictions is shifted to the left. The model is underpredicting the data.
 * The predictions have a wider spread. The predictions are too uncertain.
 * The predictions have a narrower spread. The predictions are too certain.
-* The predictions are ok, except for . The model is doing a good job.
+
+
+First we show the KDEs of the observed data and the predictions.
 
 ```{python}
-#| label: fig-post_ppc_pit_ecdf_alt
-#| fig-cap: "Posterior predictive check showing four alternative scenarios. On the first row we have the KDEs of the observed data and the predictions. On the second row we have the ECDFs of the observed data and predictions and on the thirs we have the PIT-ECDFs."
+#| label: fig-post_ppc_pit_ecdf_alt_kde
+#| fig-cap: "Posterior predictive check with KDEs showing four alternative scenarios."
 observed = pz.Normal(0, 1).rvs(500)
 
 predictions = {}
@@ -330,18 +332,34 @@ azp.plot_ppc_dist(idata_i,
                   plot_kwargs={"remove_axis":False},
                   pc_kwargs={"plot_grid_kws":{"sharey":True}},             
                  );
+```
+
+
+Then we show the ECDFs of the observed data and the predictions.
+
+
+```{python}
+#| label: fig-post_ppc_pit_ecdf_alt_kde
+#| fig-cap: "Posterior predictive check with ECDFs showing four alternative scenarios."
 azp.plot_ppc_dist(idata_i,
                   kind="ecdf",
                   pc_kwargs={"plot_grid_kws":{"sharey":True}},        
                  );
+```
+
+Finally, we show the PIT-ECDFs.
+
+```{python}
+#| label: fig-post_ppc_pit_ecdf_alt_kde
+#| fig-cap: "Posterior predictive check with PIT-ECDFs showing four alternative scenarios."
 azp.plot_ppc_pit(idata_i,
                  plot_kwargs={"ylabel":False},
                  pc_kwargs={"plot_grid_kws":{"sharey":True}},        
                  );
-
 ```
 
-### Avoiding the data-twice problem
+
+### Avoiding double-dipping
 
 All posterior predictive checks we have seen use the data twice, first to fit the model and then to evaluate it. Too avoid using the data twice, we can instead compute 
 

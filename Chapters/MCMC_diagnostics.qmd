@@ -52,15 +52,15 @@ To keep the focus on the diagnostics and not on any particular Bayesian model. W
 #| code-fold: true
 #| code-summary: "Show the code for more details"
 
-good_sample = pz.Gamma(2, 5).rvs((2, 2000), random_state=rng)
+good_sample = pz.Gamma(2, 5).rvs((3, 1000), random_state=rng)
 bad_sample0 = pz.Normal(np.sort(good_sample, axis=None),
-                        0.05).rvs(4000, random_state=rng).reshape(2, -1)
+                        0.05).rvs(3000, random_state=rng).reshape(3, -1)
 
 bad_sample1 = good_sample.copy()
 stuck = []
-for i in pz.DiscreteUniform(0, 1900).rvs(3, random_state=rng):
+for i in pz.DiscreteUniform(0, 900).rvs(3, random_state=rng):
     stuck.append((i, i+100))
-    bad_sample1[i%2:,i:i+100] = pz.Beta(i, 150).rvs(100, random_state=rng)
+    bad_sample1[0,i:i+100] = pz.Beta(i, 150).rvs(100, random_state=rng)
 
 sample = azb.convert_to_dataset({"good_sample":good_sample,
           "bad_sample_0":bad_sample0,
@@ -69,7 +69,7 @@ sample = azb.convert_to_dataset({"good_sample":good_sample,
 
 
 ::: {.callout-note}
-After reading this chapter a good exercise is to come back here and modify these synthetic samples and run one or more diagnostics. If you want to make the exercise even more fun challenge yourself to predict what the diagnostics will be before running, or the other way around how you should change the samples to get a given result. This is a good test of your understanding and a good way to correct possible misunderstandings.
+After reading this chapter a good exercise is to come back here and modify these synthetic samples and run one or more diagnostics. If you want to make the exercise even more fun challenge yourself to predict what the diagnostics will be before running. Or even the other way around, how you should change the samples to get a given result. This is a good test of your understanding and a good way to correct possible misunderstandings.
 :::
 
 ## Trace plots
@@ -77,7 +77,7 @@ After reading this chapter a good exercise is to come back here and modify these
 
 A trace plot is created by drawing the sampled values at each iteration step. Ideally, we should expect to see a very noisy plot, some people call it a caterpillar. The reason is that draws should be uncorrelated from each other, the value of a draw should not provide any hint about the previous or next draw. Also, the draws from the first iterations should be indistinguishable from the ones coming from the last iterations the middle iterations, or any other region. The ideal scenario is the lack of any clear pattern as we can see at the right panel of @fig-tracedistplot_good_sample.
 
-In ArviZ by calling the function `az.plot_trace_dist(.)` we get a trace plot on the right and on the left a KDE (for continuous variables) or a histogram (for discrete variables). @fig-tracedistplot_good_sample is an example of this. The KDE/histogram can help to spot differences between chains, ideally, distributions should overlap. 
+In ArviZ by calling the function `azp.plot_trace_dist(.)` we get a trace plot on the right and on the left a KDE (for continuous variables) or a histogram (for discrete variables). @fig-tracedistplot_good_sample is an example of this. The KDE/histogram can help to spot differences between chains, ideally, distributions should overlap. 
 
 ```{python}
 #| label: fig-tracedistplot_good_sample
@@ -88,7 +88,7 @@ azp.plot_trace_dist(sample, var_names="good_sample");
 This represents a scenario where the sampler is visiting two different regions of the parameter space and is not able to _jump_ from one to the other. Additionally, it is also moving very slowly within each region.
 @fig-traceplot_bad_sample_0 shows two problems. On the one hand, each chain is visiting a different region of the parameter space. We can see this from the trace plot itself and the KDE. On the other hand, even within each region, the sampler is having trouble properly exploring the space, notice how it keeps _moving up_, instead of being **stationary**.  
 
-If you just want the trace without the density call  `az.plot_trace(.)`
+If you just want the trace without the density call  `azp.plot_trace(.)`
 
 ```{python}
 #| label: fig-traceplot_good_sample
@@ -102,16 +102,16 @@ Let's see an example of two chains that did not converge.
 #| label: fig-traceplot_bad_sample_0
 #| code-fold: true
 #| fig-cap: "Trace plot of two chains that has not converged"
-azp.plot_trace_dist(sample, var_names="bad_sample_0");
+azp.plot_trace_dist(sample, var_names="bad_sample_0", compact=True);
 ```
 
-Finally from @fig-traceplot_bad_sample_1, we can see another common scenario. This time we see that globally everything looks fine. But there are 3 regions where the sampler gets stuck, see the orange bands at the bottom of the traceplot.
+Finally from @fig-traceplot_bad_sample_1, we can see another common scenario. This time we see that globally everything looks fine. But there are 3 regions where the sampler gets stuck, see the orange bands across the traceplot.
 
 ```{python}
 #| label: fig-traceplot_bad_sample_1
 #| code-fold: true
 #| fig-cap: "Trace plot showing a sampler being stuck in some regions (see orange lines)"
-pc = azp.plot_trace_dist(sample, var_names="bad_sample_1")
+pc = azp.plot_trace_dist(sample, var_names="bad_sample_1", compact=True)
 ax = pc.viz["bad_sample_1"]["plot"].sel(column="trace").item()
 for s in stuck:
     ax.fill_between(s, 2.5, color="C2", alpha=0.5);
@@ -121,17 +121,35 @@ Trace plots are probably the first plots we make after inference and also probab
 
 ## Rank plots {#sec-rank-plots}
 
-The basic idea is the following. For a parameter we take all the chains and order the values from lowest to highest and assign them a rank, that is, to the lowest value assign 0, to the following 1, and so on until we reach the total number of samples, (number of chains multiplied by the number of draws per chain). Then we regroup the rankings according to the chains that gave rise to them and for each chain we make a histogram. If the chains were indistinguishable we would expect the histograms to be uniform. Since there is no reason for one chain to have more low (or medium or high) rankings than the rest.
+Rank plots provide an alternative way to diagnose MCMC samples [@vehtari_2021]. Unlike trace plots, which display sample values ordered by iteration, rank plots transform the sampled values into ranks before visualization.  
 
-@fig-rank_plot shows rank plots for `good_sample`, `bad_sample_0` and `bad_sample_1`. Notice how `good_sample` looks pretty close to uniform, `bad_sample_1` is harder to tell, because overall it looks very close to uniform, except for the penultimate bar. On the contrary `bad_sample_0` really looks bad.
+Let see how it works: For each parameter, we pool all chains together and sort the draws from lowest to highest. The smallest value is assigned rank 1, the next rank 2, and so on, up to the total number of samples (equal to the number of chains multiplied by the number of draws per chain). This process converts parameter values into ranks. Next, we separate the ranks back into their original chains, collecting all ranks from the first chain, the second chain, and so on. If the MCMC sampling has no issues, the chains should be indistinguishable, and the ranks within each chain should follow a uniform distribution. In a well-mixed sampler, ranks should be evenly distributed among chains, with no chain favouring a specific range.
+
+To assess uniformity, one simple approach is to plot a histogram of the ranks. However, histogram results can be sensitive to bin choices. An alternative is to plot the empirical cumulative distribution function (CDF) of the ranks. This method avoids binning and does not requires any complex processing. Instead of using raw ranks (ranging from 1 to the total number of samples), we can use fractional ranks, which values range from 0 to 1. In the ideal case, the empirical CDF follows the standard uniform distribution—a diagonal line from (0,0) to (1,1), as shown in @fig-post_pred_uniform_cdf. Deviations from this line may indicate sampling issues.
+
+```{python}
+#| label: fig-post_pred_uniform_cdf
+#| fig-cap: "The CDF of the standard Uniform distribution."
+pz.Uniform(0, 1).plot_cdf(figsize=(6, 4));
+```
+
+The disadvantage of such plot is that all the "action" is close to the diagonal line and most of the plot is just blank space, specially as the MCMC sample size increase. A simple trick to improve the *data-ink* ratio is to plot the $\Delta$-ECDF, i.e. (observed ECDF - expected ECDF). Then a uniform distribution is a flat line that goes from (0,0) to (1, 0). 
+
+@fig-rank_plot shows rank plots for `good_sample`, `bad_sample_0` and `bad_sample_1`. 
+
 
 ```{python}
 #| label: fig-rank_plot
 #| code-fold: true
 #| fig-cap: "Rank plot for `good_sample`, `bad_sample_0` and `bad_sample_1`"
-_, ax = plt.subplots(3, 1, figsize=(10, 8))
-az.plot_rank(sample, ax=ax);
+azp.plot_rank(sample);
 ```
+
+For `good_sample` we can see that ranks for both chains are uniform, as the deviations are within the envelope. In sharp contrast `bad_sample_0` looks awful, deviations are very large as both chains belong to different distributions. Finally, `bad_sample_1` also shows problems, we see than for chain 0 (blue) there are more high ranks than expected, and the opposite for chain 1 (red). This is a consequence of chain 1 being stuck in some regions of relatively high values as shown in @fig-traceplot_bad_sample_1.
+
+Rank plots provide a more reliable way to diagnose MCMC sampling issues compared to trace plots. While trace plots can reveal mixing problems, they often become cluttered, making it difficult to identify subtle issues like chains exploring different regions unevenly. In contrast, rank plots summarize sampling behaviour more effectively by checking for uniformity across chains, helping to detect biases, poor mixing, or convergence issues in a more interpretable way. This makes them a powerful complement—or even a preferred alternative—to trace plots for assessing MCMC performance.
+
+Finally, we want to mention that we can use $\Delta$-ECDF plots to visually inspect any quantity that is expected to be uniformly distributed, not just the ranks. For example, in @sec-ppc we use them to compare the posterior predictive distribution to the observed data (see @fig-post_ppc_pit_ecdf_alt).
 
 ## $\hat R$ (R-hat)
 
@@ -141,7 +159,7 @@ $\hat R$ is a numerical diagnostic that answers the question [@vehtari_2021]. Di
 
 The version implemented in ArviZ does several things under the hood, but the central idea is that it compares the variance between chains with the variance within each chain. Ideally, we should get $\hat R = 1$, in practice $\hat R \lessapprox 1.01$ are considered safe and in the first modeling phases, even higher values like $\hat R \approx 1.1$ may be fine.
 
-Using ArviZ we can get the $\hat R$ with `azs.rhat(⋅)`, `azs.summary(⋅)` and `az.plot_forest(⋅, r_hat=True)`
+Using ArviZ we can get the $\hat R$ with `azs.rhat(⋅)`, `azs.summary(⋅)` and `azp.plot_forest(⋅, r_hat=True)`
 
 ```{python}
 azs.rhat(sample)
@@ -265,7 +283,7 @@ ax.plot(1, 0, ">k", transform=ax.get_yaxis_transform(), clip_on=False)
 ax.plot(48, 1, "^k", transform=ax.get_xaxis_transform(), clip_on=False)
 ```
 
-With ArviZ we can get `azs.ess(⋅)`, `azs.summary(⋅)` and `az.plot_forest(⋅, ess=True)`
+With ArviZ we can get `azs.ess(⋅)`, `azs.summary(⋅)` and `azp.plot_forest(⋅, ess=True)`
 
 ```{python}
 azs.ess(sample)
@@ -285,7 +303,7 @@ azs.summary(sample, kind="diagnostics")
 
 If we are going to use the MCMC samples to calculate central values such as means or medians then we have to make sure that the `ess_bulk` is sufficiently large, however, if we want to calculate intervals such as an HDI 94% we have to make sure that `ess_tail` be appropriate.
 
-ArviZ offers several functions linked to the ESS. For example, if we want to evaluate the performance of the sampler for several regions at the same time we can use `az.plot_ess`.
+ArviZ offers several functions linked to the ESS. For example, if we want to evaluate the performance of the sampler for several regions at the same time we can use `azp.plot_ess`.
 
 ```{python}
 azp.plot_ess(sample,
@@ -293,7 +311,7 @@ azp.plot_ess(sample,
                        "col_wrap": 1})
 ```
 
-A simple way to increase the ESS is to increase the number of samples, but it could be the case that the ESS grows very slowly with the number of samples, so even if we increased the number of samples 10 times we could still be very far from our target value. One way to estimate "how many more samples do we need" is to use `az.plot_ess(⋅, kind="evolution")`. This graph shows us how the ESS changed with each iteration, which allows us to make predictions. 
+A simple way to increase the ESS is to increase the number of samples, but it could be the case that the ESS grows very slowly with the number of samples, so even if we increased the number of samples 10 times we could still be very far from our target value. One way to estimate "how many more samples do we need" is to use `azp.plot_ess_evolution(.)`. This graph shows us how the ESS changed with each iteration, which allows us to make predictions. 
 
 From @fig-ess_evolution we can see that the ESS grows linearly with the number of samples for `good_sample`, and it does not grow at all for `bad_sample_0`. In the latter case, this is an indication that there is virtually no hope of improving the ESS simply by increasing the number of draws.
 
@@ -338,11 +356,11 @@ Additionally, if needed, we can specify the thinning factor manually or we can p
 
 Due to its internal workings, algorithms like NUTS offer some specific tests that are not available to other methods. These tests are generally very sensitive.
 
-To exemplify this we are going to load two InferenceData from pre-calculated models. The details of how these data were generated are not relevant at the moment. We will only say that they are two models that are mathematically equivalent but parameterized in different ways. In this case, the parameterization affects the efficiency of the sampler. The `centered` model is sampled more efficiently than the `uncentered` model.
+To exemplify this we are going to load two InferenceData from pre-calculated models. The details of how these data were generated are not relevant at the moment. We will only say that they are two models that are mathematically equivalent but parameterized in different ways. In this case, the parameterization affects the efficiency of the sampler. The `centered` model is sampled more efficiently than the `non_centered` model.
 
 ```{python}
-idata_cm = az.load_arviz_data("centered_eight")
-idata_ncm = az.load_arviz_data("non_centered_eight")
+idata_cm = azb.load_arviz_data("centered_eight")
+idata_ncm = azb.load_arviz_data("non_centered_eight")
 ```
 
 ### Transition energy vs marginal energy
@@ -352,32 +370,44 @@ We can think of a Hamiltonian Monte Carlo as a two-step process
 * Deterministic sampling (following the Hamiltonian)
 * A random walk in momentum space
 
-If the transition energy distribution is similar to the marginal energy distribution, then NUTS can generate samples of the marginal energy distribution that are *almost* independent between transitions. We can evaluate this visually or numerically, calculating the Bayesian Fraction of Missing Information (BFMI), as shown in the following figure.
+If the transition energy distribution is similar to the marginal energy distribution, then NUTS can generate samples of the marginal energy distribution that are *almost* independent between transitions. We can evaluate this visually as shown in @fig-energy_plot_cm for the `centered_eight` model and @fig-energy_plot_ncm for the `non_centered_eight`.
+<!-- or numerically, calculating the Bayesian Fraction of Missing Information (BFMI) -->
 
 ```{python}
-_, axes = plt.subplots(1, 2, sharey=True, sharex=True, figsize=(12, 4), constrained_layout=True)
+#| label: fig-energy_plot_cm
+#| fig-cap: "Energy plot for `centered_eight` model." 
+azp.plot_energy(idata_cm)
+```
 
-for ax, idata, nombre in zip(axes.ravel(), (idata_cm, idata_ncm), ("centered", "non-centered")):
-    az.plot_energy(idata, ax=ax)
-    ax.set_title(nombre)
+```{python}
+#| label: fig-energy_plot_ncm
+#| fig-cap: "Energy plot for `centered_eight` model." 
+azp.plot_energy(idata_cm)
 ```
 
 ### Divergences
 
 One advantage of NUTS is that it *fails with style*. This happens, for example, when trying to go from regions of low curvature to regions of high curvature. In these cases, the numerical trajectories may diverge. Essentially this happens because in these cases there is no single set of hyper-parameters that allows efficient sampling of both regions. So one region is sampled properly and when the sampler moves to the other region it fails. Divergent numerical trajectories are extremely sensitive identifiers of *pathological neighborhoods*.
 
-The following example shows two things the `non-centered` model shows several divergences (turquoise circles) grouped in one region. In the `centered` model, which has no divergence, you can see that around that same region, there are samples for smaller values of `tau`. That is to say, the 'uncentered' model fails to sample a region, but at least it warns that it is having problems sampling that region!
+The following example shows two things; the `non_centered` model shows several divergences (turquoise circles) grouped in one region. In the `centered` model, which has no divergence, you can see that around that same region, there are samples for smaller values of `tau`. That is to say, the `non_centered` model fails to sample a region, but at least it warns that it is having problems sampling that region!
 
+
+```{python}
+#| echo : false
+# remove once we add plot_pair to new ArviZ
+idata_cm = az.load_arviz_data("centered_eight")
+idata_ncm = az.load_arviz_data("non_centered_eight")
+```
 
 ```{python}
 _, axes = plt.subplots(1, 2, sharey=True, sharex=True, figsize=(10, 5), constrained_layout=True)
 
 
-for ax, idata, nombre in zip(axes.ravel(), (idata_cm, idata_ncm), ("centered", "non-centered")):
+for ax, idata, name in zip(axes.ravel(), (idata_cm, idata_ncm), ("centered", "non-centered")):
     az.plot_pair(idata, var_names=['theta', 'tau'], coords={'school':"Choate"}, kind='scatter',
                  divergences=True, divergences_kwargs={'color':'C1'},
                  ax=ax)
-    ax.set_title(nombre)
+    ax.set_title(name)
 ```
 
 
