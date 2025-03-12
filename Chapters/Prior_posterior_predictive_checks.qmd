@@ -309,7 +309,7 @@ To build intuition on how to interpret the PIT-ECDF plots we are going to explor
 First we show the KDEs of the observed data and the predictions.
 
 ```{python}
-#| label: fig-post_ppc_pit_ecdf_alt_kde
+#| label: fig-post_ppc_pit_ecdf_alt_0
 #| fig-cap: "Posterior predictive check with KDEs showing four alternative scenarios."
 observed = pz.Normal(0, 1).rvs(500)
 
@@ -339,7 +339,7 @@ Then we show the ECDFs of the observed data and the predictions.
 
 
 ```{python}
-#| label: fig-post_ppc_pit_ecdf_alt_kde
+#| label: fig-post_ppc_pit_ecdf_alt_1
 #| fig-cap: "Posterior predictive check with ECDFs showing four alternative scenarios."
 azp.plot_ppc_dist(idata_i,
                   kind="ecdf",
@@ -350,7 +350,7 @@ azp.plot_ppc_dist(idata_i,
 Finally, we show the PIT-ECDFs.
 
 ```{python}
-#| label: fig-post_ppc_pit_ecdf_alt_kde
+#| label: fig-post_ppc_pit_ecdf_alt_2
 #| fig-cap: "Posterior predictive check with PIT-ECDFs showing four alternative scenarios."
 azp.plot_ppc_pit(idata_i,
                  plot_kwargs={"ylabel":False},
