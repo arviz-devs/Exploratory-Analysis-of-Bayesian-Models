@@ -365,7 +365,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#using-summary-statistics" id="toc-using-summary-statistics" class="nav-link" data-scroll-target="#using-summary-statistics"><span class="header-section-number">5.2.1</span> Using summary statistics</a></li>
   <li><a href="#pit-ecdfs" id="toc-pit-ecdfs" class="nav-link" data-scroll-target="#pit-ecdfs"><span class="header-section-number">5.2.2</span> PIT-ECDFs</a></li>
-  <li><a href="#avoiding-the-data-twice-problem" id="toc-avoiding-the-data-twice-problem" class="nav-link" data-scroll-target="#avoiding-the-data-twice-problem"><span class="header-section-number">5.2.3</span> Avoiding the data-twice problem</a></li>
+  <li><a href="#avoiding-double-dipping" id="toc-avoiding-double-dipping" class="nav-link" data-scroll-target="#avoiding-double-dipping"><span class="header-section-number">5.2.3</span> Avoiding double-dipping</a></li>
   <li><a href="#hypothetical-outcome-plots" id="toc-hypothetical-outcome-plots" class="nav-link" data-scroll-target="#hypothetical-outcome-plots"><span class="header-section-number">5.2.4</span> Hypothetical Outcome Plots</a></li>
   </ul></li>
   <li><a href="#posterior-predictive-checks-for-discrete-data" id="toc-posterior-predictive-checks-for-discrete-data" class="nav-link" data-scroll-target="#posterior-predictive-checks-for-discrete-data"><span class="header-section-number">5.3</span> Posterior predictive checks for discrete data</a>
@@ -434,7 +434,7 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="0cad2257" class="cell" data-execution_count="2">
+<div id="aba1d75c" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb1-2"><a href="#cb1-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -478,7 +478,7 @@ Figure&nbsp;5.1: The prior predictive check for the model of heights. We can see
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="d074ab32" class="cell" data-execution_count="4">
+<div id="0bf75130" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb5-2"><a href="#cb5-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">175</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -574,7 +574,7 @@ p(\tilde y) = \int_{\Theta} p(\tilde y \mid \theta) \; p(\theta \mid y) \; d\the
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="7e115c6e" class="cell" data-execution_count="7">
+<div id="6072f007" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="cf">with</span> model: </span>
 <span id="cb10-2"><a href="#cb10-2"></a>    idata <span class="op">=</span> pm.sample()</span>
 <span id="cb10-3"><a href="#cb10-3"></a>    pm.sample_posterior_predictive(idata, random_seed<span class="op">=</span>SEED, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -588,7 +588,7 @@ Sampling: [Y_obs]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"78a77b1482d14f719a9eab881cd96b88","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"f9eb4c61b25c41fd8f2b280f030dd8c6","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -596,7 +596,7 @@ Sampling: [Y_obs]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"6ff690ab77df41a5872680e8d71f0fcc","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"ec5c9a42fa234364b6f3fe71643505c7","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -719,15 +719,15 @@ Figure&nbsp;5.7: Posterior predictive check for the model of heights using margi
 </div>
 </div>
 <p>In ArviZ, we use the simultaneous confidence bands described by <span class="citation" data-cites="sailynoja_2022">Säilynoja, Bürkner, and Vehtari (<a href="References.html#ref-sailynoja_2022" role="doc-biblioref">2022</a>)</span>. The simultaneous confidence bands take into account the probability of observing deviations of the entire curve, as opposed to independent pointwise deviations. The band or envelope has an oval shape because the probability of observing a deviation is null at 0 and 1, all ECDFs must start at 0 and end at 1, and is higher in the middle of the curve.</p>
-<p>To build intuition on how to interpret the PIT-ECDF plots we are going to explore four common patterns using synthetic data. The following plot shows four different scenarios, where the observed data follows a standard normal distribution (<span class="math inline">\(\mu=0, \sigma^2=1\)</span>). In each case, we compare the observed data to predictions where:</p>
+<p>To build intuition on how to interpret the PIT-ECDF plots we are going to explore four common patterns using synthetic data. The following three plots show four different scenarios, where the observed data follows a standard normal distribution (<span class="math inline">\(\mu=0, \sigma^2=1\)</span>). In each case, we compare the observed data to predictions where:</p>
 <ul>
 <li>The mean of the predictions is shifted to the right. The model is overpredicting the data.</li>
 <li>The mean of the predictions is shifted to the left. The model is underpredicting the data.</li>
 <li>The predictions have a wider spread. The predictions are too uncertain.</li>
 <li>The predictions have a narrower spread. The predictions are too certain.</li>
-<li>The predictions are ok, except for . The model is doing a good job.</li>
 </ul>
-<div class="cell" data-execution_count="12">
+<p>First we show the KDEs of the observed data and the predictions.</p>
+<div id="cell-fig-post_ppc_pit_ecdf_alt_0" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>observed <span class="op">=</span> pz.Normal(<span class="dv">0</span>, <span class="dv">1</span>).rvs(<span class="dv">500</span>)</span>
 <span id="cb17-2"><a href="#cb17-2"></a></span>
 <span id="cb17-3"><a href="#cb17-3"></a>predictions <span class="op">=</span> {}</span>
@@ -748,72 +748,69 @@ Figure&nbsp;5.7: Posterior predictive check for the model of heights using margi
 <span id="cb17-18"><a href="#cb17-18"></a>                  kind<span class="op">=</span><span class="st">"kde"</span>,  </span>
 <span id="cb17-19"><a href="#cb17-19"></a>                  plot_kwargs<span class="op">=</span>{<span class="st">"remove_axis"</span>:<span class="va">False</span>},</span>
 <span id="cb17-20"><a href="#cb17-20"></a>                  pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>:{<span class="st">"sharey"</span>:<span class="va">True</span>}},             </span>
-<span id="cb17-21"><a href="#cb17-21"></a>                 )<span class="op">;</span></span>
-<span id="cb17-22"><a href="#cb17-22"></a>azp.plot_ppc_dist(idata_i,</span>
-<span id="cb17-23"><a href="#cb17-23"></a>                  kind<span class="op">=</span><span class="st">"ecdf"</span>,</span>
-<span id="cb17-24"><a href="#cb17-24"></a>                  pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>:{<span class="st">"sharey"</span>:<span class="va">True</span>}},        </span>
-<span id="cb17-25"><a href="#cb17-25"></a>                 )<span class="op">;</span></span>
-<span id="cb17-26"><a href="#cb17-26"></a>azp.plot_ppc_pit(idata_i,</span>
-<span id="cb17-27"><a href="#cb17-27"></a>                 plot_kwargs<span class="op">=</span>{<span class="st">"ylabel"</span>:<span class="va">False</span>},</span>
-<span id="cb17-28"><a href="#cb17-28"></a>                 pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>:{<span class="st">"sharey"</span>:<span class="va">True</span>}},        </span>
-<span id="cb17-29"><a href="#cb17-29"></a>                 )<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="fig-post_ppc_pit_ecdf_alt" class="cell quarto-figure quarto-figure-center quarto-float anchored" data-execution_count="12">
+<span id="cb17-21"><a href="#cb17-21"></a>                 )<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-post_ppc_pit_ecdf_alt_0" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-post_ppc_pit_ecdf_alt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-post_ppc_pit_ecdf_alt_0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Prior_posterior_predictive_checks_files/figure-html/fig-post_ppc_pit_ecdf_alt_0-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post_ppc_pit_ecdf_alt_0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.8: Posterior predictive check with KDEs showing four alternative scenarios.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Then we show the ECDFs of the observed data and the predictions.</p>
+<div id="cell-fig-post_ppc_pit_ecdf_alt_1" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>azp.plot_ppc_dist(idata_i,</span>
+<span id="cb18-2"><a href="#cb18-2"></a>                  kind<span class="op">=</span><span class="st">"ecdf"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3"></a>                  pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>:{<span class="st">"sharey"</span>:<span class="va">True</span>}},        </span>
+<span id="cb18-4"><a href="#cb18-4"></a>                 )<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-post_ppc_pit_ecdf_alt-1" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-post_ppc_pit_ecdf_alt-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Prior_posterior_predictive_checks_files/figure-html/fig-post_ppc_pit_ecdf_alt-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-post_ppc_pit_ecdf_alt">
+<div id="fig-post_ppc_pit_ecdf_alt_1" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-post_ppc_pit_ecdf_alt_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Prior_posterior_predictive_checks_files/figure-html/fig-post_ppc_pit_ecdf_alt_1-output-1.png" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-post_ppc_pit_ecdf_alt-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Posterior predictive check showing four alternative scenarios. On the first row we have the KDEs of the observed data and the predictions. On the second row we have the ECDFs of the observed data and predictions and on the thirs we have the PIT-ECDFs.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post_ppc_pit_ecdf_alt_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.9: Posterior predictive check with ECDFs showing four alternative scenarios.
 </figcaption>
 </figure>
 </div>
 </div>
+</div>
+<p>Finally, we show the PIT-ECDFs.</p>
+<div id="cell-fig-post_ppc_pit_ecdf_alt_2" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>azp.plot_ppc_pit(idata_i,</span>
+<span id="cb19-2"><a href="#cb19-2"></a>                 plot_kwargs<span class="op">=</span>{<span class="st">"ylabel"</span>:<span class="va">False</span>},</span>
+<span id="cb19-3"><a href="#cb19-3"></a>                 pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>:{<span class="st">"sharey"</span>:<span class="va">True</span>}},        </span>
+<span id="cb19-4"><a href="#cb19-4"></a>                 )<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-post_ppc_pit_ecdf_alt-2" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-post_ppc_pit_ecdf_alt-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Prior_posterior_predictive_checks_files/figure-html/fig-post_ppc_pit_ecdf_alt-output-2.png" id="fig-post_ppc_pit_ecdf_alt-2" class="img-fluid figure-img" data-ref-parent="fig-post_ppc_pit_ecdf_alt">
+<div id="fig-post_ppc_pit_ecdf_alt_2" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-post_ppc_pit_ecdf_alt_2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Prior_posterior_predictive_checks_files/figure-html/fig-post_ppc_pit_ecdf_alt_2-output-1.png" class="img-fluid figure-img">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-post_ppc_pit_ecdf_alt-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b)
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-post_ppc_pit_ecdf_alt_2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.10: Posterior predictive check with PIT-ECDFs showing four alternative scenarios.
 </figcaption>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-display">
-<div id="fig-post_ppc_pit_ecdf_alt-3" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-post_ppc_pit_ecdf_alt-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Prior_posterior_predictive_checks_files/figure-html/fig-post_ppc_pit_ecdf_alt-output-3.png" id="fig-post_ppc_pit_ecdf_alt-3" class="img-fluid figure-img" data-ref-parent="fig-post_ppc_pit_ecdf_alt">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-post_ppc_pit_ecdf_alt-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(c)
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-post_ppc_pit_ecdf_alt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.8
-</figcaption>
-</figure>
 </div>
 </div>
 </section>
-<section id="avoiding-the-data-twice-problem" class="level3" data-number="5.2.3">
-<h3 data-number="5.2.3" class="anchored" data-anchor-id="avoiding-the-data-twice-problem"><span class="header-section-number">5.2.3</span> Avoiding the data-twice problem</h3>
+<section id="avoiding-double-dipping" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="avoiding-double-dipping"><span class="header-section-number">5.2.3</span> Avoiding double-dipping</h3>
 <p>All posterior predictive checks we have seen use the data twice, first to fit the model and then to evaluate it. Too avoid using the data twice, we can instead compute</p>
 <p><span class="math display">\[
 p(\tilde y_i \leq y_i \mid y_{-i})
 \]</span></p>
 <p>where <span class="math inline">\(y_{-i}\)</span> is the observed data without the <span class="math inline">\(i\)</span>-th observation. This is known as the leave-one-out cross-validation (LOO-CV) and it is a very popular method to assess the predictive performance of a model. In principle computing this will be too costly, as we need to compute the posterior predictive distribution <span class="math inline">\(n\)</span> times, where <span class="math inline">\(n\)</span> is the number of observations. However, we can use the Pareto-smoothed importance sampling (PSIS) to approximate the LOO-CV from a single posterior computation. This is a topic we will discuss in more detail in <a href="Model_comparison.html" class="quarto-xref"><span>Chapter 7</span></a>. But next figure shows the LOO-PIT for the model of heights.</p>
-<div id="a76c893e" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># comming soon</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="co"># loo-pit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2784e768" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># comming soon</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="co"># loo-pit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="hypothetical-outcome-plots" class="level3" data-number="5.2.4">
@@ -833,14 +830,14 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <p>Here we are going to discuss the rootograms presented by <span class="citation" data-cites="Säilynoja_2025">Säilynoja et al. (<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">2025</a>)</span>. These rootograms emphasises the discreteness of the data and predictions by using points and point-wise credible intervals. And instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frecuencies from the plot (instead of reading the square root) while keeping the advantage of being able to discriminate details at lower frecuencies.</p>
 <p>To illustrate rootograms we are going to use the Horseshoe crabs dataset <span class="citation" data-cites="Brockmann_1996">(<a href="References.html#ref-Brockmann_1996" role="doc-biblioref">Brockmann 1996</a>)</span>. Very briefly, horseshoe crabs arrive at the beach in pairs for their spawning ritual. Solitary males gather around the nesting couples and vying to fertilize the eggs. These individuals, known as satellite males, often congregate near certain nesting pairs while disregarding others. We used Bambi to create two models a poisson model and a hurdle-negative binomial model for the number of male satellites as a function of the carapace width and color of the female.</p>
 <p>We are going to omit the modelling details, and just upload prefitted models.</p>
-<div id="fa492ec8" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>crabs_poisson <span class="op">=</span> azb.load_arviz_data(<span class="st">'crabs_poisson'</span>)</span>
-<span id="cb19-2"><a href="#cb19-2"></a>crabs_hurdle_nb <span class="op">=</span> azb.load_arviz_data(<span class="st">'crabs_hurdle_nb'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="749a412b" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>crabs_poisson <span class="op">=</span> azb.load_arviz_data(<span class="st">'crabs_poisson'</span>)</span>
+<span id="cb21-2"><a href="#cb21-2"></a>crabs_hurdle_nb <span class="op">=</span> azb.load_arviz_data(<span class="st">'crabs_hurdle_nb'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s first check the poisson model. We can see that the overall fit is not that bad, but the zeros are underpredicted, and counts 1 to 4 are overpredicted. Most counts from 6 onward are also underpredicted. This pattern is an indication of overdispersion in the data, and the huge difference for 0 indicates an excess of zeros.</p>
-<div id="cell-fig-ppc_rootogram_crab_poisson" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>pc <span class="op">=</span> azp.plot_ppc_rootogram(crabs_poisson)</span>
-<span id="cb20-2"><a href="#cb20-2"></a>pc.viz[<span class="st">"satellite"</span>].plot.item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-fig-ppc_rootogram_crab_poisson" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>pc <span class="op">=</span> azp.plot_ppc_rootogram(crabs_poisson)</span>
+<span id="cb22-2"><a href="#cb22-2"></a>pc.viz[<span class="st">"satellite"</span>].plot.item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_rootogram_crab_poisson" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -848,16 +845,16 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <img src="Prior_posterior_predictive_checks_files/figure-html/fig-ppc_rootogram_crab_poisson-output-1.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppc_rootogram_crab_poisson-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.9: Rootogram showing the uncertainty in the predictions for a Poisson model.
+Figure&nbsp;5.11: Rootogram showing the uncertainty in the predictions for a Poisson model.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>Now we will check the fit for the hurdle model. As expected for a hurdle model we get a perfect fit for the zeros. For the positive values, we still get some deviations, but the fit is better than with the Poisson model.</p>
-<div id="cell-fig-ppc_rootogram_crab_hurdle_nb" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>pc <span class="op">=</span> azp.plot_ppc_rootogram(crabs_hurdle_nb)</span>
-<span id="cb21-2"><a href="#cb21-2"></a>pc.viz[<span class="st">"satellite"</span>].plot.item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-fig-ppc_rootogram_crab_hurdle_nb" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>pc <span class="op">=</span> azp.plot_ppc_rootogram(crabs_hurdle_nb)</span>
+<span id="cb23-2"><a href="#cb23-2"></a>pc.viz[<span class="st">"satellite"</span>].plot.item().set_xlim(<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_rootogram_crab_hurdle_nb" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -865,7 +862,7 @@ Figure&nbsp;5.9: Rootogram showing the uncertainty in the predictions for a Pois
 <img src="Prior_posterior_predictive_checks_files/figure-html/fig-ppc_rootogram_crab_hurdle_nb-output-1.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppc_rootogram_crab_hurdle_nb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.10: Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model.
+Figure&nbsp;5.12: Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model.
 </figcaption>
 </figure>
 </div>
@@ -878,11 +875,11 @@ Figure&nbsp;5.10: Rootogram showing the uncertainty in the predictions for a Hur
 <p>Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. We may be tempted to asses the fit of a binary model using a bar plot, or a plot similar to the rootogram we showed in the previous section, but this is not a good idea. The reason is that even a very simple model with one parameter corresponding to the proportion of one class, can perfectly model the proportion, and a bar plot will not show any deviation <span class="citation" data-cites="Säilynoja_2025">(<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">Säilynoja et al. 2025</a>)</span>.</p>
 <p>One solution to this challenge is to use the so call calibration or reliability plots. To create this kind of plot we first bin the predicted probabilities (e.g., [0.0–0.1], [0.1–0.2], …, [0.9–1.0]) and then for each bin we compute the fraction of observed positive outcomes. In this way we can compare the predicted probabilities to the observed frequencies. The ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies.</p>
 <p>The problem with this approach is that in practice we don’t have good rules to select the bins and different bins can result in plots that look drastically different <span class="citation" data-cites="Dimitriadis_2021">(<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">Dimitriadis, Gneiting, and Jordan 2021</a>)</span>. An alternative is to use the method proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>. This method uses conditional event probabilities (CEP), that is the probability that a certain event occurs given that the classifier has assigned a specific predicted probability. To compute the CEPs, the authors use the pool adjacent violators (PAV) algorithm <span class="citation" data-cites="Ayer_1955">(<a href="References.html#ref-Ayer_1955" role="doc-biblioref">Ayer et al. 1955</a>)</span>, which provides a way to assign CEPs that are monotonic (i.e.&nbsp;they increase or stay the same, but never decrease) with respect to the model predictions. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities.</p>
-<p><a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>5.11</span></a> shows a calibration plot for a dummy logistic regression model. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The plot also includes the confidence bands for the CEPs. The confidence bands are computed using the method proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>.</p>
-<div id="cell-fig-ppc_pava" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>dt <span class="op">=</span> azb.load_arviz_data(<span class="st">'classification10d'</span>)</span>
-<span id="cb22-2"><a href="#cb22-2"></a></span>
-<span id="cb22-3"><a href="#cb22-3"></a>azp.plot_ppc_pava(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="#fig-ppc_pava" class="quarto-xref">Figure&nbsp;<span>5.13</span></a> shows a calibration plot for a dummy logistic regression model. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The plot also includes the confidence bands for the CEPs. The confidence bands are computed using the method proposed by <span class="citation" data-cites="Dimitriadis_2021">Dimitriadis, Gneiting, and Jordan (<a href="References.html#ref-Dimitriadis_2021" role="doc-biblioref">2021</a>)</span>.</p>
+<div id="cell-fig-ppc_pava" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a>dt <span class="op">=</span> azb.load_arviz_data(<span class="st">'classification10d'</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a></span>
+<span id="cb24-3"><a href="#cb24-3"></a>azp.plot_ppc_pava(dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-ppc_pava" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -890,7 +887,7 @@ Figure&nbsp;5.10: Rootogram showing the uncertainty in the predictions for a Hur
 <img src="Prior_posterior_predictive_checks_files/figure-html/fig-ppc_pava-output-1.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ppc_pava-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5.11: PAV-adjusted Calibration plot for a dummy logistic regression model.
+Figure&nbsp;5.13: PAV-adjusted Calibration plot for a dummy logistic regression model.
 </figcaption>
 </figure>
 </div>
@@ -938,7 +935,7 @@ Tukey, John W. 1977. <em>Exploratory <span>Data</span> <span>Analysis</span></em
 
 </main> <!-- /main -->
 <script type="application/vnd.jupyter.widget-state+json">
-{"state":{"0a8a73acfda44f3e98b0b49f734b7687":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"25856ee8828a4dfebf5f779b4befd157":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"6ff690ab77df41a5872680e8d71f0fcc":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_0a8a73acfda44f3e98b0b49f734b7687","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling ... <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> 0:00:00 / 0:00:00\n</pre>\n","text/plain":"Sampling ... \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m 0:00:00 / 0:00:00\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"78a77b1482d14f719a9eab881cd96b88":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_25856ee8828a4dfebf5f779b4befd157","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.01        3            1753.47 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.76        3            1835.32 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.01        3            1753.47 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.76        3            1835.32 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
+{"state":{"2a9be051fc394d42a7527a5184561245":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"b8169b2364c841dba6eea4fa33fe68d2":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"ec5c9a42fa234364b6f3fe71643505c7":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_b8169b2364c841dba6eea4fa33fe68d2","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling ... <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> 0:00:00 / 0:00:00\n</pre>\n","text/plain":"Sampling ... \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m 0:00:00 / 0:00:00\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"f9eb4c61b25c41fd8f2b280f030dd8c6":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_2a9be051fc394d42a7527a5184561245","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.85        3            1798.84 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.21        3            1847.37 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.85        3            1798.84 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.21        3            1847.37 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
