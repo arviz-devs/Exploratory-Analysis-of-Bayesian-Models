@@ -358,6 +358,20 @@ azp.plot_ppc_pit(idata_i,
                  );
 ```
 
+Alternatively, we can visualize the coverage of the central posterior credible intervals by setting ``coverage=True``. This allows us to assess whether the credible intervals includes the observed values.
+
+- If the difference is **positive**, the model is **under-confident**: the predictions have a wider spread than the data -- they are **too uncertain**.
+- If the difference is **negative**, the model is **over-confident**: the predictions have a narrower spread than the data -- they are **too certain**.
+
+```{python}
+#| label: fig-post_ppc_pit_coverage
+#| fig-cap: "Coverage check showing four alternative scenarios."
+azp.plot_ppc_pit(idata_i,
+                 coverage=True,
+                 plot_kwargs={"ylabel":False},
+                 pc_kwargs={"plot_grid_kws":{"sharey":True}},        
+                 );
+```
 
 ### Avoiding double-dipping
 
