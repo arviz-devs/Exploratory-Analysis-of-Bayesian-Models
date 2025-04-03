@@ -184,7 +184,7 @@ Continuing with our height example, we can generate synthetic data from the post
 
 ``` {python}
 with model: 
-    idata = pm.sample()
+    idata = pm.sample(idata_kwargs={"log_likelihood": True}, random_seed=SEED)
     pm.sample_posterior_predictive(idata, random_seed=SEED, extend_inferencedata=True)
 ```
 
@@ -372,21 +372,34 @@ azp.plot_ppc_pit(idata_i,
                  pc_kwargs={"plot_grid_kws":{"sharey":True}},        
                  );
 ```
+### Avoiding double-dipping {#sec-avoid-double-dipping}
 
-### Avoiding double-dipping
+So far we have being using the data twice, first to fit the model and then to evaluate it. This is a common practice in Bayesian data analysis and it is not a problem as long as we are aware of it. The main goal is to understand how well the model is doing at predicting the data, detecting potential problems, and if possible or desirable improving the model. 
 
-All posterior predictive checks we have seen use the data twice, first to fit the model and then to evaluate it. Too avoid using the data twice, we can instead compute 
+Still, we may want to avoid double-dipping. So instead of computing:
+
+$$
+p(\tilde y_i \leq y_i \mid y)
+$$
+
+We may want to compute:
 
 $$
 p(\tilde y_i \leq y_i \mid y_{-i})
 $$
 
-where $y_{-i}$ is the observed data without the $i$-th observation. This is known as the leave-one-out cross-validation (LOO-CV) and it is a very popular method to assess the predictive performance of a model. In principle computing this will be too costly, as we need to compute the posterior predictive distribution $n$ times, where $n$ is the number of observations. However, we can use the Pareto-smoothed importance sampling (PSIS) to approximate the LOO-CV from a single posterior computation. This is a topic we will discuss in more detail in @sec-model-comparison. But next figure shows the LOO-PIT for the model of heights.
+where $y_{-i}$ is the observed data without the $i$-th observation.
+
+This is a more stringent test, as we are not using the $i$-th observation to compute the posterior predictive distribution. This is known as the leave-one-out cross-validation (LOO-CV) and it is a very popular method to assess the predictive performance of a model.
+
+In principle computing this will be too costly, as we need to compute the posterior predictive distribution $n$ times, where $n$ is the number of observations. However, we can use a method called Pareto-smoothed importance sampling (PSIS) to approximate the LOO-CV from a single posterior computation. This is a topic we will discuss in more detail in @sec-model-comparison. ArviZ offers many functions based on this method, one of them is `loo_pit`.
 
 ```{python}
-# comming soon
-# loo-pit
+#| label: fig-post_loo_pit
+#| fig-cap: "Posterior predictive check with LOO-PIT-ECDF."
+azp.plot_loo_pit(idata);
 ```
+
 
 ### Hypothetical Outcome Plots
 
@@ -453,8 +466,8 @@ The problem with this approach is that in practice we don't have good rules to s
 
 ```{python}
 #| label: fig-ppc_pava
-#| fig-cap: "PAV-adjusted Calibration plot for a dummy logistic regression model."
-dt = azb.load_arviz_data('classification10d')
+#| fig-cap: "PAV-adjusted Calibration plot for a logistic regression model."
+dt = azb.load_arviz_data('anes')
 
 azp.plot_ppc_pava(dt)
-```                   
+```
