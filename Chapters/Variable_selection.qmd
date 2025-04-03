@@ -162,48 +162,6 @@ ppi.compare(min_model_size=1);
 And voilà! If we consider `hour_cos` and `hour_sin` as a single variable, then the two most relevant variables are `hour` and `temperature`, in agreement with PyMC-BART.
 
 
-### Consequences of performing a nom-penalized optimization
-
-In Bayesian statistics the priors, and the fact that the posterior computations involves integrating over those priors, instead of optimizing a loss function, is what provides the regularization. The current implementation of projective inference in Kulprit does not include any penalization term. This means that the optimization problem is not regularized. This has some consequences in practice. As Kulprit is still experimental and under development, what is discussed in this section could change in the future.
-
-We are going to use a synthetic example as this allows more control. We are going to use a function that has 5 covariables related to the response variable and 5 covariates that are unrelated, pure noise.
-
-```{Python}
-np.random.seed(793)
-N = 10
-data = pd.DataFrame(
-    np.random.normal(0, 1, size=(1253, N)), columns=[f"x_{i}" for i in range(N)]
-)
-f_x = (
-    10 * data["x_0"]
-    + 10 * data["x_1"]
-    + 10 * data["x_2"]
-    + 20 * (data["x_3"] - 0.5) ** 2
-    + 5 * data["x_4"]
-)
-data["y"] = np.random.normal(f_x, 1)
-```
-Here we should expect Kulprit to identify the 5 variables from `x_0` to `x_1` as relevant. Ideally, `x_3` should be the most relevant, and `x_4` the least one.
-
-As previously done, we need to first fit a Bambi's model then call the main class in Kulprit and finally project and plot.
-
-```{Python}
-model = bmb.Model("y ~ " + " + ".join([f"x_{i}" for i in range(N)]), data=data)
-idata = model.fit(idata_kwargs={'log_likelihood': True}, random_seed=seed)
-ppi = kpt.ProjectionPredictive(model, idata)
-ppi.project()
-ppi.compare(min_model_size=1);
-```
-
-As expected, we have the ELPD increasing when we add the first 5 variables (from `x_0` to `x_4`) and then it plateaus for the rest, indicating that we just need variables `x_0` to `x_4`, and the rest are spurious.
-
-Let's do two more tests. For the first one we increase the number of total variables to 25, that is the first 5 variables are relevant and the rest are spurious. For the second one, we do the same but also decrease the sample size from 1235 to 235.
-
-![We have 5 relevant variables and 20 spurious ones. We can see how the ELPD starts to decline once we add the relevant variables. Especially when the sample size is lower (bottom panel)](../img/kulprit_25.png){#fig-kulprit_25}
-
-
-From @fig-kulprit_25 we see that initially the ELPD increases as variables are added reaching a peak when all the variables known to be related to the response have been included. Beyond this point, adding more variables causes the ELPD to first plateau and then become worse. The observed decline is a direct consequence of not penalizing the optimization process used for the projection. Without the benefits of Bayesian inference, adding parameters beyond the point of improved performance only leads to an increased model complexity resulting in poorer generalization error, reflected in a lower ELPD.
-
 ## Combining PyMC-BART and Kulprit
 
 Both methods are not necessarily competitors and there is room for collaboration. When this is useful is still open to research but we can think of some scenarios where this could be useful. For instance, we could use PyMC-BART to find the most relevant variables, according to the variable inclusion metric, and then use Kulprit to perform the projection. We could also use the posterior predictive samples from PyMC-BART instead of a GLM. The second option requires some changes in Kulprit, but the first one is straightforward as the method project supports a `path` argument that allows to specify the submodels that we want to project. Notice that if we provide the `path` there is no search done, Kulprit will project and evaluate just the submodels we specify.

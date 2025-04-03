@@ -4,8 +4,9 @@
 ```{python}
 #| echo : false
 #| warning: false
-import arviz as az
+import arviz_base as azb
 import arviz_plots as azp
+import arviz_stats as azs
 import numpy as np
 import preliz as pz
 import pymc as pm
@@ -15,7 +16,7 @@ plt.rcParams["figure.dpi"] = 100
 SEED = 3592
 ```
 
-### The balance between simplicity and accuracy
+## The balance between simplicity and accuracy
 
 When choosing between alternative explanations, there is a principle known as Occam's razor. In very general terms, this principle establishes that given two or more equivalent explanations for the same phenomenon, the simplest one is the preferred explanation. When the explanations are models, a common criterion for simplicity is the number of parameters in a model.
 
@@ -24,7 +25,7 @@ Another factor we generally need to consider when comparing models is their accu
 Intuitively, it seems that when comparing models, we tend to prefer those that fit the data best and those that are simpler. But what to do if these two principles conflict? Or more generally, is there a quantitative way to consider both contributions? The short answer is yes. In fact there is more than one way to do it. 
 
 
-### Predictive accuracy measures
+## Predictive accuracy measures
 
 If we evaluate a model solely by it capacity to reproduce the data used to fit it, for instance by measuring the mean quadratic error between observations and predictions, we will likely be overoptimistic about the performance of the model to predict unobserved data. Additionally, for a flexible enough model (and without proper regularization), we may tweak it parameters until we fit the data perfectly. Thus, instead of computing the **Within-sample accuracy**, that is, the accuracy measured with the same data used to fit the model, we prefer to compute the **Out-of-sample accuracy**, that is, the accuracy measured with data not used to fit the model. 
 
@@ -43,7 +44,7 @@ Bayesian models trough the use of prior, and the fact that the posterior is comp
 * Information criteria: This is a general term used to refer to various expressions that approximate out-of-sample accuracy as in-sample accuracy plus a term that penalizes model complexity.
 
 
-### Information criteria
+## Information criteria
 
 
 Information criteria are a collection of closely related tools used to compare models in terms of goodness of fit and model complexity. In other words, information criteria formalize the intuition we developed at the beginning of the chapter. The exact way these quantities are derived has to do with a field known as [Information Theory](http://www.inference.org.uk/mackay/itila/book.html).
@@ -62,7 +63,7 @@ $\operatorname{E} (y_i \mid \theta)$ is the predicted value given the estimated 
 The mean square error may be familiar to us since it is very popular. But if we stop and reflect on this quantity we will see that in principle there is nothing special about it and we could well come up with more general expressions. 
 
 
-### Entropy
+## Entropy
 
 For a probability distribution with $N$ possible different events which each possible event having probability $p_i$, the entropy is defined as:
 
@@ -122,7 +123,7 @@ If we compare models then the best model, given the set of compared models, will
 In practice we also do not have access to $\mathbb{E}[\log{q}]$, what we can do is estimate this quantity from a sample. Since we already know how to use a sample to estimate the parameters of a model and using the same sample to evaluate it introduces a bias, which we must somehow correct. One way to correct this bias is given by the information criteria.
 
 
-#### Akaike information criterion
+## Akaike information criterion
 
 The Akaike information criterion [@akaike_1974] (AIC) is a very well-known and widely used information criterion outside the Bayesian universe and is defined as:
 
@@ -148,7 +149,7 @@ The AIC criterion is very useful, but have many issues for Bayesian models. One 
 Can we find something like the Bayesian version of AIC? Yes, we can.
 
 
-### WAIC
+## WAIC
 
 We can see the Widely applicable information criterion (WAIC) [@watanabe_2013] as the fully Bayesian version of AIC. Not to be confused with the Bayesian Information Criterion (BIC), which is not very Bayesian in practice.
 
@@ -188,7 +189,7 @@ $$
 A model where $\beta=0$ will be less flexible, since it is equivalent to a model that only has one parameter, $alpha$. In a slightly more subtle way, a model where $\beta$ varies in a narrow range will be less flexible (more regularized), than a model where $\beta$ can take any value.
 
 
-### Cross validation
+## Cross validation
 
 Cross-validation is a simple and, in most cases, effective solution for comparing models. We take our data and divide it into $K$ slices. We try to keep the portions more or less the same (in size and sometimes also in other characteristics, such as an equal number of classes). We then use $K-1$ portions to train the model and the rest to evaluate it. This process is systematically repeated leaving, for each iteration, a different portion out of the training set and using that portion as the evaluation set. This is repeated until we have completed $K$ rounds of adjustment-evaluation. The accuracy of the model will be the average over the $K$ rounds. This is known as K-fold cross validation. Finally, once we have cross-validated, we use all the data to final fit our model and this is the model that is used to make predictions or for any other purpose.
 
@@ -200,7 +201,7 @@ Cross validation is a routine practice in machine learning. And we have barely d
 
 Cross-validation is a very simple and useful idea, but for some models or for large amounts of data, the computational cost of cross-validation may be beyond our means. But lucky us, by being bayesian we can approximately compute CV in a very fast way. 
 
-### LOO and cross validation
+## LOO and cross validation
 
 
 There is another alternative to penalize the term
@@ -221,7 +222,7 @@ where $_{-i}$ means that we leave observation $i$ out. A Naive implementation of
 Before continuing with our agenda, we need to take a short detour.
 
 
-#### Importance Sampling
+### Importance Sampling
 
 This is a technique for estimating properties of a distribution of interest $f$, given that we only have samples from a distribution $g$. Using importance sampling makes sense, for example, when it is simpler to sample $g$ than $f$.
 
@@ -279,69 +280,22 @@ One way to correct this problem is to simply truncate the "too high" weights, bu
 
 When we combine all these ideas we get a method called Pareto-Smooth Importance Sampling Leave-One-Out Cross Validation [@vehtari_2017; @yao_2018], which is abbreviated as PSIS-LOO-CV. Since the name and acronym are horribly long and difficult to pronounce we will call it LOO.
 
-### LOO and WAIC
-
-LOO and WAIC converge asymptotically, and they based on the same set of assumptions. So theoretically they are equivalent. However, in practice LOO is more robust, and also offers us a diagnosis that indicates when it could be failing (this is thanks to the Pareto adjustment). So in practice we prefer LOO.
-
-
 ### Calculating LOO
 
-After all this introduction, calculating LOO may seem somewhat disappointing. We just need to call ArviZ's `loo` function and pass it an InfereceData object containing a log-likelihood group.
+After all this introduction, calculating LOO may seem somewhat disappointing. We just need to call ArviZ's `loo` function and pass it an DataTree object containing a `log-likelihood` group.
 
-For the following example we are using an InferenceData distributed with ArviZ. More details about the model in the next chapter. For the moment we only need to know that is a model with two sets of observations, `home_points` and `away_points`. We can compute LOO for each one of those.
+For the following example we are using a DataTree distributed with ArviZ. More details about the model in @sec-model-comparison-case-study. For the moment we only need to know that is a model with two sets of observations, `home_points` and `away_points`. We can compute LOO for each one of those.
 
 ```{python}
-idata_rug = az.load_arviz_data('rugby')
-loo_p = az.loo(idata_rug, var_name="home_points")
-loo_p
+dt_rugby = azb.load_arviz_data('rugby')
+elpd = azs.loo(dt_rugby, var_name="home_points")
+elpd
 ```
 
 We can see that we get the estimated ELPD value using LOO and its standard error. `p_loo` can be roughly interpreted as the effective number of parameters. For some models this number should be close to the actual number of parameters, for models with regularization, like hierarchical models, it should be less than the actual number of parameters.
 
-Then we can see a table with the title "Pareto k diagnostic values". We previously said that we used a Pareto to regularize the estimation of the importance weights. One of the parameters of that fit is called $k$. Sometimes we call it $\hat k$ (because is an estimate of $k$). Since we have a Pareto adjustment per observation we have a $k$ value per observation. This parameter is useful because it tells us two sides of the same story, it tells us when an observation is "very influential" and it tells us that the approximation used by LOO could be failing for that observation.
 
-As a general rule, if $k$ is less than 0.7 there are no problems, if it's between 0.7 and 1 is very likely that we are in trouble and if it's greater than 1, we are doom. The cutoff value 0.7 is not fixed, it can strictly be lower and depends on the total number of samples of the posterior distribution, 2000, in this example. But when the number of draws is about 2000 we are almost at 0.7. In practice it is common to use sample values ​​of 2000 or larger. Increasing the number of samples from the posterior may reduce the value of $k$ and so we could remove some of these warnings, but in general the number needed will be too large to make any practical sense.
-
-It is possible to visualize the values ​​of $k$, using `plot_khat`
-
-
-```{python}
-az.plot_khat(loo_p, threshold=0.7);
-```
-
-While the main function of LOO is to compare models, the values ​​of $k$ can be useful even if we only have one. For example, we could have extra knowledge that tells us why these observations are influential, perhaps there was a problem in data collection and the values ​​are incorrect. Or perhaps the values ​​are correct but from the perspective of our model they are influential, "strange", "surprising".
-
- If $k > 0.7$, the value of p_loo can give us some more information. Where $p$ is the total number of parameters in a model.
-
-* If $p_{\text{loo}} << p$ then the model must be misspecified. This should also be seen in post-hoc predictive testing. One solution is to use an overdispersed model (such as changing a Poisson for a NegativeBinomial or for a ZeroInflatedPoisson or HurdlePoisson, or changing a Normal for a Student's T, etc.). Or it is likely that the model needs more structure or complexity, perhaps we need a non-linear term, etc.
-
-* If $p_{\text{loo}} < p$ and the observations are relatively few compared to $p$, (say $p>N/5$). It is likely that we have a model that is too flexible and/or priors that are too vague. This can happen for hierarchical models with very few observations per group or for example for splines with many knots or Gaussian processes with very short scale values.
-
-* If $p_{\text{loo}} > p$, then the model has very serious problems. If $p<<N$, then posterior predictive tests should also report problems. If, however, p is relatively large (say $p>N/5$). So post-hoc predictive testing may not reflect problems.
-
-
-Finally, another way to use LOO even in the absence of another model is through `plot_loo_pit`. If the graph looks similar to the one we saw for the marginal Bayesian p-values (@fig-post_pred_check_u_value), it is because we are doing the same thing. But this time using LOO, we are considering:
-
-$$
-p(\tilde y_i \le y_i \mid y_{-i})
-$$
-
-That is, we are evaluating, approximately, the model's ability to predict an observation when we remove that observation from the observed data.
-
-```{python}
-#| label: fig-loo_pit
-#| fig-cap: "LOO-PIT plot for the rugby model"
-az.plot_loo_pit(idata_rug, y="home_points", use_hdi=True)
-```
-
-
-#### Other information criteria
-
-Another widely used information criterion is DIC, if we use the *bayes-o-meter™*, DIC is more Bayesian than AIC but less than WAIC. Although still popular, WAIC and mainly LOO have proven to be more useful both theoretically and empirically than DIC. Therefore we DO NOT recommend its use.
-
-Another widely used criterion is BIC (Bayesian Information Criteria), like logistic regression and my mother's *dry soup*, this name can be misleading. BIC was proposed as a way to correct some of the problems with AIC and the author proposed a Bayesian rationale for it. But BIC is not really Bayesian in the sense that like AIC it assumes *flat* priors and uses maximum likelihood estimation.
-
-But more importantly, BIC differs from AIC and WAIC in its objective. AIC and WAIC try to reflect which model generalizes better to other data (predictive accuracy) while BIC tries to identify which is the _correct_ model and therefore is more related to Bayes factors than with WAIC. Later we will discuss Bayes Factors and see how it differs from criteria such as WAIC and LOO.
+### Comparing models with LOO
 
 
 ::: {.panel-tabset}
@@ -372,7 +326,7 @@ with pm.Model() as modelo_t:
 :::
 
 ```{python}
-cmp_df = az.compare({'modelo_n':idata_n, 'modelo_t':idata_t})
+cmp_df = azs.compare({'modelo_n':idata_n, 'modelo_t':idata_t})
 cmp_df
 ```
 
@@ -388,10 +342,10 @@ In the rows we have the compared models and in the columns we have
 * warning: a warning about whether there is at least one high k value
 * scale: the scale on which the ELPD is calculated
 
-We can obtain similar information, but graphically, using the `az.compareplot function
+We can obtain similar information, but graphically, using the `azp.plot_compare` function
 
 ```{python}
-az.plot_compare(cmp_df, plot_ic_diff=False);
+azp.plot_compare(cmp_df);
 ```
 
 * The open circles represent the ELPD values ​​and black lines the standard error.
@@ -399,6 +353,79 @@ az.plot_compare(cmp_df, plot_ic_diff=False);
 * For all models except *the best*, we also obtain a triangle indicating the value of the ELPD difference between each model and the *best* model. The gray error bar indicating the standard error of the differences between the point estimates.
 
 The simplest way to use information criteria is to choose a single model. Simply choose the model with the highest ELPD value. If we follow this rule we will have to accept that the quadratic model is the best. Even if we take into account the standard errors we can see that they do not overlap. Which gives us some security that the models are indeed *different* from each other. If, instead, the standard errors overlapped, we should provide a more nuanced answer.
+
+
+### LOO expectations and metrics
+
+From the PSIS smoothing procedure, we obtain a set of weights. The `loo` function utilizes these weights to estimate the ELPD we should have obtained if we have performed leave-one-out cross-validation. Furthermore, these weights can be used to estimate other quantities, such as the mean, standard deviation, and quantiles, as if we had performed leave-one-out cross-validation. For example, to compute the 25th and 75th percentiles we use:
+
+```{python}
+azs.loo_expectations(dt_rugby, kind="quantile", probs=[0.25, 0.75])
+```
+
+Similarly we may be interested in computing estimates of leave-one-out predictive metrics given a set of predictions and observations. For instance to compute the root mean square error we can do: 
+
+```{python}
+azs.loo_metrics(dt_rugby, kind="rmse", var_name="home_points")
+```
+
+Notice that for `loo_metrics` if we have more than one variable we must specify the variable that we care using the `var_names` argument, like in the previous example.
+
+
+### LOO-PIT
+
+Another quantity of interest that we can obtain via PSIS-LOO-CV is the PIT values. As already mentioned in @sec-avoid-double-dipping, we often are interested in computing:
+
+$$
+p(\tilde y_i \le y_i \mid y_{-i})
+$$
+
+That is, we are evaluating the model's ability to predict an observation when we remove that observation from the observed data. We can use PSIS-LOO_CV to estimate this from a single model fit.
+
+```{python}
+#| label: fig-elpdit
+#| fig-cap: "LOO-PIT plot for the rugby model"
+azp.plot_loo_pit(dt_rugby, var_names="home_points")
+```
+
+
+### Pareto k and LOO diagnostics
+
+Then we can see a table with the title "Pareto k diagnostic values". We previously said that we used a method involving a Pareto distribution to regularize the estimation of the importance weights. One of the parameters of that fit is called $k$. Sometimes we call it $\hat k$ (because is an estimate of $k$). Since we have a Pareto adjustment per observation we have a $k$ value per observation. This parameter is useful because it tells us two sides of the same story, it tells us when an observation is "very influential" and it tells us that the approximation used by LOO could be failing for that observation.
+
+As a general rule, if $k$ is less than 0.7 there are no problems, if it's between 0.7 and 1 is very likely that we are in trouble and if it's greater than 1, we are doom. The cut-off value 0.7 is not fixed, it can strictly be lower and depends on the total number of samples of the posterior distribution, 2000, in this example. But when the number of draws is about 2000 we are almost at 0.7. In practice it is common to use sample values ​​of 2000 or larger. Increasing the number of samples from the posterior may reduce the value of $k$ and so we could remove some of these warnings, but in general the number needed will be too large to make any practical sense.
+
+It is possible to visualize the values ​​of $k$, using `plot_khat`
+
+
+```{python}
+# coming soon
+#azp.plot_khat(elpd, threshold=0.7);
+```
+
+While the main function of LOO is to compare models, the values ​​of $k$ can be useful even if we only have only one model. For example, we could have extra knowledge that tells us why these observations are influential, perhaps there was a problem in data collection and the values ​​are incorrect. Or perhaps the values ​​are correct but from the perspective of our model they are influential, "strange", "surprising".
+
+ If $k > 0.7$, the value of p_loo can give us some more information. Where $p$ is the total number of parameters in a model.
+
+* If $p_{\text{loo}} << p$ then the model must be misspecified. This should also be seen in post-hoc predictive testing. One solution is to use an overdispersed model (such as changing a Poisson for a NegativeBinomial or for a ZeroInflatedPoisson or HurdlePoisson, or changing a Normal for a Student's T, etc.). Or it is likely that the model needs more structure or complexity, perhaps we need a non-linear term, etc.
+
+* If $p_{\text{loo}} < p$ and the observations are relatively few compared to $p$, (say $p>N/5$). It is likely that we have a model that is too flexible and/or priors that are too vague. This can happen for hierarchical models with very few observations per group or for example for splines with many knots or Gaussian processes with very short scale values.
+
+* If $p_{\text{loo}} > p$, then the model has very serious problems. If $p<<N$, then posterior predictive tests should also report problems. If, however, p is relatively large (say $p>N/5$). So post-hoc predictive testing may not reflect problems.
+
+
+## LOO and WAIC
+
+LOO and WAIC converge asymptotically, and they based on the same set of assumptions. So theoretically they are equivalent. However, in practice LOO is more robust, and also offers us a diagnosis that indicates when it could be failing (this is thanks to the Pareto adjustment). So in practice we prefer LOO.
+
+
+## Other information criteria
+
+Another widely used information criterion is DIC, if we use the *bayes-o-meter™*, DIC is more Bayesian than AIC but less than WAIC. Although still popular, WAIC and mainly LOO have proven to be more useful both theoretically and empirically than DIC. Therefore we DO NOT recommend its use.
+
+Another widely used criterion is BIC (Bayesian Information Criteria), like logistic regression and my mother's *dry soup*, this name can be misleading. BIC was proposed as a way to correct some of the problems with AIC and the author proposed a Bayesian rationale for it. But BIC is not really Bayesian in the sense that like AIC it assumes *flat* priors and uses maximum likelihood estimation.
+
+But more importantly, BIC differs from AIC and WAIC in its objective. AIC and WAIC try to reflect which model generalizes better to other data (predictive accuracy) while BIC tries to identify which is the _correct_ model and therefore is more related to Bayes factors than with WAIC. Later we will discuss Bayes Factors and see how it differs from criteria such as WAIC and LOO.
 
 
 ## Bayes factors
@@ -494,10 +521,10 @@ with pm.Model() as model_uni:
 ```
 :::
 
-And now we call `az.plot_bf`
+And now we call `azp.plot_bf`
 
 ``` {python}
-az.plot_bf(idata_uni, var_name="a", ref_val=0.5);
+azp.plot_bf(idata_uni, var_name="a", ref_val=0.5);
 ```
 
 In the previous Figure we can see one KDE for the prior (black) and one for the posterior (gray). The two black dots show that we evaluated both distributions at the value 0.5. We can see that the Bayes factor in favor of the null hypothesis, `BF_01`, is $\approx 8$, which we can interpret as *moderate evidence* in favor of the null hypothesis.
@@ -526,7 +553,7 @@ with pm.Model() as model_conc:
 :::
 
 ```{python}
-az.plot_bf(idata_conc, var_name="a", ref_val=0.5);
+azp.plot_bf(idata_conc, var_name="a", ref_val=0.5);
 ```
 
 We can see that the `BF_01` is $\approx 1.6$, which we can interpret as *anecdotal evidence* in favor of the null hypothesis (see the Jeffreys' scale, discussed earlier). 
