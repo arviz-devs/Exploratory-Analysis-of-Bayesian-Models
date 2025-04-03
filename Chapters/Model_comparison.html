@@ -360,22 +360,31 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-balance-between-simplicity-and-accuracy" id="toc-the-balance-between-simplicity-and-accuracy" class="nav-link active" data-scroll-target="#the-balance-between-simplicity-and-accuracy"><span class="header-section-number">7.0.1</span> The balance between simplicity and accuracy</a></li>
-  <li><a href="#predictive-accuracy-measures" id="toc-predictive-accuracy-measures" class="nav-link" data-scroll-target="#predictive-accuracy-measures"><span class="header-section-number">7.0.2</span> Predictive accuracy measures</a></li>
-  <li><a href="#information-criteria" id="toc-information-criteria" class="nav-link" data-scroll-target="#information-criteria"><span class="header-section-number">7.0.3</span> Information criteria</a></li>
-  <li><a href="#entropy" id="toc-entropy" class="nav-link" data-scroll-target="#entropy"><span class="header-section-number">7.0.4</span> Entropy</a></li>
-  <li><a href="#waic" id="toc-waic" class="nav-link" data-scroll-target="#waic"><span class="header-section-number">7.0.5</span> WAIC</a></li>
-  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation"><span class="header-section-number">7.0.6</span> Cross validation</a></li>
-  <li><a href="#loo-and-cross-validation" id="toc-loo-and-cross-validation" class="nav-link" data-scroll-target="#loo-and-cross-validation"><span class="header-section-number">7.0.7</span> LOO and cross validation</a></li>
-  <li><a href="#coming-back-to-our-discussion" id="toc-coming-back-to-our-discussion" class="nav-link" data-scroll-target="#coming-back-to-our-discussion"><span class="header-section-number">7.0.8</span> Coming back to our discussion</a></li>
-  <li><a href="#loo-and-waic" id="toc-loo-and-waic" class="nav-link" data-scroll-target="#loo-and-waic"><span class="header-section-number">7.0.9</span> LOO and WAIC</a></li>
-  <li><a href="#calculating-loo" id="toc-calculating-loo" class="nav-link" data-scroll-target="#calculating-loo"><span class="header-section-number">7.0.10</span> Calculating LOO</a></li>
-  <li><a href="#bayes-factors" id="toc-bayes-factors" class="nav-link" data-scroll-target="#bayes-factors"><span class="header-section-number">7.1</span> Bayes factors</a>
+  <li><a href="#the-balance-between-simplicity-and-accuracy" id="toc-the-balance-between-simplicity-and-accuracy" class="nav-link active" data-scroll-target="#the-balance-between-simplicity-and-accuracy"><span class="header-section-number">7.1</span> The balance between simplicity and accuracy</a></li>
+  <li><a href="#predictive-accuracy-measures" id="toc-predictive-accuracy-measures" class="nav-link" data-scroll-target="#predictive-accuracy-measures"><span class="header-section-number">7.2</span> Predictive accuracy measures</a></li>
+  <li><a href="#information-criteria" id="toc-information-criteria" class="nav-link" data-scroll-target="#information-criteria"><span class="header-section-number">7.3</span> Information criteria</a></li>
+  <li><a href="#entropy" id="toc-entropy" class="nav-link" data-scroll-target="#entropy"><span class="header-section-number">7.4</span> Entropy</a></li>
+  <li><a href="#akaike-information-criterion" id="toc-akaike-information-criterion" class="nav-link" data-scroll-target="#akaike-information-criterion"><span class="header-section-number">7.5</span> Akaike information criterion</a></li>
+  <li><a href="#waic" id="toc-waic" class="nav-link" data-scroll-target="#waic"><span class="header-section-number">7.6</span> WAIC</a></li>
+  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation"><span class="header-section-number">7.7</span> Cross validation</a></li>
+  <li><a href="#loo-and-cross-validation" id="toc-loo-and-cross-validation" class="nav-link" data-scroll-target="#loo-and-cross-validation"><span class="header-section-number">7.8</span> LOO and cross validation</a>
   <ul class="collapse">
-  <li><a href="#some-observations" id="toc-some-observations" class="nav-link" data-scroll-target="#some-observations"><span class="header-section-number">7.1.1</span> Some observations</a></li>
-  <li><a href="#calculation-of-bayes-factors" id="toc-calculation-of-bayes-factors" class="nav-link" data-scroll-target="#calculation-of-bayes-factors"><span class="header-section-number">7.1.2</span> Calculation of Bayes factors</a></li>
-  <li><a href="#savagedickey-ratio" id="toc-savagedickey-ratio" class="nav-link" data-scroll-target="#savagedickey-ratio"><span class="header-section-number">7.1.3</span> Savage–Dickey ratio</a></li>
-  <li><a href="#bayes-factors-vs-the-alternatives" id="toc-bayes-factors-vs-the-alternatives" class="nav-link" data-scroll-target="#bayes-factors-vs-the-alternatives"><span class="header-section-number">7.1.4</span> Bayes factors vs the alternatives</a></li>
+  <li><a href="#importance-sampling" id="toc-importance-sampling" class="nav-link" data-scroll-target="#importance-sampling"><span class="header-section-number">7.8.1</span> Importance Sampling</a></li>
+  <li><a href="#coming-back-to-our-discussion" id="toc-coming-back-to-our-discussion" class="nav-link" data-scroll-target="#coming-back-to-our-discussion"><span class="header-section-number">7.8.2</span> Coming back to our discussion</a></li>
+  <li><a href="#calculating-loo" id="toc-calculating-loo" class="nav-link" data-scroll-target="#calculating-loo"><span class="header-section-number">7.8.3</span> Calculating LOO</a></li>
+  <li><a href="#comparing-models-with-loo" id="toc-comparing-models-with-loo" class="nav-link" data-scroll-target="#comparing-models-with-loo"><span class="header-section-number">7.8.4</span> Comparing models with LOO</a></li>
+  <li><a href="#loo-expectations-and-metrics" id="toc-loo-expectations-and-metrics" class="nav-link" data-scroll-target="#loo-expectations-and-metrics"><span class="header-section-number">7.8.5</span> LOO expectations and metrics</a></li>
+  <li><a href="#loo-pit" id="toc-loo-pit" class="nav-link" data-scroll-target="#loo-pit"><span class="header-section-number">7.8.6</span> LOO-PIT</a></li>
+  <li><a href="#pareto-k-and-loo-diagnostics" id="toc-pareto-k-and-loo-diagnostics" class="nav-link" data-scroll-target="#pareto-k-and-loo-diagnostics"><span class="header-section-number">7.8.7</span> Pareto k and LOO diagnostics</a></li>
+  </ul></li>
+  <li><a href="#loo-and-waic" id="toc-loo-and-waic" class="nav-link" data-scroll-target="#loo-and-waic"><span class="header-section-number">7.9</span> LOO and WAIC</a></li>
+  <li><a href="#other-information-criteria" id="toc-other-information-criteria" class="nav-link" data-scroll-target="#other-information-criteria"><span class="header-section-number">7.10</span> Other information criteria</a></li>
+  <li><a href="#bayes-factors" id="toc-bayes-factors" class="nav-link" data-scroll-target="#bayes-factors"><span class="header-section-number">7.11</span> Bayes factors</a>
+  <ul class="collapse">
+  <li><a href="#some-observations" id="toc-some-observations" class="nav-link" data-scroll-target="#some-observations"><span class="header-section-number">7.11.1</span> Some observations</a></li>
+  <li><a href="#calculation-of-bayes-factors" id="toc-calculation-of-bayes-factors" class="nav-link" data-scroll-target="#calculation-of-bayes-factors"><span class="header-section-number">7.11.2</span> Calculation of Bayes factors</a></li>
+  <li><a href="#savagedickey-ratio" id="toc-savagedickey-ratio" class="nav-link" data-scroll-target="#savagedickey-ratio"><span class="header-section-number">7.11.3</span> Savage–Dickey ratio</a></li>
+  <li><a href="#bayes-factors-vs-the-alternatives" id="toc-bayes-factors-vs-the-alternatives" class="nav-link" data-scroll-target="#bayes-factors-vs-the-alternatives"><span class="header-section-number">7.11.4</span> Bayes factors vs the alternatives</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -402,14 +411,14 @@ window.Quarto = {
 </header>
 
 
-<section id="the-balance-between-simplicity-and-accuracy" class="level3" data-number="7.0.1">
-<h3 data-number="7.0.1" class="anchored" data-anchor-id="the-balance-between-simplicity-and-accuracy"><span class="header-section-number">7.0.1</span> The balance between simplicity and accuracy</h3>
+<section id="the-balance-between-simplicity-and-accuracy" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="the-balance-between-simplicity-and-accuracy"><span class="header-section-number">7.1</span> The balance between simplicity and accuracy</h2>
 <p>When choosing between alternative explanations, there is a principle known as Occam’s razor. In very general terms, this principle establishes that given two or more equivalent explanations for the same phenomenon, the simplest one is the preferred explanation. When the explanations are models, a common criterion for simplicity is the number of parameters in a model.</p>
 <p>Another factor we generally need to consider when comparing models is their accuracy, that is, how good a model is at fitting the data. According to this criterion, if we have two (or more) models and one of them explains the data better than the other, then that is the preferred model.</p>
 <p>Intuitively, it seems that when comparing models, we tend to prefer those that fit the data best and those that are simpler. But what to do if these two principles conflict? Or more generally, is there a quantitative way to consider both contributions? The short answer is yes. In fact there is more than one way to do it.</p>
 </section>
-<section id="predictive-accuracy-measures" class="level3" data-number="7.0.2">
-<h3 data-number="7.0.2" class="anchored" data-anchor-id="predictive-accuracy-measures"><span class="header-section-number">7.0.2</span> Predictive accuracy measures</h3>
+<section id="predictive-accuracy-measures" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="predictive-accuracy-measures"><span class="header-section-number">7.2</span> Predictive accuracy measures</h2>
 <p>If we evaluate a model solely by it capacity to reproduce the data used to fit it, for instance by measuring the mean quadratic error between observations and predictions, we will likely be overoptimistic about the performance of the model to predict unobserved data. Additionally, for a flexible enough model (and without proper regularization), we may tweak it parameters until we fit the data perfectly. Thus, instead of computing the <strong>Within-sample accuracy</strong>, that is, the accuracy measured with the same data used to fit the model, we prefer to compute the <strong>Out-of-sample accuracy</strong>, that is, the accuracy measured with data not used to fit the model.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -431,8 +440,8 @@ Note
 <li><p>Information criteria: This is a general term used to refer to various expressions that approximate out-of-sample accuracy as in-sample accuracy plus a term that penalizes model complexity.</p></li>
 </ul>
 </section>
-<section id="information-criteria" class="level3" data-number="7.0.3">
-<h3 data-number="7.0.3" class="anchored" data-anchor-id="information-criteria"><span class="header-section-number">7.0.3</span> Information criteria</h3>
+<section id="information-criteria" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="information-criteria"><span class="header-section-number">7.3</span> Information criteria</h2>
 <p>Information criteria are a collection of closely related tools used to compare models in terms of goodness of fit and model complexity. In other words, information criteria formalize the intuition we developed at the beginning of the chapter. The exact way these quantities are derived has to do with a field known as <a href="http://www.inference.org.uk/mackay/itila/book.html">Information Theory</a>.</p>
 <p>An intuitive way to measure how well a model fits the data is to calculate the root mean square error between the data and the predictions made by the model:</p>
 <p><span class="math display">\[
@@ -441,8 +450,8 @@ Note
 <p><span class="math inline">\(\operatorname{E} (y_i \mid \theta)\)</span> is the predicted value given the estimated parameters. It is important to note that this is essentially the average of the difference between the observed and predicted data. Taking the square of the errors ensures that differences do not cancel out and emphasizes larger errors compared to other alternatives such as calculating the absolute value.</p>
 <p>The mean square error may be familiar to us since it is very popular. But if we stop and reflect on this quantity we will see that in principle there is nothing special about it and we could well come up with more general expressions.</p>
 </section>
-<section id="entropy" class="level3" data-number="7.0.4">
-<h3 data-number="7.0.4" class="anchored" data-anchor-id="entropy"><span class="header-section-number">7.0.4</span> Entropy</h3>
+<section id="entropy" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="entropy"><span class="header-section-number">7.4</span> Entropy</h2>
 <p>For a probability distribution with <span class="math inline">\(N\)</span> possible different events which each possible event having probability <span class="math inline">\(p_i\)</span>, the entropy is defined as:</p>
 <p><span class="math display">\[
 H(p) = - \mathbb{E}[\log{p}] = -\sum_i^N p_i \log{p_i}
@@ -493,8 +502,9 @@ Figure&nbsp;7.1: Entropy of a Bernoulli distribution as a function of the probab
 \]</span></p>
 <p>If we compare models then the best model, given the set of compared models, will be the one that has a larger likelihood value. In other words, mimicking KL divergence is proportional to maximizing likelihood.</p>
 <p>In practice we also do not have access to <span class="math inline">\(\mathbb{E}[\log{q}]\)</span>, what we can do is estimate this quantity from a sample. Since we already know how to use a sample to estimate the parameters of a model and using the same sample to evaluate it introduces a bias, which we must somehow correct. One way to correct this bias is given by the information criteria.</p>
-<section id="akaike-information-criterion" class="level4" data-number="7.0.4.1">
-<h4 data-number="7.0.4.1" class="anchored" data-anchor-id="akaike-information-criterion"><span class="header-section-number">7.0.4.1</span> Akaike information criterion</h4>
+</section>
+<section id="akaike-information-criterion" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="akaike-information-criterion"><span class="header-section-number">7.5</span> Akaike information criterion</h2>
 <p>The Akaike information criterion <span class="citation" data-cites="akaike_1974">(<a href="References.html#ref-akaike_1974" role="doc-biblioref">Akaike 1974</a>)</span> (AIC) is a very well-known and widely used information criterion outside the Bayesian universe and is defined as:</p>
 <p><span class="math display">\[
 AIC = -2 \sum_i^N \log p(y_i \mid \hat{\theta}_{mle}) + 2 k
@@ -520,9 +530,8 @@ Note
 <p>The AIC criterion is very useful, but have many issues for Bayesian models. One reason is that it uses a point estimate of <span class="math inline">\(\theta\)</span> and not the posterior distribution, hence it discards potentially useful information. Furthermore AIC, from a Bayesian perspective, assumes that priors are <em>flat</em> and therefore AIC is incompatible with informative and/or weakly informative priors. Furthermore, the number of parameters in a model is not always a good measure of its complexity. When using informative priors or in hierarchical models, parameters becomes interrelated and thus the <em>effective number of parameters</em> can be smaller than the actual number of parameter. In general, a regularized model will be a model with less <em>effective number of parameters</em>.</p>
 <p>Can we find something like the Bayesian version of AIC? Yes, we can.</p>
 </section>
-</section>
-<section id="waic" class="level3" data-number="7.0.5">
-<h3 data-number="7.0.5" class="anchored" data-anchor-id="waic"><span class="header-section-number">7.0.5</span> WAIC</h3>
+<section id="waic" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="waic"><span class="header-section-number">7.6</span> WAIC</h2>
 <p>We can see the Widely applicable information criterion (WAIC) <span class="citation" data-cites="watanabe_2013">(<a href="References.html#ref-watanabe_2013" role="doc-biblioref">Watanabe 2013</a>)</span> as the fully Bayesian version of AIC. Not to be confused with the Bayesian Information Criterion (BIC), which is not very Bayesian in practice.</p>
 <p>Anyway, as we already saw in the Akaike criterion, the goodness of fit is given by:</p>
 <p><span class="math display">\[
@@ -547,16 +556,16 @@ Y = \alpha + \beta X
 \]</span></p>
 <p>A model where <span class="math inline">\(\beta=0\)</span> will be less flexible, since it is equivalent to a model that only has one parameter, <span class="math inline">\(alpha\)</span>. In a slightly more subtle way, a model where <span class="math inline">\(\beta\)</span> varies in a narrow range will be less flexible (more regularized), than a model where <span class="math inline">\(\beta\)</span> can take any value.</p>
 </section>
-<section id="cross-validation" class="level3" data-number="7.0.6">
-<h3 data-number="7.0.6" class="anchored" data-anchor-id="cross-validation"><span class="header-section-number">7.0.6</span> Cross validation</h3>
+<section id="cross-validation" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="cross-validation"><span class="header-section-number">7.7</span> Cross validation</h2>
 <p>Cross-validation is a simple and, in most cases, effective solution for comparing models. We take our data and divide it into <span class="math inline">\(K\)</span> slices. We try to keep the portions more or less the same (in size and sometimes also in other characteristics, such as an equal number of classes). We then use <span class="math inline">\(K-1\)</span> portions to train the model and the rest to evaluate it. This process is systematically repeated leaving, for each iteration, a different portion out of the training set and using that portion as the evaluation set. This is repeated until we have completed <span class="math inline">\(K\)</span> rounds of adjustment-evaluation. The accuracy of the model will be the average over the <span class="math inline">\(K\)</span> rounds. This is known as K-fold cross validation. Finally, once we have cross-validated, we use all the data to final fit our model and this is the model that is used to make predictions or for any other purpose.</p>
 <p><img src="../img/cv.png" width="500"></p>
 <p>When <span class="math inline">\(K\)</span> is equal to the number of data points, we get what is known as leave-one-out cross-validation (LOOCV).</p>
 <p>Cross validation is a routine practice in machine learning. And we have barely described the most essential aspects of this practice. For more information you can read <a href="http://themlbook.com/">The Hundred-Page Machine Learning Book</a> or <a href="https://www.amazon.com/Python-Machine-Learning-scikit-learn-TensorFlow-ebook/dp/B0742K7HYF">Python Machine Learning</a>, by Sebastian Raschka.</p>
 <p>Cross-validation is a very simple and useful idea, but for some models or for large amounts of data, the computational cost of cross-validation may be beyond our means. But lucky us, by being bayesian we can approximately compute CV in a very fast way.</p>
 </section>
-<section id="loo-and-cross-validation" class="level3" data-number="7.0.7">
-<h3 data-number="7.0.7" class="anchored" data-anchor-id="loo-and-cross-validation"><span class="header-section-number">7.0.7</span> LOO and cross validation</h3>
+<section id="loo-and-cross-validation" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="loo-and-cross-validation"><span class="header-section-number">7.8</span> LOO and cross validation</h2>
 <p>There is another alternative to penalize the term</p>
 <p><span class="math display">\[
 \sum_i^N \log \left(\frac{1}{S} \sum _{j}^S p(y_i \mid \theta^j) \right)
@@ -567,8 +576,8 @@ Y = \alpha + \beta X
 \]</span></p>
 <p>where <span class="math inline">\(_{-i}\)</span> means that we leave observation <span class="math inline">\(i\)</span> out. A Naive implementation of this estimation requires that we estimate as many posterior distributions as observations we have, since for each of them we will eliminate one observation. However, this is not necessary since it is possible to estimate <span class="math inline">\(\color{#E9692C}{p(y_i \mid \theta _{-i}^j})\)</span> using <strong>Importance Sampling</strong>.</p>
 <p>Before continuing with our agenda, we need to take a short detour.</p>
-<section id="importance-sampling" class="level4" data-number="7.0.7.1">
-<h4 data-number="7.0.7.1" class="anchored" data-anchor-id="importance-sampling"><span class="header-section-number">7.0.7.1</span> Importance Sampling</h4>
+<section id="importance-sampling" class="level3" data-number="7.8.1">
+<h3 data-number="7.8.1" class="anchored" data-anchor-id="importance-sampling"><span class="header-section-number">7.8.1</span> Importance Sampling</h3>
 <p>This is a technique for estimating properties of a distribution of interest <span class="math inline">\(f\)</span>, given that we only have samples from a distribution <span class="math inline">\(g\)</span>. Using importance sampling makes sense, for example, when it is simpler to sample <span class="math inline">\(g\)</span> than <span class="math inline">\(f\)</span>.</p>
 <p>If we have a set of samples of the random variable <span class="math inline">\(X\)</span> and we can evaluate <span class="math inline">\(g\)</span> and <span class="math inline">\(f\)</span> point-wise, we can calculate the importance weights as:</p>
 <p><span class="math display">\[\begin{equation}
@@ -583,7 +592,7 @@ w_i = \frac{f(x_i)}{g(x_i)}
 </ul>
 <p>Once the weights <span class="math inline">\(w_i\)</span> are obtained, we can use them to estimate properties of <span class="math inline">\(f\)</span>, its density, moments, quantiles, etc.</p>
 <p>In the code-block below <span class="math inline">\(g\)</span> is a Normal distribution and <span class="math inline">\(f\)</span> is a Gamma and we use importance sampling to estimate the PDF of <span class="math inline">\(f\)</span>. This is just a pedagogic example, since we actually have a very direct way to calculate the PDF of a Gamma. But in practice <span class="math inline">\(f\)</span> can be a much more complex object.</p>
-<div id="053c776d" class="cell" data-execution_count="3">
+<div id="cbd78edb" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>g <span class="op">=</span> pz.Normal(<span class="dv">0</span>, <span class="dv">10</span>)</span>
 <span id="cb2-2"><a href="#cb2-2"></a>samples <span class="op">=</span> g.rvs(<span class="dv">1000</span>)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>f <span class="op">=</span> pz.Gamma(mu<span class="op">=</span><span class="dv">4</span>, sigma<span class="op">=</span><span class="fl">1.5</span>)</span>
@@ -604,9 +613,8 @@ w_i = \frac{f(x_i)}{g(x_i)}
 </div>
 <p>When doing importance sampling, the more similar <span class="math inline">\(g\)</span> and <span class="math inline">\(f\)</span> are, the better the results will be. In practice, inferences are more reliable when <span class="math inline">\(g\)</span> has a larger support than <span class="math inline">\(f\)</span>, that is, when it is “wider”, intuitively we need the samples of <span class="math inline">\(g\)</span> to cover the entire support of <span class="math inline">\(f\)</span>, or actually to ensure we are not missing any high-density regions.</p>
 </section>
-</section>
-<section id="coming-back-to-our-discussion" class="level3" data-number="7.0.8">
-<h3 data-number="7.0.8" class="anchored" data-anchor-id="coming-back-to-our-discussion"><span class="header-section-number">7.0.8</span> Coming back to our discussion</h3>
+<section id="coming-back-to-our-discussion" class="level3" data-number="7.8.2">
+<h3 data-number="7.8.2" class="anchored" data-anchor-id="coming-back-to-our-discussion"><span class="header-section-number">7.8.2</span> Coming back to our discussion</h3>
 <p>Now that we have a better idea of ​​importance sampling let’s see how we can use it. The distribution we know is the posterior distribution, and the one we want to approximate by importance sampling is the posterior distribution leaving one out <span class="math inline">\(p(y_i \mid \theta_{-i}^j)\)</span>. Therefore, the importance weights that we are interested in calculating are:</p>
 <p><span class="math display">\[
 w_i^j = \frac{p(\theta^j \mid y_{-i} )}{p(\theta^j \mid y)} \propto \frac{p(\theta) \prod_{i\not =-i}^n p(y_i \mid \theta)}{p(\theta) \prod_i^n p(y_i \mid \theta)} \propto \frac{1}{p(y_i \mid \theta^j) }
@@ -617,20 +625,16 @@ w_i^j = \frac{p(\theta^j \mid y_{-i} )}{p(\theta^j \mid y)} \propto \frac{p(\the
 <p>One way to correct this problem is to simply truncate the “too high” weights, but this brings other problems that we are not going to discuss. Another way is to rely on theory. The theory indicates that under certain conditions high weights are distributed according to a Pareto pattern. So instead of truncating them we can fit them to a Pareto distribution and then replace them with values ​​obtained from that distribution. This is a form of smoothing that, within a certain range, allows stabilizing the importance sampling estimate, since it will make some “very large” values ​​not so large.</p>
 <p>When we combine all these ideas we get a method called Pareto-Smooth Importance Sampling Leave-One-Out Cross Validation <span class="citation" data-cites="vehtari_2017 yao_2018">(<a href="References.html#ref-vehtari_2017" role="doc-biblioref">Vehtari, Gelman, and Gabry 2017</a>; <a href="References.html#ref-yao_2018" role="doc-biblioref">Yao et al. 2018</a>)</span>, which is abbreviated as PSIS-LOO-CV. Since the name and acronym are horribly long and difficult to pronounce we will call it LOO.</p>
 </section>
-<section id="loo-and-waic" class="level3" data-number="7.0.9">
-<h3 data-number="7.0.9" class="anchored" data-anchor-id="loo-and-waic"><span class="header-section-number">7.0.9</span> LOO and WAIC</h3>
-<p>LOO and WAIC converge asymptotically, and they based on the same set of assumptions. So theoretically they are equivalent. However, in practice LOO is more robust, and also offers us a diagnosis that indicates when it could be failing (this is thanks to the Pareto adjustment). So in practice we prefer LOO.</p>
-</section>
-<section id="calculating-loo" class="level3" data-number="7.0.10">
-<h3 data-number="7.0.10" class="anchored" data-anchor-id="calculating-loo"><span class="header-section-number">7.0.10</span> Calculating LOO</h3>
-<p>After all this introduction, calculating LOO may seem somewhat disappointing. We just need to call ArviZ’s <code>loo</code> function and pass it an InfereceData object containing a log-likelihood group.</p>
-<p>For the following example we are using an InferenceData distributed with ArviZ. More details about the model in the next chapter. For the moment we only need to know that is a model with two sets of observations, <code>home_points</code> and <code>away_points</code>. We can compute LOO for each one of those.</p>
-<div id="82facc46" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>idata_rug <span class="op">=</span> az.load_arviz_data(<span class="st">'rugby'</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>loo_p <span class="op">=</span> az.loo(idata_rug, var_name<span class="op">=</span><span class="st">"home_points"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3"></a>loo_p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="calculating-loo" class="level3" data-number="7.8.3">
+<h3 data-number="7.8.3" class="anchored" data-anchor-id="calculating-loo"><span class="header-section-number">7.8.3</span> Calculating LOO</h3>
+<p>After all this introduction, calculating LOO may seem somewhat disappointing. We just need to call ArviZ’s <code>loo</code> function and pass it an DataTree object containing a <code>log-likelihood</code> group.</p>
+<p>For the following example we are using a DataTree distributed with ArviZ. More details about the model in <a href="Case_study_model_comparison.html" class="quarto-xref"><span>Chapter 8</span></a>. For the moment we only need to know that is a model with two sets of observations, <code>home_points</code> and <code>away_points</code>. We can compute LOO for each one of those.</p>
+<div id="71d4de9a" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>dt_rugby <span class="op">=</span> azb.load_arviz_data(<span class="st">'rugby'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>elpd <span class="op">=</span> azs.loo(dt_rugby, var_name<span class="op">=</span><span class="st">"home_points"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>elpd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/arviz/stats/stats.py:797: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+<pre><code>/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/arviz_stats/loo.py:116: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
   warnings.warn(</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="4">
@@ -645,76 +649,34 @@ There has been a warning during the calculation. Please check the results.
 
 Pareto k diagnostic values:
                          Count   Pct.
-(-Inf, 0.70]   (good)       56   93.3%
-   (0.70, 1]   (bad)         4    6.7%
-   (1, Inf)   (very bad)    0    0.0%</code></pre>
+(-Inf, 0.70]   (good)       57   95.0%
+   (0.70, 1]   (bad)         3    5.0%
+    (1, Inf)   (very bad)    0    0.0%</code></pre>
 </div>
 </div>
 <p>We can see that we get the estimated ELPD value using LOO and its standard error. <code>p_loo</code> can be roughly interpreted as the effective number of parameters. For some models this number should be close to the actual number of parameters, for models with regularization, like hierarchical models, it should be less than the actual number of parameters.</p>
-<p>Then we can see a table with the title “Pareto k diagnostic values”. We previously said that we used a Pareto to regularize the estimation of the importance weights. One of the parameters of that fit is called <span class="math inline">\(k\)</span>. Sometimes we call it <span class="math inline">\(\hat k\)</span> (because is an estimate of <span class="math inline">\(k\)</span>). Since we have a Pareto adjustment per observation we have a <span class="math inline">\(k\)</span> value per observation. This parameter is useful because it tells us two sides of the same story, it tells us when an observation is “very influential” and it tells us that the approximation used by LOO could be failing for that observation.</p>
-<p>As a general rule, if <span class="math inline">\(k\)</span> is less than 0.7 there are no problems, if it’s between 0.7 and 1 is very likely that we are in trouble and if it’s greater than 1, we are doom. The cutoff value 0.7 is not fixed, it can strictly be lower and depends on the total number of samples of the posterior distribution, 2000, in this example. But when the number of draws is about 2000 we are almost at 0.7. In practice it is common to use sample values ​​of 2000 or larger. Increasing the number of samples from the posterior may reduce the value of <span class="math inline">\(k\)</span> and so we could remove some of these warnings, but in general the number needed will be too large to make any practical sense.</p>
-<p>It is possible to visualize the values ​​of <span class="math inline">\(k\)</span>, using <code>plot_khat</code></p>
-<div id="78827f64" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>az.plot_khat(loo_p, threshold<span class="op">=</span><span class="fl">0.7</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Model_comparison_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>While the main function of LOO is to compare models, the values ​​of <span class="math inline">\(k\)</span> can be useful even if we only have one. For example, we could have extra knowledge that tells us why these observations are influential, perhaps there was a problem in data collection and the values ​​are incorrect. Or perhaps the values ​​are correct but from the perspective of our model they are influential, “strange”, “surprising”.</p>
-<p>If <span class="math inline">\(k &gt; 0.7\)</span>, the value of p_loo can give us some more information. Where <span class="math inline">\(p\)</span> is the total number of parameters in a model.</p>
-<ul>
-<li><p>If <span class="math inline">\(p_{\text{loo}} &lt;&lt; p\)</span> then the model must be misspecified. This should also be seen in post-hoc predictive testing. One solution is to use an overdispersed model (such as changing a Poisson for a NegativeBinomial or for a ZeroInflatedPoisson or HurdlePoisson, or changing a Normal for a Student’s T, etc.). Or it is likely that the model needs more structure or complexity, perhaps we need a non-linear term, etc.</p></li>
-<li><p>If <span class="math inline">\(p_{\text{loo}} &lt; p\)</span> and the observations are relatively few compared to <span class="math inline">\(p\)</span>, (say <span class="math inline">\(p&gt;N/5\)</span>). It is likely that we have a model that is too flexible and/or priors that are too vague. This can happen for hierarchical models with very few observations per group or for example for splines with many knots or Gaussian processes with very short scale values.</p></li>
-<li><p>If <span class="math inline">\(p_{\text{loo}} &gt; p\)</span>, then the model has very serious problems. If <span class="math inline">\(p&lt;&lt;N\)</span>, then posterior predictive tests should also report problems. If, however, p is relatively large (say <span class="math inline">\(p&gt;N/5\)</span>). So post-hoc predictive testing may not reflect problems.</p></li>
-</ul>
-<p>Finally, another way to use LOO even in the absence of another model is through <code>plot_loo_pit</code>. If the graph looks similar to the one we saw for the marginal Bayesian p-values (<span class="quarto-unresolved-ref">?fig-post_pred_check_u_value</span>), it is because we are doing the same thing. But this time using LOO, we are considering:</p>
-<p><span class="math display">\[
-p(\tilde y_i \le y_i \mid y_{-i})
-\]</span></p>
-<p>That is, we are evaluating, approximately, the model’s ability to predict an observation when we remove that observation from the observed data.</p>
-<div id="cell-fig-loo_pit" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>az.plot_loo_pit(idata_rug, y<span class="op">=</span><span class="st">"home_points"</span>, use_hdi<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div id="fig-loo_pit" class="quarto-figure quarto-figure-center quarto-float anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-loo_pit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="Model_comparison_files/figure-html/fig-loo_pit-output-1.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-loo_pit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.2: LOO-PIT plot for the rugby model
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<section id="other-information-criteria" class="level4" data-number="7.0.10.1">
-<h4 data-number="7.0.10.1" class="anchored" data-anchor-id="other-information-criteria"><span class="header-section-number">7.0.10.1</span> Other information criteria</h4>
-<p>Another widely used information criterion is DIC, if we use the <em>bayes-o-meter™</em>, DIC is more Bayesian than AIC but less than WAIC. Although still popular, WAIC and mainly LOO have proven to be more useful both theoretically and empirically than DIC. Therefore we DO NOT recommend its use.</p>
-<p>Another widely used criterion is BIC (Bayesian Information Criteria), like logistic regression and my mother’s <em>dry soup</em>, this name can be misleading. BIC was proposed as a way to correct some of the problems with AIC and the author proposed a Bayesian rationale for it. But BIC is not really Bayesian in the sense that like AIC it assumes <em>flat</em> priors and uses maximum likelihood estimation.</p>
-<p>But more importantly, BIC differs from AIC and WAIC in its objective. AIC and WAIC try to reflect which model generalizes better to other data (predictive accuracy) while BIC tries to identify which is the <em>correct</em> model and therefore is more related to Bayes factors than with WAIC. Later we will discuss Bayes Factors and see how it differs from criteria such as WAIC and LOO.</p>
+</section>
+<section id="comparing-models-with-loo" class="level3" data-number="7.8.4">
+<h3 data-number="7.8.4" class="anchored" data-anchor-id="comparing-models-with-loo"><span class="header-section-number">7.8.4</span> Comparing models with LOO</h3>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="bc501e64" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>target <span class="op">=</span> pz.StudentT(nu<span class="op">=</span><span class="dv">4</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>).rvs(<span class="dv">200</span>)</span>
-<span id="cb8-2"><a href="#cb8-2"></a></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> modelo_n:</span>
-<span id="cb8-4"><a href="#cb8-4"></a>    μ <span class="op">=</span> pm.Normal(<span class="st">"μ"</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb8-5"><a href="#cb8-5"></a>    σ <span class="op">=</span> pm.HalfNormal(<span class="st">"σ"</span>, <span class="dv">1</span>)</span>
-<span id="cb8-6"><a href="#cb8-6"></a>    pm.Normal(<span class="st">"y"</span>, μ, σ, observed<span class="op">=</span>target)</span>
-<span id="cb8-7"><a href="#cb8-7"></a>    idata_n <span class="op">=</span> pm.sample(idata_kwargs<span class="op">=</span>{<span class="st">"log_likelihood"</span>:<span class="va">True</span>})</span>
-<span id="cb8-8"><a href="#cb8-8"></a>    </span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> modelo_t:</span>
-<span id="cb8-10"><a href="#cb8-10"></a>    μ <span class="op">=</span> pm.Normal(<span class="st">"μ"</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb8-11"><a href="#cb8-11"></a>    σ <span class="op">=</span> pm.HalfNormal(<span class="st">"σ"</span>, <span class="dv">1</span>)</span>
-<span id="cb8-12"><a href="#cb8-12"></a>    ν <span class="op">=</span> pm.Exponential(<span class="st">"ν"</span>, scale<span class="op">=</span><span class="dv">30</span>)</span>
-<span id="cb8-13"><a href="#cb8-13"></a>    pm.StudentT(<span class="st">"y"</span>, nu<span class="op">=</span>ν, mu<span class="op">=</span>μ, sigma<span class="op">=</span>σ, observed<span class="op">=</span>target)</span>
-<span id="cb8-14"><a href="#cb8-14"></a>    idata_t <span class="op">=</span> pm.sample(idata_kwargs<span class="op">=</span>{<span class="st">"log_likelihood"</span>:<span class="va">True</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fb18bf8a" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>target <span class="op">=</span> pz.StudentT(nu<span class="op">=</span><span class="dv">4</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>).rvs(<span class="dv">200</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> modelo_n:</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    μ <span class="op">=</span> pm.Normal(<span class="st">"μ"</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    σ <span class="op">=</span> pm.HalfNormal(<span class="st">"σ"</span>, <span class="dv">1</span>)</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    pm.Normal(<span class="st">"y"</span>, μ, σ, observed<span class="op">=</span>target)</span>
+<span id="cb6-7"><a href="#cb6-7"></a>    idata_n <span class="op">=</span> pm.sample(idata_kwargs<span class="op">=</span>{<span class="st">"log_likelihood"</span>:<span class="va">True</span>})</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    </span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> modelo_t:</span>
+<span id="cb6-10"><a href="#cb6-10"></a>    μ <span class="op">=</span> pm.Normal(<span class="st">"μ"</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb6-11"><a href="#cb6-11"></a>    σ <span class="op">=</span> pm.HalfNormal(<span class="st">"σ"</span>, <span class="dv">1</span>)</span>
+<span id="cb6-12"><a href="#cb6-12"></a>    ν <span class="op">=</span> pm.Exponential(<span class="st">"ν"</span>, scale<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb6-13"><a href="#cb6-13"></a>    pm.StudentT(<span class="st">"y"</span>, nu<span class="op">=</span>ν, mu<span class="op">=</span>μ, sigma<span class="op">=</span>σ, observed<span class="op">=</span>target)</span>
+<span id="cb6-14"><a href="#cb6-14"></a>    idata_t <span class="op">=</span> pm.sample(idata_kwargs<span class="op">=</span>{<span class="st">"log_likelihood"</span>:<span class="va">True</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (2 chains in 2 jobs)
@@ -734,7 +696,7 @@ We recommend running at least 4 chains for robust computation of convergence dia
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"65dd0f61b39346999d7352ec14acec5c","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"c100878b19bb4ace8cc7f46e90e45c00","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -742,7 +704,7 @@ We recommend running at least 4 chains for robust computation of convergence dia
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"42ed3351ba5e4495887c2c5d1c6e2bec","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"d1f1ae5503a74de7863468ecf1481e30","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -751,20 +713,14 @@ We recommend running at least 4 chains for robust computation of convergence dia
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
-<div id="c8b801df" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>cmp_df <span class="op">=</span> az.compare({<span class="st">'modelo_n'</span>:idata_n, <span class="st">'modelo_t'</span>:idata_t})</span>
-<span id="cb11-2"><a href="#cb11-2"></a>cmp_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/arviz/stats/stats.py:797: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/arviz/stats/stats.py:797: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
-  warnings.warn(</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div id="e8bd9a30" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>cmp_df <span class="op">=</span> azs.compare({<span class="st">'modelo_n'</span>:idata_n, <span class="st">'modelo_t'</span>:idata_t})</span>
+<span id="cb9-2"><a href="#cb9-2"></a>cmp_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 <div>
 
@@ -774,40 +730,37 @@ We recommend running at least 4 chains for robust computation of convergence dia
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
 <th data-quarto-table-cell-role="th">rank</th>
-<th data-quarto-table-cell-role="th">elpd_loo</th>
-<th data-quarto-table-cell-role="th">p_loo</th>
+<th data-quarto-table-cell-role="th">elpd</th>
+<th data-quarto-table-cell-role="th">p</th>
 <th data-quarto-table-cell-role="th">elpd_diff</th>
 <th data-quarto-table-cell-role="th">weight</th>
 <th data-quarto-table-cell-role="th">se</th>
 <th data-quarto-table-cell-role="th">dse</th>
 <th data-quarto-table-cell-role="th">warning</th>
-<th data-quarto-table-cell-role="th">scale</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">modelo_t</td>
 <td>0</td>
-<td>-310.018427</td>
-<td>4.384327</td>
+<td>-336.095109</td>
+<td>3.336052</td>
 <td>0.000000</td>
-<td>1.000000e+00</td>
-<td>17.663315</td>
+<td>0.980098</td>
+<td>14.583898</td>
 <td>0.000000</td>
-<td>True</td>
-<td>log</td>
+<td>False</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">modelo_n</td>
 <td>1</td>
-<td>-415.404523</td>
-<td>27.269971</td>
-<td>105.386096</td>
-<td>1.846701e-11</td>
-<td>73.114651</td>
-<td>61.274325</td>
-<td>True</td>
-<td>log</td>
+<td>-350.528753</td>
+<td>3.813396</td>
+<td>14.433645</td>
+<td>0.019902</td>
+<td>17.868767</td>
+<td>8.137857</td>
+<td>False</td>
 </tr>
 </tbody>
 </table>
@@ -828,13 +781,13 @@ We recommend running at least 4 chains for robust computation of convergence dia
 <li>warning: a warning about whether there is at least one high k value</li>
 <li>scale: the scale on which the ELPD is calculated</li>
 </ul>
-<p>We can obtain similar information, but graphically, using the `az.compareplot function</p>
-<div id="b840990d" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>az.plot_compare(cmp_df, plot_ic_diff<span class="op">=</span><span class="va">False</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can obtain similar information, but graphically, using the <code>azp.plot_compare</code> function</p>
+<div id="5f6f1232" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>azp.plot_compare(cmp_df)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Model_comparison_files/figure-html/cell-10-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="Model_comparison_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -846,9 +799,548 @@ We recommend running at least 4 chains for robust computation of convergence dia
 </ul>
 <p>The simplest way to use information criteria is to choose a single model. Simply choose the model with the highest ELPD value. If we follow this rule we will have to accept that the quadratic model is the best. Even if we take into account the standard errors we can see that they do not overlap. Which gives us some security that the models are indeed <em>different</em> from each other. If, instead, the standard errors overlapped, we should provide a more nuanced answer.</p>
 </section>
+<section id="loo-expectations-and-metrics" class="level3" data-number="7.8.5">
+<h3 data-number="7.8.5" class="anchored" data-anchor-id="loo-expectations-and-metrics"><span class="header-section-number">7.8.5</span> LOO expectations and metrics</h3>
+<p>From the PSIS smoothing procedure, we obtain a set of weights. The <code>loo</code> function utilizes these weights to estimate the ELPD we should have obtained if we have performed leave-one-out cross-validation. Furthermore, these weights can be used to estimate other quantities, such as the mean, standard deviation, and quantiles, as if we had performed leave-one-out cross-validation. For example, to compute the 25th and 75th percentiles we use:</p>
+<div id="a4bd34f5" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>azs.loo_expectations(dt_rugby, kind<span class="op">=</span><span class="st">"quantile"</span>, probs<span class="op">=</span>[<span class="fl">0.25</span>, <span class="fl">0.75</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewbox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewbox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
+  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
+  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
+  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
+  --xr-background-color: var(--jp-layout-color0, white);
+  --xr-background-color-row-even: var(--jp-layout-color1, white);
+  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+}
+
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+body.vscode-dark {
+  --xr-font-color0: rgba(255, 255, 255, 1);
+  --xr-font-color2: rgba(255, 255, 255, 0.54);
+  --xr-font-color3: rgba(255, 255, 255, 0.38);
+  --xr-border-color: #1f1f1f;
+  --xr-disabled-color: #515151;
+  --xr-background-color: #111111;
+  --xr-background-color-row-even: #111111;
+  --xr-background-color-row-odd: #313131;
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: inline-block;
+  opacity: 0;
+  height: 0;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:focus + label {
+  border: 2px solid var(--xr-font-color0);
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: "►";
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: "▼";
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: "(";
+}
+
+.xr-dim-list:after {
+  content: ")";
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ",";
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  margin-bottom: 0;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  background-color: var(--xr-background-color) !important;
+  padding-bottom: 5px !important;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+</style><pre class="xr-text-repr-fallback">&lt;xarray.DataArray 'home_points' (quantile: 2, match: 60)&gt; Size: 960B
+array([[44.        , 12.        , 25.        , 18.        , 14.        ,
+        32.        , 21.        , 15.        , 16.        , 38.        ,
+        16.        , 20.        , 10.        , 23.        , 10.        ,
+        18.        ,  9.        , 21.        , 45.        , 20.        ,
+        13.        , 33.        , 15.        , 17.        , 14.        ,
+        30.        , 14.        , 11.        , 10.        , 22.        ,
+        33.        , 13.        , 18.        , 11.        , 26.        ,
+        10.        , 22.        , 15.        , 16.        , 37.        ,
+        21.        , 14.        , 37.        , 24.        , 13.        ,
+        10.        , 24.        , 12.        ,  8.        , 18.        ,
+        20.        , 13.        , 20.        , 47.        , 14.        ,
+        12.        , 25.        , 31.        , 14.        , 17.        ],
+       [54.        , 18.        , 32.        , 24.        , 20.        ,
+        41.        , 28.        , 21.        , 23.        , 47.        ,
+        22.        , 28.        , 15.        , 31.        , 15.        ,
+        25.        , 13.        , 28.        , 56.        , 27.        ,
+        19.        , 42.        , 21.        , 23.        , 20.        ,
+        39.        , 19.        , 16.        , 16.        , 28.        ,
+        41.        , 19.        , 25.        , 16.        , 35.        ,
+        16.        , 29.        , 21.        , 22.        , 46.        ,
+        28.        , 20.        , 47.        , 31.        , 19.        ,
+        14.        , 31.        , 17.        , 13.        , 25.        ,
+        27.        , 18.67750933, 27.        , 57.        , 20.        ,
+        17.        , 33.        , 39.        , 20.        , 23.        ]])
+Coordinates:
+  * match      (match) &lt;U16 4kB 'Wales Italy' ... 'Ireland England'
+    home_team  (match) &lt;U8 2kB 'Wales' 'France' 'Ireland' ... 'France' 'Ireland'
+    away_team  (match) &lt;U8 2kB 'Italy' 'England' ... 'Wales' 'England'
+  * quantile   (quantile) float64 16B 0.25 0.75</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.DataArray</div><div class="xr-array-name">'home_points'</div><ul class="xr-dim-list"><li><span class="xr-has-index">quantile</span>: 2</li><li><span class="xr-has-index">match</span>: 60</li></ul></div><ul class="xr-sections"><li class="xr-section-item"><div class="xr-array-wrap"><input id="section-9e5d852a-58a3-429b-9170-5a0fd3d736e2" class="xr-array-in" type="checkbox" checked=""><label for="section-9e5d852a-58a3-429b-9170-5a0fd3d736e2" title="Show/hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-array-preview xr-preview"><span>44.0 12.0 25.0 18.0 14.0 32.0 21.0 ... 20.0 17.0 33.0 39.0 20.0 23.0</span></div><div class="xr-array-data"><pre>array([[44.        , 12.        , 25.        , 18.        , 14.        ,
+        32.        , 21.        , 15.        , 16.        , 38.        ,
+        16.        , 20.        , 10.        , 23.        , 10.        ,
+        18.        ,  9.        , 21.        , 45.        , 20.        ,
+        13.        , 33.        , 15.        , 17.        , 14.        ,
+        30.        , 14.        , 11.        , 10.        , 22.        ,
+        33.        , 13.        , 18.        , 11.        , 26.        ,
+        10.        , 22.        , 15.        , 16.        , 37.        ,
+        21.        , 14.        , 37.        , 24.        , 13.        ,
+        10.        , 24.        , 12.        ,  8.        , 18.        ,
+        20.        , 13.        , 20.        , 47.        , 14.        ,
+        12.        , 25.        , 31.        , 14.        , 17.        ],
+       [54.        , 18.        , 32.        , 24.        , 20.        ,
+        41.        , 28.        , 21.        , 23.        , 47.        ,
+        22.        , 28.        , 15.        , 31.        , 15.        ,
+        25.        , 13.        , 28.        , 56.        , 27.        ,
+        19.        , 42.        , 21.        , 23.        , 20.        ,
+        39.        , 19.        , 16.        , 16.        , 28.        ,
+        41.        , 19.        , 25.        , 16.        , 35.        ,
+        16.        , 29.        , 21.        , 22.        , 46.        ,
+        28.        , 20.        , 47.        , 31.        , 19.        ,
+        14.        , 31.        , 17.        , 13.        , 25.        ,
+        27.        , 18.67750933, 27.        , 57.        , 20.        ,
+        17.        , 33.        , 39.        , 20.        , 23.        ]])</pre></div></div></li><li class="xr-section-item"><input id="section-44867c9b-ce58-43b6-9266-42f0ce5b3fd7" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-44867c9b-ce58-43b6-9266-42f0ce5b3fd7" class="xr-section-summary">Coordinates: <span>(4)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">match</span></div><div class="xr-var-dims">(match)</div><div class="xr-var-dtype">&lt;U16</div><div class="xr-var-preview xr-preview">'Wales Italy' ... 'Ireland England'</div><input id="attrs-bd66190a-7259-4f2c-a1dc-77972ff2eec7" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-bd66190a-7259-4f2c-a1dc-77972ff2eec7" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-7181ede1-f083-4da3-8654-425cf9a4436f" class="xr-var-data-in" type="checkbox"><label for="data-7181ede1-f083-4da3-8654-425cf9a4436f" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(['Wales Italy', 'France England', 'Ireland Scotland', 'Ireland Wales',
+       'Scotland England', 'France Italy', 'Wales France', 'Italy Scotland',
+       'England Ireland', 'Ireland Italy', 'Scotland France', 'England Wales',
+       'Italy England', 'Wales Scotland', 'France Ireland', 'Wales England',
+       'Italy Ireland', 'France Scotland', 'England Italy', 'Ireland France',
+       'Scotland Wales', 'Scotland Italy', 'France Wales', 'Ireland England',
+       'Wales Ireland', 'England Scotland', 'Italy France', 'Italy Wales',
+       'Scotland Ireland', 'England France', 'France Italy',
+       'Scotland England', 'Ireland Wales', 'France Ireland', 'Wales Scotland',
+       'Italy England', 'Wales France', 'Italy Scotland', 'England Ireland',
+       'Ireland Italy', 'England Wales', 'Scotland France', 'Wales Italy',
+       'Ireland Scotland', 'France England', 'Scotland Ireland',
+       'England France', 'Italy Wales', 'Italy Ireland', 'Wales England',
+       'France Scotland', 'Scotland Wales', 'Ireland France', 'England Italy',
+       'Wales Ireland', 'Italy France', 'England Scotland', 'Scotland Italy',
+       'France Wales', 'Ireland England'], dtype='&lt;U16')</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>home_team</span></div><div class="xr-var-dims">(match)</div><div class="xr-var-dtype">&lt;U8</div><div class="xr-var-preview xr-preview">'Wales' 'France' ... 'Ireland'</div><input id="attrs-7b4c104c-c297-49fb-bb7a-5b745d881901" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-7b4c104c-c297-49fb-bb7a-5b745d881901" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-4798d492-5310-47d6-be6b-1ea3c1d3a451" class="xr-var-data-in" type="checkbox"><label for="data-4798d492-5310-47d6-be6b-1ea3c1d3a451" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(['Wales', 'France', 'Ireland', 'Ireland', 'Scotland', 'France',
+       'Wales', 'Italy', 'England', 'Ireland', 'Scotland', 'England',
+       'Italy', 'Wales', 'France', 'Wales', 'Italy', 'France', 'England',
+       'Ireland', 'Scotland', 'Scotland', 'France', 'Ireland', 'Wales',
+       'England', 'Italy', 'Italy', 'Scotland', 'England', 'France',
+       'Scotland', 'Ireland', 'France', 'Wales', 'Italy', 'Wales',
+       'Italy', 'England', 'Ireland', 'England', 'Scotland', 'Wales',
+       'Ireland', 'France', 'Scotland', 'England', 'Italy', 'Italy',
+       'Wales', 'France', 'Scotland', 'Ireland', 'England', 'Wales',
+       'Italy', 'England', 'Scotland', 'France', 'Ireland'], dtype='&lt;U8')</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>away_team</span></div><div class="xr-var-dims">(match)</div><div class="xr-var-dtype">&lt;U8</div><div class="xr-var-preview xr-preview">'Italy' 'England' ... 'England'</div><input id="attrs-205a22ef-8c37-4a15-826c-0b44047dbd11" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-205a22ef-8c37-4a15-826c-0b44047dbd11" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-f3b07012-7bb7-4296-9405-933cc0222718" class="xr-var-data-in" type="checkbox"><label for="data-f3b07012-7bb7-4296-9405-933cc0222718" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(['Italy', 'England', 'Scotland', 'Wales', 'England', 'Italy',
+       'France', 'Scotland', 'Ireland', 'Italy', 'France', 'Wales',
+       'England', 'Scotland', 'Ireland', 'England', 'Ireland', 'Scotland',
+       'Italy', 'France', 'Wales', 'Italy', 'Wales', 'England', 'Ireland',
+       'Scotland', 'France', 'Wales', 'Ireland', 'France', 'Italy',
+       'England', 'Wales', 'Ireland', 'Scotland', 'England', 'France',
+       'Scotland', 'Ireland', 'Italy', 'Wales', 'France', 'Italy',
+       'Scotland', 'England', 'Ireland', 'France', 'Wales', 'Ireland',
+       'England', 'Scotland', 'Wales', 'France', 'Italy', 'Ireland',
+       'France', 'Scotland', 'Italy', 'Wales', 'England'], dtype='&lt;U8')</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">quantile</span></div><div class="xr-var-dims">(quantile)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.25 0.75</div><input id="attrs-9a2b9fa1-ad79-4e29-87bd-89322d55bc36" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-9a2b9fa1-ad79-4e29-87bd-89322d55bc36" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-4c9bdd2f-1744-4ce8-ba35-67dcb833131e" class="xr-var-data-in" type="checkbox"><label for="data-4c9bdd2f-1744-4ce8-ba35-67dcb833131e" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array([0.25, 0.75])</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-9c0636e7-72d5-4449-a018-5571e9aac762" class="xr-section-summary-in" type="checkbox"><label for="section-9c0636e7-72d5-4449-a018-5571e9aac762" class="xr-section-summary">Indexes: <span>(2)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-index-name"><div>match</div></div><div class="xr-index-preview">PandasIndex</div><input type="checkbox" disabled=""><label></label><input id="index-1a9485a1-8c84-40dd-a8ee-cca414e28553" class="xr-index-data-in" type="checkbox"><label for="index-1a9485a1-8c84-40dd-a8ee-cca414e28553" title="Show/Hide index repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-index-data"><pre>PandasIndex(Index(['Wales Italy', 'France England', 'Ireland Scotland', 'Ireland Wales',
+       'Scotland England', 'France Italy', 'Wales France', 'Italy Scotland',
+       'England Ireland', 'Ireland Italy', 'Scotland France', 'England Wales',
+       'Italy England', 'Wales Scotland', 'France Ireland', 'Wales England',
+       'Italy Ireland', 'France Scotland', 'England Italy', 'Ireland France',
+       'Scotland Wales', 'Scotland Italy', 'France Wales', 'Ireland England',
+       'Wales Ireland', 'England Scotland', 'Italy France', 'Italy Wales',
+       'Scotland Ireland', 'England France', 'France Italy',
+       'Scotland England', 'Ireland Wales', 'France Ireland', 'Wales Scotland',
+       'Italy England', 'Wales France', 'Italy Scotland', 'England Ireland',
+       'Ireland Italy', 'England Wales', 'Scotland France', 'Wales Italy',
+       'Ireland Scotland', 'France England', 'Scotland Ireland',
+       'England France', 'Italy Wales', 'Italy Ireland', 'Wales England',
+       'France Scotland', 'Scotland Wales', 'Ireland France', 'England Italy',
+       'Wales Ireland', 'Italy France', 'England Scotland', 'Scotland Italy',
+       'France Wales', 'Ireland England'],
+      dtype='object', name='match'))</pre></div></li><li class="xr-var-item"><div class="xr-index-name"><div>quantile</div></div><div class="xr-index-preview">PandasIndex</div><input type="checkbox" disabled=""><label></label><input id="index-4830e62f-9f47-4aae-a9bd-f54a45498a1c" class="xr-index-data-in" type="checkbox"><label for="index-4830e62f-9f47-4aae-a9bd-f54a45498a1c" title="Show/Hide index repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-index-data"><pre>PandasIndex(Index([0.25, 0.75], dtype='float64', name='quantile'))</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-cc12620d-e880-45d8-bc96-50b1e35e0bcb" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-cc12620d-e880-45d8-bc96-50b1e35e0bcb" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
+</div>
+</div>
+<p>Similarly we may be interested in computing estimates of leave-one-out predictive metrics given a set of predictions and observations. For instance to compute the root mean square error we can do:</p>
+<div id="4d374941" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>azs.loo_metrics(dt_rugby, kind<span class="op">=</span><span class="st">"rmse"</span>, var_name<span class="op">=</span><span class="st">"home_points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>rmse(mean=11.0, se=1.2)</code></pre>
+</div>
+</div>
+<p>Notice that for <code>loo_metrics</code> if we have more than one variable we must specify the variable that we care using the <code>var_names</code> argument, like in the previous example.</p>
 </section>
-<section id="bayes-factors" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="bayes-factors"><span class="header-section-number">7.1</span> Bayes factors</h2>
+<section id="loo-pit" class="level3" data-number="7.8.6">
+<h3 data-number="7.8.6" class="anchored" data-anchor-id="loo-pit"><span class="header-section-number">7.8.6</span> LOO-PIT</h3>
+<p>Another quantity of interest that we can obtain via PSIS-LOO-CV is the PIT values. As already mentioned in <a href="Prior_posterior_predictive_checks.html#sec-avoid-double-dipping" class="quarto-xref"><span>Section 5.2.3</span></a>, we often are interested in computing:</p>
+<p><span class="math display">\[
+p(\tilde y_i \le y_i \mid y_{-i})
+\]</span></p>
+<p>That is, we are evaluating the model’s ability to predict an observation when we remove that observation from the observed data. We can use PSIS-LOO_CV to estimate this from a single model fit.</p>
+<div id="cell-fig-elpdit" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>azp.plot_loo_pit(dt_rugby, var_names<span class="op">=</span><span class="st">"home_points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="fig-elpdit" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-elpdit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Model_comparison_files/figure-html/fig-elpdit-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-elpdit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.2: LOO-PIT plot for the rugby model
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pareto-k-and-loo-diagnostics" class="level3" data-number="7.8.7">
+<h3 data-number="7.8.7" class="anchored" data-anchor-id="pareto-k-and-loo-diagnostics"><span class="header-section-number">7.8.7</span> Pareto k and LOO diagnostics</h3>
+<p>Then we can see a table with the title “Pareto k diagnostic values”. We previously said that we used a method involving a Pareto distribution to regularize the estimation of the importance weights. One of the parameters of that fit is called <span class="math inline">\(k\)</span>. Sometimes we call it <span class="math inline">\(\hat k\)</span> (because is an estimate of <span class="math inline">\(k\)</span>). Since we have a Pareto adjustment per observation we have a <span class="math inline">\(k\)</span> value per observation. This parameter is useful because it tells us two sides of the same story, it tells us when an observation is “very influential” and it tells us that the approximation used by LOO could be failing for that observation.</p>
+<p>As a general rule, if <span class="math inline">\(k\)</span> is less than 0.7 there are no problems, if it’s between 0.7 and 1 is very likely that we are in trouble and if it’s greater than 1, we are doom. The cut-off value 0.7 is not fixed, it can strictly be lower and depends on the total number of samples of the posterior distribution, 2000, in this example. But when the number of draws is about 2000 we are almost at 0.7. In practice it is common to use sample values ​​of 2000 or larger. Increasing the number of samples from the posterior may reduce the value of <span class="math inline">\(k\)</span> and so we could remove some of these warnings, but in general the number needed will be too large to make any practical sense.</p>
+<p>It is possible to visualize the values ​​of <span class="math inline">\(k\)</span>, using <code>plot_khat</code></p>
+<div id="7896a7ae" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># coming soon</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">#azp.plot_khat(elpd, threshold=0.7);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>While the main function of LOO is to compare models, the values ​​of <span class="math inline">\(k\)</span> can be useful even if we only have only one model. For example, we could have extra knowledge that tells us why these observations are influential, perhaps there was a problem in data collection and the values ​​are incorrect. Or perhaps the values ​​are correct but from the perspective of our model they are influential, “strange”, “surprising”.</p>
+<p>If <span class="math inline">\(k &gt; 0.7\)</span>, the value of p_loo can give us some more information. Where <span class="math inline">\(p\)</span> is the total number of parameters in a model.</p>
+<ul>
+<li><p>If <span class="math inline">\(p_{\text{loo}} &lt;&lt; p\)</span> then the model must be misspecified. This should also be seen in post-hoc predictive testing. One solution is to use an overdispersed model (such as changing a Poisson for a NegativeBinomial or for a ZeroInflatedPoisson or HurdlePoisson, or changing a Normal for a Student’s T, etc.). Or it is likely that the model needs more structure or complexity, perhaps we need a non-linear term, etc.</p></li>
+<li><p>If <span class="math inline">\(p_{\text{loo}} &lt; p\)</span> and the observations are relatively few compared to <span class="math inline">\(p\)</span>, (say <span class="math inline">\(p&gt;N/5\)</span>). It is likely that we have a model that is too flexible and/or priors that are too vague. This can happen for hierarchical models with very few observations per group or for example for splines with many knots or Gaussian processes with very short scale values.</p></li>
+<li><p>If <span class="math inline">\(p_{\text{loo}} &gt; p\)</span>, then the model has very serious problems. If <span class="math inline">\(p&lt;&lt;N\)</span>, then posterior predictive tests should also report problems. If, however, p is relatively large (say <span class="math inline">\(p&gt;N/5\)</span>). So post-hoc predictive testing may not reflect problems.</p></li>
+</ul>
+</section>
+</section>
+<section id="loo-and-waic" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="loo-and-waic"><span class="header-section-number">7.9</span> LOO and WAIC</h2>
+<p>LOO and WAIC converge asymptotically, and they based on the same set of assumptions. So theoretically they are equivalent. However, in practice LOO is more robust, and also offers us a diagnosis that indicates when it could be failing (this is thanks to the Pareto adjustment). So in practice we prefer LOO.</p>
+</section>
+<section id="other-information-criteria" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="other-information-criteria"><span class="header-section-number">7.10</span> Other information criteria</h2>
+<p>Another widely used information criterion is DIC, if we use the <em>bayes-o-meter™</em>, DIC is more Bayesian than AIC but less than WAIC. Although still popular, WAIC and mainly LOO have proven to be more useful both theoretically and empirically than DIC. Therefore we DO NOT recommend its use.</p>
+<p>Another widely used criterion is BIC (Bayesian Information Criteria), like logistic regression and my mother’s <em>dry soup</em>, this name can be misleading. BIC was proposed as a way to correct some of the problems with AIC and the author proposed a Bayesian rationale for it. But BIC is not really Bayesian in the sense that like AIC it assumes <em>flat</em> priors and uses maximum likelihood estimation.</p>
+<p>But more importantly, BIC differs from AIC and WAIC in its objective. AIC and WAIC try to reflect which model generalizes better to other data (predictive accuracy) while BIC tries to identify which is the <em>correct</em> model and therefore is more related to Bayes factors than with WAIC. Later we will discuss Bayes Factors and see how it differs from criteria such as WAIC and LOO.</p>
+</section>
+<section id="bayes-factors" class="level2" data-number="7.11">
+<h2 data-number="7.11" class="anchored" data-anchor-id="bayes-factors"><span class="header-section-number">7.11</span> Bayes factors</h2>
 <p>An alternative to cross-validation, approximate cross-validation with LOO and information criteria is Bayes factors. It is common for Bayes factors to show up in the literature as a Bayesian alternative to frequentist hypothesis testing.</p>
 <p>We can compare <span class="math inline">\(K\)</span> models by computing their <strong>marginal likelihood</strong>, <span class="math inline">\(p(y \mid M_k)\)</span>, i.e., the probability of the observed data <span class="math inline">\(Y\)</span> given the model <span class="math inline">\(M_K\)</span>. The marginal likelihood is the normalization constant of Bayes’ theorem. We can see this if we write Bayes’ theorem and make explicit the fact that all inferences depend on the model.</p>
 <p><span class="math display">\[
@@ -896,8 +1388,8 @@ BF_{01} = \frac{p(y \mid M_0)}{p(y \mid M_1)}
 </table>
 <p>Keep in mind that if you get numbers below 1, then the support is for <span class="math inline">\(M_1\)</span>, i.e., the model in the denominator. Tables are also available for those cases, but notice that you can simply take the inverse of the obtained value.</p>
 <p>It is very important to remember that these rules are just conventions – simple guides at best. Results should always be put in the context of our problems and should be accompanied by enough detail so that others can assess for themselves whether they agree with our conclusions. The proof necessary to ensure something in particle physics, or in court, or to decide to carry out an evacuation in the face of a looming natural catastrophe is not the same.</p>
-<section id="some-observations" class="level3" data-number="7.1.1">
-<h3 data-number="7.1.1" class="anchored" data-anchor-id="some-observations"><span class="header-section-number">7.1.1</span> Some observations</h3>
+<section id="some-observations" class="level3" data-number="7.11.1">
+<h3 data-number="7.11.1" class="anchored" data-anchor-id="some-observations"><span class="header-section-number">7.11.1</span> Some observations</h3>
 <p>We will now briefly discuss some key facts about the marginal likelihood:</p>
 <ul>
 <li>The good: Occam’s razor included. Models with lots of parameters have a higher penalty than models with few parameters. The intuitive reason is that the greater the number of parameters, the more the prior <em>extends</em> with respect to the likelihood. An example where it is easy to see this is with nested models: for example, a polynomial of order 2 “contains” the models polynomial of order 1 and polynomial of order 0.</li>
@@ -907,12 +1399,12 @@ BF_{01} = \frac{p(y \mid M_0)}{p(y \mid M_1)}
 <p>It is important to note that the <em>good</em> and the <em>ugly</em> points are related. Using marginal likelihood to compare models is a good idea because it already includes a penalty for complex models (which helps us prevent overfitting), and at the same time, a change in the prior will affect the marginal likelihood calculations. At first, this sounds a bit silly; we already know that priors affect calculations (otherwise we could just avoid them). But we are talking about changes in the prior that would have a small effect in the posterior but a great impact on the value of the marginal likelihood.</p>
 <p>The use of Bayes factors is often a watershed among Bayesians. The difficulty of its calculation and the sensitivity to the priors are some of the arguments against it. Another reason is that, like p-values and hypothesis testing in general, Bayes factors favor dichotomous thinking over the estimation of the “effect size.” In other words, instead of asking ourselves questions like: How many more years of life can a cancer treatment provide? We end up asking if the difference between treating and not treating a patient is “statistically significant.” Note that this last question can be useful in some contexts. The point is that in many other contexts, this type of question is not the question that interests us; we’re only interested in the one that we were taught to answer.</p>
 </section>
-<section id="calculation-of-bayes-factors" class="level3" data-number="7.1.2">
-<h3 data-number="7.1.2" class="anchored" data-anchor-id="calculation-of-bayes-factors"><span class="header-section-number">7.1.2</span> Calculation of Bayes factors</h3>
+<section id="calculation-of-bayes-factors" class="level3" data-number="7.11.2">
+<h3 data-number="7.11.2" class="anchored" data-anchor-id="calculation-of-bayes-factors"><span class="header-section-number">7.11.2</span> Calculation of Bayes factors</h3>
 <p>The marginal likelihood (and the Bayes factors derived from it) is generally not available in closed form, except for a few models. For this reason, many numerical methods have been devised for its calculation. Some of these methods are so simple and <a href="https://radfordneal.wordpress.com/2008/08/17/the-harmonic-mean-of-the-likelihood-worst-monte-carlo-method-ever">naive</a> that they work very poorly in practice. We are going to discuss only one way to compute them, once that can be applied under some particular cases.</p>
 </section>
-<section id="savagedickey-ratio" class="level3" data-number="7.1.3">
-<h3 data-number="7.1.3" class="anchored" data-anchor-id="savagedickey-ratio"><span class="header-section-number">7.1.3</span> Savage–Dickey ratio</h3>
+<section id="savagedickey-ratio" class="level3" data-number="7.11.3">
+<h3 data-number="7.11.3" class="anchored" data-anchor-id="savagedickey-ratio"><span class="header-section-number">7.11.3</span> Savage–Dickey ratio</h3>
 <p>There are times when we want to compare a null hypothesis <span class="math inline">\(H_0\)</span> (or null model) against an alternative <span class="math inline">\(H_1\)</span> hypothesis. For example, to answer the question “Is this coin biased?”, we could compare the value <span class="math inline">\(\theta = 0.5\)</span> (representing no bias) with the output of a model in which we allow <span class="math inline">\(\theta\)</span> to vary. For this type of comparison, the null model is nested within the alternative, which means that the null is a particular value of the model we are building. In those cases, calculating the Bayes factor is very easy and does not require any special methods. We only need to compare the prior and posterior evaluated at the null value (for example, <span class="math inline">\(\theta = 0.5\)</span>) under the alternative model. We can see that this is true from the following expression:</p>
 <p><span class="math display">\[
 BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p(\theta=0.5 \mid H_1)}
@@ -923,13 +1415,13 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="133336cf" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>y <span class="op">=</span> np.repeat([<span class="dv">1</span>, <span class="dv">0</span>], [<span class="dv">50</span>, <span class="dv">50</span>])  <span class="co"># 50 heads, 50 tails</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_uni:</span>
-<span id="cb14-3"><a href="#cb14-3"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb14-4"><a href="#cb14-4"></a>    yl <span class="op">=</span> pm.Bernoulli(<span class="st">"yl"</span>, a, observed<span class="op">=</span>y)</span>
-<span id="cb14-5"><a href="#cb14-5"></a>    idata_uni <span class="op">=</span> pm.sample(<span class="dv">2000</span>, random_seed<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb14-6"><a href="#cb14-6"></a>    idata_uni.extend(pm.sample_prior_predictive(<span class="dv">8000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d6ab0035" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>y <span class="op">=</span> np.repeat([<span class="dv">1</span>, <span class="dv">0</span>], [<span class="dv">50</span>, <span class="dv">50</span>])  <span class="co"># 50 heads, 50 tails</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_uni:</span>
+<span id="cb16-3"><a href="#cb16-3"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb16-4"><a href="#cb16-4"></a>    yl <span class="op">=</span> pm.Bernoulli(<span class="st">"yl"</span>, a, observed<span class="op">=</span>y)</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    idata_uni <span class="op">=</span> pm.sample(<span class="dv">2000</span>, random_seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb16-6"><a href="#cb16-6"></a>    idata_uni.extend(pm.sample_prior_predictive(<span class="dv">8000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (2 chains in 2 jobs)
@@ -940,7 +1432,7 @@ Sampling: [a, yl]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"f4bd1584697e455bbbf2c6a83f683c9b","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"b6d1d26d161a4b8dbc634c294fcc8f4d","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -949,17 +1441,17 @@ Sampling: [a, yl]</code></pre>
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
-<p>And now we call <code>az.plot_bf</code></p>
-<div id="0cc5f2d1" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>az.plot_bf(idata_uni, var_name<span class="op">=</span><span class="st">"a"</span>, ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And now we call <code>azp.plot_bf</code></p>
+<div id="2c0a8536" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>azp.plot_bf(idata_uni, var_name<span class="op">=</span><span class="st">"a"</span>, ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Model_comparison_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="Model_comparison_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -971,12 +1463,12 @@ Sampling: [a, yl]</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">PyStan</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="9d03a4e6" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_conc:</span>
-<span id="cb18-2"><a href="#cb18-2"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">30</span>, <span class="dv">30</span>)</span>
-<span id="cb18-3"><a href="#cb18-3"></a>    yl <span class="op">=</span> pm.Bernoulli(<span class="st">"yl"</span>, a, observed<span class="op">=</span>y)</span>
-<span id="cb18-4"><a href="#cb18-4"></a>    idata_conc <span class="op">=</span> pm.sample(<span class="dv">2000</span>, random_seed<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb18-5"><a href="#cb18-5"></a>    idata_conc.extend(pm.sample_prior_predictive(<span class="dv">8000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a4e5f0a4" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_conc:</span>
+<span id="cb20-2"><a href="#cb20-2"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">30</span>, <span class="dv">30</span>)</span>
+<span id="cb20-3"><a href="#cb20-3"></a>    yl <span class="op">=</span> pm.Bernoulli(<span class="st">"yl"</span>, a, observed<span class="op">=</span>y)</span>
+<span id="cb20-4"><a href="#cb20-4"></a>    idata_conc <span class="op">=</span> pm.sample(<span class="dv">2000</span>, random_seed<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb20-5"><a href="#cb20-5"></a>    idata_conc.extend(pm.sample_prior_predictive(<span class="dv">8000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (2 chains in 2 jobs)
@@ -987,7 +1479,7 @@ Sampling: [a, yl]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"bedc49ec518c4ff0b6476093c5b54de1","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"3f17c771366b4d94a1437c97d38d7021","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -996,24 +1488,24 @@ Sampling: [a, yl]</code></pre>
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
-<div id="f2e050e8" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>az.plot_bf(idata_conc, var_name<span class="op">=</span><span class="st">"a"</span>, ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5559c2bc" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>azp.plot_bf(idata_conc, var_name<span class="op">=</span><span class="st">"a"</span>, ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Model_comparison_files/figure-html/cell-14-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="Model_comparison_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>We can see that the <code>BF_01</code> is <span class="math inline">\(\approx 1.6\)</span>, which we can interpret as <em>anecdotal evidence</em> in favor of the null hypothesis (see the Jeffreys’ scale, discussed earlier).</p>
 </section>
-<section id="bayes-factors-vs-the-alternatives" class="level3" data-number="7.1.4">
-<h3 data-number="7.1.4" class="anchored" data-anchor-id="bayes-factors-vs-the-alternatives"><span class="header-section-number">7.1.4</span> Bayes factors vs the alternatives</h3>
+<section id="bayes-factors-vs-the-alternatives" class="level3" data-number="7.11.4">
+<h3 data-number="7.11.4" class="anchored" data-anchor-id="bayes-factors-vs-the-alternatives"><span class="header-section-number">7.11.4</span> Bayes factors vs the alternatives</h3>
 <p>We could say that the Bayes factors measure which model, as a whole, is better for explaining the data. This includes the details of the prior, no matter how similar the model predictions are. In many scenarios, this is not what interests us when comparing models. For many real problems prior are not intended to be an accurate description of the <em>True</em> prior distribution of parameters, instead in many problems priors are choosen using some information and with the goal of providing some regulatization. In this and other cases we prefer to evaluate models in terms of how similar their predictions are. For those cases, we can use LOO.</p>
 
 
@@ -1036,7 +1528,7 @@ Yao, Yuling, Aki Vehtari, Daniel Simpson, and Andrew Gelman. 2018. <span>“<spa
 
 </main> <!-- /main -->
 <script type="application/vnd.jupyter.widget-state+json">
-{"state":{"413a89ae167946399683f225f501c0a7":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"42ed3351ba5e4495887c2c5d1c6e2bec":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_413a89ae167946399683f225f501c0a7","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.09        7            1436.92 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.27        3            1338.17 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.09        7            1436.92 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.27        3            1338.17 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"65dd0f61b39346999d7352ec14acec5c":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_e2e3431dd36246e588fefcdb8e0ca88e","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.34        3            2119.96 draws/s   0:00:00   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.28        3            1894.28 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.34        3            2119.96 draws/s   0:00:00   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.28        3            1894.28 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"689c398f0eba425196ab7b114e6670d5":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"bedc49ec518c4ff0b6476093c5b54de1":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_689c398f0eba425196ab7b114e6670d5","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   3000    0             1.72        3            2412.47 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   3000    0             1.19        3            2272.99 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   3000    0             1.72        3            2412.47 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   3000    0             1.19        3            2272.99 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"e2e3431dd36246e588fefcdb8e0ca88e":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"f4bd1584697e455bbbf2c6a83f683c9b":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_fb35ec0f878a4050874e5a615428150a","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   3000    0             1.90        3            2229.95 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   3000    0             0.88        3            2407.57 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   3000    0             1.90        3            2229.95 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   3000    0             0.88        3            2407.57 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"fb35ec0f878a4050874e5a615428150a":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}}},"version_major":2,"version_minor":0}
+{"state":{"3f17c771366b4d94a1437c97d38d7021":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_91add0bf932440c68ec3853f6f3395f2","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   3000    0             1.72        3            2232.79 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   3000    0             1.19        3            2545.64 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   3000    0             1.72        3            2232.79 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   3000    0             1.19        3            2545.64 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"44651aa01b8040d7932abb6e819acdb3":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"451a49cc2b984ce3a246ad5ddc745336":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"5fe0c744c7484999b5359e298f2d8992":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"91add0bf932440c68ec3853f6f3395f2":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"b6d1d26d161a4b8dbc634c294fcc8f4d":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_44651aa01b8040d7932abb6e819acdb3","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   3000    0             1.90        3            2464.67 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   3000    0             0.88        3            2254.05 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   3000    0             1.90        3            2464.67 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   3000    0             0.88        3            2254.05 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"c100878b19bb4ace8cc7f46e90e45c00":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_5fe0c744c7484999b5359e298f2d8992","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.35        3            1822.99 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.41        3            2076.67 draws/s   0:00:00   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.35        3            1822.99 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.41        3            2076.67 draws/s   0:00:00   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"d1f1ae5503a74de7863468ecf1481e30":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_451a49cc2b984ce3a246ad5ddc745336","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.05        7            1195.10 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             0.65        3            1147.49 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.05        7            1195.10 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             0.65        3            1147.49 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
