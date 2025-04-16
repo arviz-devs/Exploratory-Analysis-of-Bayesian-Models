@@ -152,7 +152,7 @@ We will discuss these methods in the next subsections with special emphasis on h
 
 [Histograms](https://en.wikipedia.org/wiki/Histogram) are a very simple and effective way to represent a distribution. The basic idea is to divide the range of the data into a set of bins and count how many data points fall into each bin. Then we use as many bars as bins, with the height of the bars being proportional to the counts. The following video shows a step-by-step animation of a histogram being built.
 
-{{< video videos/histogram.mp4 >}}
+{{< video ../videos/histogram.mp4 >}}
 
 Histograms can be used to represent both discrete and continuous random variables. Discrete variables are usually represented using integers. 
 <!-- When ArviZ is asked to plot integer data it will use histograms as the default method.  -->
@@ -187,7 +187,7 @@ azp.plot_dist(d_values, kind="hist", stats_kwargs={"density":{"bins":20}})
 
 [Kernel density estimation](https://en.wikipedia.org/wiki/Kernel_density_estimation) (KDE) is a non-parametric way to estimate the probability density function from a sample. Intuitively you can think of it as the smooth version of a histogram. Conceptually you place a _kernel function_ like a Gaussian _on top_ of a data point, then you sum all the Gaussians, generally evaluated over a grid and not over the data points. Results are normalized so the total area under the curve is one. The following video shows a step-by-step animation of a KDE being built. You can see a version with border corrections and without them. Border corrections avoid adding a positive density outside the range of the data.
 
-{{< video videos/kde.mp4 >}}
+{{< video ../videos/kde.mp4 >}}
 
 The following block of code shows a very simple example of a KDE.
 
@@ -222,7 +222,7 @@ azp.plot_dist(c_values);
 
 Both histograms and KDEs are ways to approximate the PMF/PDF of a distribution from a sample. But sometimes we may want to approximate the CDF instead. The `empirical cumulative distribution function` (ECDF) is a non-parametric way to estimate the CDF. It is a step function that jumps up by 1/N at each observed data point, where N is the total number of data points. The following video shows a step-by-step animation of an ECDF being built.
 
-{{< video videos/ecdf.mp4 >}}
+{{< video ../videos/ecdf.mp4 >}}
 
 
 The following block of code shows a very simple example of an ECDF.
@@ -239,7 +239,7 @@ A quantile dot plot displays the distribution of a sample in terms of its quanti
 
 The following video shows a step-by-step animation of a quantile dot plot being built.
 
-{{< video videos/dotplot.mp4 >}}
+{{< video ../videos/dotplot.mp4 >}}
 
 
 From @fig-dist_qdot we can easily see that 30% of the data is below 2. We do this by noticing that we have a total of 10 dots and 3 of them are below 2.
