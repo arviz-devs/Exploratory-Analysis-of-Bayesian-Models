@@ -85,7 +85,9 @@ with pm.Model() as model:
 ```
 :::
 
-In the following plot, we can see samples from the prior predictive distribution (blue solid lines). If we aggregate all the individual samples into a single large sample we get the dashed cyan line. To help us interpret this plot we have added two **reference values**, the average length/height of a newborn and the average (male) adult height. These reference values, are values that are meaningful to the problem at hand that we obtain from domain-knowledge (not from the observed data). We used reference values to get a sense of the scale of the expected data. Expected or *typical* values could also be used.
+In the following plot, we can see samples from the prior predictive distribution (blue solid lines). If we aggregate all the individual samples into a single large sample we get the dashed cyan line. To help us interpret this plot we have added two **reference values**, the average length/height of a newborn and the average (male) adult height. These reference values, are values that are meaningful to the problem at hand that we obtain from domain-knowledge (not from the observed data). We use reference values to get a sense of the scale of the expected data. Expected or *typical* values could also be used.
+
+For instance we can use the average newborn height (around 50 cm) and the average height for males in the Netherlans (around 182 cm)
 
 We can see that our model is bananas, not only heights can be negative, but the bulk of the prior predictive distribution is outside of our reference values.
 
@@ -97,7 +99,7 @@ def axvline(da, target, backend, value, **kwargs):
     return target.axvline(value, **kwargs)
 
 pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
-pc.map(axvline, value=175, color="gray", linestyle="--", lw=1)  # "adult"
+pc.map(axvline, value=182, color="gray", linestyle="--", lw=1)  # "tallest"
 ```
 
 We can tighten up the priors. There is no general rule to do this. For most problems, it is usually a good idea to set priors using some broad domain knowledge in such a way that we get a prior predictive distribution that allocates most of its mass in a reasonable region. These priors are called weakly informative priors. While there isn't a formal definition of what a weakly informative prior is, we can think of them as priors that generate a prior predictive distribution with none to very little mass in disallowed or unlikely regions. For instance, we can use a normal distribution with a mean of 175 and a standard deviation of 10. This distribution doesn't exclude negative values, but it assigns very little mass to them. Also is broad enough to allow for a wide range of values.
@@ -123,29 +125,30 @@ with pm.Model() as model:
 ```
 :::
 
-We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are free to pick other priors and other reference values. Maybe you can use the historical record for the taller and shorter persons in the world as33 reference values.
+We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are free to pick other priors and other reference values. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.
 
 ```{python}
 #| label: fig-prior_pred_check_narrow
 #| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than @fig-prior_pred_check_wide. Predictions are closer to our domain knowledge about human heights."
 pc = azp.plot_ppc_dist(idata, group="prior_predictive")
 pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
-pc.map(axvline, value=175, color="gray", linestyle="--", lw=1)  # "adult"
+pc.map(axvline, value=182, color="gray", linestyle="--", lw=1)  # "tallest"
 ```
 
 Weakly informative priors can have practical advantages over very vague priors because adding some prior information is usually better than adding none. By adding some information we reduce the chances of spurious results or nonsensical results. Additionally, weakly informative priors can provide computational advantages, like helping with faster sampling. 
 
 Weakly informative priors can also have a practical advantage over informative priors. To be clear, if you have trustworthy informative priors you should use them, it doesn't make sense to ignore information that you have. But in many setting informative priors can be hard to set, and they can be very time-consuming to get. That's why in practice weakly informative priors can be a good compromise. 
 
+When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the collection of distributions, it is usually a good idea to plot the cumulative distribution, like in the previous figure. The cumulative distribution is easier to interpret in these cases compared to plots that approximate the densities, like KDEs, histograms, or quantile dot plots.
+
 ```{python}
 #| label: fig-prior_pred_check_narrow_ecdf
 #| fig-cap: "The prior predictive check for the model of heights. Same as @fig-prior_pred_check_narrow but using empirical CDFs instead of KDEs."
 pc = azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
 pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
-pc.map(axvline, value=175, color="gray", linestyle="--", lw=1)  # "adult"
+pc.map(axvline, value=182, color="gray", linestyle="--", lw=1)  # "tallest"
 ```
 
-When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the collection of distributions, it is usually a good idea to plot the cumulative distribution, like in the previous figure. The cumulative distribution is easier to interpret in these cases compared to plots that approximate the densities, like KDEs, histograms, or quantile dot plots.
 
 ::: {.callout-note}
 One aspect that is often overlooked is that even if the priors have little effect on the actual posterior, by doing prior predictive checks and *playing* with the priors we can get a better understanding of our models and problems. If you want to learn more about prior elicitation you can check the [PreliZ](https://preliz.readthedocs.io/) library.
