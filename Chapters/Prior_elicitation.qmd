@@ -227,7 +227,7 @@ pc = azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
 def axvline(da, target, backend, value, **kwargs):
     return target.axvline(value, **kwargs)
 
-for key, val in refs.items()
+for key, val in refs.items():
     pc.map(axvline, value=val, color="gray", linestyle="--", lw=1)
 ```
 
@@ -250,7 +250,7 @@ We can plot the prior predictive distribution and compare it with the reference 
 
 ```{python}
 pc = azp.plot_ppc(idata, group="prior_predictive", kind="ecdf")
-for key, val in refs.items()
+for key, val in refs.items():
     pc.map(axvline, value=val, color="gray", linestyle="--", lw=1)
 ```
 
@@ -317,7 +317,7 @@ Now we can plot the prior predictive distribution, the target distribution and c
 
 ```{python}
 pc = azp.plot_ppc(idata, group="prior_predictive", kind="ecdf")
-for key, val in refs.items()
+for key, val in refs.items():
     pc.map(axvline, value=val, color="gray", linestyle="--", lw=1)
 ```
 
