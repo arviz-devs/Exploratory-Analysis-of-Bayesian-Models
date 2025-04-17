@@ -92,10 +92,12 @@ We can see that our model is bananas, not only heights can be negative, but the 
 ```{python}
 #| label: fig-prior_pred_check_wide
 #| fig-cap: "The prior predictive check for the model of heights. We can see that the bulk of the samples are outside the reference values."
-ax = az.plot_ppc(idata, group="prior")
-ax.axvline(50, color="0.5", linestyle=":", label="newborn")
-ax.axvline(175, color="0.5", linestyle="--", label="adult")
-plt.legend()
+pc = azp.plot_ppc_dist(idata, group="prior_predictive")
+def axvline(da, target, backend, value, **kwargs):
+    return target.axvline(value, **kwargs)
+
+pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
+pc.map(axvline, value=175, color="gray", linestyle="--", lw=1)  # "adult"
 ```
 
 We can tighten up the priors. There is no general rule to do this. For most problems, it is usually a good idea to set priors using some broad domain knowledge in such a way that we get a prior predictive distribution that allocates most of its mass in a reasonable region. These priors are called weakly informative priors. While there isn't a formal definition of what a weakly informative prior is, we can think of them as priors that generate a prior predictive distribution with none to very little mass in disallowed or unlikely regions. For instance, we can use a normal distribution with a mean of 175 and a standard deviation of 10. This distribution doesn't exclude negative values, but it assigns very little mass to them. Also is broad enough to allow for a wide range of values.
@@ -126,10 +128,9 @@ We repeat the previous plot with the new prior predictive distribution. We can s
 ```{python}
 #| label: fig-prior_pred_check_narrow
 #| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than @fig-prior_pred_check_wide. Predictions are closer to our domain knowledge about human heights."
-ax = az.plot_ppc(idata, group="prior")
-ax.axvline(50, color="0.5", linestyle=":", label="newborn")
-ax.axvline(175, color="0.5", linestyle="--", label="adult")
-plt.legend()
+pc = azp.plot_ppc_dist(idata, group="prior_predictive")
+pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
+pc.map(axvline, value=175, color="gray", linestyle="--", lw=1)  # "adult"
 ```
 
 Weakly informative priors can have practical advantages over very vague priors because adding some prior information is usually better than adding none. By adding some information we reduce the chances of spurious results or nonsensical results. Additionally, weakly informative priors can provide computational advantages, like helping with faster sampling. 
@@ -139,10 +140,9 @@ Weakly informative priors can also have a practical advantage over informative p
 ```{python}
 #| label: fig-prior_pred_check_narrow_ecdf
 #| fig-cap: "The prior predictive check for the model of heights. Same as @fig-prior_pred_check_narrow but using empirical CDFs instead of KDEs."
-ax = az.plot_ppc(idata, group="prior", kind="cumulative")
-ax.axvline(50, color="0.5", linestyle=":", lw=3, label="newborn")
-ax.axvline(175, color="0.5", linestyle="--", lw=3, label="adult")
-plt.legend()
+pc = azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
+pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
+pc.map(axvline, value=175, color="gray", linestyle="--", lw=1)  # "adult"
 ```
 
 When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the collection of distributions, it is usually a good idea to plot the cumulative distribution, like in the previous figure. The cumulative distribution is easier to interpret in these cases compared to plots that approximate the densities, like KDEs, histograms, or quantile dot plots.
@@ -197,50 +197,43 @@ with model:
 
 And then we use ArviZ to plot the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).
 
-The dashed orange line, labelled as "posterior predictive mean", is the aggregated posterior predictive distribution. If you combine all the individual densities into a single density, that's what you would get. 
-
 ```{python}
 #| label: fig-post_pred
 #| fig-cap: "Posterior predictive check for the model of heights."
-az.plot_ppc(idata, num_pp_samples=200, colors=["C0", "k", "C2"]);
+azp.plot_ppc_dist(idata, num_samples=200);
 ```
 
 Other common visualizations to compare observed and predictive values are empirical CDFs, histograms and less often quantile dotplots. Like with other types of visualizations, you may want to try different options, to be sure visualizations are not misleading and you may also want to adapt the visualization to your audience.
 
 ### Using summary statistics
 
-Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics. Which ones we decide to use can vary from one data-analysis problem to another,
-and ideally they should be informed by the data-analysis goals. As in posterior predictive checks we use the data twice, first for fitting the model and then for checking it. It is advisable to select test statistics that are
-orthogonal to the model parameters [@Gabry_2019]. For example, in a Normal model with a location parameter, the mean should be easy to recover, so a posterior predictive check using the mean as a test statistic would not be a particularly stringent test. As in many common models there is a location parameter, then the mean is usually not a good test statistic.
+Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics, like the median, the interquantile range, the standard deviation etc. Which ones we decide to use can vary from one data-analysis problem to another, and ideally they should be informed by the data-analysis goals. As in posterior predictive checks we use the data twice, first for fitting the model and then for checking it. It is advisable to select test statistics that are orthogonal to the model parameters [@Gabry_2019]. For example, in a Normal model with a location parameter, the mean should be easy to recover, so a posterior predictive check using the mean as a test statistic would not be a particularly stringent test. As in many common models there is a location parameter, then the mean is usually not a good test statistic.
+
+We can use the `plot_ppc_tstat` function to plot the posterior predictive distribution of a test statistic. The function takes as input a datatree with a `posterior_predictive` and `observed_data` groups and a name of the test statistic (custom function are also allowed), and it will compute the posterior predictive distribution of that statistic. The function also computes the observed value of the test statistic and plots it as a dot at the bottom of each subplot.
 
 The following plot shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model's predictions.
 
 ```{python}
 #| label: fig-post_pred_check_stats
 #| fig-cap: "Posterior predictive check for the model of heights using summary statistics."
-_, ax = plt.subplots(1, 3, figsize=(12, 3))
-
-def iqr(x, a=-1):
-    """interquartile range"""
-    return np.subtract(*np.percentile(x, [75, 25], axis=a))
-
-az.plot_bpv(idata, kind="t_stat", t_stat="mean", ax=ax[0])
-az.plot_bpv(idata, kind="t_stat", t_stat="median", ax=ax[1])
-az.plot_bpv(idata, kind="t_stat", t_stat=iqr, ax=ax[2])
-ax[0].set_title("mean")
-ax[1].set_title("median")
-ax[2].set_title("IQR");
+pc = azp.combine_plots(idata,
+                 plots=[
+                  (azp.plot_ppc_tstat, {"t_stat":"median"}),
+                  (azp.plot_ppc_tstat, {"t_stat":"mad"}),
+                  (azp.plot_ppc_tstat, {"t_stat":"iqr"}),                   
+                 ],
+                group="posterior_predictive",
+)
 ```
 
-The numerical values labelled as `bpv` are know as Bayesian p-values, or posterior predictive p-values [@Meng_1994 @Gelman_2013]. If you want to use `plot_bpv`, but you prefer to omit the Bayesian p-values pass `bpv=False`. 
-
-
-The Bayesian p-values correspond to the following probability:
+If we want a numerical summary of a posterior predictive checks using test statistics we can compute the proportion of simulated data that is less than or equal to the observed data:
 $$
 p(T_{\text{sim}} \le T_{\text{obs}} \mid \tilde y)
 $$
 
 Where $T$ is the summary statistic of our choice, computed for both the observed data $T_{\text{obs}}$ and the simulated data $T_{\text{sim}}$. 
+
+This is known as a posterior predictive p-value (or Bayesian p-value). This is similar to the frequentist p-value, but computed with respect to the posterior predictive distribution, instead of the sample distribution under the null hypothesis. 
 
 A posterior predictive p-value of 0.5 indicates that half of the predictions are below the observed values and half above. Posterior predictive p-values do not in general have uniform distributions under the null hypothesis but instead tend to have distributions more concentrated near 0.5 [@Gelman_2013b]. For instance, we already mentioned that the mean is easy to recover for many models and thus the posterior predictive p-value for the mean is often concentrated around 0.5.
 
@@ -400,21 +393,16 @@ In principle computing this will be too costly, as we need to compute the poster
 azp.plot_loo_pit(idata);
 ```
 
-
 ### Hypothetical Outcome Plots
 
 Another strategy that can be useful for posterior predictive plots is to use animations. Rather than showing a continuous probability distribution, Hypothetical Outcome Plots (HOPs) visualize a set of draws from a distribution, where each draw is shown as a new plot in either a small multiples or animated form. HOPs enable a user to experience uncertainty in terms of countable events, just like we experience probability in our day to day lives.
-
-`az.plot_ppc` support animations using the option `animation=True`. 
 
 You can read more about HPOs [here](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).
 
 
 ## Posterior predictive checks for discrete data
 
-So far we have show examples with continuous data. Many of the tools can still be used for discrete data, for instance 
-`az.plot_ppc` will automatically use histograms instead of KDEs when the data is discrete. And the bins of the histograms will be centred at integers. Also cumulative plots can be used for discrete data. Still, there are some tools that are more specific for discrete data. In the next sections we discuss posterior predictive checks for count data and binary data.
-
+So far we have show examples with continuous data. Many of the tools can still be used for discrete data, while KDEs are not useful for discrete data (unless the number of discrete values is large enough to assume continuity), histograms with properly specified bins (like one bin per discrete value) and ECDFs can be used for discrete data. Still, there are some posterior predictive plots that has been specifically designed for discrete data. In the next sections we discuss some of them.
 
 ### Posterior predictive checks for count data
 
@@ -433,7 +421,7 @@ crabs_poisson = azb.load_arviz_data('crabs_poisson')
 crabs_hurdle_nb = azb.load_arviz_data('crabs_hurdle_nb')
 ```
 
-Let's first check the poisson model. We can see that the overall fit is not that bad, but the zeros are underpredicted, and counts 1 to 4 are overpredicted. Most
+Let's first check the Poisson model. We can see that the overall fit is not that bad, but the zeros are underpredicted, and counts 1 to 4 are overpredicted. Most
 counts from 6 onward are also underpredicted. This pattern is an indication of overdispersion in the data, and the huge difference for 0 indicates an excess of zeros.
 
 ```{python}
