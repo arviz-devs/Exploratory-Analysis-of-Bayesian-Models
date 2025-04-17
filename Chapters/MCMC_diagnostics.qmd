@@ -258,7 +258,7 @@ for k, rho in enumerate(rhos):
     auto_error = []
 
     for i in range(50, size, 10):
-        auto_error.append(az.stats.ess(auto_samples[:,:i])/500)
+        auto_error.append(azs.ess(auto_samples[:,:i])/500)
 
     ax.plot(range(50, size, 10), auto_error, color=plt.cm.viridis_r(k/N))
 
