@@ -361,7 +361,10 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#prior-predictive-checks" id="toc-prior-predictive-checks" class="nav-link active" data-scroll-target="#prior-predictive-checks"><span class="header-section-number">5.1</span> Prior predictive checks</a></li>
+  <li><a href="#prior-predictive-checks" id="toc-prior-predictive-checks" class="nav-link active" data-scroll-target="#prior-predictive-checks"><span class="header-section-number">5.1</span> Prior predictive checks</a>
+  <ul class="collapse">
+  <li><a href="#a-final-note-about-priors" id="toc-a-final-note-about-priors" class="nav-link" data-scroll-target="#a-final-note-about-priors"><span class="header-section-number">5.1.1</span> A final note about priors</a></li>
+  </ul></li>
   <li><a href="#posterior-predictive-checks" id="toc-posterior-predictive-checks" class="nav-link" data-scroll-target="#posterior-predictive-checks"><span class="header-section-number">5.2</span> Posterior predictive checks</a>
   <ul class="collapse">
   <li><a href="#using-summary-statistics" id="toc-using-summary-statistics" class="nav-link" data-scroll-target="#using-summary-statistics"><span class="header-section-number">5.2.1</span> Using summary statistics</a></li>
@@ -432,10 +435,10 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 <p>where <span class="math inline">\(y^\ast\)</span> represents unobserved but potentially observable data. Notice that to compute <span class="math inline">\(y^\ast\)</span> we are evaluating the likelihood over all possible values ​​of the prior. Thus we are effectively marginalizing out the values of <span class="math inline">\(\theta\)</span>, the parameters.</p>
 <p>To exemplify a prior predictive check, let’s try with a super simple example. Let’s say we want to model the height of humans. We know that the heights are positive numbers, so we should use a distribution that assigns zero mass to negative values. But we also know that at least for adults using a normal distribution could be a good approximation. So we create the following model, without too much thought, and then draw 500 samples from the prior predictive distribution.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">PyStan</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">CmdStanPy</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="b22bb8ff" class="cell" data-execution_count="2">
+<div id="b136bfd0" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb1-2"><a href="#cb1-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
@@ -443,22 +446,72 @@ p(y^\ast) = \int_{\Theta} p(y^\ast \mid \theta) \; p(\theta) \; d\theta
 <span id="cb1-5"><a href="#cb1-5"></a>    <span class="co"># Likelihood (sampling distribution) of observations</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a>    y_obs <span class="op">=</span> pm.Normal(<span class="st">'Y_obs'</span>, mu<span class="op">=</span>mu, sigma<span class="op">=</span>sigma, observed<span class="op">=</span>y)</span>
 <span id="cb1-7"><a href="#cb1-7"></a>    <span class="co"># draw 500 samples from the prior predictive</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>    idata <span class="op">=</span> pm.sample_prior_predictive(samples<span class="op">=</span><span class="dv">500</span>, random_seed<span class="op">=</span>SEED)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8"></a>    dt <span class="op">=</span> pm.sample_prior_predictive(samples<span class="op">=</span><span class="dv">500</span>, random_seed<span class="op">=</span>SEED)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Sampling: [Y_obs, mu, sigma]</code></pre>
 </div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>stan_code <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">data {</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="st">    array[N] real y;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="st">}</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="st">parameters {</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="st">    real mu;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="st">    real&lt;lower=0&gt; sigma;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="st">}</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="st">model {</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="st">    // Priors</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="st">    mu ~ normal(0, 10);</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="st">    sigma ~ normal(0, 10);</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="st">    </span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="st">    // Likelihood</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="st">    y ~ normal(mu, sigma);</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="st">}</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="st">generated quantities {</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="st">    real prior_mu = normal_rng(0, 10);</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a><span class="st">    real&lt;lower=0&gt; prior_sigma = abs(normal_rng(0, 10));</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a><span class="st">    array[N] real y_prior_pred;</span></span>
+<span id="cb3-22"><a href="#cb3-22"></a><span class="st">    for (i in 1:N) {</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a><span class="st">        y_prior_pred[i] = normal_rng(prior_mu, prior_sigma);</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a><span class="st">    }</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a><span class="st">}</span></span>
+<span id="cb3-26"><a href="#cb3-26"></a><span class="st">"""</span></span>
+<span id="cb3-27"><a href="#cb3-27"></a></span>
+<span id="cb3-28"><a href="#cb3-28"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./stan_code.stan"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb3-29"><a href="#cb3-29"></a>    <span class="bu">print</span>(stan_code, <span class="bu">file</span><span class="op">=</span>f)</span>
+<span id="cb3-30"><a href="#cb3-30"></a></span>
+<span id="cb3-31"><a href="#cb3-31"></a><span class="co"># Compile the model</span></span>
+<span id="cb3-32"><a href="#cb3-32"></a>model <span class="op">=</span> cmdstanpy.CmdStanModel(stan_file<span class="op">=</span><span class="st">"./stan_code.stan"</span>)</span>
+<span id="cb3-33"><a href="#cb3-33"></a></span>
+<span id="cb3-34"><a href="#cb3-34"></a><span class="co"># Prepare the data</span></span>
+<span id="cb3-35"><a href="#cb3-35"></a>stan_data <span class="op">=</span> {</span>
+<span id="cb3-36"><a href="#cb3-36"></a>    <span class="st">'N'</span>: <span class="bu">len</span>(y),</span>
+<span id="cb3-37"><a href="#cb3-37"></a>    <span class="st">'y'</span>: y</span>
+<span id="cb3-38"><a href="#cb3-38"></a>}</span>
+<span id="cb3-39"><a href="#cb3-39"></a></span>
+<span id="cb3-40"><a href="#cb3-40"></a><span class="co"># Sample from the prior predictive distribution</span></span>
+<span id="cb3-41"><a href="#cb3-41"></a>prior_samples <span class="op">=</span> model.sample(</span>
+<span id="cb3-42"><a href="#cb3-42"></a>    data<span class="op">=</span>stan_data,</span>
+<span id="cb3-43"><a href="#cb3-43"></a>    fixed_param<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb3-44"><a href="#cb3-44"></a>    iter_sampling<span class="op">=</span><span class="dv">500</span>,</span>
+<span id="cb3-45"><a href="#cb3-45"></a>    seed<span class="op">=</span>SEED</span>
+<span id="cb3-46"><a href="#cb3-46"></a>)</span>
+<span id="cb3-47"><a href="#cb3-47"></a></span>
+<span id="cb3-48"><a href="#cb3-48"></a><span class="co"># Convert to ArviZ</span></span>
+<span id="cb3-49"><a href="#cb3-49"></a>dt <span class="op">=</span> azb.from_cmdstanpy(</span>
+<span id="cb3-50"><a href="#cb3-50"></a>    prior<span class="op">=</span>prior_samples,</span>
+<span id="cb3-51"><a href="#cb3-51"></a>    prior_predictive<span class="op">=</span><span class="st">"y_prior_pred"</span>,</span>
+<span id="cb3-52"><a href="#cb3-52"></a>    observed_data<span class="op">=</span>{<span class="st">"y"</span>: y},</span>
+<span id="cb3-53"><a href="#cb3-53"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
-<p>In the following plot, we can see samples from the prior predictive distribution (blue solid lines). If we aggregate all the individual samples into a single large sample we get the dashed cyan line. To help us interpret this plot we have added two <strong>reference values</strong>, the average length/height of a newborn and the average (male) adult height. These reference values, are values that are meaningful to the problem at hand that we obtain from domain-knowledge (not from the observed data). We use reference values to get a sense of the scale of the expected data. Expected or <em>typical</em> values could also be used.</p>
-<p>For instance we can use the average newborn height (around 50 cm) and the average height for males in the Netherlans (around 182 cm)</p>
-<p>We can see that our model is bananas, not only heights can be negative, but the bulk of the prior predictive distribution is outside of our reference values.</p>
+<p>The plot below displays samples from the prior predictive distribution (shown as solid blue lines). To aid interpretation, we have included two reference values: the average length/height of a newborn (approximately 50 cm) and the average height of adult males in the Netherlands (around 182 cm). Reference values are meaningful benchmarks derived from domain knowledge—not from the observed data—and help assess whether predictions are on a reasonable scale. While there are no strict rules for selecting reference values, different analysts might choose different benchmarks based on context</p>
 <div id="cell-fig-prior_pred_check_wide" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>pc <span class="op">=</span> azp.plot_ppc_dist(idata, group<span class="op">=</span><span class="st">"prior_predictive"</span>)</span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>pc <span class="op">=</span> azp.plot_ppc_dist(dt, group<span class="op">=</span><span class="st">"prior_predictive"</span>)</span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="kw">def</span> axvline(da, target, backend, value, <span class="op">**</span>kwargs):</span>
 <span id="cb4-3"><a href="#cb4-3"></a>    <span class="cf">return</span> target.axvline(value, <span class="op">**</span>kwargs)</span>
 <span id="cb4-4"><a href="#cb4-4"></a></span>
@@ -477,35 +530,90 @@ Figure&nbsp;5.1: The prior predictive check for the model of heights. We can see
 </div>
 </div>
 </div>
-<p>We can tighten up the priors. There is no general rule to do this. For most problems, it is usually a good idea to set priors using some broad domain knowledge in such a way that we get a prior predictive distribution that allocates most of its mass in a reasonable region. These priors are called weakly informative priors. While there isn’t a formal definition of what a weakly informative prior is, we can think of them as priors that generate a prior predictive distribution with none to very little mass in disallowed or unlikely regions. For instance, we can use a normal distribution with a mean of 175 and a standard deviation of 10. This distribution doesn’t exclude negative values, but it assigns very little mass to them. Also is broad enough to allow for a wide range of values.</p>
+<p>We can see that our model is bananas the bulk of the prior predictive distribution is outside of our reference values and the model is predicting values below 0. This is a clear indication that the model is not a good representation of our prior knowledge.</p>
+<p>In many cases, data will be informative enough to overcome poorly selected priors, but this isn’t guaranteed. To address this, we can tighten our priors. While there’s no universal rule for doing so, a good guideline is to choose priors that concentrate most of the prior predictive distribution’s mass within a plausible range—such as between our reference values.</p>
+<p>Such priors are often called weakly informative priors. Though not strictly defined, these priors produce a prior predictive distribution with little to no probability mass in unrealistic or impossible regions. For example, a normal distribution with a mean of 160 and a standard deviation of 10 assigns negligible weight to negative values while still accommodating a wide range of plausible heights.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">PyStan</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">CmdStanPy</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="c93d7892" class="cell" data-execution_count="4">
+<div id="94d59bae" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model: </span>
 <span id="cb5-2"><a href="#cb5-2"></a>    <span class="co"># Priors for unknown model parameters</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">175</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>    mu <span class="op">=</span> pm.Normal(<span class="st">'mu'</span>, mu<span class="op">=</span><span class="dv">160</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
 <span id="cb5-4"><a href="#cb5-4"></a>    sigma <span class="op">=</span> pm.HalfNormal(<span class="st">'sigma'</span>, sigma<span class="op">=</span><span class="dv">10</span>)</span>
 <span id="cb5-5"><a href="#cb5-5"></a>    <span class="co"># Likelihood (sampling distribution) of observations</span></span>
 <span id="cb5-6"><a href="#cb5-6"></a>    y_obs <span class="op">=</span> pm.Normal(<span class="st">'Y_obs'</span>, mu<span class="op">=</span>mu, sigma<span class="op">=</span>sigma, observed<span class="op">=</span>y)</span>
 <span id="cb5-7"><a href="#cb5-7"></a>    <span class="co"># draw 500 samples from the prior predictive</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a>    idata <span class="op">=</span> pm.sample_prior_predictive(samples<span class="op">=</span><span class="dv">500</span>, random_seed<span class="op">=</span>SEED)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-8"><a href="#cb5-8"></a>    dt <span class="op">=</span> pm.sample_prior_predictive(samples<span class="op">=</span><span class="dv">500</span>, random_seed<span class="op">=</span>SEED)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Sampling: [Y_obs, mu, sigma]</code></pre>
 </div>
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-<p>We repeat the previous plot with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is within the reference values. The model predicts values above 200 cm and below 150 cm, which are indeed possible but are less likely. You are free to pick other priors and other reference values. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.</p>
-<div id="cell-fig-prior_pred_check_narrow" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>pc <span class="op">=</span> azp.plot_ppc_dist(idata, group<span class="op">=</span><span class="st">"prior_predictive"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2"></a>pc.<span class="bu">map</span>(axvline, value<span class="op">=</span><span class="dv">50</span>, color<span class="op">=</span><span class="st">"gray"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>)  <span class="co"># "newborn"</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>pc.<span class="bu">map</span>(axvline, value<span class="op">=</span><span class="dv">182</span>, color<span class="op">=</span><span class="st">"gray"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>)  <span class="co"># "tallest"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>stan_code <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="st">data {</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="st">    array[N] real y;</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="st">}</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="st">parameters {</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="st">    real mu;</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="st">    real&lt;lower=0&gt; sigma;</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="st">}</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="st">model {</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="st">    // Priors</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="st">    mu ~ normal(160, 10);</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="st">    sigma ~ normal(0, 10);</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="st">    </span></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="st">    // Likelihood</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="st">    y ~ normal(mu, sigma);</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="st">}</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="st">generated quantities {</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="st">    real prior_mu = normal_rng(160, 10);</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="st">    real&lt;lower=0&gt; prior_sigma = abs(normal_rng(0, 10));</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="st">    array[N] real y_prior_pred;</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="st">    for (i in 1:N) {</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="st">        y_prior_pred[i] = normal_rng(prior_mu, prior_sigma);</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="st">    }</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="st">}</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a><span class="st">"""</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a></span>
+<span id="cb7-28"><a href="#cb7-28"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./stan_code.stan"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb7-29"><a href="#cb7-29"></a>    <span class="bu">print</span>(stan_code, <span class="bu">file</span><span class="op">=</span>f)</span>
+<span id="cb7-30"><a href="#cb7-30"></a></span>
+<span id="cb7-31"><a href="#cb7-31"></a><span class="co"># Compile the model</span></span>
+<span id="cb7-32"><a href="#cb7-32"></a>model <span class="op">=</span> cmdstanpy.CmdStanModel(stan_file<span class="op">=</span><span class="st">"./stan_code.stan"</span>)</span>
+<span id="cb7-33"><a href="#cb7-33"></a></span>
+<span id="cb7-34"><a href="#cb7-34"></a><span class="co"># Prepare the data</span></span>
+<span id="cb7-35"><a href="#cb7-35"></a>stan_data <span class="op">=</span> {</span>
+<span id="cb7-36"><a href="#cb7-36"></a>    <span class="st">'N'</span>: <span class="bu">len</span>(y),</span>
+<span id="cb7-37"><a href="#cb7-37"></a>    <span class="st">'y'</span>: y</span>
+<span id="cb7-38"><a href="#cb7-38"></a>}</span>
+<span id="cb7-39"><a href="#cb7-39"></a></span>
+<span id="cb7-40"><a href="#cb7-40"></a><span class="co"># Sample from the prior predictive distribution</span></span>
+<span id="cb7-41"><a href="#cb7-41"></a>prior_samples <span class="op">=</span> model.sample(</span>
+<span id="cb7-42"><a href="#cb7-42"></a>    data<span class="op">=</span>stan_data,</span>
+<span id="cb7-43"><a href="#cb7-43"></a>    fixed_param<span class="op">=</span><span class="va">True</span>,  <span class="co"># Sample from priors only</span></span>
+<span id="cb7-44"><a href="#cb7-44"></a>    iter_sampling<span class="op">=</span><span class="dv">500</span>,</span>
+<span id="cb7-45"><a href="#cb7-45"></a>    seed<span class="op">=</span>SEED</span>
+<span id="cb7-46"><a href="#cb7-46"></a>)</span>
+<span id="cb7-47"><a href="#cb7-47"></a></span>
+<span id="cb7-48"><a href="#cb7-48"></a><span class="co"># Convert to ArviZ</span></span>
+<span id="cb7-49"><a href="#cb7-49"></a>dt <span class="op">=</span> azb.from_cmdstanpy(</span>
+<span id="cb7-50"><a href="#cb7-50"></a>    prior<span class="op">=</span>prior_samples,</span>
+<span id="cb7-51"><a href="#cb7-51"></a>    prior_predictive<span class="op">=</span><span class="st">"y_prior_pred"</span>,</span>
+<span id="cb7-52"><a href="#cb7-52"></a>    observed_data<span class="op">=</span>{<span class="st">"y"</span>: y},</span>
+<span id="cb7-53"><a href="#cb7-53"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>:::
+
+We repeat the prior predictive checks with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is within the reference values. 
+
+::: {#cell-fig-prior_pred_check_narrow .cell execution_count=5}
+``` {.python .cell-code}
+pc = azp.plot_ppc_dist(dt, group="prior_predictive")
+pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
+pc.map(axvline, value=182, color="gray", linestyle="--", lw=1)  # "tallest"</code></pre>
 <div class="cell-output cell-output-display">
 <div id="fig-prior_pred_check_narrow" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -519,11 +627,12 @@ Figure&nbsp;5.2: The prior predictive check for the model of heights with a more
 </div>
 </div>
 </div>
-<p>Weakly informative priors can have practical advantages over very vague priors because adding some prior information is usually better than adding none. By adding some information we reduce the chances of spurious results or nonsensical results. Additionally, weakly informative priors can provide computational advantages, like helping with faster sampling.</p>
-<p>Weakly informative priors can also have a practical advantage over informative priors. To be clear, if you have trustworthy informative priors you should use them, it doesn’t make sense to ignore information that you have. But in many setting informative priors can be hard to set, and they can be very time-consuming to get. That’s why in practice weakly informative priors can be a good compromise.</p>
-<p>When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the collection of distributions, it is usually a good idea to plot the cumulative distribution, like in the previous figure. The cumulative distribution is easier to interpret in these cases compared to plots that approximate the densities, like KDEs, histograms, or quantile dot plots.</p>
+</div>
+</div>
+<p>You are free to pick other priors and other reference values and make new prior predictive checks. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.</p>
+<p>When plotting many distributions, where each one spans a narrow range of values compared to the range spanned but the entire collection of distributions, it is usually a good idea to plot the cumulative distribution instead of KDEs, histograms, or quantile dot plots.</p>
 <div id="cell-fig-prior_pred_check_narrow_ecdf" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>pc <span class="op">=</span> azp.plot_ppc_dist(idata, group<span class="op">=</span><span class="st">"prior_predictive"</span>, kind<span class="op">=</span><span class="st">"ecdf"</span>)</span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>pc <span class="op">=</span> azp.plot_ppc_dist(dt, group<span class="op">=</span><span class="st">"prior_predictive"</span>, kind<span class="op">=</span><span class="st">"ecdf"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2"></a>pc.<span class="bu">map</span>(axvline, value<span class="op">=</span><span class="dv">50</span>, color<span class="op">=</span><span class="st">"gray"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>)  <span class="co"># "newborn"</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a>pc.<span class="bu">map</span>(axvline, value<span class="op">=</span><span class="dv">182</span>, color<span class="op">=</span><span class="st">"gray"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>)  <span class="co"># "tallest"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -539,19 +648,12 @@ Figure&nbsp;5.3: The prior predictive check for the model of heights. Same as <a
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>One aspect that is often overlooked is that even if the priors have little effect on the actual posterior, by doing prior predictive checks and <em>playing</em> with the priors we can get a better understanding of our models and problems. If you want to learn more about prior elicitation you can check the <a href="https://preliz.readthedocs.io/">PreliZ</a> library.</p>
-</div>
-</div>
+<section id="a-final-note-about-priors" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="a-final-note-about-priors"><span class="header-section-number">5.1.1</span> A final note about priors</h3>
+<p>Before moving on to the next section, we would like to share one last thought on priors. If you have access to reliable prior knowledge, you should use it, there’s no good reason to discard valid information. But in many real-world scenarios, turning that knowledge into informative priors often require considerable effort and time. And in some cases, they may lead to results that are nearly indistinguishable from those produced using less carefully chosen priors.</p>
+<p>In practice weakly informative priors can offer meaningful advantages over both vague and informative priors. Even a modest amount of prior information is often better than none at all, as it helps guard against implausible or misleading results and it could provide computational benefits, such as improved sampling efficiency while being usually easier and less time-consuming to elicit than fully informative priors.</p>
+<p>Finally, one benefit that’s often underappreciated is that running prior predictive checks and <em>playing around</em> with different priors can give you valuable insights into your model and the problem you’re trying to solve, regardless of their impact on their direct impact on the posterior. To learn more about prior elicitation, check out @#sec-prior-elicitation.</p>
+</section>
 </section>
 <section id="posterior-predictive-checks" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">5.2</span> Posterior predictive checks</h2>
@@ -573,13 +675,13 @@ p(\tilde y) = \int_{\Theta} p(\tilde y \mid \theta) \; p(\theta \mid y) \; d\the
 <p>Notice that what we are doing is marginalizing the likelihood by integrating all possible values ​​of the posterior. Therefore, from the perspective of our model, we are describing the marginal distribution of data, that is, regardless of the values of the parameters.</p>
 <p>Continuing with our height example, we can generate synthetic data from the posterior predictive distribution.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">PyStan</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">CmdStanPy</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="5a72aba1" class="cell" data-execution_count="7">
+<div id="cb0e70f7" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="cf">with</span> model: </span>
-<span id="cb10-2"><a href="#cb10-2"></a>    idata <span class="op">=</span> pm.sample(idata_kwargs<span class="op">=</span>{<span class="st">"log_likelihood"</span>: <span class="va">True</span>}, random_seed<span class="op">=</span>SEED)</span>
-<span id="cb10-3"><a href="#cb10-3"></a>    pm.sample_posterior_predictive(idata, random_seed<span class="op">=</span>SEED, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2"></a>    dt <span class="op">=</span> pm.sample(idata_kwargs<span class="op">=</span>{<span class="st">"log_likelihood"</span>: <span class="va">True</span>}, random_seed<span class="op">=</span>SEED)</span>
+<span id="cb10-3"><a href="#cb10-3"></a>    pm.sample_posterior_predictive(dt, random_seed<span class="op">=</span>SEED, extend_inferencedata<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (2 chains in 2 jobs)
@@ -590,7 +692,7 @@ Sampling: [Y_obs]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"1c2048bb17d74b699021d58697be6bfc","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"f526f0b35580478ca068969db4d0d65a","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -598,7 +700,7 @@ Sampling: [Y_obs]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"ec79ed2b94474372a0ddcc71c1da0bb4","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"690a09b984f64f959cee69eade8ac3cd","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 <div class="cell-output cell-output-display">
@@ -607,13 +709,81 @@ Sampling: [Y_obs]</code></pre>
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="co">## coming soon</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>stan_code <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="st">data {</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="st">    int&lt;lower=0&gt; N;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="st">    array[N] real y;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="st">}</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="st">parameters {</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="st">    real mu;</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="st">    real&lt;lower=0&gt; sigma;</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="st">}</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="st">model {</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="st">    // Priors</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="st">    mu ~ normal(0, 10);</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="st">    sigma ~ normal(0, 10);</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="st">    </span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="st">    // Likelihood</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="st">    y ~ normal(mu, sigma);</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a><span class="st">}</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a><span class="st">generated quantities {</span></span>
+<span id="cb12-19"><a href="#cb12-19"></a><span class="st">    real prior_mu = normal_rng(0, 10);</span></span>
+<span id="cb12-20"><a href="#cb12-20"></a><span class="st">    real&lt;lower=0&gt; prior_sigma = abs(normal_rng(0, 10));</span></span>
+<span id="cb12-21"><a href="#cb12-21"></a><span class="st">    array[N] real y_prior_pred;</span></span>
+<span id="cb12-22"><a href="#cb12-22"></a><span class="st">    for (i in 1:N) {</span></span>
+<span id="cb12-23"><a href="#cb12-23"></a><span class="st">        y_prior_pred[i] = normal_rng(prior_mu, prior_sigma);</span></span>
+<span id="cb12-24"><a href="#cb12-24"></a><span class="st">    }</span></span>
+<span id="cb12-25"><a href="#cb12-25"></a></span>
+<span id="cb12-26"><a href="#cb12-26"></a><span class="st">    array[N] real log_lik;</span></span>
+<span id="cb12-27"><a href="#cb12-27"></a><span class="st">    for (i in 1:N) {</span></span>
+<span id="cb12-28"><a href="#cb12-28"></a><span class="st">        log_lik[i] = normal_lpdf(y[i] | mu, sigma);</span></span>
+<span id="cb12-29"><a href="#cb12-29"></a><span class="st">    }</span></span>
+<span id="cb12-30"><a href="#cb12-30"></a></span>
+<span id="cb12-31"><a href="#cb12-31"></a><span class="st">    array[N] real y_rep;</span></span>
+<span id="cb12-32"><a href="#cb12-32"></a><span class="st">    for (i in 1:N) {</span></span>
+<span id="cb12-33"><a href="#cb12-33"></a><span class="st">        y_rep[i] = normal_rng(mu, sigma);</span></span>
+<span id="cb12-34"><a href="#cb12-34"></a><span class="st">    }</span></span>
+<span id="cb12-35"><a href="#cb12-35"></a><span class="st">}</span></span>
+<span id="cb12-36"><a href="#cb12-36"></a><span class="st">"""</span></span>
+<span id="cb12-37"><a href="#cb12-37"></a></span>
+<span id="cb12-38"><a href="#cb12-38"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./stan_code.stan"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb12-39"><a href="#cb12-39"></a>    <span class="bu">print</span>(stan_code, <span class="bu">file</span><span class="op">=</span>f)</span>
+<span id="cb12-40"><a href="#cb12-40"></a></span>
+<span id="cb12-41"><a href="#cb12-41"></a><span class="co"># Compile the model</span></span>
+<span id="cb12-42"><a href="#cb12-42"></a>model <span class="op">=</span> cmdstanpy.CmdStanModel(stan_file<span class="op">=</span><span class="st">"./stan_code.stan"</span>)</span>
+<span id="cb12-43"><a href="#cb12-43"></a></span>
+<span id="cb12-44"><a href="#cb12-44"></a></span>
+<span id="cb12-45"><a href="#cb12-45"></a><span class="co"># Prepare the data</span></span>
+<span id="cb12-46"><a href="#cb12-46"></a>stan_data <span class="op">=</span> {</span>
+<span id="cb12-47"><a href="#cb12-47"></a>    <span class="st">'N'</span>: <span class="bu">len</span>(y),</span>
+<span id="cb12-48"><a href="#cb12-48"></a>    <span class="st">'y'</span>: y</span>
+<span id="cb12-49"><a href="#cb12-49"></a>}</span>
+<span id="cb12-50"><a href="#cb12-50"></a></span>
+<span id="cb12-51"><a href="#cb12-51"></a></span>
+<span id="cb12-52"><a href="#cb12-52"></a>prior_samples <span class="op">=</span> model.sample(</span>
+<span id="cb12-53"><a href="#cb12-53"></a>    data<span class="op">=</span>stan_data,</span>
+<span id="cb12-54"><a href="#cb12-54"></a>    fixed_param<span class="op">=</span><span class="va">True</span>,  <span class="co"># Sample from priors only</span></span>
+<span id="cb12-55"><a href="#cb12-55"></a>    iter_sampling<span class="op">=</span><span class="dv">500</span>,</span>
+<span id="cb12-56"><a href="#cb12-56"></a>    seed<span class="op">=</span>SEED</span>
+<span id="cb12-57"><a href="#cb12-57"></a>)</span>
+<span id="cb12-58"><a href="#cb12-58"></a></span>
+<span id="cb12-59"><a href="#cb12-59"></a>posterior <span class="op">=</span> model.sample(data<span class="op">=</span>stan_data)</span>
+<span id="cb12-60"><a href="#cb12-60"></a></span>
+<span id="cb12-61"><a href="#cb12-61"></a><span class="co"># Convert to ArviZ</span></span>
+<span id="cb12-62"><a href="#cb12-62"></a>dt <span class="op">=</span> azb.from_cmdstanpy(</span>
+<span id="cb12-63"><a href="#cb12-63"></a>    posterior<span class="op">=</span>posterior,</span>
+<span id="cb12-64"><a href="#cb12-64"></a>    prior<span class="op">=</span>prior_samples,</span>
+<span id="cb12-65"><a href="#cb12-65"></a>    prior_predictive<span class="op">=</span>{<span class="st">"y"</span>:<span class="st">"y_prior_pred"</span>},</span>
+<span id="cb12-66"><a href="#cb12-66"></a>    posterior_predictive<span class="op">=</span>{<span class="st">"y"</span>: <span class="st">"y_rep"</span>},</span>
+<span id="cb12-67"><a href="#cb12-67"></a>    log_likelihood<span class="op">=</span>{<span class="st">"y"</span>: <span class="st">"log_lik"</span>},</span>
+<span id="cb12-68"><a href="#cb12-68"></a>    observed_data<span class="op">=</span>{<span class="st">"y"</span>: y},</span>
+<span id="cb12-69"><a href="#cb12-69"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
 <p>And then we use ArviZ to plot the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).</p>
 <div id="cell-fig-post_pred" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>azp.plot_ppc_dist(idata, num_samples<span class="op">=</span><span class="dv">200</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>azp.plot_ppc_dist(dt, num_samples<span class="op">=</span><span class="dv">200</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_pred" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -630,11 +800,11 @@ Figure&nbsp;5.4: Posterior predictive check for the model of heights.
 <p>Other common visualizations to compare observed and predictive values are empirical CDFs, histograms and less often quantile dotplots. Like with other types of visualizations, you may want to try different options, to be sure visualizations are not misleading and you may also want to adapt the visualization to your audience.</p>
 <section id="using-summary-statistics" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="using-summary-statistics"><span class="header-section-number">5.2.1</span> Using summary statistics</h3>
-<p>Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics, like the median, the interquantile range, the standard deviation etc. Which ones we decide to use can vary from one data-analysis problem to another, and ideally they should be informed by the data-analysis goals. As in posterior predictive checks we use the data twice, first for fitting the model and then for checking it. It is advisable to select test statistics that are orthogonal to the model parameters <span class="citation" data-cites="Gabry_2019">(<a href="References.html#ref-Gabry_2019" role="doc-biblioref">Gabry et al. 2019</a>)</span>. For example, in a Normal model with a location parameter, the mean should be easy to recover, so a posterior predictive check using the mean as a test statistic would not be a particularly stringent test. As in many common models there is a location parameter, then the mean is usually not a good test statistic.</p>
-<p>We can use the <code>plot_ppc_tstat</code> function to plot the posterior predictive distribution of a test statistic. The function takes as input a datatree with a <code>posterior_predictive</code> and <code>observed_data</code> groups and a name of the test statistic (custom function are also allowed), and it will compute the posterior predictive distribution of that statistic. The function also computes the observed value of the test statistic and plots it as a dot at the bottom of each subplot.</p>
+<p>Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics, like the median, the interquartile range, the standard deviation etc. Which ones we decide to use can vary from one data-analysis problem to another, and ideally they should be informed by the data-analysis goals. As in posterior predictive checks we use the data twice, first for fitting the model and then for checking it. It is advisable to select test statistics that are orthogonal to the model parameters <span class="citation" data-cites="Gabry_2019">(<a href="References.html#ref-Gabry_2019" role="doc-biblioref">Gabry et al. 2019</a>)</span>. For example, in a Normal model with a location parameter, the mean should be easy to recover, so a posterior predictive check using the mean as a test statistic would not be a particularly stringent test. As in many common models there is a location parameter, then the mean is usually not a good test statistic.</p>
+<p>We can use the <code>plot_ppc_tstat</code> function to plot the posterior predictive distribution of a test statistic. The function takes as input a DataTree with a <code>posterior_predictive</code> and <code>observed_data</code> groups and a name of the test statistic (custom function are also allowed), and it will compute the posterior predictive distribution of that statistic. The function also computes the observed value of the test statistic and plots it as a dot at the bottom of each subplot.</p>
 <p>The following plot shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model’s predictions.</p>
 <div id="cell-fig-post_pred_check_stats" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>pc <span class="op">=</span> azp.combine_plots(idata,</span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>pc <span class="op">=</span> azp.combine_plots(dt,</span>
 <span id="cb14-2"><a href="#cb14-2"></a>                 plots<span class="op">=</span>[</span>
 <span id="cb14-3"><a href="#cb14-3"></a>                  (azp.plot_ppc_tstat, {<span class="st">"t_stat"</span>:<span class="st">"median"</span>}),</span>
 <span id="cb14-4"><a href="#cb14-4"></a>                  (azp.plot_ppc_tstat, {<span class="st">"t_stat"</span>:<span class="st">"mad"</span>}),</span>
@@ -702,7 +872,7 @@ Figure&nbsp;5.6: The CDF of the standard Uniform distribution.
 </div>
 <p>The disadvantage of such plot is that all the “action” is close to the diagonal line and most of the plot is just blank space. A simple trick to improve the <em>data-ink</em> ratio is to plot the difference between the observed and expected cumulative distribution functions, the <span class="math inline">\(\Delta\)</span>-ECDF, as shown in Figure <a href="#fig-post_ppc_pit_ecdf" class="quarto-xref">Figure&nbsp;<span>5.7</span></a>. The last ingredient to improve this visual diagnostic is to add a confidence band. Due to finite sample size we should expect deviations from uniformity, so a confidence band gives us an idea of how much deviation is expected by chance.</p>
 <div id="cell-fig-post_ppc_pit_ecdf" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>azp.plot_ppc_pit(idata)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>azp.plot_ppc_pit(dt)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_ppc_pit_ecdf" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -737,12 +907,12 @@ Figure&nbsp;5.7: Posterior predictive check for the model of heights using margi
 <span id="cb17-9"><a href="#cb17-9"></a>                                ]):</span>
 <span id="cb17-10"><a href="#cb17-10"></a>    predictions[<span class="ss">f"y</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span>  pz.Normal(mu, sigma).rvs((<span class="dv">4</span>, <span class="dv">500</span>, <span class="dv">100</span>))</span>
 <span id="cb17-11"><a href="#cb17-11"></a></span>
-<span id="cb17-12"><a href="#cb17-12"></a>idata_i <span class="op">=</span> azb.from_dict({</span>
+<span id="cb17-12"><a href="#cb17-12"></a>dt_i <span class="op">=</span> azb.from_dict({</span>
 <span id="cb17-13"><a href="#cb17-13"></a>    <span class="st">"posterior_predictive"</span>:predictions,</span>
 <span id="cb17-14"><a href="#cb17-14"></a>    <span class="st">"observed_data"</span>: {<span class="ss">f"y</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>: observed <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(predictions))}</span>
 <span id="cb17-15"><a href="#cb17-15"></a>})</span>
 <span id="cb17-16"><a href="#cb17-16"></a></span>
-<span id="cb17-17"><a href="#cb17-17"></a>azp.plot_ppc_dist(idata_i,</span>
+<span id="cb17-17"><a href="#cb17-17"></a>azp.plot_ppc_dist(dt_i,</span>
 <span id="cb17-18"><a href="#cb17-18"></a>                  kind<span class="op">=</span><span class="st">"kde"</span>,  </span>
 <span id="cb17-19"><a href="#cb17-19"></a>                  plot_kwargs<span class="op">=</span>{<span class="st">"remove_axis"</span>:<span class="va">False</span>},</span>
 <span id="cb17-20"><a href="#cb17-20"></a>                  pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>:{<span class="st">"sharey"</span>:<span class="va">True</span>}},             </span>
@@ -762,7 +932,7 @@ Figure&nbsp;5.8: Posterior predictive check with KDEs showing four alternative s
 </div>
 <p>Then we show the ECDFs of the observed data and the predictions.</p>
 <div id="cell-fig-post_ppc_pit_ecdf_alt_1" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>azp.plot_ppc_dist(idata_i,</span>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>azp.plot_ppc_dist(dt_i,</span>
 <span id="cb18-2"><a href="#cb18-2"></a>                  kind<span class="op">=</span><span class="st">"ecdf"</span>,</span>
 <span id="cb18-3"><a href="#cb18-3"></a>                  pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>:{<span class="st">"sharey"</span>:<span class="va">True</span>}},        </span>
 <span id="cb18-4"><a href="#cb18-4"></a>                 )<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -781,7 +951,7 @@ Figure&nbsp;5.9: Posterior predictive check with ECDFs showing four alternative 
 </div>
 <p>Finally, we show the PIT-ECDFs.</p>
 <div id="cell-fig-post_ppc_pit_ecdf_alt_2" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>azp.plot_ppc_pit(idata_i,</span>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>azp.plot_ppc_pit(dt_i,</span>
 <span id="cb19-2"><a href="#cb19-2"></a>                 plot_kwargs<span class="op">=</span>{<span class="st">"ylabel"</span>:<span class="va">False</span>},</span>
 <span id="cb19-3"><a href="#cb19-3"></a>                 pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>:{<span class="st">"sharey"</span>:<span class="va">True</span>}},        </span>
 <span id="cb19-4"><a href="#cb19-4"></a>                 )<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -804,7 +974,7 @@ Figure&nbsp;5.10: Posterior predictive check with PIT-ECDFs showing four alterna
 <li>If the difference is <strong>negative</strong>, the model is <strong>over-confident</strong>: the predictions have a narrower spread than the data – they are <strong>too certain</strong>.</li>
 </ul>
 <div id="cell-fig-post_ppc_pit_coverage" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>azp.plot_ppc_pit(idata_i,</span>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>azp.plot_ppc_pit(dt_i,</span>
 <span id="cb20-2"><a href="#cb20-2"></a>                 coverage<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb20-3"><a href="#cb20-3"></a>                 plot_kwargs<span class="op">=</span>{<span class="st">"ylabel"</span>:<span class="va">False</span>},</span>
 <span id="cb20-4"><a href="#cb20-4"></a>                 pc_kwargs<span class="op">=</span>{<span class="st">"plot_grid_kws"</span>:{<span class="st">"sharey"</span>:<span class="va">True</span>}},        </span>
@@ -838,7 +1008,7 @@ p(\tilde y_i \leq y_i \mid y_{-i})
 <p>This is a more stringent test, as we are not using the <span class="math inline">\(i\)</span>-th observation to compute the posterior predictive distribution. This is known as the leave-one-out cross-validation (LOO-CV) and it is a very popular method to assess the predictive performance of a model.</p>
 <p>In principle computing this will be too costly, as we need to compute the posterior predictive distribution <span class="math inline">\(n\)</span> times, where <span class="math inline">\(n\)</span> is the number of observations. However, we can use a method called Pareto-smoothed importance sampling (PSIS) to approximate the LOO-CV from a single posterior computation. This is a topic we will discuss in more detail in <a href="Model_comparison.html" class="quarto-xref"><span>Chapter 7</span></a>. ArviZ offers many functions based on this method, one of them is <code>loo_pit</code>.</p>
 <div id="cell-fig-post_loo_pit" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>azp.plot_loo_pit(idata)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>azp.plot_loo_pit(dt)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-post_loo_pit" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -869,7 +1039,7 @@ Figure&nbsp;5.12: Posterior predictive check with LOO-PIT-ECDF.
 <p>Here we are going to discuss the rootograms presented by <span class="citation" data-cites="Säilynoja_2025">Säilynoja et al. (<a href="References.html#ref-Säilynoja_2025" role="doc-biblioref">2025</a>)</span>. These rootograms emphasises the discreteness of the data and predictions by using points and point-wise credible intervals. And instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frecuencies from the plot (instead of reading the square root) while keeping the advantage of being able to discriminate details at lower frecuencies.</p>
 <p>To illustrate rootograms we are going to use the Horseshoe crabs dataset <span class="citation" data-cites="Brockmann_1996">(<a href="References.html#ref-Brockmann_1996" role="doc-biblioref">Brockmann 1996</a>)</span>. Very briefly, horseshoe crabs arrive at the beach in pairs for their spawning ritual. Solitary males gather around the nesting couples and vying to fertilize the eggs. These individuals, known as satellite males, often congregate near certain nesting pairs while disregarding others. We used Bambi to create two models a poisson model and a hurdle-negative binomial model for the number of male satellites as a function of the carapace width and color of the female.</p>
 <p>We are going to omit the modelling details, and just upload prefitted models.</p>
-<div id="dabffb98" class="cell" data-execution_count="17">
+<div id="98982f54" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>crabs_poisson <span class="op">=</span> azb.load_arviz_data(<span class="st">'crabs_poisson'</span>)</span>
 <span id="cb22-2"><a href="#cb22-2"></a>crabs_hurdle_nb <span class="op">=</span> azb.load_arviz_data(<span class="st">'crabs_hurdle_nb'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -971,7 +1141,7 @@ Tukey, John W. 1977. <em>Exploratory <span>Data</span> <span>Analysis</span></em
 
 </main> <!-- /main -->
 <script type="application/vnd.jupyter.widget-state+json">
-{"state":{"1c2048bb17d74b699021d58697be6bfc":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_8b434efd52a24999a9670a45831e710f","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             0.74        3            1814.98 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             0.92        3            1922.64 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             0.74        3            1814.98 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             0.92        3            1922.64 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"8b434efd52a24999a9670a45831e710f":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"ec79ed2b94474372a0ddcc71c1da0bb4":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_fad658d7f45348539b0d99e49815be3f","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling ... <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> 0:00:00 / 0:00:00\n</pre>\n","text/plain":"Sampling ... \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m 0:00:00 / 0:00:00\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"fad658d7f45348539b0d99e49815be3f":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}}},"version_major":2,"version_minor":0}
+{"state":{"290748ea32a14872be6eeed367d75564":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"690a09b984f64f959cee69eade8ac3cd":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_da011664a5cf40bd89f1dfc609a0849f","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">Sampling ... <span style=\"color: #008000; text-decoration-color: #008000\">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> <span style=\"color: #800080; text-decoration-color: #800080\">100%</span> 0:00:00 / 0:00:00\n</pre>\n","text/plain":"Sampling ... \u001b[32m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[35m100%\u001b[0m 0:00:00 / 0:00:00\n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}},"da011664a5cf40bd89f1dfc609a0849f":{"model_module":"@jupyter-widgets/base","model_module_version":"2.0.0","model_name":"LayoutModel","state":{"_model_module":"@jupyter-widgets/base","_model_module_version":"2.0.0","_model_name":"LayoutModel","_view_count":null,"_view_module":"@jupyter-widgets/base","_view_module_version":"2.0.0","_view_name":"LayoutView","align_content":null,"align_items":null,"align_self":null,"border_bottom":null,"border_left":null,"border_right":null,"border_top":null,"bottom":null,"display":null,"flex":null,"flex_flow":null,"grid_area":null,"grid_auto_columns":null,"grid_auto_flow":null,"grid_auto_rows":null,"grid_column":null,"grid_gap":null,"grid_row":null,"grid_template_areas":null,"grid_template_columns":null,"grid_template_rows":null,"height":null,"justify_content":null,"justify_items":null,"left":null,"margin":null,"max_height":null,"max_width":null,"min_height":null,"min_width":null,"object_fit":null,"object_position":null,"order":null,"overflow":null,"padding":null,"right":null,"top":null,"visibility":null,"width":null}},"f526f0b35580478ca068969db4d0d65a":{"model_module":"@jupyter-widgets/output","model_module_version":"1.0.0","model_name":"OutputModel","state":{"_dom_classes":[],"_model_module":"@jupyter-widgets/output","_model_module_version":"1.0.0","_model_name":"OutputModel","_view_count":null,"_view_module":"@jupyter-widgets/output","_view_module_version":"1.0.0","_view_name":"OutputView","layout":"IPY_MODEL_290748ea32a14872be6eeed367d75564","msg_id":"","outputs":[{"data":{"text/html":"<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\">                                                                                                                   \n <span style=\"font-weight: bold\"> Progress                 </span> <span style=\"font-weight: bold\"> Draws </span> <span style=\"font-weight: bold\"> Divergences </span> <span style=\"font-weight: bold\"> Step size </span> <span style=\"font-weight: bold\"> Grad evals </span> <span style=\"font-weight: bold\"> Sampling Speed  </span> <span style=\"font-weight: bold\"> Elapsed </span> <span style=\"font-weight: bold\"> Remaining </span> \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             0.97        3            1889.27 draws/s   0:00:01   0:00:00    \n  <span style=\"color: #1f77b4; text-decoration-color: #1f77b4\">━━━━━━━━━━━━━━━━━━━━━━━━</span>   2000    0             1.16        3            1871.04 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n</pre>\n","text/plain":"                                                                                                                   \n \u001b[1m \u001b[0m\u001b[1mProgress                \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDraws\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mDivergences\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mStep size\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mGrad evals\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mSampling Speed \u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mElapsed\u001b[0m\u001b[1m \u001b[0m \u001b[1m \u001b[0m\u001b[1mRemaining\u001b[0m\u001b[1m \u001b[0m \n ───────────────────────────────────────────────────────────────────────────────────────────────────────────────── \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             0.97        3            1889.27 draws/s   0:00:01   0:00:00    \n  \u001b[38;2;31;119;180m━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m   2000    0             1.16        3            1871.04 draws/s   0:00:01   0:00:00    \n                                                                                                                   \n"},"metadata":{},"output_type":"display_data"}],"tabbable":null,"tooltip":null}}},"version_major":2,"version_minor":0}
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
