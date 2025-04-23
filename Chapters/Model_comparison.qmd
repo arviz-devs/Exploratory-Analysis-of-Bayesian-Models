@@ -304,13 +304,13 @@ We can see that we get the estimated ELPD value using LOO and its standard error
 ```{python}
 target = pz.StudentT(nu=4, mu=0, sigma=1).rvs(200)
 
-with pm.Model() as modelo_n:
+with pm.Model() as model_n:
     μ = pm.Normal("μ", 0, 1)
     σ = pm.HalfNormal("σ", 1)
     pm.Normal("y", μ, σ, observed=target)
     idata_n = pm.sample(idata_kwargs={"log_likelihood":True})
     
-with pm.Model() as modelo_t:
+with pm.Model() as model_t:
     μ = pm.Normal("μ", 0, 1)
     σ = pm.HalfNormal("σ", 1)
     ν = pm.Exponential("ν", scale=30)
@@ -318,7 +318,7 @@ with pm.Model() as modelo_t:
     idata_t = pm.sample(idata_kwargs={"log_likelihood":True})
 ```
 
-## PyStan
+## CmdStanPy
 
 ``` {.python}
 ## coming soon
@@ -326,7 +326,7 @@ with pm.Model() as modelo_t:
 :::
 
 ```{python}
-cmp_df = azs.compare({'modelo_n':idata_n, 'modelo_t':idata_t})
+cmp_df = azs.compare({'model_n':idata_n, 'model_t':idata_t})
 cmp_df
 ```
 
@@ -514,7 +514,7 @@ with pm.Model() as model_uni:
     idata_uni.extend(pm.sample_prior_predictive(8000))
 ```
 
-## PyStan
+## CmdStanPy
 
 ``` {.python}
 ## coming soon
@@ -545,7 +545,7 @@ with pm.Model() as model_conc:
     idata_conc.extend(pm.sample_prior_predictive(8000))
 ```
 
-## PyStan
+## CmdStanPy
 
 ``` {.python}
 ## coming soon
