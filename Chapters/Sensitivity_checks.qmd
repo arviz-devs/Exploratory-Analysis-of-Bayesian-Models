@@ -175,7 +175,7 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_00:
                             idata_kwargs={"log_likelihood": True, "log_prior": True})
 ```
 
-## PyStan
+## CmdStanPy
 
 ``` {.python}
 ## coming soon
@@ -237,7 +237,7 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_01:
 ```
 
 
-## PyStan
+## CmdStanPy
 
 ``` {.python}
 ## coming soon
@@ -315,7 +315,7 @@ with pm.Model() as model_bt:
     pm.compute_log_likelihood(idata_bt)
 ```
 
-## PyStan
+## CmdStanPy
 
 ``` {.python}
 ## coming soon
