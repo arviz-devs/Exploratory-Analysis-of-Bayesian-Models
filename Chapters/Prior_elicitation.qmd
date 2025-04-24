@@ -222,13 +222,7 @@ Now we can plot the prior predictive distribution and compare it with the refere
 
 
 ```{python}
-pc = azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
-
-def axvline(da, target, backend, value, **kwargs):
-    return target.axvline(value, **kwargs)
-
-for key, val in refs.items():
-    pc.map(axvline, value=val, color="gray", linestyle="--", lw=1)
+azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf", references=list(refs.values()))
 ```
 
 
@@ -249,9 +243,7 @@ We can plot the prior predictive distribution and compare it with the reference 
 
 
 ```{python}
-pc = azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
-for key, val in refs.items():
-    pc.map(axvline, value=val, color="gray", linestyle="--", lw=1)
+azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf", references=list(refs.values()))
 ```
 
 The new priors still generate some values that are too wide, but at least the bulk of the model predictions are in the right range. So, without too much effort and extra information, we were able to move from a very vague prior to a weakly informative prior. If we decided this prior is still very vague we can add more domain-knowledge.
@@ -265,7 +257,7 @@ One way to improve this workflow is by adding interactivity. We can do this with
 ```{python}
 #| eval : false
 def pp_model(α_μ=0, α_σ=100, β_μ=0, β_σ=100, σ_σ=5):
-	α = pz.Normal(α_μ, α_σ).rvs()
+    α = pz.Normal(α_μ, α_σ).rvs()
     β = pz.Normal(β_μ, β_σ).rvs()
     σ = pz.HalfNormal(σ_σ).rvs()
     prey = pz.Normal(α + β * pp_mass.predator_log, σ).rvs()
@@ -316,9 +308,7 @@ Now we can plot the prior predictive distribution, the target distribution and c
 
 
 ```{python}
-pc = azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
-for key, val in refs.items():
-    pc.map(axvline, value=val, color="gray", linestyle="--", lw=1)
+azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf", references=list(refs.values()))
 ```
 
 <!-- We see very good agreement. Let's do one more plot. This time we hide the individual prior predictive samples and instead plot the aggregated prior predictive distribution, labelled with "mean" as it is the average distribution when we average over all the computed prior predictive distributions.

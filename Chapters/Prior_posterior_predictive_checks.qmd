@@ -142,12 +142,7 @@ The plot below displays samples from the prior predictive distribution (shown as
 ```{python}
 #| label: fig-prior_pred_check_wide
 #| fig-cap: "The prior predictive check for the model of heights. We can see that the bulk of the samples are outside the reference values."
-pc = azp.plot_ppc_dist(dt, group="prior_predictive")
-def axvline(da, target, backend, value, **kwargs):
-    return target.axvline(value, **kwargs)
-
-pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
-pc.map(axvline, value=182, color="gray", linestyle="--", lw=1)  # "tallest"
+pc = azp.plot_ppc_dist(dt, group="prior_predictive", references=(50, 182))
 ```
 
 We can see that our model is bananas the bulk of the prior predictive distribution is outside of our reference values and the model is predicting values below 0. This is a clear indication that the model is not a good representation of our prior knowledge. 
@@ -227,7 +222,6 @@ dt = azb.from_cmdstanpy(
     observed_data={"y": y},
 )
 ```
-```
 :::
 
 We repeat the prior predictive checks with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is within the reference values. 
@@ -235,9 +229,7 @@ We repeat the prior predictive checks with the new prior predictive distribution
 ```{python}
 #| label: fig-prior_pred_check_narrow
 #| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than @fig-prior_pred_check_wide. Predictions are closer to our domain knowledge about human heights."
-pc = azp.plot_ppc_dist(dt, group="prior_predictive")
-pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
-pc.map(axvline, value=182, color="gray", linestyle="--", lw=1)  # "tallest"
+pc = azp.plot_ppc_dist(dt, group="prior_predictive", references=(50, 182))
 ```
 
 You are free to pick other priors and other reference values and make new prior predictive checks. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.
@@ -247,9 +239,7 @@ When plotting many distributions, where each one spans a narrow range of values 
 ```{python}
 #| label: fig-prior_pred_check_narrow_ecdf
 #| fig-cap: "The prior predictive check for the model of heights. Same as @fig-prior_pred_check_narrow but using empirical CDFs instead of KDEs."
-pc = azp.plot_ppc_dist(dt, group="prior_predictive", kind="ecdf")
-pc.map(axvline, value=50, color="gray", linestyle="--", lw=1)  # "newborn"
-pc.map(axvline, value=182, color="gray", linestyle="--", lw=1)  # "tallest"
+pc = azp.plot_ppc_dist(dt, group="prior_predictive", kind="ecdf", references=(50, 182))
 ```
 
 ### A final note about priors
