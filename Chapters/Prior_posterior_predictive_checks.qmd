@@ -518,21 +518,6 @@ azp.plot_ppc_pit(dt_i,
                  );
 ```
 
-Alternatively, we can visualize the coverage of the central posterior credible intervals by setting ``coverage=True``. This allows us to assess whether the credible intervals includes the observed values.
-
-- If the difference is **positive**, the model is **under-confident**: the predictions have a wider spread than the data -- they are **too uncertain**.
-- If the difference is **negative**, the model is **over-confident**: the predictions have a narrower spread than the data -- they are **too certain**.
-
-```{python}
-#| label: fig-post_ppc_pit_coverage
-#| fig-cap: "Coverage check showing four alternative scenarios."
-azp.plot_ppc_pit(dt_i,
-                 coverage=True,
-                 plot_kwargs={"ylabel":False},
-                 pc_kwargs={"plot_grid_kws":{"sharey":True}},        
-                 );
-```
-
 ### Coverage
 
 The coverage is the proportion of true values that fall within a given prediction interval. For a well-calibrated model, the coverage should match the intended interval width. For example, a 95% credible interval should contain the true value 95% of the time.
@@ -595,11 +580,11 @@ So far we have show examples with continuous data. Many of the tools can still b
 
 ### Posterior predictive checks for count data
 
-Count data is a type of discrete data that is very common in many fields. For instance, the number of iguanas per square meter in a rainforest, the number of bikes in a bike-sharing station, the number of calls to a call center, the number of emails received, etc. When assessing the fit of a model to count data we need to consider the discretness of the data and that we usually care about the amount of (over/under-)dispersion.
+Count data is a type of discrete data that is very common in many fields. For instance, the number of iguanas per square meter in a rainforest, the number of bikes in a bike-sharing station, the number of calls to a call center, the number of emails you got last year, etc. When assessing the fit of a model to count data we need to consider the discreetness of the data and that we usually care about the amount of (over/under-)dispersion.
 
-Rootograms are a graphical tool to assess the fit of count data models [@tukey_1977; @Kleiber_2016]. There are a few variations of rootograms, but traditionally rootograms use bars for the predicted data, a lines+markers for the observed data and instead of plotting the raw data, they show the square *root* of the observed and predicted counts. Often the uncertainty in the predictions is omitted. The reason to square root the data is to make easier to compare observed and expected frequencies even for low frequencies.
+Rootograms are a graphical tool to assess the fit of count data models [@tukey_1977; @Kleiber_2016]. There are a few variations of rootograms, but traditionally rootograms use bars for the predicted data, and lines (plus markers) for the observed data. Finally, instead of plotting the raw data, they show the square *root* of the observed and predicted counts, which explain the name of the plots. The reason to square root the data is to make easier to compare observed and expected frequencies even for low frequencies. Often the uncertainty in the predictions is omitted.
 
-Here we are going to discuss the rootograms presented by @Säilynoja_2025. These rootograms emphasises the discreteness of the data and predictions by using points and point-wise credible intervals. And instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frecuencies from the plot (instead of reading the square root) while keeping the advantage of being able to discriminate details at lower frecuencies.
+Here we are going to discuss the rootograms presented by @Säilynoja_2025. These rootograms emphasises the discreteness of the data and and predictions by using points. The uncertainty in the predictions is encoded using intervals. Instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frecuencies from the plot (instead of reading the square root) while keeping the advantage of being able to discriminate details at lower frecuencies.
 
 To illustrate rootograms we are going to use the Horseshoe crabs dataset [@Brockmann_1996]. Very briefly, horseshoe crabs arrive at the beach in pairs for their spawning ritual. Solitary males gather around the nesting couples and vying to fertilize the eggs. These individuals, known as satellite males, often congregate near certain nesting pairs while disregarding others. We used Bambi to create two models a poisson model and a hurdle-negative binomial model for the number of male satellites as a function of the carapace width and color of the female. 
 
@@ -633,13 +618,11 @@ Both models predict more values in the tail than observed, even if with low prob
 
 ### Posterior predictive checks for binary data
 
-Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. We may be tempted to asses the fit of a binary model using a bar plot, or a plot similar to the rootogram we showed in the previous section, but this is not a good idea. The reason is that even a very simple model with one parameter corresponding to the proportion of one class, can perfectly model the proportion, and a bar plot will not show any deviation [@Säilynoja_2025]. 
+Binary data is a common form of discrete data, often used to represent outcomes like yes/no, success/failure, or 0/1. We may be tempted to asses the fit of a binary model using a bar plot, or a plot similar to the rootogram we showed in the previous section, but this is not a good idea. The reason is that even a very simple model with one parameter for the proportion of one class (like an intercept), can perfectly model that proportion [@Säilynoja_2025]. Then a bar plot will not be able to tell much about the quality of our model.
 
-One solution to this challenge is to use the so call calibration or reliability plots. To create this kind of plot we first bin the predicted probabilities (e.g., [0.0–0.1], [0.1–0.2], ..., [0.9–1.0]) and then for each bin we compute the fraction of observed positive outcomes. In this way we can compare the predicted probabilities to the observed frequencies. The ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies.
+One solution to this challenge is to use the so call calibration or reliability plots. To create this kind of plot we first bin the predicted probabilities (e.g., [0.0–0.1], [0.1–0.2], ..., [0.9–1.0]) and then for each bin we compute the fraction of observed positive outcomes. In this way we can compare the predicted probabilities to the observed frequencies per bin. The ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. The problem with this approach is that in practice we don't have good rules to select the bins and different bins can result in plots that look drastically different. 
 
-The problem with this approach is that in practice we don't have good rules to select the bins and different bins can result in plots that look drastically different [@Dimitriadis_2021]. An alternative is to use the method proposed by @Dimitriadis_2021. This method uses conditional event probabilities (CEP), that is the probability that a certain event occurs given that the classifier has assigned a specific predicted probability. To compute the CEPs, the authors use the pool adjacent violators (PAV) algorithm [@Ayer_1955], which provides a way to assign CEPs that are monotonic (i.e. they increase or stay the same, but never decrease) with respect to the model predictions. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities. 
-
-@fig-ppc_pava shows a calibration plot for a dummy logistic regression model. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities. The plot also includes the confidence bands for the CEPs. The confidence bands are computed using the method proposed by @Dimitriadis_2021.
+A more robust and simple to use method, that does not rely on binning the data has been proposed by @Dimitriadis_2021. @fig-ppc_pava shows one example of this method. As previously mentioned, the ideal calibration plot is a diagonal line, where the predicted probabilities are equal to the observed frequencies. If the line is above the diagonal, the model is underestimating the probabilities, and if the line is below the diagonal, the model is overestimating the probabilities.The confidence bands are computed using the method proposed by @Dimitriadis_2021.
 
 ```{python}
 #| label: fig-ppc_pava
@@ -648,3 +631,5 @@ dt = azb.load_arviz_data('anes')
 
 azp.plot_ppc_pava(dt)
 ```
+
+The y-axis of @fig-ppc_pava is labeled as CEP, short for "conditional event probabilities." A CEP represents the probability that an event occurs, given that the classifier assigned a particular predicted probability. These probabilities are computed using the pool adjacent violators algorithm [@Ayer_1955], also known as the PAV-adjusted method—hence the name of the corresponding function in ArviZ. This algorithm ensures that CEPs are monotonic: they either increase or remain constant as the predicted probabilities increase, but never decrease. This monotonicity assumption is reasonable for calibrated models, where higher predicted probabilities should correspond to higher actual event probabilities. 
