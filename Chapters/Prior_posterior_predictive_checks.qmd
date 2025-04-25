@@ -532,6 +532,28 @@ azp.plot_ppc_pit(dt_i,
                  pc_kwargs={"plot_grid_kws":{"sharey":True}},        
                  );
 ```
+
+### Coverage
+
+The coverage is the proportion of true values that fall within a given prediction interval. For a well-calibrated model, the coverage should match the intended interval width. For example, a 95% credible interval should contain the true value 95% of the time.
+
+For equal-tailed intervals (ETI), the coverage can be obtained by transforming the PIT values, we just need to replace the PIT with two times the absolute difference between the PIT values and 0.5. As with the PIT-ECDFs we saw in the previous section, for a well calibrated model, we should expect the coverage to be uniform and within the confidence envelope.
+
+Using ArviZ we can visualize the ETI coverage by setting ``coverage=True`` in the `plot_ppc_pit` function.
+
+```{python}
+#| label: fig-post_ppc_pit_coverage
+#| fig-cap: "Coverage check showing four alternative scenarios."
+azp.plot_ppc_pit(dt_i,
+                 coverage=True,
+                 plot_kwargs={"ylabel":False},
+                 pc_kwargs={"plot_grid_kws":{"sharey":True}},        
+                 );
+```
+
+- If the difference is **positive**, the model is **under-confident**: the predictions have a wider spread than the data -- they are **too uncertain**.
+- If the difference is **negative**, the model is **over-confident**: the predictions have a narrower spread than the data -- they are **too certain**.
+
 ### Avoiding double-dipping {#sec-avoid-double-dipping}
 
 So far we have being using the data twice, first to fit the model and then to evaluate it. This is a common practice in Bayesian data analysis and it is not a problem as long as we are aware of it. The main goal is to understand how well the model is doing at predicting the data, detecting potential problems, and if possible or desirable improving the model. 
