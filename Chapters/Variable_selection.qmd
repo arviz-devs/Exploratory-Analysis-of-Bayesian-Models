@@ -99,7 +99,7 @@ Kulprit is an implementation of a method known as projective inference. The main
 
 It turns out, that this can be achieved as an optimization problem. Let's see. 
 
-Denote $\theta$ as the parameter of the posterior from the reference model, and $\theta_\perp$ those of the posterior for a particular submodel. Denote $\tilde{y}$ the samples from the posterior predictive distribution of the reference model $p(\tilde{y} \mid \theta)$. Then we want to find a posterior that induces the posterior predictive distribution $q(\tilde{y} \mid \theta_\perp)$. We want $p$ and $q$ to be as close as possible. As we already discussed in @sec-model-comparison we can use the Kullback-Leibler divergence to measure how close two distributions are. Then we can write:
+Denote $\theta$ as the parameter of the posterior from the reference model, and $\theta_\perp$ those of the posterior for a particular submodel. Denote $\tilde{y}$ the samples from the posterior predictive distribution of the reference model $p(\tilde{y} \mid \theta)$. Then we want to find a posterior that induces the posterior predictive distribution $q(\tilde{y} \mid \theta_\perp)$. We want $p$ and $q$ to be as close as possible. As we already discussed in @sec-kl-divergence we can use the Kullback-Leibler divergence to measure how close two distributions are. Then we can write:
 
 \begin{align}
 \mathbb{KL}\{p(\tilde{y}\mid\theta) \lVert q(\tilde{y})\} &= \mathbb{E}_{\tilde{y}\sim p(\tilde{y}\mid\theta)} \left[ \log \frac{p(\tilde{y}\mid\theta)}{q(\tilde{y}\mid\theta_\perp)} \right] \\
