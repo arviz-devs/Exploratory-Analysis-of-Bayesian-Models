@@ -16,6 +16,19 @@ plt.rcParams["figure.dpi"] = 100
 SEED = 3592
 ```
 
+## Overview
+
+Models are designed as approximations to help us understand a specific problem or a related class of problems. They are not intended to be exact replicas of the real world. In this sense, all models are "wrong". However, not all models are equally wrong, some are better suited to describing a particular problem. Even more some models could be better to explain some of the observations and other better for some other, for example a model that is good high temperature observations may not be so good for low temperature observations.
+
+During a typical data analysis, it’s common to develop multiple models to fit the same data. These models may differ in aspects such as priors, likelihoods, the inclusion of only linear terms versus adding smooth or interaction terms, and so on. When faced with multiple models, a natural question arises: how should we choose between them? 
+
+Understanding the problem at hand can often provide significant guidance. This is usually the case because usually we, as modellers, have knowledge about the problem and about the goals of the analysis, that we did not include in the models we are comparing. For example, if we are interested in making predictions, we may prefer a model that is better at predicting new data, even if we are not able to interpret it parameters. Instead, if we are interested in understanding the underlying processes, we may prefer a model that is simpler but easier to interpret, even if it does not fit the data as well.
+
+As we already saw in @sec-ppc prior and posterior predictive checks can also assist in evaluating different models. In some cases, computational considerations like convergence issues discussed in @sec-mcmc-diagnostics may influence our choice. Often even tradition and convention play a role in the decision-making process. For example, in some fields, certain models are more commonly used than others, so you may feel pressured to use a model that is more widely know. Of course, we should strive to make scientific decisions based on the data and the problem at hand, rather than on tradition or convention. However, there is no benefit in negating the human-nature of our practices. 
+
+In this section, we will explore formal methods that complement other tools we have seen to compare models. Hopefully, these tools will help us make more informed decisions. 
+
+
 ## The balance between simplicity and accuracy
 
 When choosing between alternative explanations, there is a principle known as Occam's razor. In very general terms, this principle establishes that given two or more equivalent explanations for the same phenomenon, the simplest one is the preferred explanation. When the explanations are models, a common criterion for simplicity is the number of parameters in a model.
@@ -31,12 +44,12 @@ If we evaluate a model solely by it capacity to reproduce the data used to fit i
 
 
 ::: {.callout-note}
-Bayesian models trough the use of prior, and the fact that the posterior is computed by marginalizing over those priors, is usually less prone to overfitting than alternative methods. But it is not true that we can not overfit Bayesian models. That will only be true when our model represents the true generating process of the data, an scenario that is extremely uncommon. Thus, in practice we often end up needing to compare Bayesian models using some measure of predictive performance or predictive accuracy.
+Bayesian models trough the use of prior, and the fact that the posterior is computed by marginalizing over those priors, is usually less prone to overfitting than alternative methods. This is *less true* for more vague priors, and *more true* for priors inducing a prior predictive distribution compatible with the domain-knowledge. But overall, is not true that we can not overfit Bayesian models. Thus, in practice we often end up needing to compare Bayesian models using some measure of predictive performance or predictive accuracy.
 :::
 
- The easier way to compute out-of-sample accuracy is two have at least two datasets, once we use to fit the models, and one we use to evaluate them. There are even more complex ways to partition the data, but the main point for our current discussion is that usually that's a luxury. Data is valuable, and not using all data to fit models can be a waste of information and resources. As this is a pervasive situation in data analysis, many different methods have been developed in order to evaluate the predictive accuracy of models without *wasting* data.
+The easier way to compute out-of-sample accuracy is two have at least two datasets, once we use to fit the models, and one we use to evaluate them. There are even more complex ways to partition the data, but the main point for our current discussion is that usually that's a luxury. Data is valuable, and not using all data to fit models can be a waste of information and resources. As this is a pervasive situation in data analysis, many different methods have been developed in order to evaluate the predictive accuracy of models without *wasting* data.
 
- We re going to discuss two family of methods: 
+We re going to discuss two family of methods: 
 
 
 * Cross-validation: This is an empirical strategy based on dividing the available data into separate subsets that are used to fit and evaluate alternatively. So this is a way to simulate having a hold-out dataset for model evaluation, but actually using all the available data for inference.
@@ -271,7 +284,7 @@ $$
 \sum_i^N \log \left( \frac{1}{S} \sum_j^S w_i^j p(y_i \mid \theta^j) \right)
 $$
 
-This result is fanstastics news, it tells us that we can calculate the leave-one-out cross-validation ELPD, without having to refit the model $N$ times.
+This result is fantastic news, it tells us that we can calculate the leave-one-out cross-validation ELPD, without having to refit the model $N$ times.
 
 The catch, because there is always a catch! Is that the expected $p(\theta^j \mid y_{-i} )$ is "wider" than $p(\theta^j \mid y)$, since it is a posterior distribution estimated with one less observation. This is the opposite to the ideal case in importance sampling. For many cases the difference may not be relevant, since eliminating an observation can lead to a practically equivalent posterior distribution. But in some cases the difference can be relatively large. When? Well, the more "influential" the observation the larger then difference when we remove it. 
 
@@ -353,40 +366,6 @@ azp.plot_compare(cmp_df);
 * For all models except *the best*, we also obtain a triangle indicating the value of the ELPD difference between each model and the *best* model. The gray error bar indicating the standard error of the differences between the point estimates.
 
 The simplest way to use information criteria is to choose a single model. Simply choose the model with the highest ELPD value. If we follow this rule we will have to accept that the quadratic model is the best. Even if we take into account the standard errors we can see that they do not overlap. Which gives us some security that the models are indeed *different* from each other. If, instead, the standard errors overlapped, we should provide a more nuanced answer.
-
-
-### LOO expectations and metrics
-
-From the PSIS smoothing procedure, we obtain a set of weights. The `loo` function utilizes these weights to estimate the ELPD we should have obtained if we have performed leave-one-out cross-validation. Furthermore, these weights can be used to estimate other quantities, such as the mean, standard deviation, and quantiles, as if we had performed leave-one-out cross-validation. For example, to compute the 25th and 75th percentiles we use:
-
-```{python}
-azs.loo_expectations(dt_rugby, kind="quantile", probs=[0.25, 0.75])
-```
-
-Similarly we may be interested in computing estimates of leave-one-out predictive metrics given a set of predictions and observations. For instance to compute the root mean square error we can do: 
-
-```{python}
-azs.loo_metrics(dt_rugby, kind="rmse", var_name="home_points")
-```
-
-Notice that for `loo_metrics` if we have more than one variable we must specify the variable that we care using the `var_names` argument, like in the previous example.
-
-
-### LOO-PIT
-
-Another quantity of interest that we can obtain via PSIS-LOO-CV is the PIT values. As already mentioned in @sec-avoid-double-dipping, we often are interested in computing:
-
-$$
-p(\tilde y_i \le y_i \mid y_{-i})
-$$
-
-That is, we are evaluating the model's ability to predict an observation when we remove that observation from the observed data. We can use PSIS-LOO_CV to estimate this from a single model fit.
-
-```{python}
-#| label: fig-elpdit
-#| fig-cap: "LOO-PIT plot for the rugby model"
-azp.plot_loo_pit(dt_rugby, var_names="home_points")
-```
 
 
 ### Pareto k and LOO diagnostics
@@ -562,3 +541,43 @@ We can see that the `BF_01` is $\approx 1.6$, which we can interpret as *anecdot
 ### Bayes factors vs the alternatives
 
 We could say that the Bayes factors measure which model, as a whole, is better for explaining the data. This includes the details of the prior, no matter how similar the model predictions are. In many scenarios, this is not what interests us when comparing models. For many real problems prior are not intended to be an accurate description of the *True* prior distribution of parameters, instead in many problems priors are choosen using some information and with the goal of providing some regulatization. In this and other cases we prefer to evaluate models in terms of how similar their predictions are. For those cases, we can use LOO. 
+
+
+## Absolute metrics
+
+In the previous sections we have seen how to compare models using relative metrics. By relative we mean that we are comparing the models with respect to each other. For example, we can say that model A is better than model B because it has a higher ELPD value. But we can not, in general, judge a single model by its ELPD alone. 
+In contrast, sometimes we are interested in absolute metrics. Some common absolute metrics are the root mean square error (RMSE), the mean absolute error (MAE), the coeﬀicient of
+determination ($R^2$), etc. Interestingly, we can use PSIS-LOO-CV procedure to compute the leave-one-out cross-validation version of these metrics. 
+
+### LOO expectations and metrics
+
+From the PSIS smoothing procedure, we obtain a set of weights. The `loo` function utilizes these weights to estimate the ELPD we should have obtained if we have performed leave-one-out cross-validation. Furthermore, these weights can be used to estimate other quantities, such as the mean, standard deviation, and quantiles, as if we had performed leave-one-out cross-validation. For example, to compute the 25th and 75th percentiles we use:
+
+```{python}
+azs.loo_expectations(dt_rugby, kind="quantile", probs=[0.25, 0.75])
+```
+
+Similarly we may be interested in computing estimates of leave-one-out predictive metrics given a set of predictions and observations. For instance to compute the root mean square error we can do: 
+
+```{python}
+azs.loo_metrics(dt_rugby, kind="rmse", var_name="home_points")
+```
+
+Notice that for `loo_metrics` if we have more than one variable we must specify the variable that we care using the `var_names` argument, like in the previous example.
+
+
+### LOO-PIT
+
+Another quantity of interest that we can obtain via PSIS-LOO-CV is the PIT values. As already mentioned in @sec-avoid-double-dipping, we often are interested in computing:
+
+$$
+p(\tilde y_i \le y_i \mid y_{-i})
+$$
+
+That is, we are evaluating the model's ability to predict an observation when we remove that observation from the observed data. We can use PSIS-LOO_CV to estimate this from a single model fit.
+
+```{python}
+#| label: fig-elpdit
+#| fig-cap: "LOO-PIT plot for the rugby model"
+azp.plot_loo_pit(dt_rugby, var_names="home_points")
+```
