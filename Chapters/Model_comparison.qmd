@@ -16,6 +16,19 @@ plt.rcParams["figure.dpi"] = 100
 SEED = 3592
 ```
 
+## Overview
+
+Models are designed as approximations to help us understand a specific problem or a related class of problems. They are not intended to be exact replicas of the real world. In this sense, all models are "wrong". However, not all models are equally wrong, some are better suited to describing a particular problem. Even more some models could be better to explain some of the observations and other better for some other, for example a model that is good high temperature observations may not be so good for low temperature observations.
+
+During a typical data analysis, it’s common to develop multiple models to fit the same data. These models may differ in aspects such as priors, likelihoods, the inclusion of only linear terms versus adding smooth or interaction terms, and so on. When faced with multiple models, a natural question arises: how should we choose between them? 
+
+Understanding the problem at hand can often provide significant guidance. This is usually the case because usually we, as modellers, have knowledge about the problem and about the goals of the analysis, that we did not include in the models we are comparing. For example, if we are interested in making predictions, we may prefer a model that is better at predicting new data, even if we are not able to interpret it parameters. Instead, if we are interested in understanding the underlying processes, we may prefer a model that is simpler but easier to interpret, even if it does not fit the data as well.
+
+As we already saw in @sec-ppc prior and posterior predictive checks can also assist in evaluating different models. In some cases, computational considerations like convergence issues discussed in @sec-mcmc-diagnostics may influence our choice. Often even tradition and convention play a role in the decision-making process. For example, in some fields, certain models are more commonly used than others, so you may feel pressured to use a model that is more widely know. Of course, we should strive to make scientific decisions based on the data and the problem at hand, rather than on tradition or convention. However, there is no benefit in negating the human-nature of our practices. 
+
+In this section, we will explore formal methods that complement other tools we have seen to compare models. Hopefully, these tools will help us make more informed decisions. 
+
+
 ## The balance between simplicity and accuracy
 
 When choosing between alternative explanations, there is a principle known as Occam's razor. In very general terms, this principle establishes that given two or more equivalent explanations for the same phenomenon, the simplest one is the preferred explanation. When the explanations are models, a common criterion for simplicity is the number of parameters in a model.
@@ -31,12 +44,12 @@ If we evaluate a model solely by it capacity to reproduce the data used to fit i
 
 
 ::: {.callout-note}
-Bayesian models trough the use of prior, and the fact that the posterior is computed by marginalizing over those priors, is usually less prone to overfitting than alternative methods. But it is not true that we can not overfit Bayesian models. That will only be true when our model represents the true generating process of the data, an scenario that is extremely uncommon. Thus, in practice we often end up needing to compare Bayesian models using some measure of predictive performance or predictive accuracy.
+Bayesian models trough the use of prior, and the fact that the posterior is computed by marginalizing over those priors, is usually less prone to overfitting than alternative methods. This is *less true* for more vague priors, and *more true* for priors inducing a prior predictive distribution compatible with the domain-knowledge. But overall, is not true that we can not overfit Bayesian models. Thus, in practice we often end up needing to compare Bayesian models using some measure of predictive performance or predictive accuracy.
 :::
 
- The easier way to compute out-of-sample accuracy is two have at least two datasets, once we use to fit the models, and one we use to evaluate them. There are even more complex ways to partition the data, but the main point for our current discussion is that usually that's a luxury. Data is valuable, and not using all data to fit models can be a waste of information and resources. As this is a pervasive situation in data analysis, many different methods have been developed in order to evaluate the predictive accuracy of models without *wasting* data.
+The easier way to compute out-of-sample accuracy is two have at least two datasets, once we use to fit the models, and one we use to evaluate them. There are even more complex ways to partition the data, but the main point for our current discussion is that usually that's a luxury. Data is valuable, and not using all data to fit models can be a waste of information and resources. As this is a pervasive situation in data analysis, many different methods have been developed in order to evaluate the predictive accuracy of models without *wasting* data.
 
- We re going to discuss two family of methods: 
+We re going to discuss two family of methods: 
 
 
 * Cross-validation: This is an empirical strategy based on dividing the available data into separate subsets that are used to fit and evaluate alternatively. So this is a way to simulate having a hold-out dataset for model evaluation, but actually using all the available data for inference.
@@ -87,10 +100,11 @@ for p, ax in zip([0.5, 0.1, 0.9, 0.0001], axes.ravel()):
     ax.set_ylim(-0.05, 1.05)
 ```
 
-The concept of entropy appears many times in statistics. It can be useful, for example when defining priors. In general we want to use a prior that has maximum entropy given our knowledge (see for example PreliZ's `maxent` function). And also when comparing models. Let's see.
+The concept of entropy appears many times in statistics. It can be useful, for example when defining priors. In general we want to use a prior that has maximum entropy given our knowledge (see for example PreliZ's `maxent` function). And also when comparing models as we will see in the next section.
 
+## KL divergence {#sec-kl-divergence}
 
-Suppose we have a target distribution $p$, with which we cannot work directly and we only have access to $q$. We want to evaluate how well $q$ approximates $p$, or whether $q$ is a parametric family find what parameters make $q$ as close to $p$ as possible. One way to do this is to measure the Kulback-Leibler divergence:
+The Kulback-Leibler divergence is a measure of how one probability distribution diverges from a second expected probability distribution. Suppose we have a target distribution $p$, with which we cannot work directly and we only have access to a different distribution that we will call $q$. We want to evaluate how well $q$ approximates $p$. One way to do this is to measure the Kulback-Leibler divergence between $p$ and $q$. If $q$ is a parametric family we can find the parameters making $q$ as close to $p$ as possible by minimizing the KL divergence. The KL divergence is defined as: 
 
 $$
 \mathbb{KL}(p \parallel q) =  \overbrace{-\sum_i^N p_i \log{q_i}}^{H(p, q)} -  \overbrace{\left(-\sum_{i}^n p_i \log{p_i}\right)}^{H(p)}
@@ -106,8 +120,7 @@ $$
 $$
 
 
-All equivalent and useful forms depending on context. Something common in all these expressions is that we cannot apply directly if $p$ is unknown. For example, if $p$ represents the **data generating process** or the **population** or the **true** distribution, we are lost... But, if what we are interested in is comparing models we will see that NO Direct calculation is necessary, the reason is that even when we do not know $p$, its entropy is a constant term.
-
+If $p$ represents the **data generating process** or the **population** or the **true** distribution, and $q$ represents our model. It may seems that this expressions are all useless because we don't know $p$. That the reason we are trying to fit a model in the first place. But, if our goal is to compare $m$ models represented with $q_0, q_1 \cdots q_m$, we can can still use the KL divergence to compare them! The reason is that even when we do not know $p$, its entropy is a constant term for all comparisons.
 
 $$
 \begin{split}
@@ -118,14 +131,13 @@ $$
 \end{split}
 $$
 
-If we compare models then the best model, given the set of compared models, will be the one that has a larger likelihood value. In other words, mimicking KL divergence is proportional to maximizing likelihood.
+This tell us that when comparing models the best model, the best one from the set of compared models, will be the one that has the larger (log-)likelihood value. In other words, minimizing the KL divergence is proportional to maximizing likelihood.
 
-In practice we also do not have access to $\mathbb{E}[\log{q}]$, what we can do is estimate this quantity from a sample. Since we already know how to use a sample to estimate the parameters of a model and using the same sample to evaluate it introduces a bias, which we must somehow correct. One way to correct this bias is given by the information criteria.
-
+In practice we don't really have $\mathbb{E}[\log{q}]$, but we can estimate this quantity from our sample. But we have to be carefull, if we use the sample to estimate the parameters of a model and then use those parameters to estimate $\mathbb{E}[\log{q}]$ we will be introducing a bias. We will be overconfident on the ability of our model to explain the data. In the next sections we will see 3 strategies to avoid this problem. 
 
 ## Akaike information criterion
 
-The Akaike information criterion [@akaike_1974] (AIC) is a very well-known and widely used information criterion outside the Bayesian universe and is defined as:
+The Akaike information criterion [@akaike_1974] (AIC) is a very well-known and widely used information criterion and is defined as:
 
 $$
 AIC = -2 \sum_i^N \log p(y_i \mid \hat{\theta}_{mle}) + 2 k
@@ -138,79 +150,76 @@ $$
 AIC = \sum_i^N \log p(y_i \mid \hat{\theta}_{mle}) - k
 $$
 
-In this way it is easier to see that the Akaike criterion is a penalized maximum likelihood, because it becomes smaller the more parameters a model has. Furthermore, this version without the -2 has a clearer correspondence with other expressions which we will see below.
+In this way it is easier to see that the Akaike criterion is a penalized maximum likelihood, it becomes smaller the more parameters a model has. Furthermore, this version without the -2 has a clearer correspondence with other expressions which we will see below.
 
 ::: {.callout-note}
-That the number of parameters is a valid penalty criterion follows our intuition, a model with a greater number of parameters is, in general, more flexible. But it is interesting to note that Akaike's criterion has a theoretical justification, it is not that Akaike simply thought that using $k$ was a good idea.
+That the number of parameters is a valid penalty criterion follows our intuition, a model with a greater number of parameters is, in general, more flexible. But it is interesting to note that the Akaike's criterion has a theoretical justification, it is not that Akaike simply thought that using $k$ was a good idea.
 :::
 
-The AIC criterion is very useful, but have many issues for Bayesian models. One reason is that it uses a point estimate of $\theta$ and not the posterior distribution, hence it discards potentially useful information. Furthermore AIC, from a Bayesian perspective, assumes that priors are *flat* and therefore AIC is incompatible with informative and/or weakly informative priors. Furthermore, the number of parameters in a model is not always a good measure of its complexity. When using informative priors or in hierarchical models, parameters becomes interrelated and thus the _effective number of parameters_ can be smaller than the actual number of parameter. In general, a regularized model will be a model with less _effective number of parameters_.
+The AIC criterion is very useful, but can be very limited for Bayesian models. One reason is that it uses a point estimate of $\theta$ and not the posterior distribution, hence it discards potentially useful information. Furthermore AIC, from a Bayesian perspective, assumes that priors are *flat* and therefore AIC is incompatible with informative and/or weakly informative priors. Furthermore, the number of parameters in a model is not always a good measure of its complexity. In general, a regularized model will be a model with less _effective number of parameters_. For example, when using informative priors or in hierarchical models, parameters becomes interrelated and thus the _effective number of parameters_ can be smaller than the actual number of parameter. AIC has no way to account for this.
 
 Can we find something like the Bayesian version of AIC? Yes, we can.
 
 
-## WAIC
+## ELPD
 
-We can see the Widely applicable information criterion (WAIC) [@watanabe_2013] as the fully Bayesian version of AIC. Not to be confused with the Bayesian Information Criterion (BIC), which is not very Bayesian in practice.
-
-Anyway, as we already saw in the Akaike criterion, the goodness of fit is given by:
+As we already saw in the Akaike criterion, the goodness of fit is given by:
 
 $$
 \sum_i^N \log p(y_i \mid \hat{\theta}_{mle})
 $$
 
-But in Bayesian statistics, we do NOT have a point estimate of $\theta$. We have a distribution, so we should do:
+But in Bayesian statistics, we do NOT have a point estimate of $\theta$. We have a distribution. To account for this we could do:
 
 $$
 \sum_i^N \log \int \ p(y_i \mid \theta) \; p(\theta \mid y) d\theta
 $$
 
-In general we do not have an analytical expression for the posterior, $p(\theta \mid y)$ instead we usually work with samples (such as those obtained by MCMC), then we can approximate the integral by:
+In general we do not have an analytical expression for the posterior, $p(\theta \mid y)$, instead we usually work with samples (such as those obtained by MCMC), then we can approximate the above integral by a sum over the $S$ posterior samples:
 
 $$
 \sum_i^N \log \left(\frac{1}{S} \sum _{j}^S p(y_i \mid \theta^j) \right)
 $$
 
-We will call this quantity ELPD, which is short for expected log-predictive density. When the likelihood is discrete, we should use "probability" instead of "density", but it is a common practive to avoid pedantery.
+We will call this quantity the ELPD, which is short for expected log-predictive density. When the likelihood is discrete, we should use "probability" instead of "density", but it is a common practice to avoid pedantry.
 
-OK, now we have Bayesian way to measure goodness of fit. Now we need a term that penalizes the complexity of the model. Finding the correct expression for this requires work, so we are going to present it without justifying.
+The ELPD is more Bayesian way to measure goodness of fit that the term used in AIC, but we are still missing one element, the penalization term.
+
+
+ ## WAIC
+
+The Widely applicable information criterion (WAIC) uses the ELPD plus a penalization term [@watanabe_2013].
 
 $$
 WAIC = \sum_i^N \log \left(\frac{1}{S} \sum _{s}^S p(y_i \mid \theta^j) \right) - \sum_i^N \left( V_{j}^S \log p(y_i \mid \theta^j) \right)
 $$
 
-
-Where the penalty term is given by the variance of the log-likelihoods over the $S$ samples of the posterior. Intuitively, the term penalizes models that have a lot of variability in their predictions. Let's look at a linear model as an example:
+We can see that penalization term is given by the variance of the log-likelihoods over the $S$ posterior samples. Justifying this term requieres a bit more work, but the intuition is that the variance of the log-likelihoods is a measure of how much variability there is in the predictions made by the model. The more variability, the more flexible the model is. And therefore, the more we should penalize it. Let's look at a linear model as an example:
 
 $$
 Y = \alpha + \beta X
 $$
 
-A model where $\beta=0$ will be less flexible, since it is equivalent to a model that only has one parameter, $alpha$. In a slightly more subtle way, a model where $\beta$ varies in a narrow range will be less flexible (more regularized), than a model where $\beta$ can take any value.
-
+A model where $\beta=0$ will be less flexible, since it is equivalent to a model that only has one parameter, $alpha$. In a slightly more subtle way, a model where $\beta$ varies in a narrow range will be less flexible (more regularized), than a model where $\beta$ can take any value. WAIC properly formalized this intuition. 
 
 ## Cross validation
 
-Cross-validation is a simple and, in most cases, effective solution for comparing models. We take our data and divide it into $K$ slices. We try to keep the portions more or less the same (in size and sometimes also in other characteristics, such as an equal number of classes). We then use $K-1$ portions to train the model and the rest to evaluate it. This process is systematically repeated leaving, for each iteration, a different portion out of the training set and using that portion as the evaluation set. This is repeated until we have completed $K$ rounds of adjustment-evaluation. The accuracy of the model will be the average over the $K$ rounds. This is known as K-fold cross validation. Finally, once we have cross-validated, we use all the data to final fit our model and this is the model that is used to make predictions or for any other purpose.
+There is an alternative route to ELPD penalization. What if we just compute it for unobserved data? This is sometimes done when the size of the dataset is very large. But even then we will risk wasting relevant information. Then a common practice is to use a method called **cross-validation**.
+
+Cross-validation is a simple and, in most cases, effective solution for comparing models. We take our data and divide it into $K$ slices. We try to keep the portions more or less the same (in size and sometimes also in other characteristics, such as an equal number of classes). We then use $K-1$ portions to train the model and the rest to evaluate it. This process is systematically repeated leaving, for each iteration, a different portion out of the training set and using that portion as the evaluation set. This is repeated until we have completed $K$ rounds of adjustment-evaluation. The accuracy of the model will be the average over the $K$ rounds. This is known as K-fold cross validation. Finally, once we have cross-validated, we use all the data to fit our model and this is the model that is used to make predictions or for any other purpose.
 
 <img src='../img/cv.png' width=500 >
 
-When $K$ is equal to the number of data points, we get what is known as leave-one-out cross-validation (LOOCV).
+When $K$ is equal to the number of data points, we get what is known as leave-one-out cross-validation (LOO-CV).
 
 Cross validation is a routine practice in machine learning. And we have barely described the most essential aspects of this practice. For more information you can read [The Hundred-Page Machine Learning Book](http://themlbook.com/) or [Python Machine Learning](https://www.amazon.com/Python-Machine-Learning-scikit-learn-TensorFlow-ebook/dp/B0742K7HYF), by Sebastian Raschka.
 
-Cross-validation is a very simple and useful idea, but for some models or for large amounts of data, the computational cost of cross-validation may be beyond our means. But lucky us, by being bayesian we can approximately compute CV in a very fast way. 
+One downside of cross-validation is that it is computationally expensive. We need to fit the model $K$ times, and if we have a large dataset, this can be very expensive. But lucky us, by being Bayesian we can approximately compute LOO-CV in a very fast way. 
 
-## LOO and cross validation
+## ELPD and cross validation
 
 
-There is another alternative to penalize the term
-
-$$
-\sum_i^N \log \left(\frac{1}{S} \sum _{j}^S p(y_i \mid \theta^j) \right)
-$$
-
-It can be done by computing
+The LOO-CV ELPD can be computed as:
 
 $$
 \sum_i^N  \log \left( \frac{1}{S}\sum_j^S \mathbin{\color{#E9692C}{p(y_i \mid \theta _{-i}^j)}} \right)
@@ -266,17 +275,21 @@ When doing importance sampling, the more similar $g$ and $f$ are, the better the
 Now that we have a better idea of ​​importance sampling let's see how we can use it. The distribution we know is the posterior distribution, and the one we want to approximate by importance sampling is the posterior distribution leaving one out $p(y_i \mid \theta_{-i}^j)$. Therefore, the importance weights that we are interested in calculating are:
 
 $$
- w_i^j = \frac{p(\theta^j \mid y_{-i} )}{p(\theta^j \mid y)} \propto \frac{p(\theta) \prod_{i\not =-i}^n p(y_i \mid \theta)}{p(\theta) \prod_i^n p(y_i \mid \theta)} \propto \frac{1}{p(y_i \mid \theta^j) }
+ w_i^j \propto \frac{p(\theta^j \mid y_{-i} )}{p(\theta^j \mid y)} \propto \frac{p(\theta) \prod_{i\not =-i}^n p(y_i \mid \theta)}{p(\theta) \prod_i^n p(y_i \mid \theta)} \propto \frac{1}{p(y_i \mid \theta^j) }
 $$
 
-That is to say, the common terms (and therefore cancel each other) between the numerator and the denominator are all except the likelihood for the observation we want to remove. Note that the weights are proportional and are not normalized, but this is not a problem since they can be normalized simply by dividing each weight by the total sum of the weights.
+That is the all terms in the numerator and the denominator will cancel out except for only one! The likelihood for the observation we want to remove, that will remain in the denominator. Note that these weights are not normalized, so to use them we need to divide each weight by the total sum of the weights. Then we can use the weights to estimate the ELPD as:
+
+$$
+\sum_i^N \log \left( \frac{1}{S} \sum_j^S w_i^j p(y_i \mid \theta^j) \right)
+$$
+
+This result is fantastic news, it tells us that we can calculate the leave-one-out cross-validation ELPD, without having to refit the model $N$ times.
+
+The catch, because there is always a catch! Is that the expected $p(\theta^j \mid y_{-i} )$ is "wider" than $p(\theta^j \mid y)$, since it is a posterior distribution estimated with one less observation. This is the opposite to the ideal case in importance sampling. For many cases the difference may not be relevant, since eliminating an observation can lead to a practically equivalent posterior distribution. But in some cases the difference can be relatively large. When? Well, the more "influential" the observation the larger then difference when we remove it. 
 
 
-This result is great news, because it tells us that it is possible to calculate the ELPD by leave-one-out cross-validation, from a single adjustment to the data! and that we only need the values ​​of the log-likelihoods, whose computational cost is, in general, very low.
-
-The catch, because there is always a catch, is that it is expected that $p(\theta^j \mid y_{-i} )$ is "wider" than $p(\theta^j \mid y)$, since it is a posterior distribution estimated with one less observation. This is the opposite of ideal chaos in importance sampling. For many cases the difference may not be relevant, since eliminating an observation can lead to a practically equivalent posterior distribution. But in some cases the difference can be relatively large. When? Well, the more "influential" the observation. In terms of importance sampling this translates into weights with greater relative importance and which therefore tend to dominate the estimation.
-
-One way to correct this problem is to simply truncate the "too high" weights, but this brings other problems that we are not going to discuss. Another way is to rely on theory. The theory indicates that under certain conditions high weights are distributed according to a Pareto pattern. So instead of truncating them we can fit them to a Pareto distribution and then replace them with values ​​obtained from that distribution. This is a form of smoothing that, within a certain range, allows stabilizing the importance sampling estimate, since it will make some "very large" values ​​not so large.
+In terms of importance sampling this translates into weights with greater relative importance and which therefore tend to dominate the estimation. One way to correct this problem is to simply truncate the "too high" weights, this brings other problems that we are not going to discuss. Another way is to rely on theory. The theory indicates that under certain conditions high weights are distributed according to a Pareto pattern. So instead of truncating them we can fit them to a Pareto distribution and then replace them with values ​​obtained from that distribution. This is a form of smoothing that, within a certain range, allows stabilizing the importance sampling estimate, since it will make some "very large" values ​​not so large.
 
 When we combine all these ideas we get a method called Pareto-Smooth Importance Sampling Leave-One-Out Cross Validation [@vehtari_2017; @yao_2018], which is abbreviated as PSIS-LOO-CV. Since the name and acronym are horribly long and difficult to pronounce we will call it LOO.
 
@@ -353,40 +366,6 @@ azp.plot_compare(cmp_df);
 * For all models except *the best*, we also obtain a triangle indicating the value of the ELPD difference between each model and the *best* model. The gray error bar indicating the standard error of the differences between the point estimates.
 
 The simplest way to use information criteria is to choose a single model. Simply choose the model with the highest ELPD value. If we follow this rule we will have to accept that the quadratic model is the best. Even if we take into account the standard errors we can see that they do not overlap. Which gives us some security that the models are indeed *different* from each other. If, instead, the standard errors overlapped, we should provide a more nuanced answer.
-
-
-### LOO expectations and metrics
-
-From the PSIS smoothing procedure, we obtain a set of weights. The `loo` function utilizes these weights to estimate the ELPD we should have obtained if we have performed leave-one-out cross-validation. Furthermore, these weights can be used to estimate other quantities, such as the mean, standard deviation, and quantiles, as if we had performed leave-one-out cross-validation. For example, to compute the 25th and 75th percentiles we use:
-
-```{python}
-azs.loo_expectations(dt_rugby, kind="quantile", probs=[0.25, 0.75])
-```
-
-Similarly we may be interested in computing estimates of leave-one-out predictive metrics given a set of predictions and observations. For instance to compute the root mean square error we can do: 
-
-```{python}
-azs.loo_metrics(dt_rugby, kind="rmse", var_name="home_points")
-```
-
-Notice that for `loo_metrics` if we have more than one variable we must specify the variable that we care using the `var_names` argument, like in the previous example.
-
-
-### LOO-PIT
-
-Another quantity of interest that we can obtain via PSIS-LOO-CV is the PIT values. As already mentioned in @sec-avoid-double-dipping, we often are interested in computing:
-
-$$
-p(\tilde y_i \le y_i \mid y_{-i})
-$$
-
-That is, we are evaluating the model's ability to predict an observation when we remove that observation from the observed data. We can use PSIS-LOO_CV to estimate this from a single model fit.
-
-```{python}
-#| label: fig-elpdit
-#| fig-cap: "LOO-PIT plot for the rugby model"
-azp.plot_loo_pit(dt_rugby, var_names="home_points")
-```
 
 
 ### Pareto k and LOO diagnostics
@@ -562,3 +541,43 @@ We can see that the `BF_01` is $\approx 1.6$, which we can interpret as *anecdot
 ### Bayes factors vs the alternatives
 
 We could say that the Bayes factors measure which model, as a whole, is better for explaining the data. This includes the details of the prior, no matter how similar the model predictions are. In many scenarios, this is not what interests us when comparing models. For many real problems prior are not intended to be an accurate description of the *True* prior distribution of parameters, instead in many problems priors are choosen using some information and with the goal of providing some regulatization. In this and other cases we prefer to evaluate models in terms of how similar their predictions are. For those cases, we can use LOO. 
+
+
+## Absolute metrics
+
+In the previous sections we have seen how to compare models using relative metrics. By relative we mean that we are comparing the models with respect to each other. For example, we can say that model A is better than model B because it has a higher ELPD value. But we can not, in general, judge a single model by its ELPD alone. 
+In contrast, sometimes we are interested in absolute metrics. Some common absolute metrics are the root mean square error (RMSE), the mean absolute error (MAE), the coeﬀicient of
+determination ($R^2$), etc. Interestingly, we can use PSIS-LOO-CV procedure to compute the leave-one-out cross-validation version of these metrics. 
+
+### LOO expectations and metrics
+
+From the PSIS smoothing procedure, we obtain a set of weights. The `loo` function utilizes these weights to estimate the ELPD we should have obtained if we have performed leave-one-out cross-validation. Furthermore, these weights can be used to estimate other quantities, such as the mean, standard deviation, and quantiles, as if we had performed leave-one-out cross-validation. For example, to compute the 25th and 75th percentiles we use:
+
+```{python}
+azs.loo_expectations(dt_rugby, kind="quantile", probs=[0.25, 0.75])
+```
+
+Similarly we may be interested in computing estimates of leave-one-out predictive metrics given a set of predictions and observations. For instance to compute the root mean square error we can do: 
+
+```{python}
+azs.loo_metrics(dt_rugby, kind="rmse", var_name="home_points")
+```
+
+Notice that for `loo_metrics` if we have more than one variable we must specify the variable that we care using the `var_names` argument, like in the previous example.
+
+
+### LOO-PIT
+
+Another quantity of interest that we can obtain via PSIS-LOO-CV is the PIT values. As already mentioned in @sec-avoid-double-dipping, we often are interested in computing:
+
+$$
+p(\tilde y_i \le y_i \mid y_{-i})
+$$
+
+That is, we are evaluating the model's ability to predict an observation when we remove that observation from the observed data. We can use PSIS-LOO_CV to estimate this from a single model fit.
+
+```{python}
+#| label: fig-elpdit
+#| fig-cap: "LOO-PIT plot for the rugby model"
+azp.plot_loo_pit(dt_rugby, var_names="home_points")
+```
