@@ -129,13 +129,13 @@ ppi = kpt.ProjectionPredictive(model, idata)
 ppi.project()
 ```
 
-Once this is finished we can inspect the `ppi` object manually, but a plot is usually a better idea. By default, the `compare` function plots all the models, including the intercept-only model, i.e. a model without any covariate. In the following block of code, we are asking to omit this model. 
+Once this is finished we can inspect the `ppi` object manually, but a figure is usually a better idea. By default, the `compare` function plots all the models, including the intercept-only model, i.e. a model without any covariate. In the following block of code, we are asking to omit this model. 
 
 ```{python}
 ppi.compare(min_model_size=1);
 ```
 
-We can see that this plot is very similar to the one generated with `pmb.plot_variable_importance` and its interpretation is also similar. One important difference is that `compare` uses the ELPD to compare the models.
+We can see that this figure is very similar to the one generated with `pmb.plot_variable_importance` and its interpretation is also similar. One important difference is that `compare` uses the ELPD to compare the models.
 
 We can see that for Kulprit the most relevant variable is `hour`, followed by `temperature` and then `humidity`, after that adding more variables does not improve the model. The order agrees with PyMC-BART but Kulprit considers 3 variables as relevant instead of 2. This is most likely because the effect of `hour` is non-linear and thus difficult to capture with a simple linear model. Let's put this idea to the test.
 

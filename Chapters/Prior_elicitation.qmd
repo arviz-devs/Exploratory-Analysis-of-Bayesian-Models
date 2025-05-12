@@ -131,7 +131,7 @@ dist_mode = pz.Gamma()
 pz.maxent(dist_mode, 0, 3, 0.8, mode=2);
 ```
 
-Notice that if you call `maxent` several times in the same cell, as we just did, we will get all the distributions in the same plot. This can be very useful to visually compare several alternatives.
+Notice that if you call `maxent` several times in the same cell, as we just did, we will get all the distributions in the same figure. This can be very useful to visually compare several alternatives.
 
 The function `maxent` as others in PreliZ modify distribution in place, so a common workflow is to instantiate a distribution first, perform the elicitation, and then inspect its properties, plot it, or use it in some other way. For instance, we may want to check a summary of some of its properties:
 
@@ -222,7 +222,8 @@ Now we can plot the prior predictive distribution and compare it with the refere
 
 
 ```{python}
-azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf", references=list(refs.values()))
+azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
+azp.add_reference_lines(pc, refs)
 ```
 
 
@@ -243,7 +244,8 @@ We can plot the prior predictive distribution and compare it with the reference 
 
 
 ```{python}
-azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf", references=list(refs.values()))
+azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
+azp.add_reference_lines(pc, refs)
 ```
 
 The new priors still generate some values that are too wide, but at least the bulk of the model predictions are in the right range. So, without too much effort and extra information, we were able to move from a very vague prior to a weakly informative prior. If we decided this prior is still very vague we can add more domain-knowledge.
@@ -308,7 +310,8 @@ Now we can plot the prior predictive distribution, the target distribution and c
 
 
 ```{python}
-azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf", references=list(refs.values()))
+azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
+azp.add_reference_lines(pc, refs)
 ```
 
 <!-- We see very good agreement. Let's do one more plot. This time we hide the individual prior predictive samples and instead plot the aggregated prior predictive distribution, labelled with "mean" as it is the average distribution when we average over all the computed prior predictive distributions.

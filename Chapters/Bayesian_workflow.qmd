@@ -31,7 +31,7 @@ Sometimes you will not have any clear idea of what to expect or what to do, your
 ### Get familiar with the data
 
 It is always a good idea to perform Exploratory Data Analysis on your data. Blindly modelling your data leads you to all sorts of problems.
-Taking a look first will save you time and may provide useful ideas. Sometimes it saves you from having to write a Bayesian model at all, perhaps the answer is a scatter plot! In the early stages, a quick dirty plot could be enough but try to be organized as you may need to refer to these plots later on during the modelling or presentation phases.
+Taking a look first will save you time and may provide useful ideas. Sometimes it saves you from having to write a Bayesian model at all, perhaps the answer is a scatter plot! In the early stages, a quick dirty figure could be enough but try to be organized as you may need to refer to these plots later on during the modelling or presentation phases.
 
 When exploring the data we want to make sure, we get a really good understanding of it. How to achieve this can vary a lot from dataset to dataset and from analysis to analysis. But there are useful sanity checks that we usually do, like checking for missing values, or errors in the data. Are the data types correct? Are all the values that should be numbers, numbers (usually integers or floats) or they are strings? Which variables are categorical? Which ones are continuous? At this stage, you may need to do some cleaning of your data. This will save you time in the future.
 
