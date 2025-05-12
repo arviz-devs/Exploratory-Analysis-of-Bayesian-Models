@@ -100,7 +100,7 @@ for p, ax in zip([0.5, 0.1, 0.9, 0.0001], axes.ravel()):
     ax.set_ylim(-0.05, 1.05)
 ```
 
-The concept of entropy appears many times in statistics. It can be useful, for example when defining priors. In general we want to use a prior that has maximum entropy given our knowledge (see for example PreliZ's `maxent` function). And also when comparing models as we will see in the next section.
+The concept of entropy appears many times in statistics. It can be useful, for example when defining priors. In general we want to use a prior that has maximum entropy given our knowledge (see for example [PreliZ](https://preliz.readthedocs.io/en/latest/)'s `maxent` function). And also when comparing models as we will see in the next section.
 
 ## KL divergence {#sec-kl-divergence}
 
@@ -200,7 +200,7 @@ $$
 Y = \alpha + \beta X
 $$
 
-A model where $\beta=0$ will be less flexible, since it is equivalent to a model that only has one parameter, $alpha$. In a slightly more subtle way, a model where $\beta$ varies in a narrow range will be less flexible (more regularized), than a model where $\beta$ can take any value. WAIC properly formalized this intuition. 
+A model where $\beta=0$ will be less flexible, since it is equivalent to a model that only has one parameter, $\alpha$. In a slightly more subtle way, a model where $\beta$ varies in a narrow range will be less flexible (more regularized), than a model where $\beta$ can take any value. WAIC properly formalized this intuition. 
 
 ## Cross validation
 
