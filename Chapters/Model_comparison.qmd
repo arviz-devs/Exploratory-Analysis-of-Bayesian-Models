@@ -200,7 +200,7 @@ $$
 Y = \alpha + \beta X
 $$
 
-A model where $\beta=0$ will be less flexible, since it is equivalent to a model that only has one parameter, $alpha$. In a slightly more subtle way, a model where $\beta$ varies in a narrow range will be less flexible (more regularized), than a model where $\beta$ can take any value. WAIC properly formalized this intuition. 
+A model where $\beta=0$ will be less flexible, since it is equivalent to a model that only has one parameter, $\alpha$. In a slightly more subtle way, a model where $\beta$ varies in a narrow range will be less flexible (more regularized), than a model where $\beta$ can take any value. WAIC properly formalized this intuition. 
 
 ## Cross validation
 
