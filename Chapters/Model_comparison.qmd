@@ -44,10 +44,10 @@ If we evaluate a model solely by it capacity to reproduce the data used to fit i
 
 
 ::: {.callout-note}
-Bayesian models trough the use of prior, and the fact that the posterior is computed by marginalizing over those priors, is usually less prone to overfitting than alternative methods. This is *less true* for more vague priors, and *more true* for priors inducing a prior predictive distribution compatible with the domain-knowledge. But overall, is not true that we can not overfit Bayesian models. Thus, in practice we often end up needing to compare Bayesian models using some measure of predictive performance or predictive accuracy.
+Bayesian models through the use of prior, and the fact that the posterior is computed by marginalizing over those priors, is usually less prone to overfitting than alternative methods. This is *less true* for more vague priors, and *more true* for priors inducing a prior predictive distribution compatible with the domain-knowledge. But overall, is not true that we can not overfit Bayesian models. Thus, in practice we often end up needing to compare Bayesian models using some measure of predictive performance or predictive accuracy.
 :::
 
-The easier way to compute out-of-sample accuracy is two have at least two datasets, once we use to fit the models, and one we use to evaluate them. There are even more complex ways to partition the data, but the main point for our current discussion is that usually that's a luxury. Data is valuable, and not using all data to fit models can be a waste of information and resources. As this is a pervasive situation in data analysis, many different methods have been developed in order to evaluate the predictive accuracy of models without *wasting* data.
+The easier way to compute out-of-sample accuracy is to have at least two datasets, one we use to fit the models, and one we use to evaluate them. There are even more complex ways to partition the data, but the main point for our current discussion is that usually that's a luxury. Data is valuable, and not using all data to fit models can be a waste of information and resources. As this is a pervasive situation in data analysis, many different methods have been developed in order to evaluate the predictive accuracy of models without *wasting* data.
 
 We re going to discuss two family of methods: 
 
