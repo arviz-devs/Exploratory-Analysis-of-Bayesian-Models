@@ -122,7 +122,7 @@ stan_data = {
 
 # Sample from the prior predictive distribution
 prior_samples = model.sample(
-    data=stan_data,
+    eata=stan_data,
     fixed_param=True,
     iter_sampling=500,
     seed=SEED
@@ -137,12 +137,13 @@ dt = azb.from_cmdstanpy(
 ```
 :::
 
-The plot below displays samples from the prior predictive distribution (shown as solid blue lines). To aid interpretation, we have included two reference values: the average length/height of a newborn (approximately 50 cm) and the average height of adult males in the Netherlands (around 182 cm). Reference values are meaningful benchmarks derived from domain knowledge—not from the observed data—and help assess whether predictions are on a reasonable scale. While there are no strict rules for selecting reference values, different analysts might choose different benchmarks based on context
+The figure below displays samples from the prior predictive distribution (shown as solid blue lines). To aid interpretation, we have included two reference values: the average length/height of a newborn (approximately 50 cm) and the average height of adult males in the Netherlands (around 182 cm). Reference values are meaningful benchmarks derived from domain knowledge—not from the observed data—and help assess whether predictions are on a reasonable scale. While there are no strict rules for selecting reference values, different analysts might choose different benchmarks based on context
 
 ```{python}
 #| label: fig-prior_pred_check_wide
 #| fig-cap: "The prior predictive check for the model of heights. We can see that the bulk of the samples are outside the reference values."
-pc = azp.plot_ppc_dist(dt, group="prior_predictive", references=(50, 182))
+pc = azp.plot_ppc_dist(dt, group="prior_predictive")
+azp.add_reference_lines(pc, references=(50, 182))
 ```
 
 We can see that our model is bananas the bulk of the prior predictive distribution is outside of our reference values and the model is predicting values below 0. This is a clear indication that the model is not a good representation of our prior knowledge. 
@@ -211,7 +212,7 @@ stan_data = {
 prior_samples = model.sample(
     data=stan_data,
     fixed_param=True,  # Sample from priors only
-    iter_sampling=500,
+    eter_sampling=500,
     seed=SEED
 )
 
@@ -229,7 +230,8 @@ We repeat the prior predictive checks with the new prior predictive distribution
 ```{python}
 #| label: fig-prior_pred_check_narrow
 #| fig-cap: "The prior predictive check for the model of heights with a more narrower prior than @fig-prior_pred_check_wide. Predictions are closer to our domain knowledge about human heights."
-pc = azp.plot_ppc_dist(dt, group="prior_predictive", references=(50, 182))
+pc = azp.plot_ppc_dist(dt, group="prior_predictive")
+azp.add_reference_lines(pc, references=(50, 182))
 ```
 
 You are free to pick other priors and other reference values and make new prior predictive checks. Maybe you can use the historical record for the taller and shorter persons in the world as reference values.
@@ -239,7 +241,8 @@ When plotting many distributions, where each one spans a narrow range of values 
 ```{python}
 #| label: fig-prior_pred_check_narrow_ecdf
 #| fig-cap: "The prior predictive check for the model of heights. Same as @fig-prior_pred_check_narrow but using empirical CDFs instead of KDEs."
-pc = azp.plot_ppc_dist(dt, group="prior_predictive", kind="ecdf", references=(50, 182))
+pc = azp.plot_ppc_dist(dt, group="prior_predictive", kind="ecdf")
+azp.add_reference_lines(pc, references=(50, 182))
 ```
 
 ### A final note about priors
@@ -362,7 +365,7 @@ dt = azb.from_cmdstanpy(
 ```
 :::
 
-And then we use ArviZ to plot the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).
+And then we use ArviZ to render the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).
 
 ```{python}
 #| label: fig-post_pred
@@ -376,9 +379,9 @@ Other common visualizations to compare observed and predictive values are empiri
 
 Besides directly comparing observations and predictions in terms of their densities, we can do comparisons in terms of summary statistics, like the median, the interquartile range, the standard deviation etc. Which ones we decide to use can vary from one data-analysis problem to another, and ideally they should be informed by the data-analysis goals. As in posterior predictive checks we use the data twice, first for fitting the model and then for checking it. It is advisable to select test statistics that are orthogonal to the model parameters [@Gabry_2019]. For example, in a Normal model with a location parameter, the mean should be easy to recover, so a posterior predictive check using the mean as a test statistic would not be a particularly stringent test. As in many common models there is a location parameter, then the mean is usually not a good test statistic.
 
-We can use the `plot_ppc_tstat` function to plot the posterior predictive distribution of a test statistic. The function takes as input a DataTree with a `posterior_predictive` and `observed_data` groups and a name of the test statistic (custom function are also allowed), and it will compute the posterior predictive distribution of that statistic. The function also computes the observed value of the test statistic and plots it as a dot at the bottom of each subplot.
+We can use the `plot_ppc_tstat` function to display the posterior predictive distribution of a test statistic. The function takes as input a DataTree with a `posterior_predictive` and `observed_data` groups and a name of the test statistic (custom function are also allowed), and it will compute the posterior predictive distribution of that statistic. The function also computes the observed value of the test statistic and plots it as a dot at the bottom of each subplot.
 
-The following plot shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model's predictions.
+The following figure shows a comparison in terms of the mean, median and interquartile range (IQR). The dots at the bottom of each subplots corresponds to the summary statistics computed for the observed data and the KDE is for the model's predictions.
 
 ```{python}
 #| label: fig-post_pred_check_stats
@@ -440,7 +443,7 @@ $$
 
 Thus, we can see the computation of the marginal p-value as an application of the Probability Integral Transform.
 
-In practice we don't have the CDF, but this is no problem as we have samples from the posterior predictive and hence we can compute the empirical CDF (ECDF). The CDF of the standard Uniform distribution is a diagonal line that goes from (0, 0) to (1,1), as shown in @fig-post_pred_uniform_cdf. Deviations from this line may indicate problems with the model. This is a very simple to interpret plot. 
+In practice we don't have the CDF, but this is no problem as we have samples from the posterior predictive and hence we can compute the empirical CDF (ECDF). The CDF of the standard Uniform distribution is a diagonal line that goes from (0, 0) to (1,1), as shown in @fig-post_pred_uniform_cdf. Deviations from this line may indicate problems with the model. This is a very simple to interpret visualization. 
 
 ```{python}
 #| label: fig-post_pred_uniform_cdf
@@ -448,7 +451,7 @@ In practice we don't have the CDF, but this is no problem as we have samples fro
 pz.Uniform(0, 1).plot_cdf()
 ```
 
-The disadvantage of such plot is that all the "action" is close to the diagonal line and most of the plot is just blank space. A simple trick to improve the *data-ink* ratio is to plot the difference between the observed and expected cumulative distribution functions, the $\Delta$-ECDF, as shown in Figure @fig-post_ppc_pit_ecdf. The last ingredient to improve this visual diagnostic is to add a confidence band. Due to finite sample size we should expect deviations from uniformity, so a confidence band gives us an idea of how much deviation is expected by chance. 
+The disadvantage of such visualization is that all the "action" is close to the diagonal line and most of the plot is just blank space. A simple trick to improve the *data-ink* ratio is to render the difference between the observed and expected cumulative distribution functions, the $\Delta$-ECDF, as shown in Figure @fig-post_ppc_pit_ecdf. The last ingredient to improve this visual diagnostic is to add a confidence band. Due to finite sample size we should expect deviations from uniformity, so a confidence band gives us an idea of how much deviation is expected by chance. 
 
 ```{python}
 #| label: fig-post_ppc_pit_ecdf
@@ -458,7 +461,7 @@ azp.plot_ppc_pit(dt);
 
 In ArviZ, we use the simultaneous confidence bands described by @sailynoja_2022. The simultaneous confidence bands take into account the probability of observing deviations of the entire curve, as opposed to independent pointwise deviations. The band or envelope has an oval shape because the probability of observing a deviation is null at 0 and 1, all ECDFs must start at 0 and end at 1, and is higher in the middle of the curve.
 
-To build intuition on how to interpret the PIT-ECDF plots we are going to explore four common patterns using synthetic data. The following three plots show four different scenarios, where the observed data follows a standard normal distribution ($\mu=0, \sigma^2=1$). In each case, we compare the observed data to predictions where:
+To build intuition on how to interpret the PIT-ECDF plots we are going to explore four common patterns using synthetic data. The following three figures show four different scenarios, where the observed data follows a standard normal distribution ($\mu=0, \sigma^2=1$). In each case, we compare the observed data to predictions where:
 
 * The mean of the predictions is shifted to the right. The model is overpredicting the data.
 * The mean of the predictions is shifted to the left. The model is underpredicting the data.
@@ -569,9 +572,7 @@ azp.plot_loo_pit(dt);
 
 ### Hypothetical Outcome Plots
 
-Another strategy that can be useful for posterior predictive plots is to use animations. Rather than showing a continuous probability distribution, Hypothetical Outcome Plots (HOPs) visualize a set of draws from a distribution, where each draw is shown as a new plot in either a small multiples or animated form. HOPs enable a user to experience uncertainty in terms of countable events, just like we experience probability in our day to day lives.
-
-You can read more about HPOs [here](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).
+Another strategy that can be useful for posterior predictive plots is to use animations. For example instead of showing all draws from the posterior predictive at the same time Hypothetical Outcome Plots (HOPs) shows them animated with one just a few draws per frame. HOPs enable a user to experience uncertainty in terms of countable events, just like we experience probability in our day to day lives. You can read more about HPOs [here](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).
 
 
 ## Posterior predictive checks for discrete data
@@ -584,7 +585,7 @@ Count data is a type of discrete data that is very common in many fields. For in
 
 Rootograms are a graphical tool to assess the fit of count data models [@tukey_1977; @Kleiber_2016]. There are a few variations of rootograms, but traditionally rootograms use bars for the predicted data, and lines (plus markers) for the observed data. Finally, instead of plotting the raw data, they show the square *root* of the observed and predicted counts, which explain the name of the plots. The reason to square root the data is to make easier to compare observed and expected frequencies even for low frequencies. Often the uncertainty in the predictions is omitted.
 
-Here we are going to discuss the rootograms presented by @Säilynoja_2025. These rootograms emphasises the discreteness of the data and and predictions by using points. The uncertainty in the predictions is encoded using intervals. Instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frecuencies from the plot (instead of reading the square root) while keeping the advantage of being able to discriminate details at lower frecuencies.
+Here we are going to discuss the rootograms presented by @Säilynoja_2025. These rootograms emphasises the discreteness of the data and and predictions by using points. The uncertainty in the predictions is encoded using intervals. Instead of square-rooting the data, it set the y-axis on the square root scale, this makes easier to interpret the data, because we can directly read the frecuencies from the y-axis (instead of reading the square roots) while keeping the advantage of being able to discriminate details at lower frecuencies.
 
 To illustrate rootograms we are going to use the Horseshoe crabs dataset [@Brockmann_1996]. Very briefly, horseshoe crabs arrive at the beach in pairs for their spawning ritual. Solitary males gather around the nesting couples and vying to fertilize the eggs. These individuals, known as satellite males, often congregate near certain nesting pairs while disregarding others. We used Bambi to create two models a poisson model and a hurdle-negative binomial model for the number of male satellites as a function of the carapace width and color of the female. 
 

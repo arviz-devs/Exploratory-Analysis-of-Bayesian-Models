@@ -19,19 +19,17 @@ np.random.seed(SEED)
 
 # Prior and likelihood sensitivity checks
 
-Determining the sensitivity of the posterior to perturbations of the prior is an important part of building Bayesian models. The traditional way to asses the prior sensitivity is to compare the posterior obtained using a reference prior against the posterior obtained using one or more alternative priors. 
+Determining the sensitivity of the posterior to perturbations of the prior is an important part of building Bayesian models. The traditional way to asses the prior sensitivity is to compare the posterior obtained using a reference prior against the posterior obtained using one or more alternative priors. The reference prior can be the default prior in packages like [Bambi](https://bambinos.github.io/bambi/) or some other "template" prior from literature or previous analysis of a similar dataset/problem. But it can also be the prior obtained after a more careful elicitation process. The "alternative" priors can be prior that for some reason we also consider relevant, or deviations from the reference prior that we consider important to evaluate.
 
-The reference prior can be the default prior in packages like Bambi or some other "template" prior from literature or previous analysis of a similar dataset/problem. But it can also be the prior obtained after a more careful elicitation process. And the "alternative" priors can be prior that for some reason we also consider relevant, or deviations from the reference prior that we consider important to evaluate.
+To perform the comparison we can use visual and numerical summaries as we already explained in @sec-ppc. For instance, when working with ArviZ, we can use `plot_forest` or `plot_density` functions to compare multiple posteriors (or actually their marginals) in the same plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.
 
-For the comparison we can use visual and numerical summaries as we already explained in @sec-ppc. For instance, when working with ArviZ, we can use `plot_forest` or `plot_density` functions, as both plots allows us to compare multiple posteriors in a single plot. Ideally, we should summarize and report the results of this analysis, so that others can also understand how robust the model is to different prior choices.
+The same procedure we use to assess the sensitivity of the prior can be used to compare how different likelihoods affect the posterior. So we can discuss the sensitivity of the posterior to the likelihood, the prior or both.
 
-We also notice, that the same procedure can also be used to compare how different likelihoods affect the posterior. So we can discuss the sensitivity of the posterior to the likelihood, the prior or both.
-
-Conceptually, this traditional approach is simple to understand, simply try different models and see how results differ. In practice, thinking about alternative priors, building alternative models and fitting them can be very time-consuming. In the next section we are going to discuss a more automated way to do this kind of analysis.
+In summary, the traditional approach to assess prior and likelihood sensitivity is to fit multiple models with different priors and/or likelihoods, and then compare the results. This approach is simple to understand, and should be straightforward to implement. However, in practice thinking about alternative priors, building alternative models and fitting them can be very time-consuming. In the chapter we discuss a more automated way to do this kind of analysis.
 
 ## Prior and likelihood sensitivity via power-scaling
 
-The method we will discuss was presented by @kallioinen_2023, and offers visual and numerical diagnostics that can alert us of potential prior-data conflict or likelihood noninformativity. What makes this approach very practical is that we only need to fit a single model once, and without explicitly modifying the prior or likelihood, we can asses the effect of changing them. If you are eager to see how this method can be applied in practice, you can jump to the example section. If you want to understand the method in more detail, keep reading.
+The method we will discuss was presented by @kallioinen_2023, and offers visual and numerical diagnostics that can alert us of potential prior-data conflict or likelihood non-informativity. What makes this approach very practical is that we only need to fit a single model once, and without explicitly modifying the prior or likelihood, we can asses the effect of changing them. If you are eager to see how this method can be applied in practice, you can jump to the example section. If you want to understand the method in more detail, keep reading.
 
 ### Power-scaling
 A key idea of the method is the concept of power-scaling. By power-scaling we mean raising a distribution to a power $\alpha$. Why is this interesting? Because by power-scaling a distribution we can "stretch" it or "compress" it. Figure @fig-beta-normal-power-scaling shows the effect of power-scaling on a Beta and a Normal distribution. Power-scaling is a very general transformation that work for any distribution, except for the uniform distribution. Notice this restriction also applies to a Beta(1, 1), which is uniform. This is a minor restriction, because the uniform distribution is hardly a useful prior, unless we are dealing with a very special case.
@@ -190,7 +188,7 @@ For the $\beta$ coefficient `wrist` we can see that we may have prior-sensitivit
 azs.psense_summary(idata_bf_00, var_names=["~μ"], round_to=2)
 ```
 
-We can also evaluate the effect of power-scaling visually with the function `plot_psense_dist`. This function allow plot the posterior marginal for 3 values of $\alpha$. By default 0.8 (red), 1 (black) and 1.25 (blue). `plot_psense_dist` allow as to choose different representations including KDEs and ECDFs. From @fig-posterior-sensitivity_bf_00 we can see that the posterior is sensitive to both prior and likelihood power-scaling, and that it shifts right (towards zero) as the prior is strengthened, and left (away from zero) as the likelihood is strengthened.
+We can also evaluate the effect of power-scaling visually with the function `plot_psense_dist`. This function displays the posterior marginal for 3 values of $\alpha$. By default 0.8 (red), 1 (black) and 1.25 (blue). `plot_psense_dist` allow as to choose different representations including KDEs and ECDFs. From @fig-posterior-sensitivity_bf_00 we can see that the posterior is sensitive to both prior and likelihood power-scaling, and that it shifts right (towards zero) as the prior is strengthened, and left (away from zero) as the likelihood is strengthened.
 
 
 ```{python}
@@ -204,7 +202,7 @@ azp.plot_psense_dist(idata_bf_00,
                      )
 ```
 
-We can also use the `plot_psense_quantities` function to plot quantities of interest like the mean, median, standard deviation, etc. With this plot we can evaluate how much the quantities of interest change when we perturb the prior and likelihood. As a reference the plot also shows the ±2 Monte Carlo standard errors (MCSE) of the base posterior quantity. From @fig-quantities_bf_00 we can see that power-scaling the prior and likelihood pulls the posterior mean in opposite directions. This suggests there might be a potential mismatch or conflict between the prior and the likelihood.
+We can also use the `plot_psense_quantities` function to display quantities of interest like the mean, median, standard deviation, etc. We can then evaluate how much the quantities of interest change when we perturb the prior and likelihood. To get a reference for the relative effect size of the perturbations the function also shows the ±2 Monte Carlo standard errors (MCSE) of the base posterior quantity. From @fig-quantities_bf_00 we can see that power-scaling the prior and likelihood pulls the posterior mean in opposite directions. This suggests there might be a potential mismatch or conflict between the prior and the likelihood.
 
 ```{python}
 #| label: fig-quantities_bf_00
