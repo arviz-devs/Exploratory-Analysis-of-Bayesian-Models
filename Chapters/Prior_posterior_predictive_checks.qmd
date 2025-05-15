@@ -571,7 +571,7 @@ azp.plot_loo_pit(dt);
 
 Another strategy that can be useful for posterior predictive plots is to use animations. Rather than showing a continuous probability distribution, Hypothetical Outcome Plots (HOPs) visualize a set of draws from a distribution, where each draw is shown as a new plot in either a small multiples or animated form. HOPs enable a user to experience uncertainty in terms of countable events, just like we experience probability in our day to day lives.
 
-You can read more about HPOs [here](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).
+You can read more about HOPs [here](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740).
 
 
 ## Posterior predictive checks for discrete data
