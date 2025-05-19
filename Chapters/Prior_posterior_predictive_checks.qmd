@@ -251,7 +251,7 @@ Before moving on to the next section, we would like to share one last thought on
 
 In practice weakly informative priors can offer meaningful advantages over both vague and informative priors. Even a modest amount of prior information is often better than none at all, as it helps guard against implausible or misleading results and it could provide computational benefits, such as improved sampling efficiency while being usually easier and less time-consuming to elicit than fully informative priors.
 
-Finally, one benefit that’s often underappreciated is that running prior predictive checks and *playing around* with different priors can give you valuable insights into your model and the problem you're trying to solve, regardless of their impact on their direct impact on the posterior. To learn more about prior elicitation, check out @#sec-prior-elicitation.
+Finally, one benefit that’s often underappreciated is that running prior predictive checks and *playing around* with different priors can give you valuable insights into your model and the problem you're trying to solve, regardless of their impact on their direct impact on the posterior. To learn more about prior elicitation, check out @sec-prior-elicitation.
 
 
 ## Posterior predictive checks

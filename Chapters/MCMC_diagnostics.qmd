@@ -146,7 +146,7 @@ For `good_sample` we can see that ranks for both chains are uniform, as the devi
 
 Rank plots provide a more reliable way to diagnose MCMC sampling issues compared to trace plots. While trace plots can reveal mixing problems, they often become cluttered, making it difficult to identify subtle issues like chains exploring different regions unevenly. In contrast, rank plots summarize sampling behaviour more effectively by checking for uniformity across chains, helping to detect biases, poor mixing, or convergence issues in a more interpretable way. This makes them a powerful complement—or even a preferred alternative—to trace plots for assessing MCMC performance.
 
-Finally, we want to mention that we can use $\Delta$-ECDF plots to visually inspect any quantity that is expected to be uniformly distributed, not just the ranks. For example, in @sec-ppc we use them to compare the posterior predictive distribution to the observed data (see @fig-post_ppc_pit_ecdf_alt).
+Finally, we want to mention that we can use $\Delta$-ECDF plots to visually inspect any quantity that is expected to be uniformly distributed, not just the ranks. For example, in @sec-ppc we use them to compare the posterior predictive distribution to the observed data (see @fig-post_ppc_pit_ecdf_alt_0 and @fig-post_ppc_pit_ecdf_alt_1).
 
 ## $\hat R$ (R-hat)
 
