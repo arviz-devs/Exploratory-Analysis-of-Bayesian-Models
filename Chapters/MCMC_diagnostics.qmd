@@ -4,9 +4,7 @@
 #| echo : false
 #| warning: false
 import arviz as az
-import arviz_base as azb
-import arviz_stats as azs
-import arviz_plots as azp
+import arviz.preview as azp
 import numpy as np
 import preliz as pz
 import matplotlib.pyplot as plt
@@ -62,7 +60,7 @@ for i in pz.DiscreteUniform(0, 900).rvs(3, random_state=rng):
     stuck.append((i, i+50))
     bad_sample1[0,i:i+50] = pz.Beta(i, 150).rvs(50, random_state=rng)
 
-sample = azb.convert_to_dataset({"good_sample":good_sample,
+sample = azp.convert_to_dataset({"good_sample":good_sample,
           "bad_sample_0":bad_sample0,
           "bad_sample_1":bad_sample1})
 ```
@@ -109,7 +107,7 @@ Finally from @fig-traceplot_bad_sample_1, we can see another common scenario. Th
 #| code-fold: true
 #| fig-cap: "Trace plot showing a sampler being stuck in 3 regions (see yellow bands). Because of the overlap, it's not easy to spot the problem for the first region."
 pc = azp.plot_trace_dist(sample, var_names="bad_sample_1", compact=False)
-ax = pc.viz["bad_sample_1"]["plot"].sel(column="trace").item()
+ax = pc.viz["plot"]["bad_sample_1"].sel(column="trace").item()
 for s in stuck:
     ax.fill_between(s, 2.5, color="black", alpha=0.25);
 ```
@@ -156,10 +154,10 @@ $\hat R$ is a numerical diagnostic that answers the question Did the chains mix 
 
 Ideally, we should get $\hat R = 1$, in practice $\hat R \lessapprox 1.01$ are considered safe and in the first modeling phases, even higher values like $\hat R \approx 1.1$ may be fine.
 
-Using ArviZ we can get the $\hat R$ with `azs.rhat(⋅)`, `azs.summary(⋅)` and `azp.plot_forest(⋅, r_hat=True)`
+Using ArviZ we can get the $\hat R$ with `azp.rhat(⋅)`, `azp.summary(⋅)` and `azp.plot_forest(⋅, r_hat=True)`
 
 ```{python}
-azs.rhat(sample)
+azp.rhat(sample)
 ```
 
 ### Effective Sample Size (ESS)
@@ -258,7 +256,7 @@ for k, rho in enumerate(rhos):
     auto_error = []
 
     for i in range(50, size, 10):
-        auto_error.append(azs.ess(auto_samples[:,:i])/500)
+        auto_error.append(azp.ess(auto_samples[:,:i])/500)
 
     ax.plot(range(50, size, 10), auto_error, color=plt.cm.viridis_r(k/N))
 
@@ -280,10 +278,10 @@ ax.plot(1, 0, ">k", transform=ax.get_yaxis_transform(), clip_on=False)
 ax.plot(48, 1, "^k", transform=ax.get_xaxis_transform(), clip_on=False)
 ```
 
-With ArviZ we can get `azs.ess(⋅)`, `azs.summary(⋅)` and `azp.plot_forest(⋅, ess=True)`
+With ArviZ we can get `azp.ess(⋅)`, `azp.summary(⋅)` and `azp.plot_forest(⋅, ess=True)`
 
 ```{python}
-azs.ess(sample)
+azp.ess(sample)
 ```
 
 One way to use the ESS is as a minimum requirement for trustworthy MCMC samples.  It is recommended the ESS to be greater than 100 per chain. That is, for 4 chains we want a minimum of 400 effective samples. 
@@ -292,10 +290,10 @@ One way to use the ESS is as a minimum requirement for trustworthy MCMC samples.
 The ESS can also be used as a metric of the efficiency of MCMC sampling methods. For instance, we may want to measure the ESS per sample (ESS/n), a sampler that generates a ESS/n closer to 1 is more efficient than a sampler that generates values closer to 0. Other common metrics are the ESS per second, and the ESS per likelihood evaluation. 
 :::
 
-We see that `azs.summary(⋅)` returns two ESS values, `ess_bulk` and `ess_tail`. This is because different regions of the parameter space may have different ESS values since not all regions are sampled with the same efficiency. Intuitively, one may think that when sampling a distribution like a Gaussian it is easier to obtain better sample quality around the mean than around the tails, simply because we have more samples from that region. For some models, it could be the other way around, but the take-home message remains, not all regions are necessarily sampled with the same efficiency
+We see that `azp.summary(⋅)` returns two ESS values, `ess_bulk` and `ess_tail`. This is because different regions of the parameter space may have different ESS values since not all regions are sampled with the same efficiency. Intuitively, one may think that when sampling a distribution like a Gaussian it is easier to obtain better sample quality around the mean than around the tails, simply because we have more samples from that region. For some models, it could be the other way around, but the take-home message remains, not all regions are necessarily sampled with the same efficiency
 
 ```{python}
-azs.summary(sample, kind="diagnostics")
+azp.summary(sample, kind="diagnostics")
 ```
 
 If we are going to use the MCMC samples to calculate central values such as means or medians then we have to make sure that the `ess_bulk` is sufficiently large, however, if we want to calculate intervals such as an HDI 94% we have to make sure that `ess_tail` be appropriate.
@@ -326,10 +324,10 @@ azp.plot_ess_evolution(sample,
 An advantage of the ESS is that it is scale-free, it does not matter if one parameter varies between 0.1 and 0.2 and another between -2000 and 0, an ESS of 400 has the same meaning for both parameters. In models with many parameters, we can quickly identify which parameters are most problematic. However, when reporting results it is not very informative to know whether the ESS was 1372 or 1501. Instead, we would like to know the order of the errors we are making when approximating the posterior. This information is given by the **Monte Carlo standard error** (MCSE). Like the ESS, the MCSE takes into account the autocorrelation of the samples. This error should be below the desired precision in our results. That is, if for a parameter the MCSE is 0.1, it does not make sense to report that the mean of that parameter is 3.15. Since the correct value could easily be between 3.4 and 2.8.
 
 
-With ArviZ we can get the MCSE with `azs.mcse(⋅)` or `azs.summary(⋅)`.
+With ArviZ we can get the MCSE with `azp.mcse(⋅)` or `azp.summary(⋅)`.
 
 ```{python}
-azs.mcse(sample)
+azp.mcse(sample)
 ```
 
 ### Thinning
@@ -344,7 +342,7 @@ To determine an appropriate thinning factor, we can use the effective sample siz
 In ArviZ we have the `thin` function, which allows us to perform thinning automatically.
 
 ```{python}
-azs.thin(sample)
+azp.thin(sample)
 ```
 
 Additionally, if needed, we can specify the thinning factor manually or we can pass a `target_ess`, this last option is useful when we want as much thinning as possible provided we still get an ESS around the specified value of `target_ess`. 
@@ -356,8 +354,8 @@ Due to its internal workings, algorithms like NUTS offer some specific tests tha
 To exemplify this we are going to load two InferenceData from pre-calculated models. The details of how these data were generated are not relevant at the moment. We will only say that they are two models that are mathematically equivalent but parameterized in different ways. In this case, the parameterization affects the efficiency of the sampler. The `centered` model is sampled more efficiently than the `non_centered` model.
 
 ```{python}
-idata_cm = azb.load_arviz_data("centered_eight")
-idata_ncm = azb.load_arviz_data("non_centered_eight")
+idata_cm = azp.load_arviz_data("centered_eight")
+idata_ncm = azp.load_arviz_data("non_centered_eight")
 ```
 
 ### Transition energy vs marginal energy

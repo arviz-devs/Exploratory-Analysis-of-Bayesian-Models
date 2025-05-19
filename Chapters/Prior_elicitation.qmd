@@ -3,8 +3,7 @@
 ```{python}
 #| echo : false
 #| warning: false
-import arviz as az
-import arviz_plots as azp
+import arviz.preview as azp
 import numpy as np
 import pandas as pd
 import preliz as pz
@@ -222,7 +221,7 @@ Now we can plot the prior predictive distribution and compare it with the refere
 
 
 ```{python}
-azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
+pc = azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
 azp.add_reference_lines(pc, refs)
 ```
 
@@ -244,7 +243,7 @@ We can plot the prior predictive distribution and compare it with the reference 
 
 
 ```{python}
-azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
+pc = azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
 azp.add_reference_lines(pc, refs)
 ```
 
@@ -310,22 +309,10 @@ Now we can plot the prior predictive distribution, the target distribution and c
 
 
 ```{python}
-azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
+pc = azp.plot_ppc_dist(idata, group="prior_predictive", kind="ecdf")
 azp.add_reference_lines(pc, refs)
 ```
 
-<!-- We see very good agreement. Let's do one more plot. This time we hide the individual prior predictive samples and instead plot the aggregated prior predictive distribution, labelled with "mean" as it is the average distribution when we average over all the computed prior predictive distributions.
-
-```{python}
-ax = az.plot_ppc(idata, group="prior", kind="cumulative", mean=True, legend=False, alpha=0.001)
-target.plot_cdf(color="black")
-
-for key, val in refs.items():
-    ax.axvline(val, ls="--", color="0.5")
-    ax.text(val-7, 0.5-(len(key)/100), key, rotation=90)
-```
-
-As before we point out that this prior is still relatively vague, and we could use more information to tighten up. But what we care at this point is that the prior we got is consistent with the target distribution, and thus a prior that is coherent the domain-knowledge information that we decide to use. -->
 
 
 ### OK, but what's under the hood?
