@@ -4,12 +4,9 @@
 ```{python}
 #| echo: false
 #| warning: false
-import arviz as az
-import arviz_plots as azp
+import arviz.preview as azp
 import numpy as np
 import pandas as pd
-import pymc as pm
-import pytensor.tensor as pt
 import xarray as xr
 import matplotlib.pyplot as plt
 azp.style.use("arviz-variat")
@@ -26,35 +23,6 @@ We are going to analyze data from the [2022-2023 season](https://es.wikipedia.or
 
 ## The data
 The data used to fit the models are the results of all matches from 2022-2023 and the budget of each team (for the 2nd model only). Our data therefore consists of two tables: one with one row per match, containing the home and away teams and the goals scored by each; another with one row per team, containing the team and its budget.
-
-```{python}
-#| echo: true
-import arviz.data.datasets as azd
-
-azd.REMOTE_DATASETS.update({
-    "laliga_base": azd.RemoteFileMetadata(
-        name="laliga_base",
-        filename="base_model.nc",
-        url="http://figshare.com/ndownloader/files/44240747",
-        checksum="6f39f2646bbef8259f0d8fa3c6d7f6304b9cf6d63f5df7cdae1e6b3a93094fda",
-        description="""Base model for the analysis of LaLiga 2022-2023 results."""
-    ),
-    "laliga_budget": azd.RemoteFileMetadata(
-        name="laliga_budget",
-        filename="budget_model.nc",
-        url="http://figshare.com/ndownloader/files/44240762",
-        checksum="5c77671b98bcf2ae30d45a7ab3fd47b855e285ffe15ce2cd176ca25b1fd369fd",
-        description="""Budget model for the analysis of LaLiga 2022-2023 results."""
-    ),
-    "laliga_nofield": azd.RemoteFileMetadata(
-        name="laliga_nofield",
-        filename="nofield_model.nc",
-        url="http://figshare.com/ndownloader/files/44240807",
-        checksum="3e4910690cb2d8428e6486ba9973921d1b195bb8f14e2136422a0fc5d953d8e8",
-        description="""No field effect model for the analysis of LaLiga 2022-2023 results."""
-    )
-})
-```
 
 ## Base model
 
@@ -130,9 +98,9 @@ $$
 
 ```{python}
 # load data
-base_idata = az.load_arviz_data("laliga_base")
-budget_idata = az.load_arviz_data("laliga_budget")
-nofield_idata = az.load_arviz_data("laliga_nofield")
+base_idata = azp.convert_to_datatree("../models/laliga/base_model.nc")
+budget_idata = azp.convert_to_datatree("../models/laliga/budget_model.nc")
+nofield_idata = azp.convert_to_datatree("../models/laliga/nofield_model.nc")
 
 model_dict = {"base": base_idata, "budget": budget_idata, "nofield": nofield_idata}
 ```
@@ -153,9 +121,7 @@ Even though we know that the predictive task is ambiguous, we will start trying 
 
 ```{python}
 #| error: true
-#| code-fold: true
-
-az.loo(base_idata)
+azp.loo(base_idata)
 ```
 
 As expected, ArviZ has no way of knowing what predictive task we have in mind so it raises an error. 
@@ -174,15 +140,15 @@ with $i$ being both the match indicator ($m$, which varies with $i$) and the fie
 We can tell ArviZ to use these values using the argument `var_name`.
 
 ```{python}
-az.loo(base_idata, var_name="home_goals")
+azp.loo(base_idata, var_name="home_goals")
 ```
 
 ```{python}
-az.compare(model_dict, var_name="home_goals")
+azp.compare(model_dict, var_name="home_goals")
 ```
 
 ```{python}
-az.compare(model_dict, var_name="away_goals")
+azp.compare(model_dict, var_name="away_goals")
 ```
 
 ### Predicting the outcome of a match
@@ -211,11 +177,11 @@ base_idata = match_lik(base_idata)
 budget_idata = match_lik(budget_idata)
 nofield_idata = match_lik(nofield_idata)
 
-az.loo(base_idata, var_name="matches")
+azp.loo(base_idata, var_name="matches")
 ```
 
 ```{python}
-az.compare(model_dict, var_name="matches")
+azp.compare(model_dict, var_name="matches")
 ```
 
 ### Predicting the goals scored per match and per team
@@ -248,11 +214,11 @@ base_idata = goals_lik(base_idata)
 budget_idata = goals_lik(budget_idata)
 nofield_idata = goals_lik(nofield_idata)
 
-az.loo(base_idata, var_name="goals")
+azp.loo(base_idata, var_name="goals")
 ```
 
 ```{python}
-az.compare(model_dict, var_name="goals")
+azp.compare(model_dict, var_name="goals")
 ```
 
 ### Predicting team level performance
@@ -269,12 +235,12 @@ In the first column, we are excluding "Levante U.D." which in the rows shown onl
 
 ```{python}
 def team_lik(idata):
-    log_lik = idata.log_likelihood
-    const = idata.constant_data
+    log_lik = idata.log_likelihood.to_dataset()
+    const = idata.constant_data.to_dataset()
     groupby_sum_home = log_lik.groupby(const.home_team).sum().rename({"home_team": "team"})
     groupby_sum_away = log_lik.groupby(const.away_team).sum().rename({"away_team": "team"})
 
-    log_lik["teams_match"] = (
+    idata.log_likelihood["teams_match"] = (
         groupby_sum_home.home_goals + groupby_sum_home.away_goals +
         groupby_sum_away.home_goals + groupby_sum_away.away_goals
     )
@@ -286,12 +252,12 @@ nofield_idata = team_lik(nofield_idata)
 ```
 
 ```{python}
-az.loo(base_idata, var_name="teams_match")
+azp.loo(base_idata, var_name="teams_match")
 ```
 
 TODO: it would probably be best to run reloo for the three models for this case and include that on figshare too.
 
 ```{python}
-az.compare(model_dict, var_name="teams_match")
+azp.compare(model_dict, var_name="teams_match")
 ```
 

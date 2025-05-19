@@ -3,12 +3,11 @@
 ```{python}
 #| echo : false
 #| warning: false
-import arviz_base as azb
-import arviz_plots as azp
+import arviz.preview as azp
 import numpy as np
 import preliz as pz
 import matplotlib.pyplot as plt
-np.random.seed(19)
+rng = np.random.default_rng(365)
 azp.style.use("arviz-variat")
 plt.rcParams["figure.dpi"] = 100
 ```
@@ -161,7 +160,7 @@ Arguably the most important parameter of a histogram is the number of bins. Too 
 ```{python}
 #| label: fig-dist_histogram_0
 #| fig-cap: "Histogram from a sample of integers. Each bin corresponds to a single integer."
-d_values = azb.convert_to_dataset(pz.Poisson(3).rvs((1, 500)))
+d_values = azp.convert_to_dataset(pz.Poisson(3).rvs((1, 500), random_state=rng))
 azp.plot_dist(d_values, kind="hist");
 ```
 
@@ -170,7 +169,7 @@ When the discrete values take higher values, like in @fig-dist_histogram_1, bins
 ```{python}
 #| label: fig-dist_histogram_1
 #| fig-cap: "Histogram from a sample of integers. Bins group together many integers."
-d_values = azb.convert_to_dataset(pz.Poisson(100).rvs((1, 500)))
+d_values = azp.convert_to_dataset(pz.Poisson(100).rvs((1, 500), random_state=rng))
 azp.plot_dist(d_values, kind="hist");
 ```
 
@@ -179,7 +178,7 @@ If you don't like the default binning criteria of ArviZ, you can change it by pa
 ```{python}
 #| label: fig-dist_histogram_2
 #| fig-cap: "Histogram from a sample of integers, with bins automatically computed by Matplotlib, not ArviZ."
-d_values = azb.convert_to_dataset(pz.Poisson(100).rvs((1, 500)))
+d_values = azp.convert_to_dataset(pz.Poisson(100).rvs((1, 500), random_state=rng))
 azp.plot_dist(d_values, kind="hist", stats_kwargs={"density":{"bins":20}})
 ```
 
@@ -192,17 +191,20 @@ azp.plot_dist(d_values, kind="hist", stats_kwargs={"density":{"bins":20}})
 The following block of code shows a very simple example of a KDE.
 
 ```{python}
-_, ax = plt.subplots(figsize=(12, 4))
+# synthetic data, 7 points
+data = np.array([7.9, 6.5, 7.4, 8.3, 5.1, 5.4, 7.2])
+n_obs = len(data)
+# compute the KDE
 bandwidth = 0.4
-np.random.seed(19)
-datapoints = 7
-y = np.random.normal(7, size=datapoints)
-x = np.linspace(y.min() - bandwidth * 3, y.max() + bandwidth * 3, 100)
-kernels = np.transpose([pz.Normal(i, bandwidth).pdf(x) for i in y])
-kernels *= 1/datapoints  # normalize the results
-ax.plot(x, kernels, 'k--', alpha=0.5)
-ax.plot(y, np.zeros(len(y)), 'C1o')
-ax.plot(x, kernels.sum(1))
+grid = np.linspace(data.min() - bandwidth * 3, data.max() + bandwidth * 3, 200)
+kernels = np.transpose([pz.Normal(x_i, bandwidth).pdf(grid) for x_i in data])
+kernels *= 1/n_obs  # normalize the results
+
+# plot the results
+_, ax = plt.subplots(figsize=(9, 4))
+ax.plot(grid, kernels, 'k--', alpha=0.5)
+ax.plot(data, np.zeros(n_obs), 'C1o')
+ax.plot(grid, kernels.sum(1))
 ax.set_xticks([])
 ax.set_yticks([]);
 ```
@@ -214,7 +216,7 @@ The following example shows a KDE computed from a sample from a `Gamma` distribu
 ```{python}
 #| label: fig-dist_KDE_0
 #| fig-cap: "KDE from a sample of floats. By default, ArviZ computes a KDE instead of a histogram."
-c_values = azb.convert_to_dataset(pz.Gamma(2, 3).rvs((1,1000)))
+c_values = azp.convert_to_dataset(pz.Gamma(2, 3).rvs((1,1000), random_state=rng))
 azp.plot_dist(c_values);
 ```
 
@@ -247,7 +249,7 @@ From @fig-dist_qdot we can easily see that 30% of the data is below 2. We do thi
 ```{python}
 #| label: fig-dist_qdot
 #| fig-cap: "Quantile dot plot"
-d_values = azb.convert_to_dataset(pz.Poisson(3).rvs((1, 500)))
+d_values = azp.convert_to_dataset(pz.Poisson(3).rvs((1, 500), random_state=rng))
 try:
     azp.plot_dist(d_values, kind="dots");
 except NotImplementedError:
