@@ -3,7 +3,7 @@
 ```{python}
 #| echo: false
 #| warning: false
-import arviz_plots as azp
+import arviz.preview as azp
 import bambi as bmb
 import kulprit as kpt
 import numpy as np
@@ -119,9 +119,25 @@ bikes = pd.read_csv("../data/bikes.csv")
 The first thing we need to do is to define the model using Bambi. We need to set `idata_kwargs={'log_likelihood': True}` as we will later need to compute the ELPD of the reference models and submodels. 
 
 ```{python}
+#| eval: false
 model = bmb.Model("count ~" +  " + ".join([c for c in bikes.columns if c!="count"]), data=bikes, family="negativebinomial")
 idata = model.fit(idata_kwargs={'log_likelihood': True}, random_seed=seed)
 ```
+
+
+```{python}
+#| echo: false
+import os
+import arviz as az
+model = bmb.Model("count ~" +  " + ".join([c for c in bikes.columns if c!="count"]), data=bikes, family="negativebinomial")
+model.build()
+
+if not os.path.exists("../models/prerun/variable_sel_01.nc"):
+    idata.to_netcdf("../models/prerun/variable_sel_01.nc")
+idata = az.from_netcdf("../models/prerun/variable_sel_01.nc")
+```
+
+
 To use Kulprit we first instantiate the `ProjectionPredictive` class and then call the `project` method, which is the one doing all the hard work.
 
 ```{python}
@@ -148,12 +164,31 @@ bikes["hour_cos"] = np.cos(bikes.hour * np.pi / 12)
 bikes.drop(columns="hour", inplace=True)
 ```
 
-Now we can repeat the process.
+Now we can repeat the process, first we fit the model with the transformed variables
 
 
 ```{python}
+#| eval: false
 model = bmb.Model("count ~" +  " + ".join([c for c in bikes.columns if c!="count"]), data=bikes, family="negativebinomial")
 idata = model.fit(idata_kwargs={'log_likelihood': True}, random_seed=seed)
+```
+
+
+```{python}
+#| echo: false
+import os
+import arviz as az
+model = bmb.Model("count ~" +  " + ".join([c for c in bikes.columns if c!="count"]), data=bikes, family="negativebinomial")
+model.build()
+
+if not os.path.exists("../models/prerun/variable_sel_02.nc"):
+    idata.to_netcdf("../models/prerun/variable_sel_02.nc")
+idata = az.from_netcdf("../models/prerun/variable_sel_02.nc")
+```
+
+and then we use Kulprit to perform variable selection.
+
+```{python}
 ppi = kpt.ProjectionPredictive(model, idata)
 ppi.project()
 ppi.compare(min_model_size=1);

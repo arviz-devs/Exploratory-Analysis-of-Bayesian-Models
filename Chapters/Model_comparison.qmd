@@ -4,9 +4,7 @@
 ```{python}
 #| echo : false
 #| warning: false
-import arviz_base as azb
-import arviz_plots as azp
-import arviz_stats as azs
+import arviz.preview as azp
 import numpy as np
 import preliz as pz
 import pymc as pm
@@ -256,7 +254,7 @@ In the code-block below $g$ is a Normal distribution and $f$ is a Gamma and we u
 
 ```{python}
 g = pz.Normal(0, 10)
-samples = g.rvs(1000)
+samples = g.rvs(1000, random_state=SEED)
 f = pz.Gamma(mu=4, sigma=1.5)
 
 w = f.pdf(samples) / g.pdf(samples)
@@ -300,8 +298,8 @@ After all this introduction, calculating LOO may seem somewhat disappointing. We
 For the following example we are using a DataTree distributed with ArviZ. More details about the model in @sec-model-comparison-case-study. For the moment we only need to know that is a model with two sets of observations, `home_points` and `away_points`. We can compute LOO for each one of those.
 
 ```{python}
-dt_rugby = azb.load_arviz_data('rugby')
-elpd = azs.loo(dt_rugby, var_name="home_points")
+dt_rugby = azp.load_arviz_data('rugby')
+elpd = azp.loo(dt_rugby, var_name="home_points")
 elpd
 ```
 
@@ -315,7 +313,8 @@ We can see that we get the estimated ELPD value using LOO and its standard error
 ## PyMC
 
 ```{python}
-target = pz.StudentT(nu=4, mu=0, sigma=1).rvs(200)
+#| eval: false
+target = pz.StudentT(nu=4, mu=0, sigma=1).rvs(200, random_state=SEED)
 
 with pm.Model() as model_n:
     μ = pm.Normal("μ", 0, 1)
@@ -338,8 +337,25 @@ with pm.Model() as model_t:
 ```
 :::
 
+
 ```{python}
-cmp_df = azs.compare({'model_n':idata_n, 'model_t':idata_t})
+#| echo: false
+import os
+
+if not os.path.exists("../models/prerun/model_comparison_00.nc"):
+    idata_n.to_netcdf("../models/prerun/model_comparison_00.nc")
+idata_n = azp.convert_to_datatree("../models/prerun/model_comparison_00.nc")
+
+
+if not os.path.exists("../models/prerun/model_comparison_01.nc"):
+    idata_t.to_netcdf("../models/prerun/model_comparison_01.nc")
+idata_t = azp.convert_to_datatree("../models/prerun/model_comparison_01.nc")
+```
+
+
+
+```{python}
+cmp_df = azp.compare({'model_n':idata_n, 'model_t':idata_t})
 cmp_df
 ```
 
@@ -485,6 +501,7 @@ Let's do it. We only need to sample the prior and posterior for a model. Let's t
 ## PyMC
 
 ``` {python}
+#| eval: false
 y = np.repeat([1, 0], [50, 50])  # 50 heads, 50 tails
 with pm.Model() as model_uni:
     a = pm.Beta("a", 1, 1)
@@ -500,10 +517,21 @@ with pm.Model() as model_uni:
 ```
 :::
 
+
+```{python}
+#| echo: false
+import os
+
+if not os.path.exists("../models/prerun/model_comparison_02.nc"):
+    idata_uni.to_netcdf("../models/prerun/model_comparison_02.nc")
+idata_uni = azp.convert_to_datatree("../models/prerun/model_comparison_02.nc")
+```
+
+
 And now we call `azp.plot_bf`
 
 ``` {python}
-azp.plot_bf(idata_uni, var_name="a", ref_val=0.5);
+azp.plot_bf(idata_uni, var_names="a", ref_val=0.5);
 ```
 
 In the previous Figure we can see one KDE for the prior (black) and one for the posterior (gray). The two black dots show that we evaluated both distributions at the value 0.5. We can see that the Bayes factor in favor of the null hypothesis, `BF_01`, is $\approx 8$, which we can interpret as *moderate evidence* in favor of the null hypothesis.
@@ -517,6 +545,7 @@ If, instead, our model were a BetaBinomial with a  prior Beta(30, 30), the `BF_0
 ## PyMC
 
 ``` {python}
+#| eval: false
 with pm.Model() as model_conc:
     a = pm.Beta("a", 30, 30)
     yl = pm.Bernoulli("yl", a, observed=y)
@@ -532,7 +561,17 @@ with pm.Model() as model_conc:
 :::
 
 ```{python}
-azp.plot_bf(idata_conc, var_name="a", ref_val=0.5);
+#| echo: false
+import os
+
+if not os.path.exists("../models/prerun/model_comparison_03.nc"):
+    idata_conc.to_netcdf("../models/prerun/model_comparison_03.nc")
+idata_conc = azp.convert_to_datatree("../models/prerun/model_comparison_03.nc")
+```
+
+
+```{python}
+azp.plot_bf(idata_conc, var_names=["a"], ref_val=0.5);
 ```
 
 We can see that the `BF_01` is $\approx 1.6$, which we can interpret as *anecdotal evidence* in favor of the null hypothesis (see the Jeffreys' scale, discussed earlier). 
@@ -554,13 +593,13 @@ determination ($R^2$), etc. Interestingly, we can use PSIS-LOO-CV procedure to c
 From the PSIS smoothing procedure, we obtain a set of weights. The `loo` function utilizes these weights to estimate the ELPD we should have obtained if we have performed leave-one-out cross-validation. Furthermore, these weights can be used to estimate other quantities, such as the mean, standard deviation, and quantiles, as if we had performed leave-one-out cross-validation. For example, to compute the 25th and 75th percentiles we use:
 
 ```{python}
-azs.loo_expectations(dt_rugby, kind="quantile", probs=[0.25, 0.75])
+azp.loo_expectations(dt_rugby, kind="quantile", probs=[0.25, 0.75])
 ```
 
 Similarly we may be interested in computing estimates of leave-one-out predictive metrics given a set of predictions and observations. For instance to compute the root mean square error we can do: 
 
 ```{python}
-azs.loo_metrics(dt_rugby, kind="rmse", var_name="home_points")
+azp.loo_metrics(dt_rugby, kind="rmse", var_name="home_points")
 ```
 
 Notice that for `loo_metrics` if we have more than one variable we must specify the variable that we care using the `var_names` argument, like in the previous example.

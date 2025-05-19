@@ -3,7 +3,7 @@
 ```{python}
 #| echo : false
 #| warning: false
-import arviz_plots as azp
+import arviz.preview as azp
 import numpy as np
 import preliz as pz
 import matplotlib.pyplot as plt
@@ -98,13 +98,14 @@ Matplotlib allows users to easily switch between plotting styles by defining sty
 ::: {.panel-tabset}
 ## variant
 ```{python}
+#| code-fold: true
 #| label: fig-style_variat
 #| fig-cap: "arviz-variat style use a color-blind friendly palette"
 azp.style.use('arviz-variat')
 x = np.linspace(0, 1, 100)
 dist = pz.Beta(2, 5).pdf(x)
 
-fig = plt.figure()
+fig = plt.figure(figsize=(4.5, 2.5))
 for i in range(10):
     plt.plot(x, dist - i, f'C{i}', label=f'C{i}', lw=3)
 plt.xlabel('x')
@@ -113,13 +114,14 @@ plt.ylabel('f(x)', rotation=0, labelpad=15);
 
 ## cetrino
 ```{python}
+#| code-fold: true
 #| label: fig-style_cetrino
-#| fig-cap: "arviz-variat style use a color-blind friendly palette"
+#| fig-cap: "arviz-cetrino style use a color-blind friendly palette"
 azp.style.use('arviz-cetrino')
 x = np.linspace(0, 1, 100)
 dist = pz.Beta(2, 5).pdf(x)
 
-fig = plt.figure()
+fig = plt.figure(figsize=(4.5, 2.5))
 for i in range(10):
     plt.plot(x, dist - i, f'C{i}', label=f'C{i}', lw=3)
 plt.xlabel('x')
@@ -128,13 +130,14 @@ plt.ylabel('f(x)', rotation=0, labelpad=15);
 
 ## vibrant
 ```{python}
+#| code-fold: true
 #| label: fig-style_vibrant
-#| fig-cap: "arviz-variat style use a color-blind friendly palette"
+#| fig-cap: "arviz-vibrant style use a color-blind friendly palette"
 azp.style.use('arviz-vibrant')
 x = np.linspace(0, 1, 100)
 dist = pz.Beta(2, 5).pdf(x)
 
-fig = plt.figure()
+fig = plt.figure(figsize=(4.5, 2.5))
 for i in range(10):
     plt.plot(x, dist - i, f'C{i}', label=f'C{i}', lw=3)
 plt.xlabel('x')

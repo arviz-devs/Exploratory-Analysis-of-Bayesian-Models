@@ -4,13 +4,10 @@
 #| echo: false
 #| warning: false
 import arviz as az
-import arviz_base as azb
-import arviz_plots as azp
-import arviz_stats as azs
+import arviz.preview as azp
 import numpy as np
-import pandas as pd
 import preliz as pz
-import pymc as pm
+#import pymc as pm
 import matplotlib.pyplot as plt
 azp.style.use("arviz-variat")
 plt.rcParams["figure.dpi"] = 100
@@ -68,6 +65,7 @@ To exemplify a prior predictive check, let's try with a super simple example. Le
 ## PyMC
 
 ```{python}
+#| eval: false
 with pm.Model() as model: 
     # Priors for unknown model parameters
     mu = pm.Normal('mu', mu=0, sigma=10)
@@ -129,13 +127,22 @@ prior_samples = model.sample(
 )
 
 # Convert to ArviZ
-dt = azb.from_cmdstanpy(
+dt = azp.from_cmdstanpy(
     prior=prior_samples,
     prior_predictive="y_prior_pred",
     observed_data={"y": y},
 )
 ```
 :::
+
+```{python}
+#| echo: false
+import os
+
+if not os.path.exists("../models/prerun/prior_predictive_00.nc"):
+    dt.to_netcdf("../models/prerun/prior_predictive_00.nc")
+dt = azp.convert_to_datatree("../models/prerun/prior_predictive_00.nc")
+```
 
 The figure below displays samples from the prior predictive distribution (shown as solid blue lines). To aid interpretation, we have included two reference values: the average length/height of a newborn (approximately 50 cm) and the average height of adult males in the Netherlands (around 182 cm). Reference values are meaningful benchmarks derived from domain knowledge—not from the observed data—and help assess whether predictions are on a reasonable scale. While there are no strict rules for selecting reference values, different analysts might choose different benchmarks based on context
 
@@ -156,6 +163,7 @@ Such priors are often called weakly informative priors. Though not strictly defi
 ## PyMC
 
 ```{python}
+#| eval: false
 with pm.Model() as model: 
     # Priors for unknown model parameters
     mu = pm.Normal('mu', mu=160, sigma=10)
@@ -217,13 +225,23 @@ prior_samples = model.sample(
 )
 
 # Convert to ArviZ
-dt = azb.from_cmdstanpy(
+dt = azp.from_cmdstanpy(
     prior=prior_samples,
     prior_predictive="y_prior_pred",
     observed_data={"y": y},
 )
 ```
 :::
+
+```{python}
+#| echo: false
+import os
+
+if not os.path.exists("../models/prerun/prior_predictive_01.nc"):
+    dt.to_netcdf("../models/prerun/prior_predictive_01.nc")
+dt = azp.convert_to_datatree("../models/prerun/prior_predictive_01.nc")
+```
+
 
 We repeat the prior predictive checks with the new prior predictive distribution. We can see that the bulk of the prior predictive distribution is within the reference values. 
 
@@ -285,6 +303,7 @@ Continuing with our height example, we can generate synthetic data from the post
 ## PyMC
 
 ``` {python}
+#| eval: false
 with model: 
     dt = pm.sample(idata_kwargs={"log_likelihood": True}, random_seed=SEED)
     pm.sample_posterior_predictive(dt, random_seed=SEED, extend_inferencedata=True)
@@ -354,7 +373,7 @@ prior_samples = model.sample(
 posterior = model.sample(data=stan_data)
 
 # Convert to ArviZ
-dt = azb.from_cmdstanpy(
+dt = azp.from_cmdstanpy(
     posterior=posterior,
     prior=prior_samples,
     prior_predictive={"y":"y_prior_pred"},
@@ -364,6 +383,16 @@ dt = azb.from_cmdstanpy(
 )
 ```
 :::
+
+```{python}
+#| echo: false
+import os
+
+if not os.path.exists("../models/prerun/prior_predictive_02.nc"):
+    dt.to_netcdf("../models/prerun/prior_predictive_02.nc")
+dt = azp.convert_to_datatree("../models/prerun/prior_predictive_02.nc")
+```
+
 
 And then we use ArviZ to render the comparison. We can see that the model is doing a good job at predicting the data. The observed data (black line) is within the bulk of the posterior predictive distribution (blue lines).
 
@@ -485,7 +514,7 @@ for i, (mu, sigma) in enumerate([
                                 ]):
     predictions[f"y{i}"] =  pz.Normal(mu, sigma).rvs((4, 500, 100))
 
-dt_i = azb.from_dict({
+dt_i = azp.from_dict({
     "posterior_predictive":predictions,
     "observed_data": {f"y{i}": observed for i in range(len(predictions))}
 })
@@ -592,8 +621,8 @@ To illustrate rootograms we are going to use the Horseshoe crabs dataset [@Brock
 We are going to omit the modelling details, and just upload prefitted models.
 
 ```{python}
-crabs_poisson = azb.load_arviz_data('crabs_poisson')
-crabs_hurdle_nb = azb.load_arviz_data('crabs_hurdle_nb')
+crabs_poisson = azp.load_arviz_data('crabs_poisson')
+crabs_hurdle_nb = azp.load_arviz_data('crabs_hurdle_nb')
 ```
 
 Let's first check the Poisson model. We can see that the overall fit is not that bad, but the zeros are underpredicted, and counts 1 to 4 are overpredicted. Most
@@ -603,7 +632,7 @@ counts from 6 onward are also underpredicted. This pattern is an indication of o
 #| label: fig-ppc_rootogram_crab_poisson
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Poisson model."
 pc = azp.plot_ppc_rootogram(crabs_poisson)
-pc.viz["satellite"].plot.item().set_xlim(-0.5, 20)
+pc.viz.plot["satellite"].item().set_xlim(-0.5, 20)
 ```
 
 Now we will check the fit for the hurdle model. As expected for a hurdle model we get a perfect fit for the zeros. For the positive values, we still get some deviations, but the fit is better than with the Poisson model.
@@ -612,7 +641,7 @@ Now we will check the fit for the hurdle model. As expected for a hurdle model w
 #| label: fig-ppc_rootogram_crab_hurdle_nb
 #| fig-cap: "Rootogram showing the uncertainty in the predictions for a Hurdle Negative Binomial model."
 pc = azp.plot_ppc_rootogram(crabs_hurdle_nb)
-pc.viz["satellite"].plot.item().set_xlim(-0.5, 20)
+pc.viz.plot["satellite"].item().set_xlim(-0.5, 20)
 ```
 
 Both models predict more values in the tail than observed, even if with low probability. For both plots, we restrict the x-range to (0, 20).
@@ -628,7 +657,7 @@ A more robust and simple to use method, that does not rely on binning the data h
 ```{python}
 #| label: fig-ppc_pava
 #| fig-cap: "PAV-adjusted Calibration plot for a logistic regression model."
-dt = azb.load_arviz_data('anes')
+dt = azp.load_arviz_data('anes')
 
 azp.plot_ppc_pava(dt)
 ```

@@ -3,9 +3,7 @@
 ```{python}
 #| echo: false
 #| warning: false
-import arviz as az
-import arviz_plots as azp
-import arviz_stats as azs
+import arviz.preview as azp
 import numpy as np
 import pandas as pd
 import preliz as pz
@@ -163,6 +161,7 @@ For the prior (and likelihood) sensitivity method to work we need to ensure that
 ## PyMC
 
 ```{python}
+#| eval: false
 with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_00:
     β_0 = pm.StudentT("β_0", nu=3, mu=0, sigma=9.2)
     β = pm.Normal("β", 0, 1, dims="covariates")
@@ -180,12 +179,24 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_00:
 ```
 :::
 
+
+```{python}
+#| echo: false
+import os
+
+if not os.path.exists("../models/prerun/sensitivity_00.nc"):
+    idata_bf_00.to_netcdf("../models/prerun/sensitivity_00.nc")
+idata_bf_00 = azp.convert_to_datatree("../models/prerun/sensitivity_00.nc")
+```
+
+
+
 We can now use the `psense_summary` function from ArviZ to perform a numerical sensitivity analysis. This function returns a four-column DataFrame. The first column is the name of the variables, the second is the value of CJS when power-scaling the prior, then the value of CJS when power-scaling the likelihood and the last one is a textual description of the results.
 
 For the $\beta$ coefficient `wrist` we can see that we may have prior-sensitivity (CJS>0.05) and likelihood-sensitivity (CJS>0.05). Thus, we may have a case of prior-data conflict for the `wrist` variable. 
 
 ```{python}
-azs.psense_summary(idata_bf_00, var_names=["~μ"], round_to=2)
+azp.psense_summary(idata_bf_00, var_names=["~μ"], round_to=2)
 ```
 
 We can also evaluate the effect of power-scaling visually with the function `plot_psense_dist`. This function displays the posterior marginal for 3 values of $\alpha$. By default 0.8 (red), 1 (black) and 1.25 (blue). `plot_psense_dist` allow as to choose different representations including KDEs and ECDFs. From @fig-posterior-sensitivity_bf_00 we can see that the posterior is sensitive to both prior and likelihood power-scaling, and that it shifts right (towards zero) as the prior is strengthened, and left (away from zero) as the likelihood is strengthened.
@@ -222,6 +233,7 @@ Now, let try with a different prior. We will use empirically scaled to the data,
 ## PyMC
 
 ```{python}
+#| eval: false
 with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_01:
     β_0 = pm.StudentT("β_0", nu=3, mu=0, sigma=9.2)
     β = pm.Normal("β", 0, 2.5 * siri.std() / body_fat.std(), dims="covariates")
@@ -242,10 +254,20 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_01:
 ```
 :::
 
+```{python}
+#| echo: false
+import os
+
+if not os.path.exists("../models/prerun/sensitivity_01.nc"):
+    idata_bf_01.to_netcdf("../models/prerun/sensitivity_01.nc")
+idata_bf_01 = azp.convert_to_datatree("../models/prerun/sensitivity_01.nc")
+```
+
+
 Now we can perform the sensitivity analysis again. We can see that we managed to remove the warning!
 
 ```{python}
-azs.psense_summary(idata_bf_01, var_names=["~μ"])
+azp.psense_summary(idata_bf_01, var_names=["~μ"])
 ```
 
 We can see that after changing the prior, the posterior mean for `wrist` changes from -1.45 to -1.86, indicating that the base prior was indeed unintentionally informative and in conflict with the data, pulling the estimate towards zero. 
@@ -295,6 +317,7 @@ Let's start by fitting a hierarchical model. The model is as follows:
 ## PyMC
 
 ```{python}
+#| eval: false
 with pm.Model() as model_bt:
     μ = pm.Normal('μ', mu=0, sigma=10)
     β_week = pm.Normal('β_week', mu=0, sigma=10)
@@ -320,13 +343,23 @@ with pm.Model() as model_bt:
 ```
 :::
 
+```{python}
+#| echo: false
+import os
+
+if not os.path.exists("../models/prerun/sensitivity_02.nc"):
+    idata_bt.to_netcdf("../models/prerun/sensitivity_02.nc")
+idata_bt = azp.convert_to_datatree("../models/prerun/sensitivity_02.nc")
+```
+
+
 From the power-scaling sensitivity analysis perspective the key element in the previous code-block is that we are specifying the variables we want to use for the prior-powerscaling
 `var_names=["μ", "β_week", "β_trtDrug", "β_trtDrugP", "σ"]` i.e. we are omitting the `b_Intercept` variable. This is because we are only interested in power-scaling the top level prior. There are two way to specify the variables for power-scaling, the first is to use the `var_names` argument when computing the log_prior and/or log_likelihood, as we just did. The second is to use the `prior_varnames` and `likelihood_varnames` arguments in the `psense`-related functions. 
 
 Let's compute sensitivity diagnostics for all variables except `~b_Intercept`, if we want to check the sensitivity of all of them we can do it. The key point with hierarchical models is to not power-scale the lower level priors. 
 
 ```{python}
-azs.psense_summary(idata_bt, var_names=["~b_Intercept"])
+azp.psense_summary(idata_bt, var_names=["~b_Intercept"])
 ```
 We see that everything looks fine. If you like to get potentials issues you could try running the model again with a prior like `σ = pm.HalfNormal('σ', sigma=1)`.
 
