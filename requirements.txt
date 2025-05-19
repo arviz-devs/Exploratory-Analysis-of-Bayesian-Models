@@ -4,6 +4,6 @@ arviz-stats @ git+https://github.com/arviz-devs/arviz-stats
 arviz-plots @ git+https://github.com/arviz-devs/arviz-plots
 bambi==0.15.0
 kulprit @ git+https://github.com/bambinos/kulprit
-preliz==0.16.0
-pymc>=5.18.0
+preliz==0.17.0
+pymc>=5.22.0
 pymc-bart==0.9.0
