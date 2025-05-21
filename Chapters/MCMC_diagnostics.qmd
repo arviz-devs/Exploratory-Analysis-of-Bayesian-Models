@@ -100,19 +100,18 @@ Now let's see an example of a bad sample. @fig-traceplot_bad_sample_0 shows two 
 azp.plot_trace_dist(sample, var_names="bad_sample_0", compact=False);
 ```
 
-Finally from @fig-traceplot_bad_sample_1, we can see another common scenario. This time we see that globally everything looks fine. But there are 3 regions where the sampler got stuck, see the gray bands across the traceplot.
-
+Finally from @fig-traceplot_bad_sample_1, we can see another common scenario. While the overall trace appears acceptable, there are specific regions where the sampler gets stuck. To highlight these problematic areas, we’ve added gray bands across the trace. In the first region, the issue is less apparent because the stuck chain is overlapped by others. In contrast, the second and third regions make the issue easier to spot, though we still need to inspect the trace closely to see the problem.
 ```{python}
 #| label: fig-traceplot_bad_sample_1
 #| code-fold: true
-#| fig-cap: "Trace plot showing a sampler being stuck in 3 regions (see yellow bands). Because of the overlap, it's not easy to spot the problem for the first region."
+#| fig-cap: "Trace plot showing a sampler being stuck in 3 regions (see gray bands). Because of the overlap, it's not easy to spot the problem for the first region."
 pc = azp.plot_trace_dist(sample, var_names="bad_sample_1", compact=False)
-ax = pc.viz["plot"]["bad_sample_1"].sel(column="trace").item()
-for s in stuck:
-    ax.fill_between(s, 2.5, color="black", alpha=0.25);
+pc.coords = {"column": "trace"}
+azp.add_bands(pc, stuck)
 ```
 
-Trace plots are very popular in the Bayesian literature. But there are more modern and useful options, as we will see next.
+
+Trace plots are very popular in the Bayesian literature, they can be useful to spot some problems, but they have some limitations as we saw in the previous example. For example, it is difficult to spot problems when the chains overlap. In the next section we will see a modern alternative to trace plots, the rank plot.
 
 ## Rank plots {#sec-rank-plots}
 
