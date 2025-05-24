@@ -67,7 +67,7 @@ Once you have a model, check that the model compiles and/or runs without error. 
 
 ### Evaluate prior predictive distribution
 
-It is usually a good idea to generate data from the prior predictive distribution and compare that to your prior knowledge [@mikkola_2023]. Is the bulk of the simulated distribution in a reasonable range? Are there any extreme values? Use reference values as a guide. Reference values are empirical data or historical observations, usually, they will be minimum, maximum or expected values. Avoid comparing with the observed data, as that can lead to issues if you are not careful enough (see @sec-prior-elicitation for details).
+It is usually a good idea to generate data from the prior predictive distribution and compare that to your prior knowledge [@mikkola_2024]. Is the bulk of the simulated distribution in a reasonable range? Are there any extreme values? Use reference values as a guide. Reference values are empirical data or historical observations, usually, they will be minimum, maximum or expected values. Avoid comparing with the observed data, as that can lead to issues if you are not careful enough (see @sec-prior-elicitation for details).
 
 ### Compute posterior
 
