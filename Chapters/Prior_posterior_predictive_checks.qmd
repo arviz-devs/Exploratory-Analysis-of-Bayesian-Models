@@ -521,8 +521,8 @@ dt_i = azp.from_dict({
 
 azp.plot_ppc_dist(dt_i,
                   kind="kde",  
-                  plot_kwargs={"remove_axis":False},
-                  pc_kwargs={"plot_grid_kws":{"sharey":True}},             
+                  visuals={"remove_axis":False},
+                  figure_kwargs={"sharey":True},             
                  );
 ```
 
@@ -535,7 +535,7 @@ Then we show the ECDFs of the observed data and the predictions.
 #| fig-cap: "Posterior predictive check with ECDFs showing four alternative scenarios."
 azp.plot_ppc_dist(dt_i,
                   kind="ecdf",
-                  pc_kwargs={"plot_grid_kws":{"sharey":True}},        
+                  figure_kwargs={"sharey":True},        
                  );
 ```
 
@@ -545,8 +545,8 @@ Finally, we show the PIT-ECDFs.
 #| label: fig-post_ppc_pit_ecdf_alt_2
 #| fig-cap: "Posterior predictive check with PIT-ECDFs showing four alternative scenarios."
 azp.plot_ppc_pit(dt_i,
-                 plot_kwargs={"ylabel":False},
-                 pc_kwargs={"plot_grid_kws":{"sharey":True}},        
+                 visuals={"ylabel":False},
+                 figure_kwargs={"sharey":True},        
                  );
 ```
 
@@ -563,8 +563,8 @@ Using ArviZ we can visualize the ETI coverage by setting ``coverage=True`` in th
 #| fig-cap: "Coverage check showing four alternative scenarios."
 azp.plot_ppc_pit(dt_i,
                  coverage=True,
-                 plot_kwargs={"ylabel":False},
-                 pc_kwargs={"plot_grid_kws":{"sharey":True}},        
+                 visuals={"ylabel":False},
+                 figure_kwargs={"sharey":True},
                  );
 ```
 
