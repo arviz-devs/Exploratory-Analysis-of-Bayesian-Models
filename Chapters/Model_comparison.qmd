@@ -616,7 +616,7 @@ $$
 That is, we are evaluating the model's ability to predict an observation when we remove that observation from the observed data. We can use PSIS-LOO_CV to estimate this from a single model fit.
 
 ```{python}
-#| label: fig-elpdit
+#| label: fig-loo_pit
 #| fig-cap: "LOO-PIT plot for the rugby model"
 azp.plot_loo_pit(dt_rugby, var_names="home_points")
 ```

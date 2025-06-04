@@ -129,7 +129,7 @@ pz.Uniform(0, 1).plot_cdf(figsize=(6, 4));
 
 The disadvantage of such visualization is that all the "action" is close to the diagonal line and most of the figure is just blank space, specially as the MCMC sample size increase. A simple trick to improve the *data-ink* ratio is to plot the $\Delta$-ECDF, i.e. (observed ECDF - expected ECDF). Then a uniform distribution is a flat line that goes from (0,0) to (1, 0). 
 
-@fig-rank_plot shows rank plots for `good_sample`, `bad_sample_0` and `bad_sample_1`. 
+@fig-rank_plot shows fractional rank plots for `good_sample`, `bad_sample_0` and `bad_sample_1`. 
 
 
 ```{python}
@@ -301,8 +301,8 @@ ArviZ offers several functions linked to the ESS. For example, if we want to eva
 
 ```{python}
 azp.plot_ess(sample,
-            pc_kwargs={"plot_grid_kws": {"figsize": (10, 8)},
-                       "col_wrap": 1})
+            figure_kwargs={"figsize": (10, 8)},
+            col_wrap=1)
 ```
 
 A simple way to increase the ESS is to increase the number of samples, but it could be the case that the ESS grows very slowly with the number of samples, so even if we increased the number of samples 10 times we could still be very far from our target value. One way to estimate "how many more samples do we need" is to use `azp.plot_ess_evolution(.)`. This graph shows us how the ESS changed with each iteration, which allows us to make predictions. 
@@ -314,7 +314,7 @@ From @fig-ess_evolution we can see that the ESS grows linearly with the number o
 #| fig-cap: "ESS evolution plot for `good_sample` and `bad_sample_0`." 
 azp.plot_ess_evolution(sample,
             var_names=["good_sample", "bad_sample_0"],
-            pc_kwargs={"col_wrap":1},
+            col_wrap=1,
             );
 ```
 
@@ -334,7 +334,7 @@ azp.mcse(sample)
 One way to reduce autocorrelation in an MCMC chain is through thinning, where we retain only every $n$-th sample. While this method is straightforward, it has the drawback of discarding useful information. Research generally suggests that it's better to keep all the samples when calculating estimates [@maceachern_1994; @link_2011]. Provided the variance is finite, the central limit theorem applies even to correlated samples. Then if higher accuracy is needed, it's more effective to increase the number of draws rather than to perform thinning. Still, there are situations where thinning might be useful, such as:
 
 * Reducing the size of stored data, which is especially important when dealing with a large number of models or when the postprocessing of the samples is expensive, for instance when we need to run expensive computations on every draw.
-* Addressing bias in extreme ordered statistics, which may affect diagnostics like rank-plots (see @sec-rank-plots) and uniformity tests typically done for posterior predictive checks, as shown in @fig-post_pred_check_u_value and @fig-loo_pit or as part of [Simulation Based Calibration](https://github.com/arviz-devs/simulation_based_calibration) [@talts_2020].
+* Addressing bias in extreme ordered statistics, which may affect diagnostics like rank-plots (see @sec-rank-plots) and uniformity tests typically done for posterior predictive checks, as shown in @fig-post_pred and @fig-loo_pit or as part of [Simulation Based Calibration](https://github.com/arviz-devs/simulation_based_calibration) [@talts_2020].
 
 To determine an appropriate thinning factor, we can use the effective sample size (ESS). For instance, if you have 2,000 samples and an ESS of 1,000, you would thin by a factor of 2, keeping every other sample. The higher the ESS, the lower the thinning factor required. A more refined approach is to calculate both ESS-tail and ESS-bulk, then use the smaller value, which better accounts for differences in sampling efficiency between the central 90% quantile and the 5% tail quantiles [@sailynoja_2022].
 
