@@ -169,7 +169,7 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_00:
     μ = pm.Deterministic("μ", β_0 + β @ body_fat.T)
     y = pm.Normal("y", μ, σ, observed=siri)
     dt_bf_00 = pm.sample(random_seed=SEED,
-                            dt_kwargs={"log_likelihood": True, "log_prior": True})
+                            idata_kwargs={"log_likelihood": True, "log_prior": True})
 ```
 
 ## CmdStanPy
@@ -244,7 +244,7 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_01:
     y = pm.Normal("y", μ, σ, observed=siri)
     dt_bf_01 = pm.sample(tune=1000,
                       draws=2000, random_seed=SEED,
-                      dt_kwargs={"log_likelihood": True, "log_prior": True})
+                      idata_kwargs={"log_likelihood": True, "log_prior": True})
     pm.sample_posterior_predictive(dt_bf_01, extend_inferencedata=True)
 ```
 
