@@ -129,9 +129,9 @@ The authors suggest a cut-off value of 0.05 for the CJS. For a standard Normal t
 
 If the value of CJS when power-scaling the prior and likelihood is larger than the threshold, we have a potential prior-data conflict. If the value of CJS is larger than the threshold but the value for the likelihood is smaller than the threshold, we potentially have a strong prior and weak likelihood. 
 
-In the next two section we are going to show two examples of on how to use this method in practice.
+In the next sections we are going to show two examples of on how to use this method in practice.
 
-### Body fat example
+## Body fat example
 
 Let's see an example of prior-data conflict in a linear regression model. We will use the bodyfat data set [@johnson_1996]. The aim of the analysis is to predict an expensive and cumbersome water immersion measurement of body fat percentage (observed variable named `siri`) from a set of thirteen easier to measure characteristics, including age, height, weight, and circumferences of various body parts.
 
@@ -168,8 +168,8 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_00:
     σ = pm.HalfStudentT("σ", nu=3, sigma=9.2)
     μ = pm.Deterministic("μ", β_0 + β @ body_fat.T)
     y = pm.Normal("y", μ, σ, observed=siri)
-    idata_bf_00 = pm.sample(random_seed=SEED,
-                            idata_kwargs={"log_likelihood": True, "log_prior": True})
+    dt_bf_00 = pm.sample(random_seed=SEED,
+                            dt_kwargs={"log_likelihood": True, "log_prior": True})
 ```
 
 ## CmdStanPy
@@ -185,8 +185,8 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_00:
 import os
 
 if not os.path.exists("../models/prerun/sensitivity_00.nc"):
-    idata_bf_00.to_netcdf("../models/prerun/sensitivity_00.nc")
-idata_bf_00 = azp.convert_to_datatree("../models/prerun/sensitivity_00.nc")
+    dt_bf_00.to_netcdf("../models/prerun/sensitivity_00.nc")
+dt_bf_00 = azp.convert_to_datatree("../models/prerun/sensitivity_00.nc")
 ```
 
 
@@ -196,7 +196,7 @@ We can now use the `psense_summary` function from ArviZ to perform a numerical s
 For the $\beta$ coefficient `wrist` we can see that we may have prior-sensitivity (CJS>0.05) and likelihood-sensitivity (CJS>0.05). Thus, we may have a case of prior-data conflict for the `wrist` variable. 
 
 ```{python}
-azp.psense_summary(idata_bf_00, var_names=["~μ"], round_to=2)
+azp.psense_summary(dt_bf_00, var_names=["~μ"], round_to=2)
 ```
 
 We can also evaluate the effect of power-scaling visually with the function `plot_psense_dist`. This function displays the posterior marginal for 3 values of $\alpha$. By default 0.8 (red), 1 (black) and 1.25 (blue). `plot_psense_dist` allow as to choose different representations including KDEs and ECDFs. From @fig-posterior-sensitivity_bf_00 we can see that the posterior is sensitive to both prior and likelihood power-scaling, and that it shifts right (towards zero) as the prior is strengthened, and left (away from zero) as the likelihood is strengthened.
@@ -206,7 +206,7 @@ We can also evaluate the effect of power-scaling visually with the function `plo
 #| label: fig-posterior-sensitivity_bf_00
 #| fig-cap: "Posterior density estimates depending on amount of power-scaling (alpha). Overlapping lines indicate low sensitivity. Wider gaps between lines indicate greater sensitivity."
 
-azp.plot_psense_dist(idata_bf_00, 
+azp.plot_psense_dist(dt_bf_00, 
                      var_names=["β"], 
                      coords={"covariates": ["wrist"]},
                      kind="ecdf",
@@ -217,12 +217,14 @@ We can also use the `plot_psense_quantities` function to display quantities of i
 
 ```{python}
 #| label: fig-quantities_bf_00
-#| fig-cap: "Posterior quantities of βwrist as a function of power-scaling of the prior (purple line and circle markers) and the likelihood (green line and square markers). Dashed lines are ± 2 Monte Carlo standard errors (MCSE) of the base posterior quantity"
+#| fig-cap: "Posterior quantities of βwrist as a function of power-scaling of the prior and the likelihood. Dashed lines are ± 2 Monte Carlo standard errors (MCSE) of the base posterior quantity"
 
-azp.plot_psense_quantities(idata_bf_00, var_names=["β"], coords={"covariates": ["wrist"]})
+azp.plot_psense_quantities(dt_bf_00,
+                           var_names=["β"],
+                           coords={"covariates": ["wrist"]})
 ```
 
-#### Adjusting the prior
+### Adjusting the prior
 As there is prior sensitivity arising from prior-data conflict, which is unexpected and unintentional as our priors were chosen to be weakly informative, we consider modifying the priors. On inspecting the raw data, we see that although the predictor variables are all measured on similar scales, the variances of the variables differ substantially. For example, the variance of
 wrist circumference is 0.83, while the variance of abdomen is 102.65. This leads to our chosen prior to be unintentionally
 informative for some of the regression coefficients, including wrist, while being weakly informative for others
@@ -240,10 +242,10 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_01:
     σ = pm.HalfStudentT("σ", nu=3, sigma=9.2)
     μ = pm.Deterministic("μ", β_0 + β @ body_fat.T)
     y = pm.Normal("y", μ, σ, observed=siri)
-    idata_bf_01 = pm.sample(tune=1000,
+    dt_bf_01 = pm.sample(tune=1000,
                       draws=2000, random_seed=SEED,
-                      idata_kwargs={"log_likelihood": True, "log_prior": True})
-    pm.sample_posterior_predictive(idata_bf_01, extend_inferencedata=True)
+                      dt_kwargs={"log_likelihood": True, "log_prior": True})
+    pm.sample_posterior_predictive(dt_bf_01, extend_inferencedata=True)
 ```
 
 
@@ -259,15 +261,15 @@ with pm.Model(coords={"covariates": body_fat.columns}) as model_bf_01:
 import os
 
 if not os.path.exists("../models/prerun/sensitivity_01.nc"):
-    idata_bf_01.to_netcdf("../models/prerun/sensitivity_01.nc")
-idata_bf_01 = azp.convert_to_datatree("../models/prerun/sensitivity_01.nc")
+    dt_bf_01.to_netcdf("../models/prerun/sensitivity_01.nc")
+dt_bf_01 = azp.convert_to_datatree("../models/prerun/sensitivity_01.nc")
 ```
 
 
 Now we can perform the sensitivity analysis again. We can see that we managed to remove the warning!
 
 ```{python}
-azp.psense_summary(idata_bf_01, var_names=["~μ"])
+azp.psense_summary(dt_bf_01, var_names=["~μ"])
 ```
 
 We can see that after changing the prior, the posterior mean for `wrist` changes from -1.45 to -1.86, indicating that the base prior was indeed unintentionally informative and in conflict with the data, pulling the estimate towards zero. 
@@ -278,7 +280,7 @@ As previously, we can also evaluate the effect of power-scaling visually with th
 #| label: fig-posterior-sensitivity_bf_01
 #| fig-cap: "Posterior density estimates depending on amount of power-scaling (alpha). Overlapping lines indicate low sensitivity. Wider gaps between lines indicate greater sensitivity."
 
-azp.plot_psense_dist(idata_bf_01, 
+azp.plot_psense_dist(dt_bf_01, 
                      var_names=["β"], 
                      coords={"covariates": ["wrist"]},
                      kind="ecdf",
@@ -290,13 +292,54 @@ In terms or the mean for `βwrist`, we can see that there is no longer prior or 
 #| label: fig-quantities_bf_01
 #| fig-cap: "Posterior quantities of βwrist as a function of power-scaling of the prior (purple line and circle markers) and the likelihood (green line and square markers). Dashed lines are ± 2 Monte Carlo standard errors (MCSE) of the base posterior quantity"
 
-azp.plot_psense_quantities(idata_bf_01, var_names=["β"], coords={"covariates": ["wrist"]})
+azp.plot_psense_quantities(dt_bf_01, var_names=["β"], coords={"covariates": ["wrist"]})
 ```
 
 Overall, the power-scaling sensitivity analysis on the adjusted prior shows that there is no longer prior sensitivity, and there is appropriate likelihood sensitivity.
 
 
-### Bacteria treatment
+## Non-interpretable parameters and derived quantities
+
+In many cases, instead of looking at the posterior distribution of the model parameters, we will be interested in derived quantities. Some examples of derived quantities include, predictive performance measures, such as the Bayesian R² or the log-score. Another example are predictions evaluated at specific values of the predictors, like the median of one or more predictors.
+
+Evaluating the sensitivity of derived quantities can be useful in at least two scenarios:
+
+1. When the model parameters are not directly interpretable. For example, the coefficient for splines are not only not directly interpretable, they are not relevant *per se*, they are just an "intermediate step" to get a smooth and flexible function. The same applies to Gaussian processes (GPs), Bayesian additive regression trees (BART), polynomials, just to name a few. If the parameters are not directly interpretable, we can exclude them from these sensitivity checks, and instead focus on the derived quantities. 
+
+2. When we are interested in a quantity that is more relevant or easier to explain to our audience. Sometimes we don't care about the parameters of a model, irrespective of whether they are interpretable or not. This could happen if we are focused on a quantity that is of interest or easier to interpret for our audience, like the R². This could also be the case when our focus is on predictions. If those cases, we may decide to focus on the sensitivity checks for the derived quantities and, if they are ok, ignore the ones for the model parameters, even if they are interpretable. If the checks for the derived quantities are not ok, we may need to go back and check the model parameters, in particular if they are interpretable.
+
+### Computing derived quantities
+
+Let's illustrate this with an example. We will use the same model we used in the previous section, but instead of looking at the posterior distribution of the parameters, we will focus on the following derived quantities:
+
+* The Bayesian R².
+* The log-score. This is the sum of the log-likelihood over all observations.
+
+We are going to start by computing predictions at `new_data`, as you may already know how to do this from other examples. To do that we need to create a new DataFrame with the values of the predictors we want to use for prediction. In this case, we will use the median, min, and max values of each covariate. For your particular use case, you may want to use different values, like quantiles of any other specific values of interest.
+
+We can ask ArviZ, to compute the Bayesian R² for us, as long as we provide a DataTree with both observed and predicted data.
+
+```{python}
+r2_da = azp.ndarray_to_dataarray(azp.r2_score(dt_bf_01, summary=False).reshape(4, 2000), var_name="r2")
+dt_bf_01.posterior["r2_score"] = r2_da
+```
+
+To compute the log-score we just sum the poin-twise log-likelihood evaluations along the observations. In other words we compute one log-likelihood value per MCMC step.
+
+```{python}
+dt_bf_01.posterior["log_score"] = dt_bf_01.log_likelihood.sum("y_dim_0")["y"]
+```
+
+Once we have added the derived quantities we just need to call `psense_summary` (or the others `psense_*` functions) as usual:
+
+```{python}
+azp.psense_summary(dt_bf_01, var_names=["r2_score", "log_score"])
+```
+
+We see no signs of data-conflict or likelihood noninformativity, we can visually check this as we did before, but given these values we should expect the distributions of the derived quantities to very similar across the different priors.
+
+
+## Bacteria treatment
 
 Now we discuss and example of power-scaling sensitivity analysis for hierarchical models. The main motivation for this example is to show that for certain models we should selectively power-scaled the priors. To illustrate this, consider two forms of prior, a non-hierarchical prior with two independent parameters $p(\theta)$ and $p(\phi)$ and a hierarchical prior of the form $p(\theta \mid \psi) p(\psi)$. In the first case, the appropriate power-scaling for the prior is $p(\theta)^{\alpha} p(\phi)^{\alpha}$. This is what we did in the previous example. In the second case, for the hierarchical model, we only want to power-scale the top level prior, that is, $p(\theta) p(\phi)^{\alpha}$.
 
@@ -331,9 +374,9 @@ with pm.Model() as model_bt:
     
     y_obs = pm.Bernoulli('y_obs', logit_p=theta, observed=bacteria.y)
     
-    idata_bt = pm.sample()
-    pm.compute_log_prior(idata_bt, var_names=["μ", "β_week", "β_trtDrug", "β_trtDrugP", "σ"])
-    pm.compute_log_likelihood(idata_bt)
+    dt_bt = pm.sample()
+    pm.compute_log_prior(dt_bt, var_names=["μ", "β_week", "β_trtDrug", "β_trtDrugP", "σ"])
+    pm.compute_log_likelihood(dt_bt)
 ```
 
 ## CmdStanPy
@@ -348,8 +391,8 @@ with pm.Model() as model_bt:
 import os
 
 if not os.path.exists("../models/prerun/sensitivity_02.nc"):
-    idata_bt.to_netcdf("../models/prerun/sensitivity_02.nc")
-idata_bt = azp.convert_to_datatree("../models/prerun/sensitivity_02.nc")
+    dt_bt.to_netcdf("../models/prerun/sensitivity_02.nc")
+dt_bt = azp.convert_to_datatree("../models/prerun/sensitivity_02.nc")
 ```
 
 
@@ -359,7 +402,7 @@ From the power-scaling sensitivity analysis perspective the key element in the p
 Let's compute sensitivity diagnostics for all variables except `~b_Intercept`, if we want to check the sensitivity of all of them we can do it. The key point with hierarchical models is to not power-scale the lower level priors. 
 
 ```{python}
-azp.psense_summary(idata_bt, var_names=["~b_Intercept"])
+azp.psense_summary(dt_bt, var_names=["~b_Intercept"])
 ```
 We see that everything looks fine. If you like to get potentials issues you could try running the model again with a prior like `σ = pm.HalfNormal('σ', sigma=1)`.
 
