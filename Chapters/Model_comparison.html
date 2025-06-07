@@ -606,7 +606,7 @@ w_i = \frac{f(x_i)}{g(x_i)}
 </ul>
 <p>Once the weights <span class="math inline">\(w_i\)</span> are obtained, we can use them to estimate properties of <span class="math inline">\(f\)</span>, its density, moments, quantiles, etc.</p>
 <p>In the code-block below <span class="math inline">\(g\)</span> is a Normal distribution and <span class="math inline">\(f\)</span> is a Gamma and we use importance sampling to estimate the PDF of <span class="math inline">\(f\)</span>. This is just a pedagogic example, since we actually have a very direct way to calculate the PDF of a Gamma. But in practice <span class="math inline">\(f\)</span> can be a much more complex object.</p>
-<div id="bfa5bd6f" class="cell" data-execution_count="3">
+<div id="7ed69fcd" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>g <span class="op">=</span> pz.Normal(<span class="dv">0</span>, <span class="dv">10</span>)</span>
 <span id="cb2-2"><a href="#cb2-2"></a>samples <span class="op">=</span> g.rvs(<span class="dv">1000</span>, random_state<span class="op">=</span>SEED)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>f <span class="op">=</span> pz.Gamma(mu<span class="op">=</span><span class="dv">4</span>, sigma<span class="op">=</span><span class="fl">1.5</span>)</span>
@@ -646,7 +646,7 @@ w_i^j \propto \frac{p(\theta^j \mid y_{-i} )}{p(\theta^j \mid y)} \propto \frac{
 <h3 data-number="7.10.3" class="anchored" data-anchor-id="calculating-loo"><span class="header-section-number">7.10.3</span> Calculating LOO</h3>
 <p>After all this introduction, calculating LOO may seem somewhat disappointing. We just need to call ArviZ’s <code>loo</code> function and pass it an DataTree object containing a <code>log-likelihood</code> group.</p>
 <p>For the following example we are using a DataTree distributed with ArviZ. More details about the model in <a href="Case_study_model_comparison.html" class="quarto-xref"><span>Chapter 8</span></a>. For the moment we only need to know that is a model with two sets of observations, <code>home_points</code> and <code>away_points</code>. We can compute LOO for each one of those.</p>
-<div id="854c4d91" class="cell" data-execution_count="4">
+<div id="59da7380" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>dt_rugby <span class="op">=</span> azp.load_arviz_data(<span class="st">'rugby'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>elpd <span class="op">=</span> azp.loo(dt_rugby, var_name<span class="op">=</span><span class="st">"home_points"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3"></a>elpd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -679,7 +679,7 @@ Pareto k diagnostic values:
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">CmdStanPy</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="bbb23459" class="cell" data-execution_count="5">
+<div id="78c4c557" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>target <span class="op">=</span> pz.StudentT(nu<span class="op">=</span><span class="dv">4</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>).rvs(<span class="dv">200</span>, random_state<span class="op">=</span>SEED)</span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_n:</span>
@@ -701,7 +701,7 @@ Pareto k diagnostic values:
 </div>
 </div>
 </div>
-<div id="bb1da3c3" class="cell" data-execution_count="7">
+<div id="ed5354c4" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>cmp_df <span class="op">=</span> azp.compare({<span class="st">'model_n'</span>:idata_n, <span class="st">'model_t'</span>:idata_t})</span>
 <span id="cb8-2"><a href="#cb8-2"></a>cmp_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
@@ -766,7 +766,7 @@ Pareto k diagnostic values:
 <li>scale: the scale on which the ELPD is calculated</li>
 </ul>
 <p>We can obtain similar information, but graphically, using the <code>azp.plot_compare</code> function</p>
-<div id="84116d19" class="cell" data-execution_count="8">
+<div id="d9d3d8fc" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>azp.plot_compare(cmp_df)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -788,7 +788,7 @@ Pareto k diagnostic values:
 <p>Then we can see a table with the title “Pareto k diagnostic values”. We previously said that we used a method involving a Pareto distribution to regularize the estimation of the importance weights. One of the parameters of that fit is called <span class="math inline">\(k\)</span>. Sometimes we call it <span class="math inline">\(\hat k\)</span> (because is an estimate of <span class="math inline">\(k\)</span>). Since we have a Pareto adjustment per observation we have a <span class="math inline">\(k\)</span> value per observation. This parameter is useful because it tells us two sides of the same story, it tells us when an observation is “very influential” and it tells us that the approximation used by LOO could be failing for that observation.</p>
 <p>As a general rule, if <span class="math inline">\(k\)</span> is less than 0.7 there are no problems, if it’s between 0.7 and 1 is very likely that we are in trouble and if it’s greater than 1, we are doom. The cut-off value 0.7 is not fixed, it can strictly be lower and depends on the total number of samples of the posterior distribution, 2000, in this example. But when the number of draws is about 2000 we are almost at 0.7. In practice it is common to use sample values ​​of 2000 or larger. Increasing the number of samples from the posterior may reduce the value of <span class="math inline">\(k\)</span> and so we could remove some of these warnings, but in general the number needed will be too large to make any practical sense.</p>
 <p>It is possible to visualize the values ​​of <span class="math inline">\(k\)</span>, using <code>plot_khat</code></p>
-<div id="47bf55be" class="cell" data-execution_count="9">
+<div id="b7b4ed50" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># coming soon</span></span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="co">#azp.plot_khat(elpd, threshold=0.7);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -887,7 +887,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">CmdStanPy</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="68b4d8c8" class="cell" data-execution_count="10">
+<div id="32df5d26" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>y <span class="op">=</span> np.repeat([<span class="dv">1</span>, <span class="dv">0</span>], [<span class="dv">50</span>, <span class="dv">50</span>])  <span class="co"># 50 heads, 50 tails</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_uni:</span>
 <span id="cb11-3"><a href="#cb11-3"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
@@ -902,7 +902,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 </div>
 </div>
 <p>And now we call <code>azp.plot_bf</code></p>
-<div id="b0396cbc" class="cell" data-execution_count="12">
+<div id="869ad90e" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>azp.plot_bf(idata_uni, var_names<span class="op">=</span><span class="st">"a"</span>, ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -919,7 +919,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">CmdStanPy</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="1ed0af78" class="cell" data-execution_count="13">
+<div id="f061bf23" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_conc:</span>
 <span id="cb14-2"><a href="#cb14-2"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">30</span>, <span class="dv">30</span>)</span>
 <span id="cb14-3"><a href="#cb14-3"></a>    yl <span class="op">=</span> pm.Bernoulli(<span class="st">"yl"</span>, a, observed<span class="op">=</span>y)</span>
@@ -932,7 +932,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 </div>
 </div>
 </div>
-<div id="169f352e" class="cell" data-execution_count="15">
+<div id="4093f445" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>azp.plot_bf(idata_conc, var_names<span class="op">=</span>[<span class="st">"a"</span>], ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -955,486 +955,72 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 <section id="loo-expectations-and-metrics" class="level3" data-number="7.14.1">
 <h3 data-number="7.14.1" class="anchored" data-anchor-id="loo-expectations-and-metrics"><span class="header-section-number">7.14.1</span> LOO expectations and metrics</h3>
 <p>From the PSIS smoothing procedure, we obtain a set of weights. The <code>loo</code> function utilizes these weights to estimate the ELPD we should have obtained if we have performed leave-one-out cross-validation. Furthermore, these weights can be used to estimate other quantities, such as the mean, standard deviation, and quantiles, as if we had performed leave-one-out cross-validation. For example, to compute the 25th and 75th percentiles we use:</p>
-<div id="cc2150a6" class="cell" data-execution_count="16">
+<div id="2d584e05" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>azp.loo_expectations(dt_rugby, kind<span class="op">=</span><span class="st">"quantile"</span>, probs<span class="op">=</span>[<span class="fl">0.25</span>, <span class="fl">0.75</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/arviz_stats/loo/helper_loo.py:874: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(</code></pre>
+</div>
 <div class="cell-output cell-output-display" data-execution_count="13">
-<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
-<defs>
-<symbol id="icon-database" viewbox="0 0 32 32">
-<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
-<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-</symbol>
-<symbol id="icon-file-text2" viewbox="0 0 32 32">
-<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
-<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-</symbol>
-</defs>
-</svg>
-<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
- *
- */
-
-:root {
-  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-  --xr-border-color: var(--jp-border-color2, #e0e0e0);
-  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-  --xr-background-color: var(--jp-layout-color0, white);
-  --xr-background-color-row-even: var(--jp-layout-color1, white);
-  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
-}
-
-html[theme="dark"],
-html[data-theme="dark"],
-body[data-theme="dark"],
-body.vscode-dark {
-  --xr-font-color0: rgba(255, 255, 255, 1);
-  --xr-font-color2: rgba(255, 255, 255, 0.54);
-  --xr-font-color3: rgba(255, 255, 255, 0.38);
-  --xr-border-color: #1f1f1f;
-  --xr-disabled-color: #515151;
-  --xr-background-color: #111111;
-  --xr-background-color-row-even: #111111;
-  --xr-background-color-row-odd: #313131;
-}
-
-.xr-wrap {
-  display: block !important;
-  min-width: 300px;
-  max-width: 700px;
-}
-
-.xr-text-repr-fallback {
-  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
-  display: none;
-}
-
-.xr-header {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-bottom: 4px;
-  border-bottom: solid 1px var(--xr-border-color);
-}
-
-.xr-header > div,
-.xr-header > ul {
-  display: inline;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.xr-obj-type,
-.xr-array-name {
-  margin-left: 2px;
-  margin-right: 10px;
-}
-
-.xr-obj-type {
-  color: var(--xr-font-color2);
-}
-
-.xr-sections {
-  padding-left: 0 !important;
-  display: grid;
-  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
-}
-
-.xr-section-item {
-  display: contents;
-}
-
-.xr-section-item input {
-  display: inline-block;
-  opacity: 0;
-  height: 0;
-}
-
-.xr-section-item input + label {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-item input:enabled + label {
-  cursor: pointer;
-  color: var(--xr-font-color2);
-}
-
-.xr-section-item input:focus + label {
-  border: 2px solid var(--xr-font-color0);
-}
-
-.xr-section-item input:enabled + label:hover {
-  color: var(--xr-font-color0);
-}
-
-.xr-section-summary {
-  grid-column: 1;
-  color: var(--xr-font-color2);
-  font-weight: 500;
-}
-
-.xr-section-summary > span {
-  display: inline-block;
-  padding-left: 0.5em;
-}
-
-.xr-section-summary-in:disabled + label {
-  color: var(--xr-font-color2);
-}
-
-.xr-section-summary-in + label:before {
-  display: inline-block;
-  content: "►";
-  font-size: 11px;
-  width: 15px;
-  text-align: center;
-}
-
-.xr-section-summary-in:disabled + label:before {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-summary-in:checked + label:before {
-  content: "▼";
-}
-
-.xr-section-summary-in:checked + label > span {
-  display: none;
-}
-
-.xr-section-summary,
-.xr-section-inline-details {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-.xr-section-inline-details {
-  grid-column: 2 / -1;
-}
-
-.xr-section-details {
-  display: none;
-  grid-column: 1 / -1;
-  margin-bottom: 5px;
-}
-
-.xr-section-summary-in:checked ~ .xr-section-details {
-  display: contents;
-}
-
-.xr-array-wrap {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 20px auto;
-}
-
-.xr-array-wrap > label {
-  grid-column: 1;
-  vertical-align: top;
-}
-
-.xr-preview {
-  color: var(--xr-font-color3);
-}
-
-.xr-array-preview,
-.xr-array-data {
-  padding: 0 5px !important;
-  grid-column: 2;
-}
-
-.xr-array-data,
-.xr-array-in:checked ~ .xr-array-preview {
-  display: none;
-}
-
-.xr-array-in:checked ~ .xr-array-data,
-.xr-array-preview {
-  display: inline-block;
-}
-
-.xr-dim-list {
-  display: inline-block !important;
-  list-style: none;
-  padding: 0 !important;
-  margin: 0;
-}
-
-.xr-dim-list li {
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-}
-
-.xr-dim-list:before {
-  content: "(";
-}
-
-.xr-dim-list:after {
-  content: ")";
-}
-
-.xr-dim-list li:not(:last-child):after {
-  content: ",";
-  padding-right: 5px;
-}
-
-.xr-has-index {
-  font-weight: bold;
-}
-
-.xr-var-list,
-.xr-var-item {
-  display: contents;
-}
-
-.xr-var-item > div,
-.xr-var-item label,
-.xr-var-item > .xr-var-name span {
-  background-color: var(--xr-background-color-row-even);
-  margin-bottom: 0;
-}
-
-.xr-var-item > .xr-var-name:hover span {
-  padding-right: 5px;
-}
-
-.xr-var-list > li:nth-child(odd) > div,
-.xr-var-list > li:nth-child(odd) > label,
-.xr-var-list > li:nth-child(odd) > .xr-var-name span {
-  background-color: var(--xr-background-color-row-odd);
-}
-
-.xr-var-name {
-  grid-column: 1;
-}
-
-.xr-var-dims {
-  grid-column: 2;
-}
-
-.xr-var-dtype {
-  grid-column: 3;
-  text-align: right;
-  color: var(--xr-font-color2);
-}
-
-.xr-var-preview {
-  grid-column: 4;
-}
-
-.xr-index-preview {
-  grid-column: 2 / 5;
-  color: var(--xr-font-color2);
-}
-
-.xr-var-name,
-.xr-var-dims,
-.xr-var-dtype,
-.xr-preview,
-.xr-attrs dt {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 10px;
-}
-
-.xr-var-name:hover,
-.xr-var-dims:hover,
-.xr-var-dtype:hover,
-.xr-attrs dt:hover {
-  overflow: visible;
-  width: auto;
-  z-index: 1;
-}
-
-.xr-var-attrs,
-.xr-var-data,
-.xr-index-data {
-  display: none;
-  background-color: var(--xr-background-color) !important;
-  padding-bottom: 5px !important;
-}
-
-.xr-var-attrs-in:checked ~ .xr-var-attrs,
-.xr-var-data-in:checked ~ .xr-var-data,
-.xr-index-data-in:checked ~ .xr-index-data {
-  display: block;
-}
-
-.xr-var-data > table {
-  float: right;
-}
-
-.xr-var-name span,
-.xr-var-data,
-.xr-index-name div,
-.xr-index-data,
-.xr-attrs {
-  padding-left: 25px !important;
-}
-
-.xr-attrs,
-.xr-var-attrs,
-.xr-var-data,
-.xr-index-data {
-  grid-column: 1 / -1;
-}
-
-dl.xr-attrs {
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: 125px auto;
-}
-
-.xr-attrs dt,
-.xr-attrs dd {
-  padding: 0;
-  margin: 0;
-  float: left;
-  padding-right: 10px;
-  width: auto;
-}
-
-.xr-attrs dt {
-  font-weight: normal;
-  grid-column: 1;
-}
-
-.xr-attrs dt:hover span {
-  display: inline-block;
-  background: var(--xr-background-color);
-  padding-right: 10px;
-}
-
-.xr-attrs dd {
-  grid-column: 2;
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-
-.xr-icon-database,
-.xr-icon-file-text2,
-.xr-no-icon {
-  display: inline-block;
-  vertical-align: middle;
-  width: 1em;
-  height: 1.5em !important;
-  stroke-width: 0;
-  stroke: currentColor;
-  fill: currentColor;
-}
-</style><pre class="xr-text-repr-fallback">&lt;xarray.DataArray 'home_points' (quantile: 2, match: 60)&gt; Size: 960B
-array([[44.        , 12.        , 25.        , 18.        , 14.        ,
-        32.        , 21.        , 15.        , 16.        , 38.        ,
-        16.        , 20.        , 10.        , 23.        , 10.        ,
-        18.        ,  9.        , 21.        , 45.        , 20.        ,
-        13.        , 33.        , 15.        , 17.        , 14.        ,
-        30.        , 14.        , 11.        , 10.        , 22.        ,
-        33.        , 13.        , 18.        , 11.        , 26.        ,
-        10.        , 22.        , 15.        , 16.        , 37.        ,
-        21.        , 14.        , 37.        , 24.        , 13.        ,
-        10.        , 24.        , 12.        ,  8.        , 18.        ,
-        20.        , 13.        , 20.        , 47.        , 14.        ,
-        12.        , 25.        , 31.        , 14.        , 17.        ],
-       [54.        , 18.        , 32.        , 24.        , 20.        ,
-        41.        , 28.        , 21.        , 23.        , 47.        ,
-        22.        , 28.        , 15.        , 31.        , 15.        ,
-        25.        , 13.        , 28.        , 56.        , 27.        ,
-        19.        , 42.        , 21.        , 23.        , 20.        ,
-        39.        , 19.        , 16.        , 16.        , 28.        ,
-        41.        , 19.        , 25.        , 16.        , 35.        ,
-        16.        , 29.        , 21.        , 22.        , 46.        ,
-        28.        , 20.        , 47.        , 31.        , 19.        ,
-        14.        , 31.        , 17.        , 13.        , 25.        ,
-        27.        , 18.67750933, 27.        , 57.        , 20.        ,
-        17.        , 33.        , 39.        , 20.        , 23.        ]])
-Coordinates:
-  * match      (match) &lt;U16 4kB 'Wales Italy' ... 'Ireland England'
-    home_team  (match) &lt;U8 2kB 'Wales' 'France' 'Ireland' ... 'France' 'Ireland'
-    away_team  (match) &lt;U8 2kB 'Italy' 'England' ... 'Wales' 'England'
-  * quantile   (quantile) float64 16B 0.25 0.75</pre><div class="xr-wrap" style="display:none"><div class="xr-header"><div class="xr-obj-type">xarray.DataArray</div><div class="xr-array-name">'home_points'</div><ul class="xr-dim-list"><li><span class="xr-has-index">quantile</span>: 2</li><li><span class="xr-has-index">match</span>: 60</li></ul></div><ul class="xr-sections"><li class="xr-section-item"><div class="xr-array-wrap"><input id="section-4a036360-5485-4ea3-a7a5-1db175534a28" class="xr-array-in" type="checkbox" checked=""><label for="section-4a036360-5485-4ea3-a7a5-1db175534a28" title="Show/hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-array-preview xr-preview"><span>44.0 12.0 25.0 18.0 14.0 32.0 21.0 ... 20.0 17.0 33.0 39.0 20.0 23.0</span></div><div class="xr-array-data"><pre>array([[44.        , 12.        , 25.        , 18.        , 14.        ,
-        32.        , 21.        , 15.        , 16.        , 38.        ,
-        16.        , 20.        , 10.        , 23.        , 10.        ,
-        18.        ,  9.        , 21.        , 45.        , 20.        ,
-        13.        , 33.        , 15.        , 17.        , 14.        ,
-        30.        , 14.        , 11.        , 10.        , 22.        ,
-        33.        , 13.        , 18.        , 11.        , 26.        ,
-        10.        , 22.        , 15.        , 16.        , 37.        ,
-        21.        , 14.        , 37.        , 24.        , 13.        ,
-        10.        , 24.        , 12.        ,  8.        , 18.        ,
-        20.        , 13.        , 20.        , 47.        , 14.        ,
-        12.        , 25.        , 31.        , 14.        , 17.        ],
-       [54.        , 18.        , 32.        , 24.        , 20.        ,
-        41.        , 28.        , 21.        , 23.        , 47.        ,
-        22.        , 28.        , 15.        , 31.        , 15.        ,
-        25.        , 13.        , 28.        , 56.        , 27.        ,
-        19.        , 42.        , 21.        , 23.        , 20.        ,
-        39.        , 19.        , 16.        , 16.        , 28.        ,
-        41.        , 19.        , 25.        , 16.        , 35.        ,
-        16.        , 29.        , 21.        , 22.        , 46.        ,
-        28.        , 20.        , 47.        , 31.        , 19.        ,
-        14.        , 31.        , 17.        , 13.        , 25.        ,
-        27.        , 18.67750933, 27.        , 57.        , 20.        ,
-        17.        , 33.        , 39.        , 20.        , 23.        ]])</pre></div></div></li><li class="xr-section-item"><input id="section-71b68611-8572-40a2-9783-c62d01b7f0cb" class="xr-section-summary-in" type="checkbox" checked=""><label for="section-71b68611-8572-40a2-9783-c62d01b7f0cb" class="xr-section-summary">Coordinates: <span>(4)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">match</span></div><div class="xr-var-dims">(match)</div><div class="xr-var-dtype">&lt;U16</div><div class="xr-var-preview xr-preview">'Wales Italy' ... 'Ireland England'</div><input id="attrs-f01cffae-bff5-4edd-ab57-564a92992975" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-f01cffae-bff5-4edd-ab57-564a92992975" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-99cf6c10-6d76-42a3-bc34-a487036d61e3" class="xr-var-data-in" type="checkbox"><label for="data-99cf6c10-6d76-42a3-bc34-a487036d61e3" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(['Wales Italy', 'France England', 'Ireland Scotland', 'Ireland Wales',
-       'Scotland England', 'France Italy', 'Wales France', 'Italy Scotland',
-       'England Ireland', 'Ireland Italy', 'Scotland France', 'England Wales',
-       'Italy England', 'Wales Scotland', 'France Ireland', 'Wales England',
-       'Italy Ireland', 'France Scotland', 'England Italy', 'Ireland France',
-       'Scotland Wales', 'Scotland Italy', 'France Wales', 'Ireland England',
-       'Wales Ireland', 'England Scotland', 'Italy France', 'Italy Wales',
-       'Scotland Ireland', 'England France', 'France Italy',
-       'Scotland England', 'Ireland Wales', 'France Ireland', 'Wales Scotland',
-       'Italy England', 'Wales France', 'Italy Scotland', 'England Ireland',
-       'Ireland Italy', 'England Wales', 'Scotland France', 'Wales Italy',
-       'Ireland Scotland', 'France England', 'Scotland Ireland',
-       'England France', 'Italy Wales', 'Italy Ireland', 'Wales England',
-       'France Scotland', 'Scotland Wales', 'Ireland France', 'England Italy',
-       'Wales Ireland', 'Italy France', 'England Scotland', 'Scotland Italy',
-       'France Wales', 'Ireland England'], dtype='&lt;U16')</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>home_team</span></div><div class="xr-var-dims">(match)</div><div class="xr-var-dtype">&lt;U8</div><div class="xr-var-preview xr-preview">'Wales' 'France' ... 'Ireland'</div><input id="attrs-c1ece018-67bc-427f-a031-c42d47e60ac1" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-c1ece018-67bc-427f-a031-c42d47e60ac1" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-dc966885-2873-4960-b55c-70962ba90fb5" class="xr-var-data-in" type="checkbox"><label for="data-dc966885-2873-4960-b55c-70962ba90fb5" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(['Wales', 'France', 'Ireland', 'Ireland', 'Scotland', 'France',
-       'Wales', 'Italy', 'England', 'Ireland', 'Scotland', 'England',
-       'Italy', 'Wales', 'France', 'Wales', 'Italy', 'France', 'England',
-       'Ireland', 'Scotland', 'Scotland', 'France', 'Ireland', 'Wales',
-       'England', 'Italy', 'Italy', 'Scotland', 'England', 'France',
-       'Scotland', 'Ireland', 'France', 'Wales', 'Italy', 'Wales',
-       'Italy', 'England', 'Ireland', 'England', 'Scotland', 'Wales',
-       'Ireland', 'France', 'Scotland', 'England', 'Italy', 'Italy',
-       'Wales', 'France', 'Scotland', 'Ireland', 'England', 'Wales',
-       'Italy', 'England', 'Scotland', 'France', 'Ireland'], dtype='&lt;U8')</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span>away_team</span></div><div class="xr-var-dims">(match)</div><div class="xr-var-dtype">&lt;U8</div><div class="xr-var-preview xr-preview">'Italy' 'England' ... 'England'</div><input id="attrs-1f85d4a2-53fc-42a4-a198-3a8bbc0a99f9" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-1f85d4a2-53fc-42a4-a198-3a8bbc0a99f9" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-f1e10e55-a686-4f21-aa77-df7a0e5ab0cf" class="xr-var-data-in" type="checkbox"><label for="data-f1e10e55-a686-4f21-aa77-df7a0e5ab0cf" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array(['Italy', 'England', 'Scotland', 'Wales', 'England', 'Italy',
-       'France', 'Scotland', 'Ireland', 'Italy', 'France', 'Wales',
-       'England', 'Scotland', 'Ireland', 'England', 'Ireland', 'Scotland',
-       'Italy', 'France', 'Wales', 'Italy', 'Wales', 'England', 'Ireland',
-       'Scotland', 'France', 'Wales', 'Ireland', 'France', 'Italy',
-       'England', 'Wales', 'Ireland', 'Scotland', 'England', 'France',
-       'Scotland', 'Ireland', 'Italy', 'Wales', 'France', 'Italy',
-       'Scotland', 'England', 'Ireland', 'France', 'Wales', 'Ireland',
-       'England', 'Scotland', 'Wales', 'France', 'Italy', 'Ireland',
-       'France', 'Scotland', 'Italy', 'Wales', 'England'], dtype='&lt;U8')</pre></div></li><li class="xr-var-item"><div class="xr-var-name"><span class="xr-has-index">quantile</span></div><div class="xr-var-dims">(quantile)</div><div class="xr-var-dtype">float64</div><div class="xr-var-preview xr-preview">0.25 0.75</div><input id="attrs-5bab9c23-25e5-48f6-ba9b-df2a1e2971b8" class="xr-var-attrs-in" type="checkbox" disabled=""><label for="attrs-5bab9c23-25e5-48f6-ba9b-df2a1e2971b8" title="Show/Hide attributes"><svg class="icon xr-icon-file-text2"><use href="#icon-file-text2"></use></svg></label><input id="data-0abc77f9-bfcd-40b1-b05e-cb58aa594a4b" class="xr-var-data-in" type="checkbox"><label for="data-0abc77f9-bfcd-40b1-b05e-cb58aa594a4b" title="Show/Hide data repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-var-attrs"><dl class="xr-attrs"></dl></div><div class="xr-var-data"><pre>array([0.25, 0.75])</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-15bf2be9-e068-42c7-84b7-c1877a73b81d" class="xr-section-summary-in" type="checkbox"><label for="section-15bf2be9-e068-42c7-84b7-c1877a73b81d" class="xr-section-summary">Indexes: <span>(2)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><ul class="xr-var-list"><li class="xr-var-item"><div class="xr-index-name"><div>match</div></div><div class="xr-index-preview">PandasIndex</div><input type="checkbox" disabled=""><label></label><input id="index-aca747c4-27a0-4d2f-94ba-69a62df20878" class="xr-index-data-in" type="checkbox"><label for="index-aca747c4-27a0-4d2f-94ba-69a62df20878" title="Show/Hide index repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-index-data"><pre>PandasIndex(Index(['Wales Italy', 'France England', 'Ireland Scotland', 'Ireland Wales',
-       'Scotland England', 'France Italy', 'Wales France', 'Italy Scotland',
-       'England Ireland', 'Ireland Italy', 'Scotland France', 'England Wales',
-       'Italy England', 'Wales Scotland', 'France Ireland', 'Wales England',
-       'Italy Ireland', 'France Scotland', 'England Italy', 'Ireland France',
-       'Scotland Wales', 'Scotland Italy', 'France Wales', 'Ireland England',
-       'Wales Ireland', 'England Scotland', 'Italy France', 'Italy Wales',
-       'Scotland Ireland', 'England France', 'France Italy',
-       'Scotland England', 'Ireland Wales', 'France Ireland', 'Wales Scotland',
-       'Italy England', 'Wales France', 'Italy Scotland', 'England Ireland',
-       'Ireland Italy', 'England Wales', 'Scotland France', 'Wales Italy',
-       'Ireland Scotland', 'France England', 'Scotland Ireland',
-       'England France', 'Italy Wales', 'Italy Ireland', 'Wales England',
-       'France Scotland', 'Scotland Wales', 'Ireland France', 'England Italy',
-       'Wales Ireland', 'Italy France', 'England Scotland', 'Scotland Italy',
-       'France Wales', 'Ireland England'],
-      dtype='object', name='match'))</pre></div></li><li class="xr-var-item"><div class="xr-index-name"><div>quantile</div></div><div class="xr-index-preview">PandasIndex</div><input type="checkbox" disabled=""><label></label><input id="index-7b7acd28-c971-4f77-9575-d085fc08786a" class="xr-index-data-in" type="checkbox"><label for="index-7b7acd28-c971-4f77-9575-d085fc08786a" title="Show/Hide index repr"><svg class="icon xr-icon-database"><use href="#icon-database"></use></svg></label><div class="xr-index-data"><pre>PandasIndex(Index([0.25, 0.75], dtype='float64', name='quantile'))</pre></div></li></ul></div></li><li class="xr-section-item"><input id="section-bea01e2d-99c5-4509-8fa8-2c4ec4655556" class="xr-section-summary-in" type="checkbox" disabled=""><label for="section-bea01e2d-99c5-4509-8fa8-2c4ec4655556" class="xr-section-summary" title="Expand/collapse section">Attributes: <span>(0)</span></label><div class="xr-section-inline-details"></div><div class="xr-section-details"><dl class="xr-attrs"></dl></div></li></ul></div></div>
+<pre><code>(&lt;xarray.DataArray 'home_points' (quantile: 2, match: 60)&gt; Size: 960B
+ array([[44.        , 12.        , 25.        , 18.        , 14.        ,
+         32.        , 21.        , 15.        , 16.        , 38.        ,
+         16.        , 20.        , 10.        , 23.        , 10.        ,
+         18.        ,  9.        , 21.        , 45.        , 20.        ,
+         13.        , 33.        , 15.        , 17.        , 14.        ,
+         30.        , 14.        , 11.        , 10.        , 22.        ,
+         33.        , 13.        , 18.        , 11.        , 26.        ,
+         10.        , 22.        , 15.        , 16.        , 37.        ,
+         21.        , 14.        , 37.        , 24.        , 13.        ,
+         10.        , 24.        , 12.        ,  8.        , 18.        ,
+         20.        , 13.        , 20.        , 47.        , 14.        ,
+         12.        , 25.        , 31.        , 14.        , 17.        ],
+        [54.        , 18.        , 32.        , 24.        , 20.        ,
+         41.        , 28.        , 21.        , 23.        , 47.        ,
+         22.        , 28.        , 15.        , 31.        , 15.        ,
+         25.        , 13.        , 28.        , 56.        , 27.        ,
+         19.        , 42.        , 21.        , 23.        , 20.        ,
+         39.        , 19.        , 16.        , 16.        , 28.        ,
+         41.        , 19.        , 25.        , 16.        , 35.        ,
+         16.        , 29.        , 21.        , 22.        , 46.        ,
+         28.        , 20.        , 47.        , 31.        , 19.        ,
+         14.        , 31.        , 17.        , 13.        , 25.        ,
+         27.        , 18.67750933, 27.        , 57.        , 20.        ,
+         17.        , 33.        , 39.        , 20.        , 23.        ]])
+ Coordinates:
+   * match      (match) &lt;U16 4kB 'Wales Italy' ... 'Ireland England'
+     home_team  (match) &lt;U8 2kB 'Wales' 'France' 'Ireland' ... 'France' 'Ireland'
+     away_team  (match) &lt;U8 2kB 'Italy' 'England' ... 'Wales' 'England'
+   * quantile   (quantile) float64 16B 0.25 0.75,
+ &lt;xarray.DataArray 'home_points' (match: 60)&gt; Size: 480B
+ array([7.50028788e-01, 2.62256698e-01, 1.93223302e-01, 1.52904820e-01,
+        3.95326201e-01, 2.98279344e-01, 1.44368719e-01, 1.65049209e-01,
+        3.52574986e-01, 1.01372700e-01, 8.96101935e-02, 1.95232417e-01,
+        8.98952875e-02, 6.42184415e-01, 1.52603769e-01, 2.16621010e-01,
+        2.70423313e-01, 2.17483737e-01, 1.12000824e-01, 2.34065694e-01,
+        3.44365149e-01, 5.87751125e-01, 6.67693874e-04, 3.16837206e-02,
+        3.19593057e-01, 2.86046661e-01, 3.39140134e-01, 9.68906809e-02,
+        1.53910692e-01, 7.44099976e-01, 4.22163994e-01, 1.94504042e-01,
+        1.87586438e-01, 2.38470840e-01, 1.49711167e-01, 1.11869872e-01,
+        8.62751899e-02, 1.65049209e-01, 1.15173164e-01, 2.60963738e-01,
+        2.63234717e-01, 2.95219301e-01, 4.70363709e-01, 1.38191562e-01,
+        1.60060986e-01, 2.91765576e-01, 1.48658671e-01, 2.48645465e-01,
+        1.58467190e-01, 2.16621010e-01, 1.38101342e-01, 5.00290966e-01,
+        2.20843413e-01, 2.26785153e-01, 2.98698343e-01, 1.53507672e-01,
+        7.74426370e-01, 3.84868225e-01, 1.56081239e-03, 7.33808169e-02])
+ Coordinates:
+   * match      (match) &lt;U16 4kB 'Wales Italy' ... 'Ireland England'
+     home_team  (match) &lt;U8 2kB 'Wales' 'France' 'Ireland' ... 'France' 'Ireland'
+     away_team  (match) &lt;U8 2kB 'Italy' 'England' ... 'Wales' 'England')</code></pre>
 </div>
 </div>
 <p>Similarly we may be interested in computing estimates of leave-one-out predictive metrics given a set of predictions and observations. For instance to compute the root mean square error we can do:</p>
-<div id="238ce832" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>azp.loo_metrics(dt_rugby, kind<span class="op">=</span><span class="st">"rmse"</span>, var_name<span class="op">=</span><span class="st">"home_points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0e2839b6" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>azp.loo_metrics(dt_rugby, kind<span class="op">=</span><span class="st">"rmse"</span>, var_name<span class="op">=</span><span class="st">"home_points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/arviz_stats/loo/helper_loo.py:874: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
+  warnings.warn(</code></pre>
+</div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>rmse(mean=11.0, se=1.2)</code></pre>
 </div>
@@ -1449,7 +1035,7 @@ p(\tilde y_i \le y_i \mid y_{-i})
 \]</span></p>
 <p>That is, we are evaluating the model’s ability to predict an observation when we remove that observation from the observed data. We can use PSIS-LOO_CV to estimate this from a single model fit.</p>
 <div id="cell-fig-loo_pit" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>azp.plot_loo_pit(dt_rugby, var_names<span class="op">=</span><span class="st">"home_points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>azp.plot_loo_pit(dt_rugby, var_names<span class="op">=</span><span class="st">"home_points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="fig-loo_pit" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
