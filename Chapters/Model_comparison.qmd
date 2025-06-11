@@ -184,7 +184,7 @@ We will call this quantity the ELPD, which is short for expected log-predictive 
 The ELPD is more Bayesian way to measure goodness of fit that the term used in AIC, but we are still missing one element, the penalization term.
 
 
- ## WAIC
+## WAIC
 
 The Widely applicable information criterion (WAIC) uses the ELPD plus a penalization term [@watanabe_2013].
 
