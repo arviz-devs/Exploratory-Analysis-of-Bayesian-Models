@@ -189,7 +189,7 @@ Xarray has some plotting capabilities, for instance, we can do:
 dt.posterior["mu"].plot.hist(figsize=(9, 3));
 ```
 
-But in most scenarios calling a plotting function from ArviZ and passing the InfereceData as an argument will be a much better idea.
+But in most scenarios calling a plotting function from ArviZ and passing the InferenceData as an argument will be a much better idea.
 
 
 ## Add a new variable
@@ -233,7 +233,7 @@ Some examples of these advantages are specifying operations with named dimension
 In this cell, you will compute pairwise differences between schools on their mean effects (variable `theta`).
 To do so, subtract the variable theta after renaming the school dimension to the original variable. Xarray then aligns and broadcasts the two variables because they have different dimensions, and the result is a 4D variable with all the pointwise differences.
 
-Eventually, store the result in the `theta_school_diff` variable. Notice that the `theta_shool_diff` variable in the posterior has kept the named dimensions and coordinates:
+Eventually, store the result in the `theta_school_diff` variable. Notice that the `theta_school_diff` variable in the posterior has kept the named dimensions and coordinates:
 
 ```{python}
 post["theta_school_diff"] = post.theta - post.theta.rename(school="school_bis")
@@ -266,7 +266,7 @@ school_bis_idx = xr.DataArray(
 post["theta_school_diff"].sel(school=school_idx, school_bis=school_bis_idx)
 ```
 
-Using lists or NumPy arrays instead of DataArrays does column/row-based indexing. As you can see, the result has 9 values of `theta_shool_diff` instead of the 3 pairs of difference we selected in the previous cell:
+Using lists or NumPy arrays instead of DataArrays does column/row-based indexing. As you can see, the result has 9 values of `theta_school_diff` instead of the 3 pairs of difference we selected in the previous cell:
 
 ```{python}
 post["theta_school_diff"].sel(
