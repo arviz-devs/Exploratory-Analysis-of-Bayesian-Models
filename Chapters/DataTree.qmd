@@ -189,7 +189,7 @@ Xarray has some plotting capabilities, for instance, we can do:
 dt.posterior["mu"].plot.hist(figsize=(9, 3));
 ```
 
-But in most scenarios calling a plotting function from ArviZ and passing the InferenceData as an argument will be a much better idea.
+But in most scenarios calling a plotting function from ArviZ and passing the DataTree as an argument will be a much better idea.
 
 
 ## Add a new variable
