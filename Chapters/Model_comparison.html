@@ -368,28 +368,29 @@ window.Quarto = {
   <li><a href="#sec-kl-divergence" id="toc-sec-kl-divergence" class="nav-link" data-scroll-target="#sec-kl-divergence"><span class="header-section-number">7.6</span> KL divergence</a></li>
   <li><a href="#akaike-information-criterion" id="toc-akaike-information-criterion" class="nav-link" data-scroll-target="#akaike-information-criterion"><span class="header-section-number">7.7</span> Akaike information criterion</a></li>
   <li><a href="#elpd" id="toc-elpd" class="nav-link" data-scroll-target="#elpd"><span class="header-section-number">7.8</span> ELPD</a></li>
-  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation"><span class="header-section-number">7.9</span> Cross validation</a></li>
-  <li><a href="#elpd-and-cross-validation" id="toc-elpd-and-cross-validation" class="nav-link" data-scroll-target="#elpd-and-cross-validation"><span class="header-section-number">7.10</span> ELPD and cross validation</a>
+  <li><a href="#waic" id="toc-waic" class="nav-link" data-scroll-target="#waic"><span class="header-section-number">7.9</span> WAIC</a></li>
+  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation"><span class="header-section-number">7.10</span> Cross validation</a></li>
+  <li><a href="#elpd-and-cross-validation" id="toc-elpd-and-cross-validation" class="nav-link" data-scroll-target="#elpd-and-cross-validation"><span class="header-section-number">7.11</span> ELPD and cross validation</a>
   <ul class="collapse">
-  <li><a href="#importance-sampling" id="toc-importance-sampling" class="nav-link" data-scroll-target="#importance-sampling"><span class="header-section-number">7.10.1</span> Importance Sampling</a></li>
-  <li><a href="#coming-back-to-our-discussion" id="toc-coming-back-to-our-discussion" class="nav-link" data-scroll-target="#coming-back-to-our-discussion"><span class="header-section-number">7.10.2</span> Coming back to our discussion</a></li>
-  <li><a href="#calculating-loo" id="toc-calculating-loo" class="nav-link" data-scroll-target="#calculating-loo"><span class="header-section-number">7.10.3</span> Calculating LOO</a></li>
-  <li><a href="#comparing-models-with-loo" id="toc-comparing-models-with-loo" class="nav-link" data-scroll-target="#comparing-models-with-loo"><span class="header-section-number">7.10.4</span> Comparing models with LOO</a></li>
-  <li><a href="#pareto-k-and-loo-diagnostics" id="toc-pareto-k-and-loo-diagnostics" class="nav-link" data-scroll-target="#pareto-k-and-loo-diagnostics"><span class="header-section-number">7.10.5</span> Pareto k and LOO diagnostics</a></li>
+  <li><a href="#importance-sampling" id="toc-importance-sampling" class="nav-link" data-scroll-target="#importance-sampling"><span class="header-section-number">7.11.1</span> Importance Sampling</a></li>
+  <li><a href="#coming-back-to-our-discussion" id="toc-coming-back-to-our-discussion" class="nav-link" data-scroll-target="#coming-back-to-our-discussion"><span class="header-section-number">7.11.2</span> Coming back to our discussion</a></li>
+  <li><a href="#calculating-loo" id="toc-calculating-loo" class="nav-link" data-scroll-target="#calculating-loo"><span class="header-section-number">7.11.3</span> Calculating LOO</a></li>
+  <li><a href="#comparing-models-with-loo" id="toc-comparing-models-with-loo" class="nav-link" data-scroll-target="#comparing-models-with-loo"><span class="header-section-number">7.11.4</span> Comparing models with LOO</a></li>
+  <li><a href="#pareto-k-and-loo-diagnostics" id="toc-pareto-k-and-loo-diagnostics" class="nav-link" data-scroll-target="#pareto-k-and-loo-diagnostics"><span class="header-section-number">7.11.5</span> Pareto k and LOO diagnostics</a></li>
   </ul></li>
-  <li><a href="#loo-and-waic" id="toc-loo-and-waic" class="nav-link" data-scroll-target="#loo-and-waic"><span class="header-section-number">7.11</span> LOO and WAIC</a></li>
-  <li><a href="#other-information-criteria" id="toc-other-information-criteria" class="nav-link" data-scroll-target="#other-information-criteria"><span class="header-section-number">7.12</span> Other information criteria</a></li>
-  <li><a href="#bayes-factors" id="toc-bayes-factors" class="nav-link" data-scroll-target="#bayes-factors"><span class="header-section-number">7.13</span> Bayes factors</a>
+  <li><a href="#loo-and-waic" id="toc-loo-and-waic" class="nav-link" data-scroll-target="#loo-and-waic"><span class="header-section-number">7.12</span> LOO and WAIC</a></li>
+  <li><a href="#other-information-criteria" id="toc-other-information-criteria" class="nav-link" data-scroll-target="#other-information-criteria"><span class="header-section-number">7.13</span> Other information criteria</a></li>
+  <li><a href="#bayes-factors" id="toc-bayes-factors" class="nav-link" data-scroll-target="#bayes-factors"><span class="header-section-number">7.14</span> Bayes factors</a>
   <ul class="collapse">
-  <li><a href="#some-observations" id="toc-some-observations" class="nav-link" data-scroll-target="#some-observations"><span class="header-section-number">7.13.1</span> Some observations</a></li>
-  <li><a href="#calculation-of-bayes-factors" id="toc-calculation-of-bayes-factors" class="nav-link" data-scroll-target="#calculation-of-bayes-factors"><span class="header-section-number">7.13.2</span> Calculation of Bayes factors</a></li>
-  <li><a href="#savagedickey-ratio" id="toc-savagedickey-ratio" class="nav-link" data-scroll-target="#savagedickey-ratio"><span class="header-section-number">7.13.3</span> Savage–Dickey ratio</a></li>
-  <li><a href="#bayes-factors-vs-the-alternatives" id="toc-bayes-factors-vs-the-alternatives" class="nav-link" data-scroll-target="#bayes-factors-vs-the-alternatives"><span class="header-section-number">7.13.4</span> Bayes factors vs the alternatives</a></li>
+  <li><a href="#some-observations" id="toc-some-observations" class="nav-link" data-scroll-target="#some-observations"><span class="header-section-number">7.14.1</span> Some observations</a></li>
+  <li><a href="#calculation-of-bayes-factors" id="toc-calculation-of-bayes-factors" class="nav-link" data-scroll-target="#calculation-of-bayes-factors"><span class="header-section-number">7.14.2</span> Calculation of Bayes factors</a></li>
+  <li><a href="#savagedickey-ratio" id="toc-savagedickey-ratio" class="nav-link" data-scroll-target="#savagedickey-ratio"><span class="header-section-number">7.14.3</span> Savage–Dickey ratio</a></li>
+  <li><a href="#bayes-factors-vs-the-alternatives" id="toc-bayes-factors-vs-the-alternatives" class="nav-link" data-scroll-target="#bayes-factors-vs-the-alternatives"><span class="header-section-number">7.14.4</span> Bayes factors vs the alternatives</a></li>
   </ul></li>
-  <li><a href="#absolute-metrics" id="toc-absolute-metrics" class="nav-link" data-scroll-target="#absolute-metrics"><span class="header-section-number">7.14</span> Absolute metrics</a>
+  <li><a href="#absolute-metrics" id="toc-absolute-metrics" class="nav-link" data-scroll-target="#absolute-metrics"><span class="header-section-number">7.15</span> Absolute metrics</a>
   <ul class="collapse">
-  <li><a href="#loo-expectations-and-metrics" id="toc-loo-expectations-and-metrics" class="nav-link" data-scroll-target="#loo-expectations-and-metrics"><span class="header-section-number">7.14.1</span> LOO expectations and metrics</a></li>
-  <li><a href="#loo-pit" id="toc-loo-pit" class="nav-link" data-scroll-target="#loo-pit"><span class="header-section-number">7.14.2</span> LOO-PIT</a></li>
+  <li><a href="#loo-expectations-and-metrics" id="toc-loo-expectations-and-metrics" class="nav-link" data-scroll-target="#loo-expectations-and-metrics"><span class="header-section-number">7.15.1</span> LOO expectations and metrics</a></li>
+  <li><a href="#loo-pit" id="toc-loo-pit" class="nav-link" data-scroll-target="#loo-pit"><span class="header-section-number">7.15.2</span> LOO-PIT</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -562,7 +563,9 @@ Note
 \]</span></p>
 <p>We will call this quantity the ELPD, which is short for expected log-predictive density. When the likelihood is discrete, we should use “probability” instead of “density”, but it is a common practice to avoid pedantry.</p>
 <p>The ELPD is more Bayesian way to measure goodness of fit that the term used in AIC, but we are still missing one element, the penalization term.</p>
-<p>## WAIC</p>
+</section>
+<section id="waic" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="waic"><span class="header-section-number">7.9</span> WAIC</h2>
 <p>The Widely applicable information criterion (WAIC) uses the ELPD plus a penalization term <span class="citation" data-cites="watanabe_2013">(<a href="References.html#ref-watanabe_2013" role="doc-biblioref">Watanabe 2013</a>)</span>.</p>
 <p><span class="math display">\[
 WAIC = \sum_i^N \log \left(\frac{1}{S} \sum _{s}^S p(y_i \mid \theta^j) \right) - \sum_i^N \left( V_{j}^S \log p(y_i \mid \theta^j) \right)
@@ -573,8 +576,8 @@ Y = \alpha + \beta X
 \]</span></p>
 <p>A model where <span class="math inline">\(\beta=0\)</span> will be less flexible, since it is equivalent to a model that only has one parameter, <span class="math inline">\(\alpha\)</span>. In a slightly more subtle way, a model where <span class="math inline">\(\beta\)</span> varies in a narrow range will be less flexible (more regularized), than a model where <span class="math inline">\(\beta\)</span> can take any value. WAIC properly formalized this intuition.</p>
 </section>
-<section id="cross-validation" class="level2" data-number="7.9">
-<h2 data-number="7.9" class="anchored" data-anchor-id="cross-validation"><span class="header-section-number">7.9</span> Cross validation</h2>
+<section id="cross-validation" class="level2" data-number="7.10">
+<h2 data-number="7.10" class="anchored" data-anchor-id="cross-validation"><span class="header-section-number">7.10</span> Cross validation</h2>
 <p>There is an alternative route to ELPD penalization. What if we just compute it for unobserved data? This is sometimes done when the size of the dataset is very large. But even then we will risk wasting relevant information. Then a common practice is to use a method called <strong>cross-validation</strong>.</p>
 <p>Cross-validation is a simple and, in most cases, effective solution for comparing models. We take our data and divide it into <span class="math inline">\(K\)</span> slices. We try to keep the portions more or less the same (in size and sometimes also in other characteristics, such as an equal number of classes). We then use <span class="math inline">\(K-1\)</span> portions to train the model and the rest to evaluate it. This process is systematically repeated leaving, for each iteration, a different portion out of the training set and using that portion as the evaluation set. This is repeated until we have completed <span class="math inline">\(K\)</span> rounds of adjustment-evaluation. The accuracy of the model will be the average over the <span class="math inline">\(K\)</span> rounds. This is known as K-fold cross validation. Finally, once we have cross-validated, we use all the data to fit our model and this is the model that is used to make predictions or for any other purpose.</p>
 <p><img src="../img/cv.png" width="500"></p>
@@ -582,16 +585,16 @@ Y = \alpha + \beta X
 <p>Cross validation is a routine practice in machine learning. And we have barely described the most essential aspects of this practice. For more information you can read <a href="http://themlbook.com/">The Hundred-Page Machine Learning Book</a> or <a href="https://www.amazon.com/Python-Machine-Learning-scikit-learn-TensorFlow-ebook/dp/B0742K7HYF">Python Machine Learning</a>, by Sebastian Raschka.</p>
 <p>One downside of cross-validation is that it is computationally expensive. We need to fit the model <span class="math inline">\(K\)</span> times, and if we have a large dataset, this can be very expensive. But lucky us, by being Bayesian we can approximately compute LOO-CV in a very fast way.</p>
 </section>
-<section id="elpd-and-cross-validation" class="level2" data-number="7.10">
-<h2 data-number="7.10" class="anchored" data-anchor-id="elpd-and-cross-validation"><span class="header-section-number">7.10</span> ELPD and cross validation</h2>
+<section id="elpd-and-cross-validation" class="level2" data-number="7.11">
+<h2 data-number="7.11" class="anchored" data-anchor-id="elpd-and-cross-validation"><span class="header-section-number">7.11</span> ELPD and cross validation</h2>
 <p>The LOO-CV ELPD can be computed as:</p>
 <p><span class="math display">\[
 \sum_i^N  \log \left( \frac{1}{S}\sum_j^S \mathbin{\color{#E9692C}{p(y_i \mid \theta _{-i}^j)}} \right)
 \]</span></p>
 <p>where <span class="math inline">\(_{-i}\)</span> means that we leave observation <span class="math inline">\(i\)</span> out. A Naive implementation of this estimation requires that we estimate as many posterior distributions as observations we have, since for each of them we will eliminate one observation. However, this is not necessary since it is possible to estimate <span class="math inline">\(\color{#E9692C}{p(y_i \mid \theta _{-i}^j})\)</span> using <strong>Importance Sampling</strong>.</p>
 <p>Before continuing with our agenda, we need to take a short detour.</p>
-<section id="importance-sampling" class="level3" data-number="7.10.1">
-<h3 data-number="7.10.1" class="anchored" data-anchor-id="importance-sampling"><span class="header-section-number">7.10.1</span> Importance Sampling</h3>
+<section id="importance-sampling" class="level3" data-number="7.11.1">
+<h3 data-number="7.11.1" class="anchored" data-anchor-id="importance-sampling"><span class="header-section-number">7.11.1</span> Importance Sampling</h3>
 <p>This is a technique for estimating properties of a distribution of interest <span class="math inline">\(f\)</span>, given that we only have samples from a distribution <span class="math inline">\(g\)</span>. Using importance sampling makes sense, for example, when it is simpler to sample <span class="math inline">\(g\)</span> than <span class="math inline">\(f\)</span>.</p>
 <p>If we have a set of samples of the random variable <span class="math inline">\(X\)</span> and we can evaluate <span class="math inline">\(g\)</span> and <span class="math inline">\(f\)</span> point-wise, we can calculate the importance weights as:</p>
 <p><span class="math display">\[\begin{equation}
@@ -606,7 +609,7 @@ w_i = \frac{f(x_i)}{g(x_i)}
 </ul>
 <p>Once the weights <span class="math inline">\(w_i\)</span> are obtained, we can use them to estimate properties of <span class="math inline">\(f\)</span>, its density, moments, quantiles, etc.</p>
 <p>In the code-block below <span class="math inline">\(g\)</span> is a Normal distribution and <span class="math inline">\(f\)</span> is a Gamma and we use importance sampling to estimate the PDF of <span class="math inline">\(f\)</span>. This is just a pedagogic example, since we actually have a very direct way to calculate the PDF of a Gamma. But in practice <span class="math inline">\(f\)</span> can be a much more complex object.</p>
-<div id="d8463aad" class="cell" data-execution_count="3">
+<div id="f55e9669" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>g <span class="op">=</span> pz.Normal(<span class="dv">0</span>, <span class="dv">10</span>)</span>
 <span id="cb2-2"><a href="#cb2-2"></a>samples <span class="op">=</span> g.rvs(<span class="dv">1000</span>, random_state<span class="op">=</span>SEED)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>f <span class="op">=</span> pz.Gamma(mu<span class="op">=</span><span class="dv">4</span>, sigma<span class="op">=</span><span class="fl">1.5</span>)</span>
@@ -627,8 +630,8 @@ w_i = \frac{f(x_i)}{g(x_i)}
 </div>
 <p>When doing importance sampling, the more similar <span class="math inline">\(g\)</span> and <span class="math inline">\(f\)</span> are, the better the results will be. In practice, inferences are more reliable when <span class="math inline">\(g\)</span> has a larger support than <span class="math inline">\(f\)</span>, that is, when it is “wider”, intuitively we need the samples of <span class="math inline">\(g\)</span> to cover the entire support of <span class="math inline">\(f\)</span>, or actually to ensure we are not missing any high-density regions.</p>
 </section>
-<section id="coming-back-to-our-discussion" class="level3" data-number="7.10.2">
-<h3 data-number="7.10.2" class="anchored" data-anchor-id="coming-back-to-our-discussion"><span class="header-section-number">7.10.2</span> Coming back to our discussion</h3>
+<section id="coming-back-to-our-discussion" class="level3" data-number="7.11.2">
+<h3 data-number="7.11.2" class="anchored" data-anchor-id="coming-back-to-our-discussion"><span class="header-section-number">7.11.2</span> Coming back to our discussion</h3>
 <p>Now that we have a better idea of ​​importance sampling let’s see how we can use it. The distribution we know is the posterior distribution, and the one we want to approximate by importance sampling is the posterior distribution leaving one out <span class="math inline">\(p(y_i \mid \theta_{-i}^j)\)</span>. Therefore, the importance weights that we are interested in calculating are:</p>
 <p><span class="math display">\[
 w_i^j \propto \frac{p(\theta^j \mid y_{-i} )}{p(\theta^j \mid y)} \propto \frac{p(\theta) \prod_{i\not =-i}^n p(y_i \mid \theta)}{p(\theta) \prod_i^n p(y_i \mid \theta)} \propto \frac{1}{p(y_i \mid \theta^j) }
@@ -642,11 +645,11 @@ w_i^j \propto \frac{p(\theta^j \mid y_{-i} )}{p(\theta^j \mid y)} \propto \frac{
 <p>In terms of importance sampling this translates into weights with greater relative importance and which therefore tend to dominate the estimation. One way to correct this problem is to simply truncate the “too high” weights, this brings other problems that we are not going to discuss. Another way is to rely on theory. The theory indicates that under certain conditions high weights are distributed according to a Pareto pattern. So instead of truncating them we can fit them to a Pareto distribution and then replace them with values ​​obtained from that distribution. This is a form of smoothing that, within a certain range, allows stabilizing the importance sampling estimate, since it will make some “very large” values ​​not so large.</p>
 <p>When we combine all these ideas we get a method called Pareto-Smooth Importance Sampling Leave-One-Out Cross Validation <span class="citation" data-cites="vehtari_2017 yao_2018">(<a href="References.html#ref-vehtari_2017" role="doc-biblioref">Vehtari, Gelman, and Gabry 2017</a>; <a href="References.html#ref-yao_2018" role="doc-biblioref">Yao et al. 2018</a>)</span>, which is abbreviated as PSIS-LOO-CV. Since the name and acronym are horribly long and difficult to pronounce we will call it LOO.</p>
 </section>
-<section id="calculating-loo" class="level3" data-number="7.10.3">
-<h3 data-number="7.10.3" class="anchored" data-anchor-id="calculating-loo"><span class="header-section-number">7.10.3</span> Calculating LOO</h3>
+<section id="calculating-loo" class="level3" data-number="7.11.3">
+<h3 data-number="7.11.3" class="anchored" data-anchor-id="calculating-loo"><span class="header-section-number">7.11.3</span> Calculating LOO</h3>
 <p>After all this introduction, calculating LOO may seem somewhat disappointing. We just need to call ArviZ’s <code>loo</code> function and pass it an DataTree object containing a <code>log-likelihood</code> group.</p>
 <p>For the following example we are using a DataTree distributed with ArviZ. More details about the model in <a href="Case_study_model_comparison.html" class="quarto-xref"><span>Chapter 8</span></a>. For the moment we only need to know that is a model with two sets of observations, <code>home_points</code> and <code>away_points</code>. We can compute LOO for each one of those.</p>
-<div id="7abd3978" class="cell" data-execution_count="4">
+<div id="dd8641a2" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>dt_rugby <span class="op">=</span> azp.load_arviz_data(<span class="st">'rugby'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>elpd <span class="op">=</span> azp.loo(dt_rugby, var_name<span class="op">=</span><span class="st">"home_points"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3"></a>elpd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -673,13 +676,13 @@ Pareto k diagnostic values:
 </div>
 <p>We can see that we get the estimated ELPD value using LOO and its standard error. <code>p_loo</code> can be roughly interpreted as the effective number of parameters. For some models this number should be close to the actual number of parameters, for models with regularization, like hierarchical models, it should be less than the actual number of parameters.</p>
 </section>
-<section id="comparing-models-with-loo" class="level3" data-number="7.10.4">
-<h3 data-number="7.10.4" class="anchored" data-anchor-id="comparing-models-with-loo"><span class="header-section-number">7.10.4</span> Comparing models with LOO</h3>
+<section id="comparing-models-with-loo" class="level3" data-number="7.11.4">
+<h3 data-number="7.11.4" class="anchored" data-anchor-id="comparing-models-with-loo"><span class="header-section-number">7.11.4</span> Comparing models with LOO</h3>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">CmdStanPy</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="03f5c435" class="cell" data-execution_count="5">
+<div id="cca056f9" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>target <span class="op">=</span> pz.StudentT(nu<span class="op">=</span><span class="dv">4</span>, mu<span class="op">=</span><span class="dv">0</span>, sigma<span class="op">=</span><span class="dv">1</span>).rvs(<span class="dv">200</span>, random_state<span class="op">=</span>SEED)</span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_n:</span>
@@ -701,7 +704,7 @@ Pareto k diagnostic values:
 </div>
 </div>
 </div>
-<div id="a65d7cd7" class="cell" data-execution_count="7">
+<div id="2db4f363" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>cmp_df <span class="op">=</span> azp.compare({<span class="st">'model_n'</span>:idata_n, <span class="st">'model_t'</span>:idata_t})</span>
 <span id="cb8-2"><a href="#cb8-2"></a>cmp_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
@@ -766,7 +769,7 @@ Pareto k diagnostic values:
 <li>scale: the scale on which the ELPD is calculated</li>
 </ul>
 <p>We can obtain similar information, but graphically, using the <code>azp.plot_compare</code> function</p>
-<div id="ceba19e4" class="cell" data-execution_count="8">
+<div id="52e3691b" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>azp.plot_compare(cmp_df)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -783,12 +786,12 @@ Pareto k diagnostic values:
 </ul>
 <p>The simplest way to use information criteria is to choose a single model. Simply choose the model with the highest ELPD value. If we follow this rule we will have to accept that the quadratic model is the best. Even if we take into account the standard errors we can see that they do not overlap. Which gives us some security that the models are indeed <em>different</em> from each other. If, instead, the standard errors overlapped, we should provide a more nuanced answer.</p>
 </section>
-<section id="pareto-k-and-loo-diagnostics" class="level3" data-number="7.10.5">
-<h3 data-number="7.10.5" class="anchored" data-anchor-id="pareto-k-and-loo-diagnostics"><span class="header-section-number">7.10.5</span> Pareto k and LOO diagnostics</h3>
+<section id="pareto-k-and-loo-diagnostics" class="level3" data-number="7.11.5">
+<h3 data-number="7.11.5" class="anchored" data-anchor-id="pareto-k-and-loo-diagnostics"><span class="header-section-number">7.11.5</span> Pareto k and LOO diagnostics</h3>
 <p>Then we can see a table with the title “Pareto k diagnostic values”. We previously said that we used a method involving a Pareto distribution to regularize the estimation of the importance weights. One of the parameters of that fit is called <span class="math inline">\(k\)</span>. Sometimes we call it <span class="math inline">\(\hat k\)</span> (because is an estimate of <span class="math inline">\(k\)</span>). Since we have a Pareto adjustment per observation we have a <span class="math inline">\(k\)</span> value per observation. This parameter is useful because it tells us two sides of the same story, it tells us when an observation is “very influential” and it tells us that the approximation used by LOO could be failing for that observation.</p>
 <p>As a general rule, if <span class="math inline">\(k\)</span> is less than 0.7 there are no problems, if it’s between 0.7 and 1 is very likely that we are in trouble and if it’s greater than 1, we are doom. The cut-off value 0.7 is not fixed, it can strictly be lower and depends on the total number of samples of the posterior distribution, 2000, in this example. But when the number of draws is about 2000 we are almost at 0.7. In practice it is common to use sample values ​​of 2000 or larger. Increasing the number of samples from the posterior may reduce the value of <span class="math inline">\(k\)</span> and so we could remove some of these warnings, but in general the number needed will be too large to make any practical sense.</p>
 <p>It is possible to visualize the values ​​of <span class="math inline">\(k\)</span>, using <code>plot_khat</code></p>
-<div id="78668b92" class="cell" data-execution_count="9">
+<div id="1c23f1bc" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># coming soon</span></span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="co">#azp.plot_khat(elpd, threshold=0.7);</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -801,18 +804,18 @@ Pareto k diagnostic values:
 </ul>
 </section>
 </section>
-<section id="loo-and-waic" class="level2" data-number="7.11">
-<h2 data-number="7.11" class="anchored" data-anchor-id="loo-and-waic"><span class="header-section-number">7.11</span> LOO and WAIC</h2>
+<section id="loo-and-waic" class="level2" data-number="7.12">
+<h2 data-number="7.12" class="anchored" data-anchor-id="loo-and-waic"><span class="header-section-number">7.12</span> LOO and WAIC</h2>
 <p>LOO and WAIC converge asymptotically, and they based on the same set of assumptions. So theoretically they are equivalent. However, in practice LOO is more robust, and also offers us a diagnosis that indicates when it could be failing (this is thanks to the Pareto adjustment). So in practice we prefer LOO.</p>
 </section>
-<section id="other-information-criteria" class="level2" data-number="7.12">
-<h2 data-number="7.12" class="anchored" data-anchor-id="other-information-criteria"><span class="header-section-number">7.12</span> Other information criteria</h2>
+<section id="other-information-criteria" class="level2" data-number="7.13">
+<h2 data-number="7.13" class="anchored" data-anchor-id="other-information-criteria"><span class="header-section-number">7.13</span> Other information criteria</h2>
 <p>Another widely used information criterion is DIC, if we use the <em>bayes-o-meter™</em>, DIC is more Bayesian than AIC but less than WAIC. Although still popular, WAIC and mainly LOO have proven to be more useful both theoretically and empirically than DIC. Therefore we DO NOT recommend its use.</p>
 <p>Another widely used criterion is BIC (Bayesian Information Criteria), like logistic regression and my mother’s <em>dry soup</em>, this name can be misleading. BIC was proposed as a way to correct some of the problems with AIC and the author proposed a Bayesian rationale for it. But BIC is not really Bayesian in the sense that like AIC it assumes <em>flat</em> priors and uses maximum likelihood estimation.</p>
 <p>But more importantly, BIC differs from AIC and WAIC in its objective. AIC and WAIC try to reflect which model generalizes better to other data (predictive accuracy) while BIC tries to identify which is the <em>correct</em> model and therefore is more related to Bayes factors than with WAIC. Later we will discuss Bayes Factors and see how it differs from criteria such as WAIC and LOO.</p>
 </section>
-<section id="bayes-factors" class="level2" data-number="7.13">
-<h2 data-number="7.13" class="anchored" data-anchor-id="bayes-factors"><span class="header-section-number">7.13</span> Bayes factors</h2>
+<section id="bayes-factors" class="level2" data-number="7.14">
+<h2 data-number="7.14" class="anchored" data-anchor-id="bayes-factors"><span class="header-section-number">7.14</span> Bayes factors</h2>
 <p>An alternative to cross-validation, approximate cross-validation with LOO and information criteria is Bayes factors. It is common for Bayes factors to show up in the literature as a Bayesian alternative to frequentist hypothesis testing.</p>
 <p>We can compare <span class="math inline">\(K\)</span> models by computing their <strong>marginal likelihood</strong>, <span class="math inline">\(p(y \mid M_k)\)</span>, i.e., the probability of the observed data <span class="math inline">\(Y\)</span> given the model <span class="math inline">\(M_K\)</span>. The marginal likelihood is the normalization constant of Bayes’ theorem. We can see this if we write Bayes’ theorem and make explicit the fact that all inferences depend on the model.</p>
 <p><span class="math display">\[
@@ -860,8 +863,8 @@ BF_{01} = \frac{p(y \mid M_0)}{p(y \mid M_1)}
 </table>
 <p>Keep in mind that if you get numbers below 1, then the support is for <span class="math inline">\(M_1\)</span>, i.e., the model in the denominator. Tables are also available for those cases, but notice that you can simply take the inverse of the obtained value.</p>
 <p>It is very important to remember that these rules are just conventions – simple guides at best. Results should always be put in the context of our problems and should be accompanied by enough detail so that others can assess for themselves whether they agree with our conclusions. The proof necessary to ensure something in particle physics, or in court, or to decide to carry out an evacuation in the face of a looming natural catastrophe is not the same.</p>
-<section id="some-observations" class="level3" data-number="7.13.1">
-<h3 data-number="7.13.1" class="anchored" data-anchor-id="some-observations"><span class="header-section-number">7.13.1</span> Some observations</h3>
+<section id="some-observations" class="level3" data-number="7.14.1">
+<h3 data-number="7.14.1" class="anchored" data-anchor-id="some-observations"><span class="header-section-number">7.14.1</span> Some observations</h3>
 <p>We will now briefly discuss some key facts about the marginal likelihood:</p>
 <ul>
 <li>The good: Occam’s razor included. Models with lots of parameters have a higher penalty than models with few parameters. The intuitive reason is that the greater the number of parameters, the more the prior <em>extends</em> with respect to the likelihood. An example where it is easy to see this is with nested models: for example, a polynomial of order 2 “contains” the models polynomial of order 1 and polynomial of order 0.</li>
@@ -871,12 +874,12 @@ BF_{01} = \frac{p(y \mid M_0)}{p(y \mid M_1)}
 <p>It is important to note that the <em>good</em> and the <em>ugly</em> points are related. Using marginal likelihood to compare models is a good idea because it already includes a penalty for complex models (which helps us prevent overfitting), and at the same time, a change in the prior will affect the marginal likelihood calculations. At first, this sounds a bit silly; we already know that priors affect calculations (otherwise we could just avoid them). But we are talking about changes in the prior that would have a small effect in the posterior but a great impact on the value of the marginal likelihood.</p>
 <p>The use of Bayes factors is often a watershed among Bayesians. The difficulty of its calculation and the sensitivity to the priors are some of the arguments against it. Another reason is that, like p-values and hypothesis testing in general, Bayes factors favor dichotomous thinking over the estimation of the “effect size.” In other words, instead of asking ourselves questions like: How many more years of life can a cancer treatment provide? We end up asking if the difference between treating and not treating a patient is “statistically significant.” Note that this last question can be useful in some contexts. The point is that in many other contexts, this type of question is not the question that interests us; we’re only interested in the one that we were taught to answer.</p>
 </section>
-<section id="calculation-of-bayes-factors" class="level3" data-number="7.13.2">
-<h3 data-number="7.13.2" class="anchored" data-anchor-id="calculation-of-bayes-factors"><span class="header-section-number">7.13.2</span> Calculation of Bayes factors</h3>
+<section id="calculation-of-bayes-factors" class="level3" data-number="7.14.2">
+<h3 data-number="7.14.2" class="anchored" data-anchor-id="calculation-of-bayes-factors"><span class="header-section-number">7.14.2</span> Calculation of Bayes factors</h3>
 <p>The marginal likelihood (and the Bayes factors derived from it) is generally not available in closed form, except for a few models. For this reason, many numerical methods have been devised for its calculation. Some of these methods are so simple and <a href="https://radfordneal.wordpress.com/2008/08/17/the-harmonic-mean-of-the-likelihood-worst-monte-carlo-method-ever">naive</a> that they work very poorly in practice. We are going to discuss only one way to compute them, once that can be applied under some particular cases.</p>
 </section>
-<section id="savagedickey-ratio" class="level3" data-number="7.13.3">
-<h3 data-number="7.13.3" class="anchored" data-anchor-id="savagedickey-ratio"><span class="header-section-number">7.13.3</span> Savage–Dickey ratio</h3>
+<section id="savagedickey-ratio" class="level3" data-number="7.14.3">
+<h3 data-number="7.14.3" class="anchored" data-anchor-id="savagedickey-ratio"><span class="header-section-number">7.14.3</span> Savage–Dickey ratio</h3>
 <p>There are times when we want to compare a null hypothesis <span class="math inline">\(H_0\)</span> (or null model) against an alternative <span class="math inline">\(H_1\)</span> hypothesis. For example, to answer the question “Is this coin biased?”, we could compare the value <span class="math inline">\(\theta = 0.5\)</span> (representing no bias) with the output of a model in which we allow <span class="math inline">\(\theta\)</span> to vary. For this type of comparison, the null model is nested within the alternative, which means that the null is a particular value of the model we are building. In those cases, calculating the Bayes factor is very easy and does not require any special methods. We only need to compare the prior and posterior evaluated at the null value (for example, <span class="math inline">\(\theta = 0.5\)</span>) under the alternative model. We can see that this is true from the following expression:</p>
 <p><span class="math display">\[
 BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p(\theta=0.5 \mid H_1)}
@@ -887,7 +890,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">CmdStanPy</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="658c78f3" class="cell" data-execution_count="10">
+<div id="8cba780e" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>y <span class="op">=</span> np.repeat([<span class="dv">1</span>, <span class="dv">0</span>], [<span class="dv">50</span>, <span class="dv">50</span>])  <span class="co"># 50 heads, 50 tails</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_uni:</span>
 <span id="cb11-3"><a href="#cb11-3"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
@@ -902,7 +905,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 </div>
 </div>
 <p>And now we call <code>azp.plot_bf</code></p>
-<div id="a992051a" class="cell" data-execution_count="12">
+<div id="4f2f3eba" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>azp.plot_bf(idata_uni, var_names<span class="op">=</span><span class="st">"a"</span>, ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -919,7 +922,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">PyMC</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">CmdStanPy</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="bc44b6e0" class="cell" data-execution_count="13">
+<div id="98a9b7d0" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="cf">with</span> pm.Model() <span class="im">as</span> model_conc:</span>
 <span id="cb14-2"><a href="#cb14-2"></a>    a <span class="op">=</span> pm.Beta(<span class="st">"a"</span>, <span class="dv">30</span>, <span class="dv">30</span>)</span>
 <span id="cb14-3"><a href="#cb14-3"></a>    yl <span class="op">=</span> pm.Bernoulli(<span class="st">"yl"</span>, a, observed<span class="op">=</span>y)</span>
@@ -932,7 +935,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 </div>
 </div>
 </div>
-<div id="53c7c392" class="cell" data-execution_count="15">
+<div id="0ce16e81" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>azp.plot_bf(idata_conc, var_names<span class="op">=</span>[<span class="st">"a"</span>], ref_val<span class="op">=</span><span class="fl">0.5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -944,18 +947,18 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 </div>
 <p>We can see that the <code>BF_01</code> is <span class="math inline">\(\approx 1.6\)</span>, which we can interpret as <em>anecdotal evidence</em> in favor of the null hypothesis (see the Jeffreys’ scale, discussed earlier).</p>
 </section>
-<section id="bayes-factors-vs-the-alternatives" class="level3" data-number="7.13.4">
-<h3 data-number="7.13.4" class="anchored" data-anchor-id="bayes-factors-vs-the-alternatives"><span class="header-section-number">7.13.4</span> Bayes factors vs the alternatives</h3>
+<section id="bayes-factors-vs-the-alternatives" class="level3" data-number="7.14.4">
+<h3 data-number="7.14.4" class="anchored" data-anchor-id="bayes-factors-vs-the-alternatives"><span class="header-section-number">7.14.4</span> Bayes factors vs the alternatives</h3>
 <p>We could say that the Bayes factors measure which model, as a whole, is better for explaining the data. This includes the details of the prior, no matter how similar the model predictions are. In many scenarios, this is not what interests us when comparing models. For many real problems prior are not intended to be an accurate description of the <em>True</em> prior distribution of parameters, instead in many problems priors are choosen using some information and with the goal of providing some regulatization. In this and other cases we prefer to evaluate models in terms of how similar their predictions are. For those cases, we can use LOO.</p>
 </section>
 </section>
-<section id="absolute-metrics" class="level2" data-number="7.14">
-<h2 data-number="7.14" class="anchored" data-anchor-id="absolute-metrics"><span class="header-section-number">7.14</span> Absolute metrics</h2>
+<section id="absolute-metrics" class="level2" data-number="7.15">
+<h2 data-number="7.15" class="anchored" data-anchor-id="absolute-metrics"><span class="header-section-number">7.15</span> Absolute metrics</h2>
 <p>In the previous sections we have seen how to compare models using relative metrics. By relative we mean that we are comparing the models with respect to each other. For example, we can say that model A is better than model B because it has a higher ELPD value. But we can not, in general, judge a single model by its ELPD alone. In contrast, sometimes we are interested in absolute metrics. Some common absolute metrics are the root mean square error (RMSE), the mean absolute error (MAE), the coeﬀicient of determination (<span class="math inline">\(R^2\)</span>), etc. Interestingly, we can use PSIS-LOO-CV procedure to compute the leave-one-out cross-validation version of these metrics.</p>
-<section id="loo-expectations-and-metrics" class="level3" data-number="7.14.1">
-<h3 data-number="7.14.1" class="anchored" data-anchor-id="loo-expectations-and-metrics"><span class="header-section-number">7.14.1</span> LOO expectations and metrics</h3>
+<section id="loo-expectations-and-metrics" class="level3" data-number="7.15.1">
+<h3 data-number="7.15.1" class="anchored" data-anchor-id="loo-expectations-and-metrics"><span class="header-section-number">7.15.1</span> LOO expectations and metrics</h3>
 <p>From the PSIS smoothing procedure, we obtain a set of weights. The <code>loo</code> function utilizes these weights to estimate the ELPD we should have obtained if we have performed leave-one-out cross-validation. Furthermore, these weights can be used to estimate other quantities, such as the mean, standard deviation, and quantiles, as if we had performed leave-one-out cross-validation. For example, to compute the 25th and 75th percentiles we use:</p>
-<div id="04510bae" class="cell" data-execution_count="16">
+<div id="a25f5ffa" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>azp.loo_expectations(dt_rugby, kind<span class="op">=</span><span class="st">"quantile"</span>, probs<span class="op">=</span>[<span class="fl">0.25</span>, <span class="fl">0.75</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/arviz_stats/loo/helper_loo.py:874: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
@@ -1015,7 +1018,7 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 </div>
 </div>
 <p>Similarly we may be interested in computing estimates of leave-one-out predictive metrics given a set of predictions and observations. For instance to compute the root mean square error we can do:</p>
-<div id="345d65f6" class="cell" data-execution_count="17">
+<div id="c596149f" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>azp.loo_metrics(dt_rugby, kind<span class="op">=</span><span class="st">"rmse"</span>, var_name<span class="op">=</span><span class="st">"home_points"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/arviz_stats/loo/helper_loo.py:874: UserWarning: Estimated shape parameter of Pareto distribution is greater than 0.70 for one or more samples. You should consider using a more robust model, this is because importance sampling is less likely to work well if the marginal posterior and LOO posterior are very different. This is more likely to happen with a non-robust model and highly influential observations.
@@ -1027,8 +1030,8 @@ BF_{01} = \frac{p(y \mid H_0)}{p(y \mid H_1)} \frac{p(\theta=0.5 \mid y, H_1)}{p
 </div>
 <p>Notice that for <code>loo_metrics</code> if we have more than one variable we must specify the variable that we care using the <code>var_names</code> argument, like in the previous example.</p>
 </section>
-<section id="loo-pit" class="level3" data-number="7.14.2">
-<h3 data-number="7.14.2" class="anchored" data-anchor-id="loo-pit"><span class="header-section-number">7.14.2</span> LOO-PIT</h3>
+<section id="loo-pit" class="level3" data-number="7.15.2">
+<h3 data-number="7.15.2" class="anchored" data-anchor-id="loo-pit"><span class="header-section-number">7.15.2</span> LOO-PIT</h3>
 <p>Another quantity of interest that we can obtain via PSIS-LOO-CV is the PIT values. As already mentioned in <a href="Prior_posterior_predictive_checks.html#sec-avoid-double-dipping" class="quarto-xref"><span>Section 5.2.4</span></a>, we often are interested in computing:</p>
 <p><span class="math display">\[
 p(\tilde y_i \le y_i \mid y_{-i})
