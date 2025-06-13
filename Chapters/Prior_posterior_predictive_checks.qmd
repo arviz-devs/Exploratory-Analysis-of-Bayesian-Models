@@ -480,7 +480,7 @@ In practice we don't have the CDF, but this is no problem as we have samples fro
 pz.Uniform(0, 1).plot_cdf()
 ```
 
-The disadvantage of such visualization is that all the "action" is close to the diagonal line and most of the plot is just blank space. A simple trick to improve the *data-ink* ratio is to render the difference between the observed and expected cumulative distribution functions, the $\Delta$-ECDF, as shown in Figure @fig-post_ppc_pit_ecdf. The last ingredient to improve this visual diagnostic is to add a confidence band. Due to finite sample size we should expect deviations from uniformity, so a confidence band gives us an idea of how much deviation is expected by chance. 
+The disadvantage of such visualization is that all the "action" is close to the diagonal line and most of the plot is just blank space. A simple trick to improve the *data-ink* ratio is to render the difference between the observed and expected cumulative distribution functions, the $\Delta$-ECDF, as shown in @fig-post_ppc_pit_ecdf. The last ingredient to improve this visual diagnostic is to add a confidence band. Due to finite sample size we should expect deviations from uniformity, so a confidence band gives us an idea of how much deviation is expected by chance. 
 
 ```{python}
 #| label: fig-post_ppc_pit_ecdf
