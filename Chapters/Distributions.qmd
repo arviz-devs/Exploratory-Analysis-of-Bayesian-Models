@@ -179,7 +179,7 @@ If you don't like the default binning criteria of ArviZ, you can change it by pa
 #| label: fig-dist_histogram_2
 #| fig-cap: "Histogram from a sample of integers, with bins automatically computed by Matplotlib, not ArviZ."
 d_values = azp.convert_to_dataset(pz.Poisson(100).rvs((1, 500), random_state=rng))
-azp.plot_dist(d_values, kind="hist", stats_kwargs={"density":{"bins":20}})
+azp.plot_dist(d_values, kind="hist", stats={"density":{"bins":20}})
 ```
 
 ### KDE
