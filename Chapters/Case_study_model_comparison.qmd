@@ -26,7 +26,7 @@ The data used to fit the models are the results of all matches from 2022-2023 an
 
 ## Base model
 
-The model used is taken from [this blog post](http://danielweitzenfeld.github.io/passtheroc/blog/2014/10/28/bayes-premier-league/) which was added as an [example notebook](https://www.pymc.io/projects/examples/en/latest/case_studies/rugby_analytics.html) to PyMC docs.
+The model used is taken from [this blog post](https://github.com/DanielWeitzenfeld/passtheroc_source2/blob/master/content/bayes_premier_league.ipynb) which was added as an [example notebook](https://www.pymc.io/projects/examples/en/latest/case_studies/rugby_analytics.html) to PyMC docs.
 
 We are trying to model a league in which all teams play against each other twice. We indicate the number of goals scored by the home and the away team in the $m$-th match of the season ($M$ matches) as $y_{m,h}$ and $y_{m,a}$ respectively.
 The model assumes the goals scored by a team follow a Poisson distribution:
